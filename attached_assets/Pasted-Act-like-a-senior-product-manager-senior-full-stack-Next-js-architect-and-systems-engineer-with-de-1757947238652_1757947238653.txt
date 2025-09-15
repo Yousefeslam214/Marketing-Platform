@@ -1,0 +1,239 @@
+Act like a senior product manager, senior full-stack Next.js architect, and systems engineer with deep experience building ad-tech and marketing platforms.
+
+Important context (read first)
+- I uploaded a prompting guide (Prompt engineering - OpenAI API.pdf). Use it as the prompting bible and follow its best practices.
+- Primary stack: Next.js (App Router, full-stack TypeScript), Neon (Postgres), Drizzle ORM.
+- Validation: use Zod everywhere (request validation, DTOs, and where useful map Zod ↔ Drizzle).
+- The engineering automation that will *write the code* for me is Bolt (https://bolt.new/). When this prompt is executed by Bolt (the code-writing AI), Bolt will generate the implementation. You are producing a single, precise, machine-friendly prompt that Bolt will consume. Do NOT execute anything; only produce the prompt below.
+- Use this Neon connection string as the default example for local/test:  
+  `psql 'postgresql://neondb_owner:npg_2UITSxJcpko5@ep-damp-rain-agjwqkwr-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'`
+- Remove CI/CD from the scope — Bolt (the AI) will build the code and handle deployments manually if requested.
+- All code must be TypeScript. All DB access must use Drizzle. All request & domain validation must use Zod.
+
+Goal (what this prompt must make Bolt produce)
+Generate a **single, comprehensive, production-ready blueprint document** for a marketing & advertising platform called **Bolt** (the code will be produced by Bolt.new). The blueprint will be used by Bolt to generate the code and by engineers/designers to review it. The blueprint must be precise, unambiguous, and machine-friendly.
+
+What the blueprint must contain (strict checklist)
+1. Overview (2–3 short paragraphs)
+   - Describe Bolt's purpose and top-level value proposition.
+   - Explain how Bolt differentiates from Facebook/Google/TikTok ads (SMB-friendly bundles, simple onboarding, free-views mechanic, bilingual Saudi-ready UX).
+   - Define main roles: Advertiser, Viewer, Marketing Team, Admin (1–2 lines each).
+
+2. Architecture (ASCII diagram + responsibilities)
+   - Provide a clear textual/ASCII diagram showing components and connections:
+     Client Web (Next.js app) ↔ Next.js Server (App Router + Server Components + Route Handlers) ↔ Neon (Postgres + Drizzle)
+     Background Workers (BullMQ + Redis OR PgCron + serverless workers) ↔ Social Adapters (Facebook/Meta, X, Instagram, TikTok)
+     External: Stripe, Sentry, CDN (Cloudflare/Vercel), Object Storage (S3/R2)
+   - For each component list responsibilities and clear implementation guidance (e.g., "Next.js server: auth, presigned uploads, server actions, route handlers, SSR for dashboards").
+
+3. Drizzle DB schema (TypeScript code block) — **must include Zod**
+   - Provide Drizzle table definitions for Neon for at minimum:
+     users, ads, targets, purchases, impressions_events, clicks_events, aggregated_stats, free_views_credits, audit_logs, admin_actions.
+   - For each table include:
+     - Drizzle TS table definition (imports included).
+     - Corresponding Zod schemas for create/update/request DTOs.
+     - Type inference examples (e.g., `type NewAd = z.infer<typeof NewAdSchema>`).
+   - Provide a runnable Drizzle migration snippet (TS or SQL) that creates one table (e.g., impressions_events).
+   - Provide 1–2 Drizzle + Zod query examples:
+     - Insert raw event with idempotent check by `event_id`.
+     - Atomic upsert/increment for aggregated_stats.
+
+4. API endpoints & contracts (compact table + examples)
+   - Provide path, method, required auth/roles, Zod request schema, and response shape for each endpoint below:
+     - POST /api/auth/signup
+     - POST /api/auth/login
+     - POST /api/auth/logout
+     - GET /api/ads (filter, pagination)
+     - GET /api/ads/:id
+     - POST /api/ads (create ad → returns presigned upload info)
+     - PUT /api/ads/:id
+     - POST /api/ads/:id/purchase (create Stripe Checkout)
+     - GET /api/ads/:id/analytics
+     - POST /api/events/impression
+     - POST /api/events/click
+     - GET /api/admin/ads/pending
+     - POST /api/admin/ads/:id/approve
+     - POST /api/admin/ads/:id/reject
+     - POST /api/admin/ads/:id/publish
+     - POST /api/webhooks/stripe
+     - POST /api/webhooks/social_publish_status
+   - Provide full TypeScript Next.js handler skeletons (with imports) for these three endpoints:
+     1. POST /api/ads — validates with Zod, creates ad row (status=draft/pending), returns presigned upload info for S3/R2, stores publish_token.
+     2. POST /api/events/impression — Zod validation, idempotency check using `event_id`, fallback dedupe using salted ip+ua+ad_id hash, insert into impressions_events and enqueue aggregation job.
+     3. POST /api/ads/:id/purchase — Zod validation, create purchases row (status=pending), create Stripe Checkout session, return session url; include Stripe secret usage note.
+
+   - Each handler skeleton must:
+     - Use Zod for input validation.
+     - Use Drizzle for DB access.
+     - Show role checks and error handling.
+     - Be copy-paste ready (imports, types, example responses).
+
+5. Impressions & clicks counting design (detailed)
+   - Client behavior:
+     - Public landing URL contains `ad_id` + `publish_token`.
+     - Landing page generates UUID `event_id` (v4) per impression attempt.
+     - Call POST /api/events/impression `{ event_id, ad_id, source: 'web', viewer_hash, optional meta }`.
+     - On click: POST /api/events/click with same `event_id`, then redirect to `target_url`.
+   - Server ingestion:
+     - Strict idempotency by `event_id`. If exists — return 200 duplicate.
+     - Fallback dedupe: compute `fallback_hash = H(salt + ip + ua + ad_id + time_window)` and dedupe within 10 minutes. Store only hashed ip/ua.
+     - Append-only raw events stored for 90 days (default), aggregated into aggregated_stats by worker.
+     - Near-real-time aggregation: enqueue event to worker queue that performs atomic upsert increments.
+   - Anti-fraud:
+     - Cloudflare + API rate-limits, server-side per-IP throttling, per-ad fingerprint limits.
+     - Heuristics: same fingerprint spikes, impossible UA combos, proxy ASN lists.
+     - Flag suspicious ads, pause billing, notify admin.
+   - Reliability:
+     - Clients retry with same `event_id`. Server responses are idempotent.
+     - Use retry queue for transient failures.
+
+6. Payment & credits (Stripe)
+   - Use Stripe Checkout for purchases.
+   - Flow:
+     - `POST /api/ads/:id/purchase` -> create purchases row (pending) -> create Stripe Checkout session -> client redirects.
+     - `POST /api/webhooks/stripe` -> verify signature via `stripe.webhooks.constructEvent`, update purchase.status, allocate impressions (increment `purchases.impressions_allocated` and/or `free_views_credits`), emit invoice/billing records.
+   - Non-refundable default; admin can issue manual refunds which update purchases and credits.
+   - Provide a Stripe webhook example handler skeleton (with signature verification, Zod validation, Drizzle update).
+
+7. Frontend structure, components & UX notes (Next.js App Router)
+   - Provide exact `app/` folder structure:
+     ```
+     app/
+       layout.tsx
+       page.tsx
+       (public)/
+         ads/[id]/page.tsx
+       dashboard/
+         (user)/
+           ads/
+             page.tsx
+             new/page.tsx
+             [id]/page.tsx
+         (admin)/
+           ads/
+             pending/page.tsx
+             [id]/page.tsx
+       api/  <-- route handlers if using them
+     ```
+   - Provide copy-paste TSX component examples (imports + exports) for:
+     - AdCard.tsx
+     - AdEditor.tsx (Zod form, presigned upload)
+     - TargetingForm.tsx
+     - AnalyticsChart.tsx (placeholder using recharts)
+     - ThemeToggle.tsx (sync to profile + localStorage)
+   - Theme & Dark/Light:
+     - Use CSS variables + Tailwind, toggle by `data-theme="dark"` on `<html>` or Tailwind `dark` class.
+     - Persist preference in user profile and localStorage; provide provider example.
+   - i18n & RTL:
+     - Recommend `next-intl` or `next-i18next`. Use route prefixes `/en` and `/ar`.
+     - When `locale === 'ar'`, set `<html dir="rtl">` and enable Tailwind RTL plugin or logical CSS properties.
+     - Provide sample translation JSON and usage code.
+
+8. Auth & Authorization
+   - Recommend NextAuth or a secure custom approach (httpOnly cookies + rotating refresh tokens). Provide a short comparison and default recommendation.
+   - Roles: `advertiser`, `marketing`, `admin`.
+   - Provide Next.js middleware snippet showing role enforcement (reads JWT/session cookie, denies if missing role).
+   - Provide a permission matrix mapping roles to actions (create ad, purchase, approve, publish, view analytics).
+
+9. Admin & Marketing workflows
+   - Detailed step flow:
+     1. Advertiser creates ad (draft) → submits → status=pending.
+     2. Auto-validation (content checks) → admin review (12–48h SLA) → approve/reject with reason.
+     3. On approve, Marketing team may publish (internal network or social adapters) — publishing enqueues jobs, stores external post IDs & statuses.
+     4. Public link goes live; events tracked; billing/analytics updated.
+   - Publish adapters:
+     - Define adapter interface `publish(adPayload): Promise<PublishResult>` with retries/backoff and status recording.
+     - Provide a minimal adapter stub for one network (e.g., X) as an example.
+   - Admin dashboard capabilities: pending queue, fraud flags, revenue reconciliation, refunds, manual credit adjustments.
+
+10. Background jobs & scheduling
+    - Two recommended architectures:
+      A) BullMQ + Redis workers — best for high throughput and visibility.
+      B) PgCron + serverless/lightweight Node workers — Neon-friendly, lower infra ops.
+    - Jobs list:
+      - Near-real-time aggregator (consume events queue -> update aggregated_stats).
+      - Daily re-aggregation and consistency check.
+      - Fraud detection job (hourly).
+      - Publish retry job.
+      - Retention job (purge events > 90 days).
+    - Provide worker pseudocode that consumes event messages and atomically upserts aggregated_stats.
+
+11. Observability & monitoring
+    - Sentry for errors, Prometheus/Grafana for metrics or Vercel/Neon monitoring where applicable.
+    - Key metrics: ingestion rates, duplicate rates, aggregation latencies, worker error rates, Stripe webhook success.
+    - Alerts: impression spikes, worker crashes, webhook signature failures, fraud thresholds.
+
+12. Security, privacy & compliance
+    - TLS/HSTS, strong password hashing (bcrypt/argon2), secure httpOnly cookies, input sanitization, CSP.
+    - Hash + salt IP & UA; avoid storing raw PII unless required; document retention & deletion flows.
+    - Data retention default: raw events 90 days (configurable).
+    - Saudi compliance note: call out potential needs (data residency, consumer protection, taxation/reporting) and explicitly recommend legal review for KSA-specific requirements.
+
+13. Testing & migrations (NO CI/CD)
+    - Tests:
+      - Unit tests for Zod schemas and Drizzle queries.
+      - Integration tests for API endpoints (use test Neon or local Postgres).
+      - E2E tests (Playwright) for critical user flows.
+    - Migrations:
+      - Use Drizzle migrations. Provide a sample migration file example for impressions_events.
+    - Seed data:
+      - Provide a small seed (1 advertiser, 1 admin, 2 ads in EN/AR, a purchase, sample aggregated_stats).
+
+14. Minimum Viable Demo (1–2 week plan) & engineer TODO checklist
+    - Week 1 (must):
+      - Auth (signup/login), user profile.
+      - Ad creation (EN/AR text + image upload via presigned S3/R2).
+      - Admin approve/reject UI.
+      - Purchase impressions via Stripe sandbox -> allocate credits.
+      - Public ad landing that records impressions & clicks.
+      - Simple analytics (aggregated_stats) and a demo deploy (manual).
+    - Week 2 (must):
+      - EN/AR i18n + RTL adjustments, dark/light theme toggle.
+      - Simple aggregation worker (serverless or single Node).
+      - Basic fraud detection & admin flags.
+      - Social publish stub.
+    - Provide a prioritized engineer TODO checklist (20–30 concrete tasks) grouped by priority (MUST/SHOULD/NICE).
+
+15. Deliverables & code examples (must be included inline)
+    - Drizzle TypeScript schema (full for listed tables).
+    - Zod schemas for key DTOs.
+    - Drizzle migration example.
+    - Next.js route handler examples (POST /api/ads, POST /api/events/impression, POST /api/ads/:id/purchase).
+    - Public ad page TSX that triggers impression + click.
+    - Role-based middleware snippet.
+    - Worker pseudocode for aggregator.
+    - ASCII architecture diagram.
+
+16. Final sections (end of blueprint)
+    - Prioritized 10-item MVP backlog (numbered).
+    - 7-point deployment checklist for production readiness:
+      1. Domain & DNS
+      2. SSL/TLS
+      3. Secrets stored (Stripe, Neon, Redis, social API keys)
+      4. Migrations applied to Neon
+      5. Connection pooling & Neon pooler configured
+      6. Monitoring & alerting enabled (Sentry + metrics)
+      7. Runbook for incident response & fraud handling
+    - "Decisions & Assumptions" summary (explicitly include Neon connection string, Zod usage, removal of CI/CD, Bolt.new will write the code).
+
+Formatting & tone requirements
+- Output as a single blueprint document, structured with clear headings and numbered lists.
+- Include code blocks for all code snippets; every snippet must include import statements (e.g., `import { z } from 'zod'`, `import { db } from 'drizzle-orm'`, `import Stripe from 'stripe'`).
+- Keep snippets minimal, correct, and copy-paste ready.
+- Be precise and avoid ambiguity; when a choice is opinionated, state it and provide a short rationale.
+- Do NOT include CI/CD instructions (user removed them).
+- The prompt you produce will be given to Bolt.new (the code-writing AI). Make it machine-friendly.
+
+Important defaults & constraints (explicit — MUST appear in blueprint)
+- TypeScript across stack.
+- Drizzle ORM for all DB access.
+- Neon Postgres is primary DB (use provided connection string).
+- Zod required for validation (server + client code where applicable).
+- Event ingestion idempotency by client-supplied `event_id`.
+- Stripe for payments.
+- Raw event retention default = 90 days.
+- Aggregation granularity default = daily per ad + near-real-time counters.
+- Image upload: max 2.5 MB, auto-resize server-side, multiple sizes for CDN.
+
+Finish the prompt with (exact line — REQUIRED):
+Take a deep breath and work on this problem step-by-step.
