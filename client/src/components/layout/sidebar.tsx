@@ -29,8 +29,12 @@ export function Sidebar() {
       section: "Main",
       items: [
         { name: "Dashboard", href: "/dashboard", icon: "fas fa-chart-line" },
-        { name: "My Ads", href: "/ads", icon: "fas fa-ad" },
-        { name: "Billing & Credits", href: "/billing", icon: "fas fa-credit-card" },
+        { name: "My Ads", href: "/campaigns", icon: "fas fa-ad" },
+        {
+          name: "Billing & Credits",
+          href: "/billing",
+          icon: "fas fa-credit-card",
+        },
         { name: "Analytics", href: "/analytics", icon: "fas fa-chart-bar" },
       ],
     },
@@ -40,9 +44,18 @@ export function Sidebar() {
     navigation.push({
       section: "Admin",
       items: [
-        { name: "Pending Ads", href: "/admin/pending", icon: "fas fa-clock", badge: "3" },
+        {
+          name: "Pending Ads",
+          href: "/admin/pending",
+          icon: "fas fa-clock",
+          badge: "3",
+        },
         { name: "User Management", href: "/admin/users", icon: "fas fa-users" },
-        { name: "Fraud Detection", href: "/admin/fraud", icon: "fas fa-shield-alt" },
+        {
+          name: "Fraud Detection",
+          href: "/admin/fraud",
+          icon: "fas fa-shield-alt",
+        },
       ],
     });
   }
@@ -51,14 +64,24 @@ export function Sidebar() {
     navigation.push({
       section: "Marketing",
       items: [
-        { name: "Publishing Queue", href: "/marketing/queue", icon: "fas fa-share-alt" },
-        { name: "Social Adapters", href: "/marketing/adapters", icon: "fas fa-network-wired" },
+        {
+          name: "Publishing Queue",
+          href: "/marketing/queue",
+          icon: "fas fa-share-alt",
+        },
+        {
+          name: "Social Adapters",
+          href: "/marketing/adapters",
+          icon: "fas fa-network-wired",
+        },
       ],
     });
   }
 
   return (
-    <div className="w-64 bg-card border-r border-border flex flex-col" data-testid="sidebar">
+    <div
+      className="w-64 bg-card border-r border-border flex flex-col"
+      data-testid="sidebar">
       {/* Sidebar Header */}
       <div className="p-6 border-b border-border">
         <div className="flex items-center gap-3">
@@ -82,12 +105,15 @@ export function Sidebar() {
               </p>
               {section.items.map((item) => (
                 <Link key={item.href} href={item.href}>
-                  <a 
+                  <a
                     className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      location === item.href ? "active bg-primary text-primary-foreground" : "hover:bg-accent hover:text-accent-foreground"
+                      location === item.href
+                        ? "active bg-primary text-primary-foreground"
+                        : "hover:bg-accent hover:text-accent-foreground"
                     }`}
-                    data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
+                    data-testid={`nav-${item.name
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}>
                     <i className={`${item.icon} w-4 h-4`}></i>
                     {item.name}
                     {item.badge && (
@@ -113,7 +139,9 @@ export function Sidebar() {
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground truncate" data-testid="user-name">
+            <p
+              className="text-sm font-medium text-foreground truncate"
+              data-testid="user-name">
               {user.username}
             </p>
             <p className="text-xs text-muted-foreground truncate capitalize">
@@ -124,12 +152,11 @@ export function Sidebar() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <LanguageToggle />
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={logout}
-            data-testid="logout-button"
-          >
+            data-testid="logout-button">
             <i className="fas fa-sign-out-alt"></i>
           </Button>
         </div>

@@ -7,10 +7,23 @@ import { createAdSchema, type CreateAdData } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
 export function AdEditor() {
@@ -42,7 +55,7 @@ export function AdEditor() {
         title: "Ad created successfully",
         description: "Your ad has been created and saved as draft",
       });
-      setLocation(`/ads/${data.ad.id}`);
+      setLocation(`/campaigns/${data.ad.id}`);
     },
     onError: (error: any) => {
       toast({
@@ -74,17 +87,17 @@ export function AdEditor() {
                   <FormItem>
                     <FormLabel>Ad Title (English)</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         placeholder="Enter ad title..."
                         data-testid="input-title-en"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="titleAr"
@@ -92,11 +105,11 @@ export function AdEditor() {
                   <FormItem>
                     <FormLabel>Ad Title (Arabic)</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         placeholder="أدخل عنوان الإعلان..."
                         dir="rtl"
                         data-testid="input-title-ar"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -114,18 +127,18 @@ export function AdEditor() {
                   <FormItem>
                     <FormLabel>Description (English)</FormLabel>
                     <FormControl>
-                      <Textarea 
+                      <Textarea
                         placeholder="Enter ad description..."
                         className="h-24 resize-none"
                         data-testid="textarea-description-en"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="descriptionAr"
@@ -133,12 +146,12 @@ export function AdEditor() {
                   <FormItem>
                     <FormLabel>Description (Arabic)</FormLabel>
                     <FormControl>
-                      <Textarea 
+                      <Textarea
                         placeholder="أدخل وصف الإعلان..."
                         dir="rtl"
                         className="h-24 resize-none"
                         data-testid="textarea-description-ar"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -155,11 +168,11 @@ export function AdEditor() {
                 <FormItem>
                   <FormLabel>Target URL</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="url" 
+                    <Input
+                      type="url"
                       placeholder="https://example.com"
                       data-testid="input-target-url"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -172,8 +185,12 @@ export function AdEditor() {
               <FormLabel>Ad Image</FormLabel>
               <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer mt-2">
                 <i className="fas fa-cloud-upload-alt text-4xl text-muted-foreground mb-4"></i>
-                <p className="text-sm font-medium text-foreground mb-2">Drop your image here or click to browse</p>
-                <p className="text-xs text-muted-foreground">Supports JPG, PNG up to 5MB</p>
+                <p className="text-sm font-medium text-foreground mb-2">
+                  Drop your image here or click to browse
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Supports JPG, PNG up to 5MB
+                </p>
                 <input type="file" className="hidden" accept="image/*" />
               </div>
             </div>
@@ -186,16 +203,22 @@ export function AdEditor() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Target Audience</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger data-testid="select-target-audience">
                           <SelectValue placeholder="Select audience" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="general">General Audience</SelectItem>
+                        <SelectItem value="general">
+                          General Audience
+                        </SelectItem>
                         <SelectItem value="tech">Tech Professionals</SelectItem>
-                        <SelectItem value="business">Business Owners</SelectItem>
+                        <SelectItem value="business">
+                          Business Owners
+                        </SelectItem>
                         <SelectItem value="students">Students</SelectItem>
                       </SelectContent>
                     </Select>
@@ -203,21 +226,25 @@ export function AdEditor() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="budgetType"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Budget Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger data-testid="select-budget-type">
                           <SelectValue placeholder="Select budget type" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="impressions">Pay per 1000 impressions</SelectItem>
+                        <SelectItem value="impressions">
+                          Pay per 1000 impressions
+                        </SelectItem>
                         <SelectItem value="clicks">Pay per click</SelectItem>
                       </SelectContent>
                     </Select>
@@ -229,19 +256,17 @@ export function AdEditor() {
 
             {/* Actions */}
             <div className="flex items-center justify-end gap-4 pt-6 border-t border-border">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setLocation("/ads")}
-                data-testid="button-cancel"
-              >
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setLocation("/campaigns")}
+                data-testid="button-cancel">
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={createAdMutation.isPending}
-                data-testid="button-save-draft"
-              >
+                data-testid="button-save-draft">
                 {createAdMutation.isPending ? (
                   <>
                     <i className="fas fa-spinner fa-spin mr-2"></i>

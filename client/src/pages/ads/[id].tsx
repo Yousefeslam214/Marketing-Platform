@@ -43,9 +43,11 @@ export default function AdDetail({ params }: AdDetailProps) {
         <Sidebar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-2">Ad not found</h2>
-            <Button onClick={() => setLocation("/ads")}>
-              Back to Ads
+            <h2 className="text-2xl font-bold text-foreground mb-2">
+              Ad not found
+            </h2>
+            <Button onClick={() => setLocation("/campaigns")}>
+              Back to Campaigns
             </Button>
           </div>
         </div>
@@ -73,29 +75,25 @@ export default function AdDetail({ params }: AdDetailProps) {
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
-      
+
       <div className="flex-1 overflow-auto">
         <Header
           title={ad.titleEn}
           description="Ad campaign details and performance"
           actions={
             <div className="flex items-center gap-2">
-              <Badge className={getStatusColor(ad.status)}>
-                {ad.status}
-              </Badge>
-              <Button 
+              <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
+              <Button
                 variant="outline"
                 onClick={() => setLocation(`/ads/${id}/analytics`)}
-                data-testid="button-view-analytics"
-              >
+                data-testid="button-view-analytics">
                 <i className="fas fa-chart-bar mr-2"></i>
                 View Analytics
               </Button>
               {ad.status === "approved" && (
-                <Button 
+                <Button
                   onClick={() => setLocation(`/ads/${id}/purchase`)}
-                  data-testid="button-purchase-impressions"
-                >
+                  data-testid="button-purchase-impressions">
                   <i className="fas fa-credit-card mr-2"></i>
                   Purchase Impressions
                 </Button>
@@ -113,34 +111,59 @@ export default function AdDetail({ params }: AdDetailProps) {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">English Title</h4>
-                  <p className="text-foreground" data-testid="ad-title-en">{ad.titleEn}</p>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    English Title
+                  </h4>
+                  <p className="text-foreground" data-testid="ad-title-en">
+                    {ad.titleEn}
+                  </p>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Arabic Title</h4>
-                  <p className="text-foreground" dir="rtl" data-testid="ad-title-ar">{ad.titleAr}</p>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    Arabic Title
+                  </h4>
+                  <p
+                    className="text-foreground"
+                    dir="rtl"
+                    data-testid="ad-title-ar">
+                    {ad.titleAr}
+                  </p>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">English Description</h4>
-                  <p className="text-foreground" data-testid="ad-description-en">{ad.descriptionEn}</p>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    English Description
+                  </h4>
+                  <p
+                    className="text-foreground"
+                    data-testid="ad-description-en">
+                    {ad.descriptionEn}
+                  </p>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Arabic Description</h4>
-                  <p className="text-foreground" dir="rtl" data-testid="ad-description-ar">{ad.descriptionAr}</p>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    Arabic Description
+                  </h4>
+                  <p
+                    className="text-foreground"
+                    dir="rtl"
+                    data-testid="ad-description-ar">
+                    {ad.descriptionAr}
+                  </p>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Target URL</h4>
-                  <a 
-                    href={ad.targetUrl} 
-                    target="_blank" 
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    Target URL
+                  </h4>
+                  <a
+                    href={ad.targetUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary hover:underline"
-                    data-testid="ad-target-url"
-                  >
+                    data-testid="ad-target-url">
                     {ad.targetUrl}
                   </a>
                 </div>
@@ -154,28 +177,40 @@ export default function AdDetail({ params }: AdDetailProps) {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Target Audience</h4>
-                  <p className="text-foreground capitalize" data-testid="ad-target-audience">
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    Target Audience
+                  </h4>
+                  <p
+                    className="text-foreground capitalize"
+                    data-testid="ad-target-audience">
                     {ad.targetAudience}
                   </p>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Budget Type</h4>
-                  <p className="text-foreground capitalize" data-testid="ad-budget-type">
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    Budget Type
+                  </h4>
+                  <p
+                    className="text-foreground capitalize"
+                    data-testid="ad-budget-type">
                     {ad.budgetType}
                   </p>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Created</h4>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    Created
+                  </h4>
                   <p className="text-foreground" data-testid="ad-created-date">
                     {new Date(ad.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Last Updated</h4>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                    Last Updated
+                  </h4>
                   <p className="text-foreground" data-testid="ad-updated-date">
                     {new Date(ad.updatedAt).toLocaleDateString()}
                   </p>
@@ -183,8 +218,12 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                 {ad.rejectionReason && (
                   <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">Rejection Reason</h4>
-                    <p className="text-destructive" data-testid="ad-rejection-reason">
+                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                      Rejection Reason
+                    </h4>
+                    <p
+                      className="text-destructive"
+                      data-testid="ad-rejection-reason">
                       {ad.rejectionReason}
                     </p>
                   </div>
@@ -200,8 +239,8 @@ export default function AdDetail({ params }: AdDetailProps) {
                 </CardHeader>
                 <CardContent>
                   <div className="max-w-md mx-auto">
-                    <img 
-                      src={ad.imageUrl} 
+                    <img
+                      src={ad.imageUrl}
                       alt={ad.titleEn}
                       className="w-full rounded-lg"
                       data-testid="ad-image-preview"

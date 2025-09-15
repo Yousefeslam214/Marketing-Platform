@@ -5,14 +5,14 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import Stripe from "stripe";
 import { storage } from "./storage";
-import { 
-  loginSchema, 
-  signupSchema, 
-  createAdSchema, 
+import {
+  loginSchema,
+  signupSchema,
+  createAdSchema,
   purchaseCreditsSchema,
   adminActionSchema,
   insertImpressionEventSchema,
-  insertClickEventSchema 
+  insertClickEventSchema,
 } from "@shared/schema";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
@@ -20,7 +20,7 @@ import crypto from "crypto";
 import { randomUUID } from "crypto";
 
 // Stripe setup (conditional initialization)
-const stripe = process.env.STRIPE_SECRET_KEY 
+const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: "2025-08-27.basil",
     })
@@ -52,32 +52,34 @@ function requireRole(roles: string[]) {
     if (!req.user) {
       return res.status(401).json({ message: "Authentication required" });
     }
-    
+
     const user = req.user as any;
     if (!roles.includes(user.role)) {
       return res.status(403).json({ message: "Insufficient permissions" });
     }
-    
+
     next();
   };
 }
 
 // Passport configuration
-passport.use(new LocalStrategy(
-  { usernameField: "email" },
-  async (email, password, done) => {
-    try {
-      const user = await storage.validateUser(email, password);
-      if (user) {
-        return done(null, user);
-      } else {
-        return done(null, false, { message: "Invalid email or password" });
+passport.use(
+  new LocalStrategy(
+    { usernameField: "email" },
+    async (email, password, done) => {
+      try {
+        const user = await storage.validateUser(email, password);
+        if (user) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Invalid email or password" });
+        }
+      } catch (error) {
+        return done(error);
       }
-    } catch (error) {
-      return done(error);
     }
-  }
-));
+  )
+);
 
 passport.serializeUser((user: any, done) => {
   done(null, user.id);
@@ -93,7 +95,11 @@ passport.deserializeUser(async (id: string, done) => {
 });
 
 // Utility functions
-function createFallbackHash(ip: string, userAgent: string, adId: string): string {
+function createFallbackHash(
+  ip: string,
+  userAgent: string,
+  adId: string
+): string {
   const salt = process.env.SESSION_SECRET || "fallback-salt";
   const timeWindow = Math.floor(Date.now() / (10 * 60 * 1000)); // 10-minute windows
   return crypto
@@ -112,7 +118,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/signup", async (req, res) => {
     try {
       const validatedData = signupSchema.parse(req.body);
-      
+
       // Check if user exists
       const existingUser = await storage.getUserByEmail(validatedData.email);
       if (existingUser) {
@@ -123,7 +129,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: validatedData.email,
         username: validatedData.username,
         password: validatedData.password,
-        role: "advertiser",
+        role: validatedData.role,
       });
 
       await storage.createAuditLog({
@@ -160,14 +166,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     passport.authenticate("local", (err: any, user: any, info: any) => {
       if (err) {
+        console.error("Login authentication error:", err);
         return res.status(500).json({ message: "Internal server error" });
       }
       if (!user) {
-        return res.status(401).json({ message: info.message || "Invalid credentials" });
+        return res
+          .status(401)
+          .json({ message: info.message || "Invalid credentials" });
       }
 
       req.login(user, async (err) => {
         if (err) {
+          console.error("Login session error:", err);
           return res.status(500).json({ message: "Login failed" });
         }
 
@@ -218,7 +228,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const user = req.user as any;
-      if (ad.userId !== user.id && !["admin", "marketing"].includes(user.role)) {
+      if (
+        ad.userId !== user.id &&
+        !["admin", "marketing"].includes(user.role)
+      ) {
         return res.status(403).json({ message: "Access denied" });
       }
 
@@ -267,12 +280,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const user = req.user as any;
       const ad = await storage.getAd(req.params.id);
-      
+
       if (!ad) {
         return res.status(404).json({ message: "Ad not found" });
       }
 
-      if (ad.userId !== user.id && !["admin", "marketing"].includes(user.role)) {
+      if (
+        ad.userId !== user.id &&
+        !["admin", "marketing"].includes(user.role)
+      ) {
         return res.status(403).json({ message: "Access denied" });
       }
 
@@ -322,8 +338,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Create Stripe Checkout session (if Stripe is available)
       if (!stripe) {
-        return res.status(503).json({ 
-          message: "Payment processing is currently unavailable. Please try again later." 
+        return res.status(503).json({
+          message:
+            "Payment processing is currently unavailable. Please try again later.",
         });
       }
 
@@ -374,7 +391,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Ad not found" });
       }
 
-      if (ad.userId !== user.id && !["admin", "marketing"].includes(user.role)) {
+      if (
+        ad.userId !== user.id &&
+        !["admin", "marketing"].includes(user.role)
+      ) {
         return res.status(403).json({ message: "Access denied" });
       }
 
@@ -395,9 +415,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/events/impression", async (req, res) => {
     try {
       const validatedData = insertImpressionEventSchema.parse(req.body);
-      
+
       // Check for duplicate by event_id
-      const existing = await storage.getImpressionByEventId(validatedData.eventId);
+      const existing = await storage.getImpressionByEventId(
+        validatedData.eventId
+      );
       if (existing) {
         return res.json({ message: "Duplicate event", id: existing.id });
       }
@@ -405,10 +427,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fallback deduplication
       const ip = req.ip || "";
       const userAgent = req.get("User-Agent") || "";
-      const fallbackHash = createFallbackHash(ip, userAgent, validatedData.adId);
+      const fallbackHash = createFallbackHash(
+        ip,
+        userAgent,
+        validatedData.adId
+      );
 
       const ipHash = crypto.createHash("sha256").update(ip).digest("hex");
-      const uaHash = crypto.createHash("sha256").update(userAgent).digest("hex");
+      const uaHash = crypto
+        .createHash("sha256")
+        .update(userAgent)
+        .digest("hex");
 
       const impression = await storage.recordImpression({
         ...validatedData,
@@ -418,7 +447,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // TODO: Enqueue background job for aggregation
-      
+
       res.json({ id: impression.id });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -431,11 +460,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/events/click", async (req, res) => {
     try {
       const validatedData = insertClickEventSchema.parse(req.body);
-      
+
       const ip = req.ip || "";
       const userAgent = req.get("User-Agent") || "";
       const ipHash = crypto.createHash("sha256").update(ip).digest("hex");
-      const uaHash = crypto.createHash("sha256").update(userAgent).digest("hex");
+      const uaHash = crypto
+        .createHash("sha256")
+        .update(userAgent)
+        .digest("hex");
 
       const click = await storage.recordClick({
         ...validatedData,
@@ -444,7 +476,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // TODO: Enqueue background job for aggregation
-      
+
       res.json({ id: click.id });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -455,86 +487,110 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin routes
-  app.get("/api/admin/ads/pending", requireAuth, requireRole(["admin", "marketing"]), async (req, res) => {
-    try {
-      const ads = await storage.getPendingAds();
-      res.json(ads);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch pending ads" });
-    }
-  });
-
-  app.post("/api/admin/ads/:id/approve", requireAuth, requireRole(["admin", "marketing"]), async (req, res) => {
-    try {
-      const user = req.user as any;
-      const ad = await storage.approveAd(req.params.id, user.id);
-
-      await storage.createAuditLog({
-        userId: user.id,
-        action: "approve_ad",
-        resourceType: "ad",
-        resourceId: ad.id,
-        ipAddress: req.ip,
-        userAgent: req.get("User-Agent"),
-      });
-
-      res.json(ad);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to approve ad" });
-    }
-  });
-
-  app.post("/api/admin/ads/:id/reject", requireAuth, requireRole(["admin", "marketing"]), async (req, res) => {
-    try {
-      const user = req.user as any;
-      const { reason } = adminActionSchema.parse(req.body);
-      
-      if (!reason) {
-        return res.status(400).json({ message: "Rejection reason is required" });
+  app.get(
+    "/api/admin/ads/pending",
+    requireAuth,
+    requireRole(["admin", "marketing"]),
+    async (req, res) => {
+      try {
+        const ads = await storage.getPendingAds();
+        res.json(ads);
+      } catch (error) {
+        res.status(500).json({ message: "Failed to fetch pending ads" });
       }
+    }
+  );
 
-      const ad = await storage.rejectAd(req.params.id, reason, user.id);
+  app.post(
+    "/api/admin/ads/:id/approve",
+    requireAuth,
+    requireRole(["admin", "marketing"]),
+    async (req, res) => {
+      try {
+        const user = req.user as any;
+        const ad = await storage.approveAd(req.params.id, user.id);
 
-      await storage.createAuditLog({
-        userId: user.id,
-        action: "reject_ad",
-        resourceType: "ad",
-        resourceId: ad.id,
-        details: { reason },
-        ipAddress: req.ip,
-        userAgent: req.get("User-Agent"),
-      });
+        await storage.createAuditLog({
+          userId: user.id,
+          action: "approve_ad",
+          resourceType: "ad",
+          resourceId: ad.id,
+          ipAddress: req.ip,
+          userAgent: req.get("User-Agent"),
+        });
 
-      res.json(ad);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: fromZodError(error).message });
+        res.json(ad);
+      } catch (error) {
+        res.status(500).json({ message: "Failed to approve ad" });
       }
-      res.status(500).json({ message: "Failed to reject ad" });
     }
-  });
+  );
 
-  app.post("/api/admin/ads/:id/publish", requireAuth, requireRole(["admin", "marketing"]), async (req, res) => {
-    try {
-      const user = req.user as any;
-      const ad = await storage.updateAd(req.params.id, { status: "published" });
+  app.post(
+    "/api/admin/ads/:id/reject",
+    requireAuth,
+    requireRole(["admin", "marketing"]),
+    async (req, res) => {
+      try {
+        const user = req.user as any;
+        const { reason } = adminActionSchema.parse(req.body);
 
-      await storage.createAuditLog({
-        userId: user.id,
-        action: "publish_ad",
-        resourceType: "ad",
-        resourceId: ad.id,
-        ipAddress: req.ip,
-        userAgent: req.get("User-Agent"),
-      });
+        if (!reason) {
+          return res
+            .status(400)
+            .json({ message: "Rejection reason is required" });
+        }
 
-      // TODO: Enqueue social publishing job
+        const ad = await storage.rejectAd(req.params.id, reason, user.id);
 
-      res.json(ad);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to publish ad" });
+        await storage.createAuditLog({
+          userId: user.id,
+          action: "reject_ad",
+          resourceType: "ad",
+          resourceId: ad.id,
+          details: { reason },
+          ipAddress: req.ip,
+          userAgent: req.get("User-Agent"),
+        });
+
+        res.json(ad);
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          return res.status(400).json({ message: fromZodError(error).message });
+        }
+        res.status(500).json({ message: "Failed to reject ad" });
+      }
     }
-  });
+  );
+
+  app.post(
+    "/api/admin/ads/:id/publish",
+    requireAuth,
+    requireRole(["admin", "marketing"]),
+    async (req, res) => {
+      try {
+        const user = req.user as any;
+        const ad = await storage.updateAd(req.params.id, {
+          status: "published",
+        });
+
+        await storage.createAuditLog({
+          userId: user.id,
+          action: "publish_ad",
+          resourceType: "ad",
+          resourceId: ad.id,
+          ipAddress: req.ip,
+          userAgent: req.get("User-Agent"),
+        });
+
+        // TODO: Enqueue social publishing job
+
+        res.json(ad);
+      } catch (error) {
+        res.status(500).json({ message: "Failed to publish ad" });
+      }
+    }
+  );
 
   // Stripe webhook
   app.post("/api/webhooks/stripe", async (req, res) => {
@@ -543,7 +599,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     const sig = req.headers["stripe-signature"];
-    
+
     if (!sig) {
       return res.status(400).json({ message: "Missing stripe signature" });
     }
@@ -584,6 +640,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(metrics);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch metrics" });
+    }
+  });
+
+  // Temporary admin route to update user roles (remove in production)
+  app.post("/api/admin/update-user-role", async (req, res) => {
+    try {
+      const { email, role } = req.body;
+      
+      if (!email || !role) {
+        return res.status(400).json({ message: "Email and role are required" });
+      }
+
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const updatedUser = await storage.updateUser(user.id, { role });
+      res.json({ message: "User role updated successfully", user: updatedUser });
+    } catch (error) {
+      console.error("Failed to update user role:", error);
+      res.status(500).json({ message: "Failed to update user role" });
     }
   });
 

@@ -25,7 +25,7 @@ export default function AdsIndex() {
   }
 
   const handleCreateAd = () => {
-    setLocation("/ads/new");
+    setLocation("/campaigns/new");
   };
 
   const getStatusColor = (status: string) => {
@@ -48,7 +48,7 @@ export default function AdsIndex() {
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
-      
+
       <div className="flex-1 overflow-auto">
         <Header
           title="My Ads"
@@ -69,11 +69,15 @@ export default function AdsIndex() {
           ) : safeAds.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {safeAds.map((ad: any) => (
-                <Card key={ad.id} className="cursor-pointer hover:shadow-lg transition-shadow">
+                <Card
+                  key={ad.id}
+                  className="cursor-pointer hover:shadow-lg transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        <h3 className="font-semibold text-foreground truncate" data-testid={`ad-title-${ad.id}`}>
+                        <h3
+                          className="font-semibold text-foreground truncate"
+                          data-testid={`ad-title-${ad.id}`}>
                           {ad.titleEn}
                         </h3>
                         <p className="text-sm text-muted-foreground truncate">
@@ -84,11 +88,11 @@ export default function AdsIndex() {
                         {ad.status}
                       </Badge>
                     </div>
-                    
+
                     {ad.imageUrl && (
                       <div className="w-full h-32 bg-muted rounded-lg mb-4 overflow-hidden">
-                        <img 
-                          src={ad.imageUrl} 
+                        <img
+                          src={ad.imageUrl}
                           alt={ad.titleEn}
                           className="w-full h-full object-cover"
                         />
@@ -101,20 +105,20 @@ export default function AdsIndex() {
                     </div>
 
                     <div className="flex items-center gap-2 mt-4">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={() => setLocation(`/ads/${ad.id}`)}
-                        data-testid={`button-view-ad-${ad.id}`}
-                      >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setLocation(`/campaigns/${ad.id}`)}
+                        data-testid={`button-view-ad-${ad.id}`}>
                         View
                       </Button>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         size="sm"
-                        onClick={() => setLocation(`/ads/${ad.id}/analytics`)}
-                        data-testid={`button-analytics-${ad.id}`}
-                      >
+                        onClick={() =>
+                          setLocation(`/campaigns/${ad.id}/analytics`)
+                        }
+                        data-testid={`button-analytics-${ad.id}`}>
                         Analytics
                       </Button>
                     </div>
@@ -125,11 +129,15 @@ export default function AdsIndex() {
           ) : (
             <div className="text-center py-12">
               <i className="fas fa-ad text-6xl text-muted-foreground mb-6"></i>
-              <h3 className="text-xl font-semibold text-foreground mb-2">No ads yet</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                No ads yet
+              </h3>
               <p className="text-muted-foreground mb-6">
                 Create your first advertising campaign to get started
               </p>
-              <Button onClick={handleCreateAd} data-testid="button-create-first-ad">
+              <Button
+                onClick={handleCreateAd}
+                data-testid="button-create-first-ad">
                 <i className="fas fa-plus mr-2"></i>
                 Create Your First Ad
               </Button>

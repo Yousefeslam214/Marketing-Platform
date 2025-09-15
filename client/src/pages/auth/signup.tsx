@@ -4,8 +4,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, type SignupData } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
@@ -37,7 +50,8 @@ export default function Signup() {
       setLocation("/dashboard");
       toast({
         title: "Account created",
-        description: "Welcome to Bolt! Your account has been created successfully.",
+        description:
+          "Welcome to Bolt! Your account has been created successfully.",
       });
     } catch (error: any) {
       toast({
@@ -72,18 +86,18 @@ export default function Signup() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="email" 
+                      <Input
+                        type="email"
                         placeholder="Enter your email"
                         data-testid="input-email"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="username"
@@ -91,11 +105,11 @@ export default function Signup() {
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="text" 
+                      <Input
+                        type="text"
                         placeholder="Choose a username"
                         data-testid="input-username"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -110,11 +124,11 @@ export default function Signup() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="password" 
+                      <Input
+                        type="password"
                         placeholder="Create a password"
                         data-testid="input-password"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -129,11 +143,11 @@ export default function Signup() {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="password" 
+                      <Input
+                        type="password"
                         placeholder="Confirm your password"
                         data-testid="input-confirm-password"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -141,12 +155,11 @@ export default function Signup() {
                 )}
               />
 
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={isLoading}
-                data-testid="button-signup"
-              >
+                data-testid="button-signup">
                 {isLoading ? (
                   <>
                     <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -162,10 +175,11 @@ export default function Signup() {
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/login">
-                <a className="text-primary hover:underline" data-testid="link-login">
-                  Sign in
-                </a>
+              <Link
+                href="/login"
+                className="text-primary hover:underline"
+                data-testid="link-login">
+                Sign in
               </Link>
             </p>
           </div>

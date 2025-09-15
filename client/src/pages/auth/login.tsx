@@ -5,8 +5,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginData } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
@@ -70,30 +83,11 @@ export default function Login() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="email" 
-                        placeholder="Enter your email" 
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
                         data-testid="input-email"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="password" 
-                        placeholder="Enter your password"
-                        data-testid="input-password"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -101,12 +95,30 @@ export default function Login() {
                 )}
               />
 
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Enter your password"
+                        data-testid="input-password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={isLoading}
-                data-testid="button-login"
-              >
+                data-testid="button-login">
                 {isLoading ? (
                   <>
                     <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -122,10 +134,11 @@ export default function Login() {
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link href="/signup">
-                <a className="text-primary hover:underline" data-testid="link-signup">
-                  Sign up
-                </a>
+              <Link
+                href="/signup"
+                className="text-primary hover:underline"
+                data-testid="link-signup">
+                Sign up
               </Link>
             </p>
           </div>

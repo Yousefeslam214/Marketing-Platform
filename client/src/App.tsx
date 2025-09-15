@@ -25,14 +25,14 @@ function Router() {
       <Route path="/signup" component={Signup} />
       <Route path="/" component={Dashboard} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/ads" component={AdsIndex} />
-      <Route path="/ads/new" component={NewAd} />
-      <Route path="/ads/:id" component={AdDetail} />
+      <Route path="/campaigns" component={AdsIndex} />
+      <Route path="/campaigns/new" component={NewAd} />
+      <Route path="/campaigns/:id" component={AdDetail} />
       <Route path="/admin/pending" component={AdminPending} />
       <Route path="/admin/users" component={AdminUsers} />
       <Route path="/billing" component={Billing} />
       <Route path="/analytics" component={Analytics} />
-      <Route path="/ad/:id" component={PublicAd} />
+      <Route path="/public/:id" component={PublicAd} />
       <Route component={NotFound} />
     </Switch>
   );
