@@ -56,6 +56,7 @@ function Router() {
           </AppLayout>
         )}
       />
+ 
       <Route
         path={adminPendingAdsPath()}
         component={() => (

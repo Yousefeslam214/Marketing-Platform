@@ -2,7 +2,7 @@ import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { AdCard, type AdData } from "@/components/ads/ad-card";
 import { TokenManager } from "@/lib/auth";
 import { useAdNavigation } from "@/hooks/use-path-handlers";
@@ -42,7 +42,7 @@ export default function PendingAds() {
     },
     enabled: !!TokenManager.getAccessToken(),
   });
-
+  console.log("Pending ads data:", ads.data);
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
     return null;
