@@ -2,33 +2,37 @@ import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { useLanguage } from "@/hooks/use-language";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { TokenManager } from "@/lib/auth";
 
 export default function AdminPending() {
-  const { isAuthenticated, user } = useAuth();
-  const [, setLocation] = useLocation();
+  const { user } = useAuth();
   const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
   const [rejectionReason, setRejectionReason] = useState("");
   const [selectedAdId, setSelectedAdId] = useState<string | null>(null);
 
-  // Check admin access
-  if (!isAuthenticated || (user?.role !== "admin" && user?.role !== "marketing")) {
-    setLocation("/dashboard");
-    return null;
-  }
-
   const { data: pendingAds, isLoading } = useQuery({
-    queryKey: ["/api/admin/ads/pending"],
-    enabled: isAuthenticated,
+    queryKey: ["/admin/pending"],
+    enabled: !!TokenManager.getAccessToken(),
   });
 
   // Type-safe pending ads array
@@ -36,7 +40,10 @@ export default function AdminPending() {
 
   const approveMutation = useMutation({
     mutationFn: async (adId: string) => {
-      const response = await apiRequest("POST", `/api/admin/ads/${adId}/approve`);
+      const response = await apiRequest(
+        "POST",
+        `/api/admin/ads/${adId}/approve`
+      );
       return response.json();
     },
     onSuccess: () => {
@@ -57,10 +64,14 @@ export default function AdminPending() {
 
   const rejectMutation = useMutation({
     mutationFn: async ({ adId, reason }: { adId: string; reason: string }) => {
-      const response = await apiRequest("POST", `/api/admin/ads/${adId}/reject`, {
-        action: "reject",
-        reason,
-      });
+      const response = await apiRequest(
+        "POST",
+        `/api/admin/ads/${adId}/reject`,
+        {
+          action: "reject",
+          reason,
+        }
+      );
       return response.json();
     },
     onSuccess: () => {
@@ -83,7 +94,10 @@ export default function AdminPending() {
 
   const publishMutation = useMutation({
     mutationFn: async (adId: string) => {
-      const response = await apiRequest("POST", `/api/admin/ads/${adId}/publish`);
+      const response = await apiRequest(
+        "POST",
+        `/api/admin/ads/${adId}/publish`
+      );
       return response.json();
     },
     onSuccess: () => {
@@ -117,13 +131,11 @@ export default function AdminPending() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
-      
+    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
         <Header
-          title="Pending Ads"
-          description="Review and approve advertising campaigns"
+          title={t("pending", "title")}
+          description={t("pending", "description")}
         />
 
         <main className="p-6">
@@ -140,12 +152,16 @@ export default function AdminPending() {
                       <div>
                         <CardTitle className="flex items-center gap-2">
                           {ad.titleEn}
-                          <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">
+                          <Badge
+                            variant="secondary"
+                            className="bg-yellow-100 text-yellow-700">
                             Pending Review
                           </Badge>
                         </CardTitle>
                         <p className="text-sm text-muted-foreground mt-1">
-                          Submitted {new Date(ad.createdAt).toLocaleDateString()} by {ad.user?.username}
+                          Submitted{" "}
+                          {new Date(ad.createdAt).toLocaleDateString()} by{" "}
+                          {ad.user?.username}
                         </p>
                       </div>
                     </div>
@@ -155,24 +171,38 @@ export default function AdminPending() {
                       {/* Ad Content */}
                       <div className="space-y-4">
                         <div>
-                          <h4 className="text-sm font-medium text-muted-foreground mb-2">English Content</h4>
+                          <h4 className="text-sm font-medium text-muted-foreground mb-2">
+                            English Content
+                          </h4>
                           <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-                            <h5 className="font-medium text-foreground" data-testid={`ad-title-en-${ad.id}`}>
+                            <h5
+                              className="font-medium text-foreground"
+                              data-testid={`ad-title-en-${ad.id}`}>
                               {ad.titleEn}
                             </h5>
-                            <p className="text-sm text-muted-foreground" data-testid={`ad-description-en-${ad.id}`}>
+                            <p
+                              className="text-sm text-muted-foreground"
+                              data-testid={`ad-description-en-${ad.id}`}>
                               {ad.descriptionEn}
                             </p>
                           </div>
                         </div>
-                        
+
                         <div>
-                          <h4 className="text-sm font-medium text-muted-foreground mb-2">Arabic Content</h4>
-                          <div className="p-4 bg-muted/50 rounded-lg space-y-2" dir="rtl">
-                            <h5 className="font-medium text-foreground" data-testid={`ad-title-ar-${ad.id}`}>
+                          <h4 className="text-sm font-medium text-muted-foreground mb-2">
+                            Arabic Content
+                          </h4>
+                          <div
+                            className="p-4 bg-muted/50 rounded-lg space-y-2"
+                            dir="rtl">
+                            <h5
+                              className="font-medium text-foreground"
+                              data-testid={`ad-title-ar-${ad.id}`}>
                               {ad.titleAr}
                             </h5>
-                            <p className="text-sm text-muted-foreground" data-testid={`ad-description-ar-${ad.id}`}>
+                            <p
+                              className="text-sm text-muted-foreground"
+                              data-testid={`ad-description-ar-${ad.id}`}>
                               {ad.descriptionAr}
                             </p>
                           </div>
@@ -183,37 +213,48 @@ export default function AdminPending() {
                       <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <h4 className="text-sm font-medium text-muted-foreground mb-1">Target Audience</h4>
-                            <p className="text-sm text-foreground capitalize" data-testid={`ad-audience-${ad.id}`}>
+                            <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                              Target Audience
+                            </h4>
+                            <p
+                              className="text-sm text-foreground capitalize"
+                              data-testid={`ad-audience-${ad.id}`}>
                               {ad.targetAudience}
                             </p>
                           </div>
                           <div>
-                            <h4 className="text-sm font-medium text-muted-foreground mb-1">Budget Type</h4>
-                            <p className="text-sm text-foreground capitalize" data-testid={`ad-budget-${ad.id}`}>
+                            <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                              Budget Type
+                            </h4>
+                            <p
+                              className="text-sm text-foreground capitalize"
+                              data-testid={`ad-budget-${ad.id}`}>
                               {ad.budgetType}
                             </p>
                           </div>
                         </div>
-                        
+
                         <div>
-                          <h4 className="text-sm font-medium text-muted-foreground mb-1">Target URL</h4>
-                          <a 
-                            href={ad.targetUrl} 
-                            target="_blank" 
+                          <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                            Target URL
+                          </h4>
+                          <a
+                            href={ad.targetUrl}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-primary hover:underline text-sm break-all"
-                            data-testid={`ad-url-${ad.id}`}
-                          >
+                            data-testid={`ad-url-${ad.id}`}>
                             {ad.targetUrl}
                           </a>
                         </div>
 
                         {ad.imageUrl && (
                           <div>
-                            <h4 className="text-sm font-medium text-muted-foreground mb-2">Ad Image</h4>
-                            <img 
-                              src={ad.imageUrl} 
+                            <h4 className="text-sm font-medium text-muted-foreground mb-2">
+                              Ad Image
+                            </h4>
+                            <img
+                              src={ad.imageUrl}
                               alt={ad.titleEn}
                               className="w-full max-w-xs rounded-lg border"
                               data-testid={`ad-image-${ad.id}`}
@@ -227,11 +268,10 @@ export default function AdminPending() {
                     <div className="flex items-center justify-end gap-2 pt-4 border-t border-border">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button 
+                          <Button
                             variant="outline"
                             onClick={() => setSelectedAdId(ad.id)}
-                            data-testid={`button-reject-${ad.id}`}
-                          >
+                            data-testid={`button-reject-${ad.id}`}>
                             <i className="fas fa-times mr-2"></i>
                             Reject
                           </Button>
@@ -240,7 +280,9 @@ export default function AdminPending() {
                           <DialogHeader>
                             <DialogTitle>Reject Ad</DialogTitle>
                             <DialogDescription>
-                              Please provide a reason for rejecting this ad. This will help the advertiser improve their submission.
+                              Please provide a reason for rejecting this ad.
+                              This will help the advertiser improve their
+                              submission.
                             </DialogDescription>
                           </DialogHeader>
                           <Textarea
@@ -251,21 +293,22 @@ export default function AdminPending() {
                             data-testid="textarea-rejection-reason"
                           />
                           <DialogFooter>
-                            <Button 
-                              variant="outline" 
+                            <Button
+                              variant="outline"
                               onClick={() => {
                                 setSelectedAdId(null);
                                 setRejectionReason("");
-                              }}
-                            >
+                              }}>
                               Cancel
                             </Button>
-                            <Button 
+                            <Button
                               variant="destructive"
                               onClick={handleReject}
-                              disabled={!rejectionReason.trim() || rejectMutation.isPending}
-                              data-testid="button-confirm-reject"
-                            >
+                              disabled={
+                                !rejectionReason.trim() ||
+                                rejectMutation.isPending
+                              }
+                              data-testid="button-confirm-reject">
                               {rejectMutation.isPending ? (
                                 <>
                                   <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -279,12 +322,11 @@ export default function AdminPending() {
                         </DialogContent>
                       </Dialog>
 
-                      <Button 
+                      <Button
                         variant="outline"
                         onClick={() => handleApprove(ad.id)}
                         disabled={approveMutation.isPending}
-                        data-testid={`button-approve-${ad.id}`}
-                      >
+                        data-testid={`button-approve-${ad.id}`}>
                         {approveMutation.isPending ? (
                           <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -299,11 +341,10 @@ export default function AdminPending() {
                       </Button>
 
                       {ad.status === "approved" && (
-                        <Button 
+                        <Button
                           onClick={() => handlePublish(ad.id)}
                           disabled={publishMutation.isPending}
-                          data-testid={`button-publish-${ad.id}`}
-                        >
+                          data-testid={`button-publish-${ad.id}`}>
                           {publishMutation.isPending ? (
                             <>
                               <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -325,7 +366,9 @@ export default function AdminPending() {
           ) : (
             <div className="text-center py-12">
               <i className="fas fa-clock text-6xl text-muted-foreground mb-6"></i>
-              <h3 className="text-xl font-semibold text-foreground mb-2">No pending ads</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                No pending ads
+              </h3>
               <p className="text-muted-foreground">
                 All submitted ads have been reviewed
               </p>

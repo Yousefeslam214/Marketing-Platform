@@ -67,7 +67,7 @@ export default function Login() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
             </div>
-            <CardTitle className="text-2xl">Bolt</CardTitle>
+            <CardTitle className="text-2xl">octopusad</CardTitle>
           </div>
           <CardDescription>
             Sign in to your marketing platform account

@@ -1,25 +1,27 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useLanguage } from "@/hooks/use-language";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { TokenManager } from "@/lib/auth";
 
-export default function AdsIndex() {
-  const { isAuthenticated } = useAuth();
+export default function MarketingQueue() {
   const [, setLocation] = useLocation();
+  const { t, isRTL } = useLanguage();
 
   const { data: ads, isLoading } = useQuery({
-    queryKey: ["/api/ads"],
-    enabled: isAuthenticated,
+    queryKey: ["/api/all/ads"],
+    enabled: !!TokenManager.getAccessToken(),
   });
 
-  // Type-safe ads array
+  console.log("ads", ads);
   const safeAds = (ads as any[]) || [];
 
-  if (!isAuthenticated) {
+  if (!TokenManager.getAccessToken()) {
     setLocation("/login");
     return null;
   }
@@ -46,19 +48,12 @@ export default function AdsIndex() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
+    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
 
       <div className="flex-1 overflow-auto">
         <Header
-          title="My Ads"
-          description="Manage your advertising campaigns"
-          actions={
-            <Button onClick={handleCreateAd} data-testid="button-create-ad">
-              <i className="fas fa-plus mr-2"></i>
-              Create New Ad
-            </Button>
-          }
+          title={t("queue", "title")}
+          description={t("queue", "description")}
         />
 
         <main className="p-6">
@@ -121,6 +116,21 @@ export default function AdsIndex() {
                         data-testid={`button-analytics-${ad.id}`}>
                         Analytics
                       </Button>
+                      {/* <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          window.open(
+                            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                              ad.shareUrl ||
+                                window.location.origin + `/campaigns/${ad.id}`
+                            )}`,
+                            "_blank"
+                          )
+                        }
+                        data-testid={`button-share-facebook-${ad.id}`}>
+                        Share on Facebook
+                      </Button> */}
                     </div>
                   </CardContent>
                 </Card>
@@ -130,17 +140,8 @@ export default function AdsIndex() {
             <div className="text-center py-12">
               <i className="fas fa-ad text-6xl text-muted-foreground mb-6"></i>
               <h3 className="text-xl font-semibold text-foreground mb-2">
-                No ads yet
+                No ads available
               </h3>
-              <p className="text-muted-foreground mb-6">
-                Create your first advertising campaign to get started
-              </p>
-              <Button
-                onClick={handleCreateAd}
-                data-testid="button-create-first-ad">
-                <i className="fas fa-plus mr-2"></i>
-                Create Your First Ad
-              </Button>
             </div>
           )}
         </main>

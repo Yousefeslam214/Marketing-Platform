@@ -1,78 +1,69 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { AuthService, TokenManager } from "@/lib/auth";
 import type { User, LoginData, SignupData } from "@shared/schema";
 
 interface AuthContextType {
   user: User | null;
+  accessToken: string | null;
   login: (data: LoginData) => Promise<void>;
   signup: (data: SignupData) => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
-  isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const { data: user, isLoading } = useQuery({
     queryKey: ["/api/auth/me"],
-    enabled: false, // We'll enable this after checking localStorage
+    queryFn: AuthService.getCurrentUser,
+    enabled: !!TokenManager.getAccessToken(),
+    retry: false,
   });
 
   useEffect(() => {
     // Check if user was previously authenticated
-    const wasAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-    if (wasAuthenticated) {
+    if (TokenManager.getAccessToken()) {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
     }
   }, [queryClient]);
 
-  useEffect(() => {
-    if (user) {
-      setIsAuthenticated(true);
-      localStorage.setItem("isAuthenticated", "true");
-    } else {
-      setIsAuthenticated(false);
-      localStorage.removeItem("isAuthenticated");
-    }
-  }, [user]);
-
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => {
-      const response = await apiRequest("POST", "/api/auth/login", data);
-      return response.json();
+      return await AuthService.login(data);
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["/api/auth/me"], data);
-      setIsAuthenticated(true);
-      localStorage.setItem("isAuthenticated", "true");
+      // localStorage.setItem("access_token", data.access_token);
+      TokenManager.setTokens(data.access_token);
     },
   });
 
   const signupMutation = useMutation({
     mutationFn: async (data: SignupData) => {
-      const response = await apiRequest("POST", "/api/auth/signup", data);
-      return response.json();
+      return await AuthService.signup(data);
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["/api/auth/me"], data);
-      setIsAuthenticated(true);
-      localStorage.setItem("isAuthenticated", "true");
+      // localStorage.setItem("access_token", data.access_token);
+      TokenManager.setTokens(data.access_token);
     },
   });
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest("POST", "/api/auth/logout");
+      await AuthService.logout();
     },
     onSuccess: () => {
-      queryClient.clear();
-      setIsAuthenticated(false);
+      queryClient.removeQueries({ queryKey: ["/api/auth/me"] });
+
+      TokenManager.clearTokens();
+
       localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("access_token");
     },
   });
 
@@ -88,17 +79,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await logoutMutation.mutateAsync();
   };
 
+  const [accessToken, setAccessToken] = useState<string | null>(() =>
+    localStorage.getItem("access_token")
+  );
+
   return (
     <AuthContext.Provider
       value={{
         user: (user as any)?.user || null,
+        accessToken: TokenManager.getAccessToken(),
         login,
         signup,
         logout,
-        isLoading: isLoading || loginMutation.isPending || signupMutation.isPending || logoutMutation.isPending,
-        isAuthenticated,
-      }}
-    >
+        isLoading:
+          isLoading ||
+          loginMutation.isPending ||
+          signupMutation.isPending ||
+          logoutMutation.isPending,
+      }}>
       {children}
     </AuthContext.Provider>
   );

@@ -144,7 +144,7 @@ export default function PublicAd({ params }: PublicAdProps) {
             <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-sm"></i>
             </div>
-            <span className="font-semibold text-foreground">Bolt</span>
+            <span className="font-semibold text-foreground">octopusad</span>
           </div>
           <Button variant="outline" size="sm" onClick={toggleLanguage} data-testid="button-toggle-language">
             <i className="fas fa-globe mr-2"></i>
@@ -235,7 +235,7 @@ export default function PublicAd({ params }: PublicAdProps) {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground"></i>
             </div>
-            <span className="text-xl font-bold text-foreground">Bolt</span>
+            <span className="text-xl font-bold text-foreground">octopusad/</span>
           </div>
           <p className="text-muted-foreground text-sm">
             {language === "ar"

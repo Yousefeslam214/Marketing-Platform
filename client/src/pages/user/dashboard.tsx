@@ -7,14 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AnalyticsChart } from "@/components/analytics/analytics-chart";
+import { useLanguage } from "@/hooks/use-language";
+import { LanguageToggle } from "@/components/ui/language-toggle";
+import { TokenManager } from "@/lib/auth";
 
 export default function Dashboard() {
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useAuth();
   const [, setLocation] = useLocation();
+  const { direction, t, language, toggleLanguage } = useLanguage();
 
+  const access_token = TokenManager.getAccessToken();
   const { data: metrics, isLoading: metricsLoading } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
-    enabled: isAuthenticated,
+    enabled: !!access_token,
   });
 
   // Type-safe metrics with defaults
@@ -26,7 +31,8 @@ export default function Dashboard() {
   };
 
   // Redirect to login if not authenticated
-  if (!isAuthenticated) {
+  if (!access_token) {
+    console.log("Not authenticated, redirecting to login");
     setLocation("/login");
     return null;
   }
@@ -40,18 +46,17 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
-
+    <div className={`flex h-screen bg-background ${direction}`}>
       <div className="flex-1 overflow-auto">
         <Header
-          title="Dashboard"
-          description="Monitor your advertising performance and manage campaigns"
+          title={t("dashboard", "title")}
+          description={t("dashboard", "description")}
           actions={
             <div className="flex items-center gap-4">
+              <LanguageToggle />
               <Button onClick={handleCreateAd} data-testid="button-create-ad">
-                <i className="fas fa-plus mr-2"></i>
-                Create New Ad
+                <i className={`fas fa-plus ${direction ? "ml-2" : "mr-2"}`}></i>
+                {t("dashboard", "createNewAd")}
               </Button>
               <div className="relative">
                 <Button
@@ -82,13 +87,13 @@ export default function Dashboard() {
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
-                  Total Impressions
+                  {t("dashboard", "totalImpressions")}
                 </p>
                 <p
                   className="text-2xl font-bold text-foreground"
                   data-testid="metric-impressions">
                   {metricsLoading
-                    ? "Loading..."
+                    ? t("dashboard", "loading")
                     : safeMetrics.totalImpressions.toLocaleString()}
                 </p>
               </CardContent>
@@ -107,13 +112,13 @@ export default function Dashboard() {
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
-                  Total Clicks
+                  {t("dashboard", "totalClicks")}
                 </p>
                 <p
                   className="text-2xl font-bold text-foreground"
                   data-testid="metric-clicks">
                   {metricsLoading
-                    ? "Loading..."
+                    ? t("dashboard", "loading")
                     : safeMetrics.totalClicks.toLocaleString()}
                 </p>
               </CardContent>
@@ -131,12 +136,14 @@ export default function Dashboard() {
                     -0.3%
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">CTR</p>
+                <p className="text-sm text-muted-foreground mb-1">
+                  {t("dashboard", "ctr")}
+                </p>
                 <p
                   className="text-2xl font-bold text-foreground"
                   data-testid="metric-ctr">
                   {metricsLoading
-                    ? "Loading..."
+                    ? t("dashboard", "loading")
                     : `${safeMetrics.ctr.toFixed(2)}%`}
                 </p>
               </CardContent>
@@ -155,13 +162,13 @@ export default function Dashboard() {
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
-                  Credits Remaining
+                  {t("dashboard", "creditsRemaining")}
                 </p>
                 <p
                   className="text-2xl font-bold text-foreground"
                   data-testid="metric-credits">
                   {metricsLoading
-                    ? "Loading..."
+                    ? t("dashboard", "loading")
                     : safeMetrics.creditsRemaining.toLocaleString()}
                 </p>
               </CardContent>
@@ -175,12 +182,12 @@ export default function Dashboard() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold text-foreground">
-                      Performance Overview
+                      {t("dashboard", "performanceOverview")}
                     </h3>
                     <select className="text-sm bg-background border border-border rounded-md px-3 py-1.5 text-foreground">
-                      <option>Last 7 days</option>
-                      <option>Last 30 days</option>
-                      <option>Last 90 days</option>
+                      <option>{t("dashboard", "last7Days")}</option>
+                      <option>{t("dashboard", "last30Days")}</option>
+                      <option>{t("dashboard", "last90Days")}</option>
                     </select>
                   </div>
                   <AnalyticsChart />
@@ -192,13 +199,13 @@ export default function Dashboard() {
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
-                  Top Performing Ads
+                  {t("dashboard", "topPerformingAds")}
                 </h3>
                 <div className="space-y-4">
                   <div className="text-center py-8">
                     <i className="fas fa-ad text-4xl text-muted-foreground mb-4"></i>
                     <p className="text-sm text-muted-foreground">
-                      No ads created yet
+                      {t("dashboard", "noAdsCreated")}
                     </p>
                     <Button
                       variant="outline"
@@ -206,7 +213,7 @@ export default function Dashboard() {
                       className="mt-2"
                       onClick={handleCreateAd}
                       data-testid="button-create-first-ad">
-                      Create Your First Ad
+                      {t("dashboard", "createFirstAd")}
                     </Button>
                   </div>
                 </div>
@@ -219,12 +226,12 @@ export default function Dashboard() {
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
-                  Recent Activity
+                  {t("dashboard", "recentActivity")}
                 </h3>
                 <div className="text-center py-8">
                   <i className="fas fa-history text-4xl text-muted-foreground mb-4"></i>
                   <p className="text-sm text-muted-foreground">
-                    No recent activity
+                    {t("dashboard", "noRecentActivity")}
                   </p>
                 </div>
               </CardContent>
@@ -234,16 +241,16 @@ export default function Dashboard() {
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
-                  Billing Overview
+                  {t("dashboard", "billingOverview")}
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        Current Balance
+                        {t("dashboard", "currentBalance")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Available impression credits
+                        {t("dashboard", "availableCredits")}
                       </p>
                     </div>
                     <div className="text-right">
@@ -252,17 +259,19 @@ export default function Dashboard() {
                         data-testid="billing-balance">
                         {safeMetrics.creditsRemaining.toLocaleString()}
                       </p>
-                      <p className="text-xs text-green-600">credits</p>
+                      <p className="text-xs text-green-600">
+                        {t("dashboard", "credits")}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        Free Views Used
+                        {t("dashboard", "freeViewsUsed")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Complimentary impressions
+                        {t("dashboard", "complimentaryImpressions")}
                       </p>
                     </div>
                     <div className="text-right">
@@ -277,8 +286,8 @@ export default function Dashboard() {
                     className="w-full"
                     onClick={handlePurchaseCredits}
                     data-testid="button-purchase-credits">
-                    <i className="fas fa-plus mr-2"></i>
-                    Purchase More Credits
+                    <i className={`fas fa-plus ${direction ? "ml-2" : "mr-2"}`}></i>
+                    {t("dashboard", "purchaseMoreCredits")}
                   </Button>
                 </div>
               </CardContent>

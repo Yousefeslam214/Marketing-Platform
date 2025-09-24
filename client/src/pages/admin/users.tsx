@@ -1,6 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useLanguage } from "@/hooks/use-language";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
@@ -8,23 +9,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
+import { TokenManager } from "@/lib/auth";
 
 export default function AdminUsers() {
-  const { isAuthenticated, user } = useAuth();
-  const [, setLocation] = useLocation();
+  const { t, isRTL } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
-
-  // Check admin access
-  if (!isAuthenticated || user?.role !== "admin") {
-    setLocation("/dashboard");
-    return null;
-  }
-
   // Mock data for users - in real app this would come from API
-  const mockUsers = [
+  const mockUsers1 = [
     {
       id: "1",
       username: "ahmed_rashid",
@@ -33,7 +33,7 @@ export default function AdminUsers() {
       freeViewsCredits: 8500,
       createdAt: "2024-01-15T10:00:00Z",
       adsCount: 5,
-      totalSpend: 2847
+      totalSpend: 2847,
     },
     {
       id: "2",
@@ -43,7 +43,7 @@ export default function AdminUsers() {
       freeViewsCredits: 10000,
       createdAt: "2024-01-10T09:30:00Z",
       adsCount: 0,
-      totalSpend: 0
+      totalSpend: 0,
     },
     {
       id: "3",
@@ -53,16 +53,43 @@ export default function AdminUsers() {
       freeViewsCredits: 10000,
       createdAt: "2024-01-01T08:00:00Z",
       adsCount: 0,
-      totalSpend: 0
+      totalSpend: 0,
     },
   ];
 
-  const filteredUsers = mockUsers.filter(user => {
-    const matchesSearch = user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    return matchesSearch && matchesRole;
+  const { data: usersData, isLoading: usersDataLoading } = useQuery({
+    queryKey: ["/api/users"],
+    enabled: !!TokenManager.getAccessToken(),
   });
+  // const mockUsers = usersData;
+  console.log("Fetched users:", usersData);
+  const mockUsers = mockUsers1;
+  // Check admin access
+  // if (!isAuthenticated || user?.role !== "admin") {
+  //   setLocation("/dashboard");
+  //   return null;
+  // }
+
+  interface User {
+    id: string;
+    username: string;
+    email: string;
+    role: string;
+    freeViewsCredits: number;
+    createdAt: string;
+    adsCount: number;
+    totalSpend: number;
+  }
+
+  const filteredUsers = (mockUsers as User[] | undefined)?.filter(
+    (user: User) => {
+      const matchesSearch =
+        user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesRole = roleFilter === "all" || user.role === roleFilter;
+      return matchesSearch && matchesRole;
+    }
+  );
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
@@ -78,13 +105,11 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
-      
+    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
         <Header
-          title="User Management"
-          description="Manage platform users and their permissions"
+          title={t("userManagement", "title")}
+          description={t("userManagement", "description")}
         />
 
         <main className="p-6">
@@ -100,7 +125,9 @@ export default function AdminUsers() {
               />
             </div>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-[180px]" data-testid="select-role-filter">
+              <SelectTrigger
+                className="w-[180px]"
+                data-testid="select-role-filter">
                 <SelectValue placeholder="Filter by role" />
               </SelectTrigger>
               <SelectContent>
@@ -114,7 +141,7 @@ export default function AdminUsers() {
 
           {/* Users Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredUsers.map((userData) => (
+            {filteredUsers?.map((userData) => (
               <Card key={userData.id}>
                 <CardHeader>
                   <div className="flex items-center gap-3">
@@ -125,10 +152,14 @@ export default function AdminUsers() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <CardTitle className="text-base truncate" data-testid={`user-name-${userData.id}`}>
+                      <CardTitle
+                        className="text-base truncate"
+                        data-testid={`user-name-${userData.id}`}>
                         {userData.username}
                       </CardTitle>
-                      <p className="text-sm text-muted-foreground truncate" data-testid={`user-email-${userData.id}`}>
+                      <p
+                        className="text-sm text-muted-foreground truncate"
+                        data-testid={`user-email-${userData.id}`}>
                         {userData.email}
                       </p>
                     </div>
@@ -141,47 +172,53 @@ export default function AdminUsers() {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-muted-foreground">Credits</p>
-                      <p className="font-medium" data-testid={`user-credits-${userData.id}`}>
+                      <p
+                        className="font-medium"
+                        data-testid={`user-credits-${userData.id}`}>
                         {userData.freeViewsCredits.toLocaleString()}
                       </p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Ads</p>
-                      <p className="font-medium" data-testid={`user-ads-count-${userData.id}`}>
+                      <p
+                        className="font-medium"
+                        data-testid={`user-ads-count-${userData.id}`}>
                         {userData.adsCount}
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-muted-foreground">Total Spend</p>
-                      <p className="font-medium" data-testid={`user-spend-${userData.id}`}>
+                      <p
+                        className="font-medium"
+                        data-testid={`user-spend-${userData.id}`}>
                         ${userData.totalSpend.toLocaleString()}
                       </p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Joined</p>
-                      <p className="font-medium" data-testid={`user-joined-${userData.id}`}>
+                      <p
+                        className="font-medium"
+                        data-testid={`user-joined-${userData.id}`}>
                         {new Date(userData.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 pt-2 border-t border-border">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
-                      data-testid={`button-view-user-${userData.id}`}
-                    >
+                      data-testid={`button-view-user-${userData.id}`}>
                       <i className="fas fa-eye mr-1"></i>
                       View
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
-                      data-testid={`button-edit-user-${userData.id}`}
-                    >
+                      data-testid={`button-edit-user-${userData.id}`}>
                       <i className="fas fa-edit mr-1"></i>
                       Edit
                     </Button>
@@ -191,10 +228,12 @@ export default function AdminUsers() {
             ))}
           </div>
 
-          {filteredUsers.length === 0 && (
+          {filteredUsers?.length === 0 && (
             <div className="text-center py-12">
               <i className="fas fa-users text-6xl text-muted-foreground mb-6"></i>
-              <h3 className="text-xl font-semibold text-foreground mb-2">No users found</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                No users found
+              </h3>
               <p className="text-muted-foreground">
                 Try adjusting your search or filter criteria
               </p>

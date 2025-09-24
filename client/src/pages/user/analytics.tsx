@@ -2,33 +2,35 @@ import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useLanguage } from "@/hooks/use-language";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { AnalyticsChart } from "@/components/analytics/analytics-chart";
+import { TokenManager } from "@/lib/auth";
 
 export default function Analytics() {
-  const { isAuthenticated } = useAuth();
-  const [, setLocation] = useLocation();
+  const { t, isRTL } = useLanguage();
   const [timeRange, setTimeRange] = useState("7days");
   const [selectedAd, setSelectedAd] = useState("all");
 
-  if (!isAuthenticated) {
-    setLocation("/login");
-    return null;
-  }
-
   const { data: ads } = useQuery({
     queryKey: ["/api/ads"],
-    enabled: isAuthenticated,
+    enabled: !!TokenManager.getAccessToken(),
   });
 
   const { data: metrics } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
-    enabled: isAuthenticated,
+    enabled: !!TokenManager.getAccessToken(),
   });
 
   // Type-safe data with defaults
@@ -48,15 +50,15 @@ export default function Analytics() {
         impressions: 24500,
         clicks: 1519,
         ctr: 6.2,
-        status: "published"
+        status: "published",
       },
       {
-        id: "2", 
+        id: "2",
         titleEn: "Premium Dining Experience",
         impressions: 18300,
         clicks: 1061,
         ctr: 5.8,
-        status: "published"
+        status: "published",
       },
       {
         id: "3",
@@ -64,8 +66,8 @@ export default function Analytics() {
         impressions: 12700,
         clicks: 622,
         ctr: 4.9,
-        status: "pending"
-      }
+        status: "pending",
+      },
     ],
     hourlyStats: [
       { hour: "00:00", impressions: 850, clicks: 42 },
@@ -92,7 +94,7 @@ export default function Analytics() {
       { hour: "21:00", impressions: 1400, clicks: 70 },
       { hour: "22:00", impressions: 1200, clicks: 60 },
       { hour: "23:00", impressions: 1000, clicks: 50 },
-    ]
+    ],
   };
 
   const getStatusColor = (status: string) => {
@@ -109,20 +111,21 @@ export default function Analytics() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
-      
+    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+
       <div className="flex-1 overflow-auto">
         <Header
-          title="Analytics"
-          description="Detailed performance insights for your campaigns"
+          title={t("analytics", "title")}
+          description={t("analytics", "description")}
         />
 
         <main className="p-6 space-y-6">
           {/* Controls */}
           <div className="flex items-center gap-4">
             <Select value={timeRange} onValueChange={setTimeRange}>
-              <SelectTrigger className="w-[180px]" data-testid="select-time-range">
+              <SelectTrigger
+                className="w-[180px]"
+                data-testid="select-time-range">
                 <SelectValue placeholder="Select time range" />
               </SelectTrigger>
               <SelectContent>
@@ -134,7 +137,9 @@ export default function Analytics() {
             </Select>
 
             <Select value={selectedAd} onValueChange={setSelectedAd}>
-              <SelectTrigger className="w-[200px]" data-testid="select-ad-filter">
+              <SelectTrigger
+                className="w-[200px]"
+                data-testid="select-ad-filter">
                 <SelectValue placeholder="Filter by ad" />
               </SelectTrigger>
               <SelectContent>
@@ -156,12 +161,18 @@ export default function Analytics() {
                   <div className="w-10 h-10 bg-chart-1/10 rounded-lg flex items-center justify-center">
                     <i className="fas fa-eye text-chart-1"></i>
                   </div>
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
                     +12.5%
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">Total Impressions</p>
-                <p className="text-2xl font-bold text-foreground" data-testid="total-impressions">
+                <p className="text-sm text-muted-foreground mb-1">
+                  Total Impressions
+                </p>
+                <p
+                  className="text-2xl font-bold text-foreground"
+                  data-testid="total-impressions">
                   {safeMetrics.totalImpressions.toLocaleString() || "2,847,293"}
                 </p>
               </CardContent>
@@ -173,12 +184,18 @@ export default function Analytics() {
                   <div className="w-10 h-10 bg-chart-2/10 rounded-lg flex items-center justify-center">
                     <i className="fas fa-mouse-pointer text-chart-2"></i>
                   </div>
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
                     +8.2%
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">Total Clicks</p>
-                <p className="text-2xl font-bold text-foreground" data-testid="total-clicks">
+                <p className="text-sm text-muted-foreground mb-1">
+                  Total Clicks
+                </p>
+                <p
+                  className="text-2xl font-bold text-foreground"
+                  data-testid="total-clicks">
                   {safeMetrics.totalClicks.toLocaleString() || "156,847"}
                 </p>
               </CardContent>
@@ -190,12 +207,18 @@ export default function Analytics() {
                   <div className="w-10 h-10 bg-chart-3/10 rounded-lg flex items-center justify-center">
                     <i className="fas fa-percentage text-chart-3"></i>
                   </div>
-                  <Badge variant="secondary" className="bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400">
+                  <Badge
+                    variant="secondary"
+                    className="bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400">
                     -0.3%
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">Average CTR</p>
-                <p className="text-2xl font-bold text-foreground" data-testid="average-ctr">
+                <p className="text-sm text-muted-foreground mb-1">
+                  Average CTR
+                </p>
+                <p
+                  className="text-2xl font-bold text-foreground"
+                  data-testid="average-ctr">
                   {safeMetrics.ctr.toFixed(2) || "5.51"}%
                 </p>
               </CardContent>
@@ -207,12 +230,18 @@ export default function Analytics() {
                   <div className="w-10 h-10 bg-chart-4/10 rounded-lg flex items-center justify-center">
                     <i className="fas fa-dollar-sign text-chart-4"></i>
                   </div>
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
                     +15.7%
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">Cost per Click</p>
-                <p className="text-2xl font-bold text-foreground" data-testid="cost-per-click">
+                <p className="text-sm text-muted-foreground mb-1">
+                  Cost per Click
+                </p>
+                <p
+                  className="text-2xl font-bold text-foreground"
+                  data-testid="cost-per-click">
                   $0.18
                 </p>
               </CardContent>
@@ -240,19 +269,27 @@ export default function Analytics() {
               <CardContent>
                 <div className="space-y-4">
                   {mockAnalytics.topPerformingAds.map((ad, index) => (
-                    <div key={ad.id} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                    <div
+                      key={ad.id}
+                      className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                       <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary font-semibold">
                         {index + 1}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate" data-testid={`top-ad-title-${ad.id}`}>
+                        <p
+                          className="text-sm font-medium text-foreground truncate"
+                          data-testid={`top-ad-title-${ad.id}`}>
                           {ad.titleEn}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground" data-testid={`top-ad-impressions-${ad.id}`}>
+                          <span
+                            className="text-xs text-muted-foreground"
+                            data-testid={`top-ad-impressions-${ad.id}`}>
                             {(ad.impressions / 1000).toFixed(1)}K views
                           </span>
-                          <span className="text-xs text-green-600" data-testid={`top-ad-ctr-${ad.id}`}>
+                          <span
+                            className="text-xs text-green-600"
+                            data-testid={`top-ad-ctr-${ad.id}`}>
                             {ad.ctr}% CTR
                           </span>
                         </div>
@@ -276,15 +313,17 @@ export default function Analytics() {
               <div className="grid grid-cols-12 gap-2">
                 {mockAnalytics.hourlyStats.map((stat, index) => (
                   <div key={index} className="text-center">
-                    <div 
-                      className="bg-primary/20 rounded-t mb-1" 
-                      style={{ 
-                        height: `${Math.max(10, (stat.impressions / 3200) * 60)}px` 
+                    <div
+                      className="bg-primary/20 rounded-t mb-1"
+                      style={{
+                        height: `${Math.max(
+                          10,
+                          (stat.impressions / 3200) * 60
+                        )}px`,
                       }}
-                      title={`${stat.hour}: ${stat.impressions} impressions`}
-                    ></div>
+                      title={`${stat.hour}: ${stat.impressions} impressions`}></div>
                     <p className="text-xs text-muted-foreground">
-                      {stat.hour.split(':')[0]}
+                      {stat.hour.split(":")[0]}
                     </p>
                   </div>
                 ))}

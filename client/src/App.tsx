@@ -5,35 +5,162 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./contexts/auth-context";
 import { ThemeProvider } from "./contexts/theme-context";
-import NotFound from "@/pages/not-found";
+import { AppLayout } from "./components/layout/app-layout";
+
 import Login from "@/pages/auth/login";
 import Signup from "@/pages/auth/signup";
-import Dashboard from "@/pages/dashboard";
-import AdsIndex from "@/pages/ads/index";
-import NewAd from "@/pages/ads/new";
-import AdDetail from "@/pages/ads/[id]";
+import Dashboard from "@/pages/user/dashboard";
+import AdsIndex from "@/pages/user/ads/index";
+import NewAd from "@/pages/user/ads/new";
+import AdDetail from "@/pages/user/ads/[id]";
+import Billing from "@/pages/user/billing";
+import Analytics from "@/pages/user/analytics";
+
 import AdminPending from "@/pages/admin/pending";
 import AdminUsers from "@/pages/admin/users";
-import Billing from "@/pages/billing";
-import Analytics from "@/pages/analytics";
-import PublicAd from "@/pages/public/ad/[id]";
+import MarketingQueue from "@/pages/admin/queue";
+import AdminBilling from "@/pages/admin/AdminBilling";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+
+import PublicAd from "@/pages/shared/ad/[id]";
+import NotFound from "@/pages/shared/not-found";
+
+import { LanguageProvider } from "./contexts/language-context";
+import FAQ from "./pages/user/faq";
 
 function Router() {
   return (
     <Switch>
+      {/* Public pages */}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route path="/" component={Dashboard} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/campaigns" component={AdsIndex} />
-      <Route path="/campaigns/new" component={NewAd} />
-      <Route path="/campaigns/:id" component={AdDetail} />
-      <Route path="/admin/pending" component={AdminPending} />
-      <Route path="/admin/users" component={AdminUsers} />
-      <Route path="/billing" component={Billing} />
-      <Route path="/analytics" component={Analytics} />
-      <Route path="/public/:id" component={PublicAd} />
-      <Route component={NotFound} />
+
+      {/* Pages with AppLayout */}
+      <Route
+        path="/"
+        component={() => (
+          <AppLayout>
+            <Dashboard />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/dashboard"
+        component={() => (
+          <AppLayout>
+            <Dashboard />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/campaigns"
+        component={() => (
+          <AppLayout>
+            <AdsIndex />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/campaigns/new"
+        component={() => (
+          <AppLayout>
+            <NewAd />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/campaigns/:id"
+        component={(props: { params: { id: string } }) => (
+          <AppLayout>
+            <AdDetail params={props.params} />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/billing"
+        component={() => (
+          <AppLayout>
+            <Billing />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/faq"
+        component={() => (
+          <AppLayout>
+            <FAQ />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/analytics"
+        component={() => (
+          <AppLayout>
+            <Analytics />
+          </AppLayout>
+        )}
+      />
+
+      {/* Admin pages */}
+      <Route
+        path="/admin/queue"
+        component={() => (
+          <AppLayout>
+            <MarketingQueue />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/pending"
+        component={() => (
+          <AppLayout>
+            <AdminPending />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/users"
+        component={() => (
+          <AppLayout>
+            <AdminUsers />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/adminBilling"
+        component={() => (
+          <AppLayout>
+            <AdminBilling />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/adminDashboard"
+        component={() => (
+          <AppLayout>
+            <AdminDashboard />
+          </AppLayout>
+        )}
+      />
+
+      {/* Public shared pages */}
+      <Route
+        path="/public/:id"
+        component={(props: { params: { id: string } }) => (
+          <AppLayout>
+            <PublicAd params={props.params} />
+          </AppLayout>
+        )}
+      />
+
+      {/* Fallback 404 */}
+      <Route
+        component={() => (
+          <AppLayout>
+            <NotFound />
+          </AppLayout>
+        )}
+      />
     </Switch>
   );
 }
@@ -41,14 +168,16 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <Router />
+              <Toaster />
+            </TooltipProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

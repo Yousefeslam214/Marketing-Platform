@@ -3,30 +3,33 @@ import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { apiRequest } from "@/lib/queryClient";
+import { useLanguage } from "@/hooks/use-language";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { TokenManager } from "@/lib/auth";
 
 export default function Billing() {
-  const { isAuthenticated, user } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
   const [selectedPackage, setSelectedPackage] = useState("basic");
   const [customAmount, setCustomAmount] = useState("");
 
-  if (!isAuthenticated) {
-    setLocation("/login");
-    return null;
-  }
-
   const { data: metrics } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
-    enabled: isAuthenticated,
+    enabled: !!TokenManager.getAccessToken(),
   });
 
   // Type-safe metrics with defaults
@@ -44,7 +47,7 @@ export default function Billing() {
       createdAt: "2024-01-20T10:00:00Z",
     },
     {
-      id: "2", 
+      id: "2",
       amount: 100,
       impressions: 125000,
       status: "completed",
@@ -62,7 +65,7 @@ export default function Billing() {
     },
     {
       id: "professional",
-      name: "Professional Package", 
+      name: "Professional Package",
       impressions: 125000,
       amount: 100,
       popular: true,
@@ -77,8 +80,15 @@ export default function Billing() {
   ];
 
   const purchaseMutation = useMutation({
-    mutationFn: async (packageData: { amount: number; impressions: number }) => {
-      const response = await apiRequest("POST", "/api/ads/purchase", packageData);
+    mutationFn: async (packageData: {
+      amount: number;
+      impressions: number;
+    }) => {
+      const response = await apiRequest(
+        "POST",
+        "/api/ads/purchase",
+        packageData
+      );
       return response.json();
     },
     onSuccess: (data) => {
@@ -96,7 +106,7 @@ export default function Billing() {
   });
 
   const handlePurchase = (packageId: string) => {
-    const pkg = impressionPackages.find(p => p.id === packageId);
+    const pkg = impressionPackages.find((p) => p.id === packageId);
     if (pkg) {
       purchaseMutation.mutate({
         amount: pkg.amount,
@@ -133,13 +143,12 @@ export default function Billing() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
-      
+    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+
       <div className="flex-1 overflow-auto">
         <Header
-          title="Billing & Credits"
-          description="Manage your impression credits and billing history"
+          title={t("billing", "title")}
+          description={t("billing", "description")}
         />
 
         <main className="p-6 space-y-6">
@@ -151,15 +160,22 @@ export default function Billing() {
             <CardContent>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-3xl font-bold text-foreground" data-testid="current-balance">
+                  <p
+                    className="text-3xl font-bold text-foreground"
+                    data-testid="current-balance">
                     {safeMetrics.creditsRemaining.toLocaleString()}
                   </p>
-                  <p className="text-sm text-muted-foreground">Available impression credits</p>
+                  <p className="text-sm text-muted-foreground">
+                    Available impression credits
+                  </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Free views used</p>
+                  <p className="text-sm text-muted-foreground">
+                    Free views used
+                  </p>
                   <p className="text-lg font-semibold text-foreground">
-                    {(10000 - safeMetrics.creditsRemaining).toLocaleString()} / 10,000
+                    {(10000 - safeMetrics.creditsRemaining).toLocaleString()} /
+                    10,000
                   </p>
                 </div>
               </div>
@@ -174,43 +190,50 @@ export default function Billing() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 {impressionPackages.map((pkg) => (
-                  <div 
-                    key={pkg.id} 
+                  <div
+                    key={pkg.id}
                     className={`p-6 rounded-lg border-2 transition-colors ${
-                      selectedPackage === pkg.id 
-                        ? "border-primary bg-primary/5" 
+                      selectedPackage === pkg.id
+                        ? "border-primary bg-primary/5"
                         : "border-border hover:border-primary/50"
-                    } ${pkg.popular ? "ring-2 ring-primary/20" : ""}`}
-                  >
+                    } ${pkg.popular ? "ring-2 ring-primary/20" : ""}`}>
                     {pkg.popular && (
                       <Badge className="mb-3 bg-primary text-primary-foreground">
                         Most Popular
                       </Badge>
                     )}
-                    <h3 className="text-lg font-semibold text-foreground mb-2" data-testid={`package-name-${pkg.id}`}>
+                    <h3
+                      className="text-lg font-semibold text-foreground mb-2"
+                      data-testid={`package-name-${pkg.id}`}>
                       {pkg.name}
                     </h3>
                     <div className="mb-4">
-                      <p className="text-3xl font-bold text-foreground" data-testid={`package-price-${pkg.id}`}>
+                      <p
+                        className="text-3xl font-bold text-foreground"
+                        data-testid={`package-price-${pkg.id}`}>
                         ${pkg.amount}
                       </p>
-                      <p className="text-sm text-muted-foreground" data-testid={`package-impressions-${pkg.id}`}>
+                      <p
+                        className="text-sm text-muted-foreground"
+                        data-testid={`package-impressions-${pkg.id}`}>
                         {pkg.impressions.toLocaleString()} impressions
                       </p>
                     </div>
                     <p className="text-xs text-muted-foreground mb-4">
-                      ${(pkg.amount / (pkg.impressions / 1000)).toFixed(3)} per 1K impressions
+                      ${(pkg.amount / (pkg.impressions / 1000)).toFixed(3)} per
+                      1K impressions
                     </p>
-                    <Button 
+                    <Button
                       className="w-full"
-                      variant={selectedPackage === pkg.id ? "default" : "outline"}
+                      variant={
+                        selectedPackage === pkg.id ? "default" : "outline"
+                      }
                       onClick={() => {
                         setSelectedPackage(pkg.id);
                         handlePurchase(pkg.id);
                       }}
                       disabled={purchaseMutation.isPending}
-                      data-testid={`button-select-package-${pkg.id}`}
-                    >
+                      data-testid={`button-select-package-${pkg.id}`}>
                       {purchaseMutation.isPending ? (
                         <>
                           <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -226,7 +249,9 @@ export default function Billing() {
 
               {/* Custom Amount */}
               <div className="p-6 border border-border rounded-lg">
-                <h4 className="text-lg font-semibold text-foreground mb-4">Custom Amount</h4>
+                <h4 className="text-lg font-semibold text-foreground mb-4">
+                  Custom Amount
+                </h4>
                 <div className="flex items-center gap-4">
                   <div className="flex-1">
                     <Input
@@ -240,15 +265,20 @@ export default function Billing() {
                     />
                     {customAmount && parseFloat(customAmount) >= 10 && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        You'll receive {(parseFloat(customAmount) * 1000).toLocaleString()} impressions
+                        You'll receive{" "}
+                        {(parseFloat(customAmount) * 1000).toLocaleString()}{" "}
+                        impressions
                       </p>
                     )}
                   </div>
-                  <Button 
+                  <Button
                     onClick={handleCustomPurchase}
-                    disabled={!customAmount || parseFloat(customAmount) < 10 || purchaseMutation.isPending}
-                    data-testid="button-custom-purchase"
-                  >
+                    disabled={
+                      !customAmount ||
+                      parseFloat(customAmount) < 10 ||
+                      purchaseMutation.isPending
+                    }
+                    data-testid="button-custom-purchase">
                     {purchaseMutation.isPending ? (
                       <>
                         <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -272,22 +302,30 @@ export default function Billing() {
               {mockPurchases.length > 0 ? (
                 <div className="space-y-4">
                   {mockPurchases.map((purchase) => (
-                    <div key={purchase.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                    <div
+                      key={purchase.id}
+                      className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <p className="font-medium text-foreground" data-testid={`purchase-amount-${purchase.id}`}>
+                          <p
+                            className="font-medium text-foreground"
+                            data-testid={`purchase-amount-${purchase.id}`}>
                             ${purchase.amount}
                           </p>
                           <Badge className={getStatusColor(purchase.status)}>
                             {purchase.status}
                           </Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground" data-testid={`purchase-impressions-${purchase.id}`}>
+                        <p
+                          className="text-sm text-muted-foreground"
+                          data-testid={`purchase-impressions-${purchase.id}`}>
                           {purchase.impressions.toLocaleString()} impressions
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-muted-foreground" data-testid={`purchase-date-${purchase.id}`}>
+                        <p
+                          className="text-sm text-muted-foreground"
+                          data-testid={`purchase-date-${purchase.id}`}>
                           {new Date(purchase.createdAt).toLocaleDateString()}
                         </p>
                         <Button variant="ghost" size="sm">

@@ -51,7 +51,7 @@ export default function Signup() {
       toast({
         title: "Account created",
         description:
-          "Welcome to Bolt! Your account has been created successfully.",
+          "Welcome to octopusad! Your account has been created successfully.",
       });
     } catch (error: any) {
       toast({
@@ -70,7 +70,7 @@ export default function Signup() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
             </div>
-            <CardTitle className="text-2xl">Bolt</CardTitle>
+            <CardTitle className="text-2xl">octopusad</CardTitle>
           </div>
           <CardDescription>
             Create your marketing platform account
