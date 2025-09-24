@@ -6,22 +6,22 @@ import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { TokenManager } from "@/lib/auth";
 
 interface AdDetailProps {
   params: { id: string };
 }
 
 export default function AdDetail({ params }: AdDetailProps) {
-  const { isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { id } = params;
 
   const { data: ad, isLoading } = useQuery({
     queryKey: ["/api/ads", id],
-    enabled: isAuthenticated && !!id,
+    enabled: !!TokenManager.getAccessToken(),
   });
 
-  if (!isAuthenticated) {
+  if (!TokenManager.getAccessToken()) {
     setLocation("/login");
     return null;
   }

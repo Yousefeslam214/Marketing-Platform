@@ -8,7 +8,7 @@ export interface AuthResponse {
 const BACKEND_URL =
   import.meta.env.VITE_BACKEND_URL ||
   import.meta.env.BACKEND_URL ||
-  "https://marketing-platform-ten.vercel.app";
+  "https://marketing-platform-fouadkhalied-fouadkhalieds-projects.vercel.app";
 
 export class AuthService {
   static async login(data: LoginData): Promise<AuthResponse> {

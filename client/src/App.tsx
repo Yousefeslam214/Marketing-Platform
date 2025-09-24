@@ -27,6 +27,10 @@ import NotFound from "@/pages/shared/not-found";
 
 import { LanguageProvider } from "./contexts/language-context";
 import FAQ from "./pages/user/faq";
+import { adminApprovedAdsPath, adminPendingAdsPath, adminRejectedAdsPath } from "./lib/paths";
+import ApprovedAds from "./pages/shared/ad/approved-ads";
+import RejectedAds from "./pages/shared/ad/rejected-ads";
+import PendingAds from "./pages/shared/ad/pending-ads";
 
 function Router() {
   return (
@@ -49,6 +53,30 @@ function Router() {
         component={() => (
           <AppLayout>
             <Dashboard />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={adminPendingAdsPath()}
+        component={() => (
+          <AppLayout>
+            <PendingAds />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={adminRejectedAdsPath()}
+        component={() => (
+          <AppLayout>
+            <RejectedAds />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={adminApprovedAdsPath()}
+        component={() => (
+          <AppLayout>
+            <ApprovedAds />
           </AppLayout>
         )}
       />
