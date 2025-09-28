@@ -19,65 +19,46 @@ import {
 import { useState } from "react";
 import { TokenManager } from "@/lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/useApiQuery";
 
 export default function AdminUsers() {
   const { t, isRTL } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
-  // Mock data for users - in real app this would come from API
-  const mockUsers1 = [
-    {
-      id: "1",
-      username: "ahmed_rashid",
-      email: "ahmed@example.com",
-      role: "admin",
-      freeViewsCredits: 8500,
-      createdAt: "2024-01-15T10:00:00Z",
-      adsCount: 5,
-      totalSpend: 2847,
-    },
-    {
-      id: "2",
-      username: "sara_mohamed",
-      email: "sara@boltads.com",
-      role: "user",
-      freeViewsCredits: 10000,
-      createdAt: "2024-01-10T09:30:00Z",
-      adsCount: 0,
-      totalSpend: 0,
-    },
-    {
-      id: "3",
-      username: "admin_user",
-      email: "admin@boltads.com",
-      role: "admin",
-      freeViewsCredits: 10000,
-      createdAt: "2024-01-01T08:00:00Z",
-      adsCount: 0,
-      totalSpend: 0,
-    },
-  ];
 
-  const { data: usersData, isLoading: usersDataLoading } = useQuery({
-    queryKey: ["/api/users", { limit: 2, page: 2 }],
-    queryFn: async () => {
-      const token = TokenManager.getAccessToken();
-      const res = await fetch(
-        `${VITE_API_BASE_URL}/api/users/?limit=2&page=2`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
-      if (!res.ok) throw new Error("Failed to fetch users");
-      return res.json();
-    },
-    enabled: !!TokenManager.getAccessToken(),
-  });
+  // const { data: usersData, isLoading: usersDataLoading } = useQuery({
+  //   queryKey: ["/api/users", { limit: 2, page: 2 }],
+  //   queryFn: async () => {
+  //     const token = TokenManager.getAccessToken();
+  //     const res = await fetch(
+  //       `${VITE_API_BASE_URL}/api/users/?limit=2&page=2`,
+  //       {
+  //         headers: {
+  //           Authorization: token ? `Bearer ${token}` : "",
+  //         },
+  //       }
+  //     );
+  //     if (!res.ok) throw new Error("Failed to fetch users");
+  //     return res.json();
+  //   },
+  //   enabled: !!TokenManager.getAccessToken(),
+  // });
+
+const limit = 5;
+const [page, setPage] = useState(1);
+   const {
+      data : usersData,
+      isLoading,
+      error,
+      refetch,
+    } = useApiQuery({
+      key: ["/api/users", page, limit],
+      url: `${VITE_API_BASE_URL}/api/users?page=${page}&limit=${limit}`,
+    });
+  
   // const mockUsers = usersData;
   console.log("Fetched users:", usersData?.data);
-  const mockUsers = mockUsers1;
+  const mockUsers = usersData?.data;
   // Check admin access
   // if (!isAuthenticated || user?.role !== "admin") {
   //   setLocation("/dashboard");
@@ -109,10 +90,8 @@ export default function AdminUsers() {
     switch (role) {
       case "admin":
         return "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400";
-      case "marketing":
+      case "user":
         return "bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400";
-      case "advertiser":
-        return "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400";
       default:
         return "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400";
     }
