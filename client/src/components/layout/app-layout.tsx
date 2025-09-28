@@ -10,16 +10,13 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   const { user, isLoading } = useAuth();
-  const {  language , direction ,  toggleLanguage ,  setDirection } = useLanguage();
+  const { language, dir, toggleLanguage } = useLanguage();
 
- 
   // Show loading state while checking authentication
   if (isLoading) {
     return (
       <div
-        className={`min-h-screen bg-background flex items-center justify-center ${
-          direction
-        }`}>
+        className={`min-h-screen bg-background flex items-center justify-center ${dir}`}>
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
@@ -28,16 +25,10 @@ export function AppLayout({ children }: AppLayoutProps) {
   // If user is authenticated, show sidebar + content layout
   if (TokenManager.getAccessToken()) {
     return (
-      <div
-        className={`min-h-screen bg-background flex ${
-      direction
-        }`}
-        dir={direction}>
+      <div className={`min-h-screen bg-background flex ${dir}`} dir={dir}>
         <Sidebar />
         <main className="flex-1 overflow-auto">
-          <div className={`p-6 ${direction}`}>
-            {children}
-          </div>
+          <div className={`px-6 ${dir}`}>{children}</div>
         </main>
       </div>
     );
@@ -45,11 +36,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   // If user is not authenticated, show content without sidebar
   return (
-    <div
-      className={`min-h-screen bg-background ${
-        direction
-      }`}
-      dir={direction}>
+    <div className={`min-h-screen bg-background ${dir}`} dir={dir}>
       {children}
     </div>
   );

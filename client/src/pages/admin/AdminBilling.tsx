@@ -14,6 +14,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
+import { getStatusColor } from "@/lib/utils";
 
 // Mock data for admin billing
 const mockMetrics = {
@@ -104,18 +105,7 @@ export default function AdminBilling() {
     },
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "paid":
-        return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
-      case "failed":
-        return "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300";
-      case "refunded":
-        return "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300";
-      default:
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
-    }
-  };
+  
 
   return (
     <div className="flex h-screen bg-background">

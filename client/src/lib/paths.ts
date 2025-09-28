@@ -31,7 +31,7 @@ export function adminUsersPath() {
 }
 
 export function adminAllAdsPath() {
-  return "/admin/ads/all";
+  return "/ads/all";
 }
 
 export function adminPendingAdsPath() {

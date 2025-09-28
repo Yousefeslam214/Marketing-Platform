@@ -1,10 +1,8 @@
-import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
-import { AdCard, type AdData } from "@/components/ads/ad-card";
-import { TokenManager } from "@/lib/auth";
+import { AdCard } from "@/components/ads/ad-card";
+import { AdData } from "@/lib/schema/schema-ads";
 import { useAdNavigation } from "@/hooks/use-path-handlers";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import {
@@ -16,64 +14,60 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useState } from "react";
+import { ErrorState } from "@/components/Error";
+import Loading from "@/components/Loading";
+import { useApiQuery } from "@/hooks/useApiQuery";
 
 export default function RejectedAds() {
-  const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState(1);
   const limit = 5;
 
   const { handleViewAd } = useAdNavigation();
 
-  const { data: ads, isLoading } = useQuery({
-    queryKey: ["/ads/rejected", page, limit],
-    queryFn: async () => {
-      const token = TokenManager.getAccessToken();
-      const res = await fetch(
-        `${VITE_API_BASE_URL}/api/advertising/list/rejected?page=${page}&limit=${limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!res.ok) throw new Error("Failed to fetch rejected ads");
-      return res.json();
-    },
-    enabled: !!TokenManager.getAccessToken(),
+  const {
+    data: ads,
+    isLoading,
+    error,
+    refetch,
+  } = useApiQuery({
+    key: ["/ads/rejected", page, limit],
+    url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}&status=rejected`,
   });
 
-  if (!TokenManager.getAccessToken()) {
-    setLocation("/login");
-    return null;
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    return (
+      <div className="flex flex-center justify-center h-screen bg-background">
+        <ErrorState
+          title="Failed to load metrics"
+          message={(error as Error)?.message || "Please try again later."}
+          onRetry={() => refetch()}
+          showHomeButton
+          onHome={() => (window.location.href = "/")} // or use your router
+        />
+      </div>
+    );
   }
 
   // Filter rejected ads
-  const rejectedAds = Array.isArray(ads?.data?.data)
-    ? (ads?.data?.data as AdData[])
-    : [];
+  const rejectedAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
         <Header
-          title={t("rejectedAds", "Rejected Ads") || "Rejected Ads"}
-          description={
-            t(
-              "rejectedAds",
-              "Your rejected advertising campaigns with details on why they were rejected"
-            ) ||
-            "Your rejected advertising campaigns with details on why they were rejected"
-          }
+          title={t("rejectedAds", "title")}
+          description={t("rejectedAds", "description")}
         />
 
         <main className="p-6">
           {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
-            </div>
+            <Loading />
           ) : rejectedAds.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
               {rejectedAds.map((ad: AdData) => (
                 <AdCard
                   key={ad.id}

@@ -17,6 +17,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useState } from "react";
+import { useApiQuery } from "@/hooks/useApiQuery";
+import Loading from "@/components/Loading";
+import { ErrorState } from "@/components/Error";
+import { is } from "drizzle-orm";
 
 export default function ApprovedAds() {
   const [, setLocation] = useLocation();
@@ -32,60 +36,56 @@ export default function ApprovedAds() {
     handlePurchase,
   } = useAdNavigation();
 
-  const { data: ads, isLoading } = useQuery({
-    queryKey: ["/ads/approved", 1, 5],
-    queryFn: async () => {
-      const token = TokenManager.getAccessToken();
-      const res = await fetch(
-        `${VITE_API_BASE_URL}/api/advertising/list/approved?page=${page}&limit=${limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!res.ok) throw new Error("Failed to fetch approved ads");
-      return res.json();
-    },
-    enabled: !!TokenManager.getAccessToken(),
+  const token = TokenManager.getAccessToken();
+  const {
+    data: ads,
+    isLoading,
+    error,
+    refetch,
+  } = useApiQuery({
+    key: ["/ads/approved", page, limit],
+    url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}&status=approved`,
   });
-  console.log("Approved ads data:", ads);
-  if (!TokenManager.getAccessToken()) {
-    setLocation("/login");
-    return null;
-  }
+
 
   // Filter approved ads and type safely
-  const approvedAds = Array.isArray(ads?.data?.data)
-    ? (ads?.data?.data as AdData[])
-    : [];
-
+  const approvedAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
+  console.log(approvedAds);
+  if (isLoading) {
+    <Loading />;
+  }
+  if (error) {
+    return (
+      <div className="flex flex-center justify-center h-screen bg-background">
+        <ErrorState
+          title="Failed to load metrics"
+          message={(error as Error)?.message || "Please try again later."}
+          onRetry={() => refetch()}
+          showHomeButton
+          onHome={() => (window.location.href = "/")} // or use your router
+        />
+      </div>
+    );
+  }
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
         <Header
-          title={t("approvedAds", "Approved Ads") || "Approved Ads"}
-          description={
-            t(
-              "approvedAds",
-              "Your approved advertising campaigns ready for publishing"
-            ) || "Your approved advertising campaigns ready for publishing"
-          }
+          title={t("approvedAds", "title")}
+          description={t("approvedAds", "description")}
           actions={
             <Button onClick={handleCreateAd} data-testid="button-create-ad">
               <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
-              {t("ads", "createAd") || "Create New Ad"}
+              {t("ads", "createAd")}
             </Button>
           }
         />
 
         <main className="p-6">
           {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
-            </div>
+            <Loading />
           ) : approvedAds.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
               {approvedAds.map((ad: AdData) => (
                 <AdCard
                   key={ad.id}
@@ -95,6 +95,7 @@ export default function ApprovedAds() {
                   onEdit={handleEditAd}
                   onAnalytics={handleAnalytics}
                   onPurchase={handlePurchase}
+                 
                 />
               ))}
             </div>

@@ -12,25 +12,35 @@ import Signup from "@/pages/auth/signup";
 import Dashboard from "@/pages/user/dashboard";
 import AdsIndex from "@/pages/user/ads/index";
 import NewAd from "@/pages/user/ads/new";
-import AdDetail from "@/pages/user/ads/[id]";
+// import AdDetail from "@/pages/user/ads/[id]";
 import Billing from "@/pages/user/billing";
+import PaymentSuccess from "@/pages/user/payment-success";
+import PaymentCancel from "@/pages/user/payment-cancel";
 import Analytics from "@/pages/user/analytics";
 
 import AdminPending from "@/pages/admin/pending";
-import AdminUsers from "@/pages/admin/users";
+// import AdminUsers from "@/pages/admin/users";
 import MarketingQueue from "@/pages/admin/queue";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 
-import PublicAd from "@/pages/shared/ad/[id]";
+// import PublicAd from "@/pages/shared/ad/[id]";
 import NotFound from "@/pages/shared/not-found";
 
 import { LanguageProvider } from "./contexts/language-context";
 import FAQ from "./pages/user/faq";
-import { adminApprovedAdsPath, adminPendingAdsPath, adminRejectedAdsPath } from "./lib/paths";
+import {
+  adminAllAdsPath,
+  adminApprovedAdsPath,
+  adminPendingAdsPath,
+  adminRejectedAdsPath,
+} from "./lib/paths";
 import ApprovedAds from "./pages/shared/ad/approved-ads";
 import RejectedAds from "./pages/shared/ad/rejected-ads";
 import PendingAds from "./pages/shared/ad/pending-ads";
+import AllAds from "./pages/shared/ad/all-ads";
+import AdminUsers from "./pages/admin/users-mangement-page";
+import AdDetail from "./pages/shared/ad/[id]";
 
 function Router() {
   return (
@@ -56,7 +66,7 @@ function Router() {
           </AppLayout>
         )}
       />
- 
+
       <Route
         path={adminPendingAdsPath()}
         component={() => (
@@ -78,6 +88,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <ApprovedAds />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={adminAllAdsPath()}
+        component={() => (
+          <AppLayout>
+            <AllAds />
           </AppLayout>
         )}
       />
@@ -113,6 +131,8 @@ function Router() {
           </AppLayout>
         )}
       />
+      <Route path="/billing/success" component={() => <PaymentSuccess />} />
+      <Route path="/billing/cancel" component={() => <PaymentCancel />} />
       <Route
         path="/faq"
         component={() => (
@@ -173,14 +193,14 @@ function Router() {
       />
 
       {/* Public shared pages */}
-      <Route
+      {/* <Route
         path="/public/:id"
         component={(props: { params: { id: string } }) => (
           <AppLayout>
             <PublicAd params={props.params} />
           </AppLayout>
         )}
-      />
+      /> */}
 
       {/* Fallback 404 */}
       <Route

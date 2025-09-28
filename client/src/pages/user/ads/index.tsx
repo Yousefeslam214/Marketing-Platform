@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TokenManager } from "@/lib/auth";
+import { getStatusColor } from "@/lib/utils";
 
 export default function AdsIndex() {
   const [, setLocation] = useLocation();
@@ -30,23 +31,6 @@ export default function AdsIndex() {
     setLocation("/campaigns/new");
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "published":
-        return "bg-green-100 text-green-700";
-      case "approved":
-        return "bg-blue-100 text-blue-700";
-      case "pending":
-        return "bg-yellow-100 text-yellow-700";
-      case "rejected":
-        return "bg-red-100 text-red-700";
-      case "draft":
-        return "bg-gray-100 text-gray-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
-
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
@@ -67,7 +51,7 @@ export default function AdsIndex() {
               <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
             </div>
           ) : safeAds.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
               {safeAds.map((ad: any) => (
                 <Card
                   key={ad.id}
@@ -100,7 +84,9 @@ export default function AdsIndex() {
                     )}
 
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>Target: {ad.targetAudience}</span>
+                      <span>
+                        {t("ads", "target")}: {ad.targetAudience}
+                      </span>
                       <span>{new Date(ad.createdAt).toLocaleDateString()}</span>
                     </div>
 
@@ -110,7 +96,7 @@ export default function AdsIndex() {
                         size="sm"
                         onClick={() => setLocation(`/campaigns/${ad.id}`)}
                         data-testid={`button-view-ad-${ad.id}`}>
-                        View
+                        {t("ads", "view")}
                       </Button>
                       <Button
                         variant="outline"
@@ -119,7 +105,7 @@ export default function AdsIndex() {
                           setLocation(`/campaigns/${ad.id}/analytics`)
                         }
                         data-testid={`button-analytics-${ad.id}`}>
-                        Analytics
+                        {t("ads", "analytics")}
                       </Button>
                     </div>
                   </CardContent>
@@ -130,16 +116,16 @@ export default function AdsIndex() {
             <div className="text-center py-12">
               <i className="fas fa-ad text-6xl text-muted-foreground mb-6"></i>
               <h3 className="text-xl font-semibold text-foreground mb-2">
-                No ads yet
+                {t("ads", "noAdsYet")}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Create your first advertising campaign to get started
+                {t("ads", "createFirstAdMessage")}
               </p>
               <Button
                 onClick={handleCreateAd}
                 data-testid="button-create-first-ad">
-                <i className="fas fa-plus mr-2"></i>
-                Create Your First Ad
+                <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                {t("ads", "createFirstAd")}
               </Button>
             </div>
           )}

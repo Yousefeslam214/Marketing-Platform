@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getStatusColor } from "@/lib/utils";
 
 interface AdCardProps {
   ad: {
@@ -23,22 +24,7 @@ interface AdCardProps {
 }
 
 export function AdCard({ ad, language = "en", onView, onEdit, onAnalytics }: AdCardProps) {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "published":
-        return "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400";
-      case "approved":
-        return "bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400";
-      case "pending":
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400";
-      case "rejected":
-        return "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400";
-      case "draft":
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400";
-      default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400";
-    }
-  };
+  
 
   const getStatusIcon = (status: string) => {
     switch (status) {

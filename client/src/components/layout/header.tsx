@@ -9,7 +9,7 @@ interface HeaderProps {
 }
 
 export function Header({ title, description, actions }: HeaderProps) {
-  const { language, toggleLanguage, direction, isRTL } = useLanguage();
+  const { language, toggleLanguage, dir, isRTL } = useLanguage();
 
   return (
     <header

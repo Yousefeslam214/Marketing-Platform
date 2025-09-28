@@ -15,7 +15,7 @@ export default function NewAd() {
 
   return (
     <div className="flex h-screen bg-background">
-      <Sidebar />
+      {/* <Sidebar /> */}
       
       <div className="flex-1 overflow-auto">
         <Header

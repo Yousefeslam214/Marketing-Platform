@@ -1,15 +1,51 @@
 // language-context.tsx
-import { createContext, useContext } from "react";
-import { useLanguage } from "@/hooks/use-language";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const LanguageContext = createContext<ReturnType<typeof useLanguage> | null>(
-  null
-);
+export type Language = "en" | "ar";
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  toggleLanguage: () => void;
+  dir: "ltr" | "rtl";
+  isRTL: boolean;
+}
+
+const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const lang = useLanguage();
+  const [language, setLanguage] = useState<Language>(() => {
+    const stored = localStorage.getItem("language");
+    return stored === "ar" || stored === "en" ? stored : "en";
+  });
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.setAttribute("lang", language);
+    html.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
+    localStorage.setItem("language", language);
+
+    // Dispatch custom event for other components to listen
+    window.dispatchEvent(
+      new CustomEvent("languageChange", { detail: language })
+    );
+  }, [language]);
+
+  const toggleLanguage = () => {
+    setLanguage((prev) => (prev === "en" ? "ar" : "en"));
+  };
+
   return (
-    <LanguageContext.Provider value={lang}>{children}</LanguageContext.Provider>
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage,
+        toggleLanguage,
+        dir: language === "ar" ? "rtl" : "ltr",
+        isRTL: language === "ar",
+      }}>
+      {children}
+    </LanguageContext.Provider>
   );
 }
 
@@ -18,3 +54,5 @@ export function useLang() {
   if (!ctx) throw new Error("useLang must be used inside LanguageProvider");
   return ctx;
 }
+
+export { LanguageContext };

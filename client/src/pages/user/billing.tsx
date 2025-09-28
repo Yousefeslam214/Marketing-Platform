@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { TokenManager } from "@/lib/auth";
+import { PaymentService, type PaymentData } from "@/lib/payment-service";
+import { getStatusColor } from "@/lib/utils";
 
 export default function Billing() {
   const [, setLocation] = useLocation();
@@ -58,21 +60,21 @@ export default function Billing() {
   const impressionPackages = [
     {
       id: "basic",
-      name: "Basic Package",
+      nameKey: "basicPackage",
       impressions: 50000,
       amount: 50,
       popular: false,
     },
     {
       id: "professional",
-      name: "Professional Package",
+      nameKey: "professionalPackage",
       impressions: 125000,
       amount: 100,
       popular: true,
     },
     {
       id: "enterprise",
-      name: "Enterprise Package",
+      nameKey: "enterprisePackage",
       impressions: 300000,
       amount: 200,
       popular: false,
@@ -80,26 +82,15 @@ export default function Billing() {
   ];
 
   const purchaseMutation = useMutation({
-    mutationFn: async (packageData: {
-      amount: number;
-      impressions: number;
-    }) => {
-      const response = await apiRequest(
-        "POST",
-        "/api/ads/purchase",
-        packageData
-      );
-      return response.json();
-    },
-    onSuccess: (data) => {
-      if (data.sessionUrl) {
-        window.location.href = data.sessionUrl;
-      }
+    mutationFn: async (paymentData: PaymentData) => {
+      // Use the PaymentService to handle the checkout
+      await PaymentService.redirectToCheckout(paymentData);
+      return { success: true };
     },
     onError: (error: any) => {
       toast({
-        title: "Purchase failed",
-        description: error.message || "Failed to create payment session",
+        title: t("billing", "purchaseFailed"),
+        description: error.message || t("billing", "paymentSessionError"),
         variant: "destructive",
       });
     },
@@ -109,8 +100,9 @@ export default function Billing() {
     const pkg = impressionPackages.find((p) => p.id === packageId);
     if (pkg) {
       purchaseMutation.mutate({
-        amount: pkg.amount,
+        amount: pkg.amount * 100, // Convert to cents for Stripe
         impressions: pkg.impressions,
+        currency: "USD",
       });
     }
   };
@@ -118,33 +110,38 @@ export default function Billing() {
   const handleCustomPurchase = () => {
     const amount = parseFloat(customAmount);
     if (amount >= 10) {
-      const impressions = Math.floor(amount * 1000); // $1 = 1000 impressions
-      purchaseMutation.mutate({ amount, impressions });
+      const impressions = amount * 1000; // 1000 impressions per dollar
+      purchaseMutation.mutate({
+        amount: amount * 100, // Convert to cents for Stripe
+        impressions,
+        currency: "USD",
+      });
     } else {
       toast({
-        title: "Invalid amount",
-        description: "Minimum purchase amount is $10",
+        title: t("billing", "invalidAmount"),
+        description: t("billing", "minimumAmountError"),
         variant: "destructive",
       });
     }
   };
 
-  const getStatusColor = (status: string) => {
+
+
+  const getStatusText = (status: string) => {
     switch (status) {
       case "completed":
-        return "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400";
+        return t("billing", "completed");
       case "pending":
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400";
+        return t("billing", "pending");
       case "failed":
-        return "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400";
+        return t("billing", "failed");
       default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400";
+        return status;
     }
   };
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-
       <div className="flex-1 overflow-auto">
         <Header
           title={t("billing", "title")}
@@ -166,12 +163,12 @@ export default function Billing() {
                     {safeMetrics.creditsRemaining.toLocaleString()}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Available impression credits
+                    {t("billing", "availableCredits")}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-muted-foreground">
-                    Free views used
+                    {t("billing", "freeViewsUsed")}
                   </p>
                   <p className="text-lg font-semibold text-foreground">
                     {(10000 - safeMetrics.creditsRemaining).toLocaleString()} /
@@ -185,7 +182,7 @@ export default function Billing() {
           {/* Impression Packages */}
           <Card>
             <CardHeader>
-              <CardTitle>Impression Packages</CardTitle>
+              <CardTitle>{t("billing", "impressionPackages")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -199,13 +196,13 @@ export default function Billing() {
                     } ${pkg.popular ? "ring-2 ring-primary/20" : ""}`}>
                     {pkg.popular && (
                       <Badge className="mb-3 bg-primary text-primary-foreground">
-                        Most Popular
+                        {t("billing", "mostPopular")}
                       </Badge>
                     )}
                     <h3
                       className="text-lg font-semibold text-foreground mb-2"
                       data-testid={`package-name-${pkg.id}`}>
-                      {pkg.name}
+                      {t("billing", pkg.nameKey as any)}
                     </h3>
                     <div className="mb-4">
                       <p
@@ -237,10 +234,10 @@ export default function Billing() {
                       {purchaseMutation.isPending ? (
                         <>
                           <i className="fas fa-spinner fa-spin mr-2"></i>
-                          Processing...
+                          {t("billing", "processing")}
                         </>
                       ) : (
-                        "Select Package"
+                        t("billing", "selectPackage")
                       )}
                     </Button>
                   </div>
@@ -256,7 +253,7 @@ export default function Billing() {
                   <div className="flex-1">
                     <Input
                       type="number"
-                      placeholder="Enter amount ($10 minimum)"
+                      placeholder={t("billing", "enterAmount")}
                       value={customAmount}
                       onChange={(e) => setCustomAmount(e.target.value)}
                       min="10"
@@ -265,7 +262,7 @@ export default function Billing() {
                     />
                     {customAmount && parseFloat(customAmount) >= 10 && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        You'll receive{" "}
+                        {t("billing", "youllReceive")}{" "}
                         {(parseFloat(customAmount) * 1000).toLocaleString()}{" "}
                         impressions
                       </p>
@@ -282,10 +279,10 @@ export default function Billing() {
                     {purchaseMutation.isPending ? (
                       <>
                         <i className="fas fa-spinner fa-spin mr-2"></i>
-                        Processing...
+                        {t("billing", "processing")}
                       </>
                     ) : (
-                      "Purchase"
+                      t("billing", "purchase")
                     )}
                   </Button>
                 </div>
@@ -296,7 +293,7 @@ export default function Billing() {
           {/* Purchase History */}
           <Card>
             <CardHeader>
-              <CardTitle>Purchase History</CardTitle>
+              <CardTitle>{t("billing", "purchaseHistory")}</CardTitle>
             </CardHeader>
             <CardContent>
               {mockPurchases.length > 0 ? (
@@ -313,13 +310,14 @@ export default function Billing() {
                             ${purchase.amount}
                           </p>
                           <Badge className={getStatusColor(purchase.status)}>
-                            {purchase.status}
+                            {getStatusText(purchase.status)}
                           </Badge>
                         </div>
                         <p
                           className="text-sm text-muted-foreground"
                           data-testid={`purchase-impressions-${purchase.id}`}>
-                          {purchase.impressions.toLocaleString()} impressions
+                          {purchase.impressions.toLocaleString()}{" "}
+                          {t("billing", "impressions")}
                         </p>
                       </div>
                       <div className="text-right">
@@ -330,7 +328,7 @@ export default function Billing() {
                         </p>
                         <Button variant="ghost" size="sm">
                           <i className="fas fa-download mr-1"></i>
-                          Receipt
+                          {t("billing", "receipt")}
                         </Button>
                       </div>
                     </div>
@@ -339,7 +337,9 @@ export default function Billing() {
               ) : (
                 <div className="text-center py-8">
                   <i className="fas fa-credit-card text-4xl text-muted-foreground mb-4"></i>
-                  <p className="text-muted-foreground">No purchases yet</p>
+                  <p className="text-muted-foreground">
+                    {t("billing", "noPurchasesYet")}
+                  </p>
                 </div>
               )}
             </CardContent>

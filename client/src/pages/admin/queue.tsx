@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TokenManager } from "@/lib/auth";
+import { getStatusColor } from "@/lib/utils";
 
 export default function MarketingQueue() {
   const [, setLocation] = useLocation();
@@ -30,22 +31,6 @@ export default function MarketingQueue() {
     setLocation("/campaigns/new");
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "published":
-        return "bg-green-100 text-green-700";
-      case "approved":
-        return "bg-blue-100 text-blue-700";
-      case "pending":
-        return "bg-yellow-100 text-yellow-700";
-      case "rejected":
-        return "bg-red-100 text-red-700";
-      case "draft":
-        return "bg-gray-100 text-gray-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
@@ -62,7 +47,7 @@ export default function MarketingQueue() {
               <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
             </div>
           ) : safeAds.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
               {safeAds.map((ad: any) => (
                 <Card
                   key={ad.id}

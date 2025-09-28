@@ -273,7 +273,7 @@ export function Sidebar() {
       {/* Sidebar Header */}
       <div className="p-6 border-b border-border flex !flex-col bg-primary/10">
         <div
-          className={`flex items-center gap-3 ${
+          className={`flex items-center gap-3 justify-between ${
             isRTL ? "flex-row-reverse" : ""
           }`}>
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow">
@@ -321,10 +321,10 @@ export function Sidebar() {
             <p
               className="text-sm font-bold text-primary truncate"
               data-testid="user-name">
-              {user?.username || "Guest"}
+              {user?.username || "yousef"}
             </p>
             <p className="text-xs text-muted-foreground truncate capitalize">
-              {user?.role || "user"}
+              {user?.role || "admin"}
             </p>
           </div>
         </div>

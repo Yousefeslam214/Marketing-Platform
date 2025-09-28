@@ -1,0 +1,296 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Monitor your advertising performance and manage campaigns",
+    "createNewAd": "Create New Ad",
+    "totalImpressions": "Total Impressions",
+    "totalClicks": "Total Clicks",
+    "ctr": "CTR",
+    "creditsRemaining": "Credits Remaining",
+    "performanceOverview": "Performance Overview",
+    "topPerformingAds": "Top Performing Ads",
+    "noAdsCreated": "No ads created yet",
+    "createFirstAd": "Create Your First Ad",
+    "recentActivity": "Recent Activity",
+    "noRecentActivity": "No recent activity",
+    "billingOverview": "Billing Overview",
+    "currentBalance": "Current Balance",
+    "availableCredits": "Available impression credits",
+    "credits": "credits",
+    "freeViewsUsed": "Free Views Used",
+    "complimentaryImpressions": "Complimentary impressions",
+    "purchaseMoreCredits": "Purchase More Credits",
+    "last7Days": "Last 7 days",
+    "last30Days": "Last 30 days",
+    "last90Days": "Last 90 days",
+    "loading": "Loading..."
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "myAds": "My Ads",
+    "billing": "Billing & Credits",
+    "analytics": "Analytics",
+    "faq": "FAQ",
+    "userManagement": "User Management",
+    "pending": "Pending",
+    "queue": "Queue",
+    "AllAds": "All Ads",
+    "adsManagement": "Ads Management",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "adminSection": "Admin",
+    "mainSection": "Main",
+    "appName": "OctopusAd",
+    "appTagline": "Marketing Platform"
+  },
+  "layout": {
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "search": "Search..."
+  },
+  "ads": {
+    "title": "My Ads",
+    "description": "Create, manage, and monitor your advertising campaigns",
+    "createNew": "Create New Ad",
+    "createAd": "Create Ad",
+    "edit": "Edit",
+    "delete": "Delete",
+    "approve": "Approve",
+    "reject": "Reject",
+    "pause": "Pause",
+    "resume": "Resume",
+    "clone": "Clone",
+    "view": "View",
+    "analytics": "Analytics",
+    "status": "Status",
+    "active": "Active",
+    "paused": "Paused",
+    "pending": "Pending",
+    "rejected": "Rejected",
+    "approved": "Approved",
+    "draft": "Draft",
+    "published": "Published",
+    "target": "Target",
+    "noAdsYet": "No ads yet",
+    "createFirstAdMessage": "Create your first advertising campaign to get started",
+    "createFirstAd": "Create Your First Ad",
+    "campaign": "Campaign",
+    "budget": "Budget",
+    "impressions": "Impressions",
+    "clicks": "Clicks",
+    "spent": "Spent",
+    "conversions": "Conversions",
+    "ctr": "CTR",
+    "cpc": "CPC",
+    "cpm": "CPM",
+    "roi": "ROI",
+    "targeting": "Targeting",
+    "demographics": "Demographics",
+    "interests": "Interests",
+    "keywords": "Keywords",
+    "locations": "Locations",
+    "devices": "Devices",
+    "schedule": "Schedule",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "adContent": "Ad Content",
+    "headline": "Headline",
+    "adDescription": "Description",
+    "callToAction": "Call to Action",
+    "imageUrl": "Image URL",
+    "landingPage": "Landing Page",
+    "expired": "Expired"
+  },
+  "pendingAds": {
+    "title": "Pending Ads",
+    "description": "Your ads waiting for review before approval or rejection"
+  },
+  "rejectedAds": {
+    "title": "Rejected Ads",
+    "description": "Ads that were rejected during the review process"
+  },
+  "approvedAds": {
+    "title": "Approved Ads",
+    "description": "Your approved ads ready to run campaigns"
+  },
+  "allAds": {
+    "title": "All Ads",
+    "description": "View and manage all your advertising campaigns"
+  },
+  "billing": {
+    "title": "Billing & Credits",
+    "description": "Manage your account billing and purchase credits",
+    "currentBalance": "Current Balance",
+    "addCredits": "Add Credits",
+    "paymentHistory": "Payment History",
+    "billingHistory": "Billing History",
+    "invoices": "Invoices",
+    "paymentMethod": "Payment Method",
+    "autoRecharge": "Auto Recharge",
+    "spendingLimit": "Spending Limit",
+    "currency": "Currency",
+    "taxInfo": "Tax Information",
+    "basicPackage": "Basic Package",
+    "professionalPackage": "Professional Package",
+    "enterprisePackage": "Enterprise Package",
+    "purchase": "Purchase",
+    "processing": "Processing...",
+    "buyImpressions": "Buy {0} impressions",
+    "customAmount": "Custom Amount",
+    "minimumAmount": "Minimum Amount",
+    "selectPackage": "Select Package",
+    "popularPackage": "Most Popular",
+    "impressions": "Impressions",
+    "amount": "Amount",
+    "purchaseHistory": "Purchase History",
+    "noPurchases": "No purchases yet",
+    "completed": "Completed",
+    "pending": "Pending",
+    "failed": "Failed",
+    "purchaseFailed": "Purchase failed",
+    "paymentSessionError": "Failed to create payment session",
+    "invalidAmount": "Invalid amount",
+    "minimumAmountError": "Minimum purchase amount is $10",
+    "availableCredits": "Available impression credits",
+    "freeViewsUsed": "Free views used",
+    "impressionPackages": "Impression Packages",
+    "mostPopular": "Most Popular",
+    "perThousandImpressions": "per 1K impressions",
+    "enterAmount": "Enter amount ($10 minimum)",
+    "youllReceive": "You'll receive",
+    "receipt": "Receipt",
+    "noPurchasesYet": "No purchases yet"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "Detailed performance analytics for your campaigns",
+    "overview": "Overview",
+    "campaigns": "Campaigns",
+    "demographics": "Demographics",
+    "performance": "Performance"
+  },
+  "userManagement": {
+    "title": "User Management",
+    "description": "Manage users, roles, and permissions",
+    "users": "Users",
+    "roles": "Roles",
+    "permissions": "Permissions",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "deleteUser": "Delete User",
+    "activateUser": "Activate User",
+    "deactivateUser": "Deactivate User",
+    "userStatus": "User Status",
+    "lastLogin": "Last Login",
+    "createdAt": "Created At",
+    "searchUsers": "Search users...",
+    "filterByRole": "Filter by role",
+    "allRoles": "All Roles",
+    "advertisers": "Advertisers",
+    "marketing": "Marketing",
+    "admin": "Administrators",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noUsersFound": "No users found"
+  },
+  "pending": {
+    "title": "Pending",
+    "description": "Review pending items and approvals",
+    "pendingApprovals": "Pending Approvals",
+    "review": "Review",
+    "approve": "Approve",
+    "reject": "Reject"
+  },
+  "queue": {
+    "title": "Queue",
+    "description": "Manage marketing queue and scheduled campaigns",
+    "marketingQueue": "Marketing Queue",
+    "scheduled": "Scheduled",
+    "processing": "Processing",
+    "completed": "Completed"
+  },
+  "AllAds": {
+    "title": "All Ads",
+    "description": "Manage all your ads in one place",
+    "marketingQueue": "Marketing Queue",
+    "scheduled": "Scheduled",
+    "processing": "Processing",
+    "completed": "Completed"
+  },
+  "AdminDashboard": {
+    "title": "Admin Dashboard",
+    "description": "Overview of admin metrics and system performance",
+    "totalUsers": "Total Users",
+    "activeCampaigns": "Active Campaigns",
+    "revenue": "Revenue",
+    "systemErrors": "System Errors"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Find answers to common questions about our platform",
+    "searchPlaceholder": "Search FAQ...",
+    "generalTitle": "General",
+    "accountTitle": "Account & Billing",
+    "adsTitle": "Advertising",
+    "supportTitle": "Support",
+    "questions": {
+      "introduction": {
+        "question": "Introduction",
+        "answer": "OctopusAd offers a modern marketing services network to improve the reach of your ads on the internet and purchase clicks. By using our service, you agree to the terms of service specified below."
+      },
+      "serviceUsage": {
+        "question": "1. Service Usage",
+        "answer": "You must provide accurate, truthful, and non-misleading information when creating your ads using the OctopusAd platform. We have the right to modify, suspend, or refuse to publish ads that may violate laws or these terms of service."
+      },
+      "contentRights": {
+        "question": "2. Content and Property Rights",
+        "answer": "You are responsible for all content you publish through our platform. This includes banner images, texts, links, and any other materials. By displaying this content through the OctopusAd platform, you grant us a license to use this content within the scope of providing our services to you and users."
+      },
+      "privacy": {
+        "question": "3. Privacy",
+        "answer": "We are committed to protecting your privacy and personal data. Your use of our platform is subject to our privacy policy that details how we collect, use, and protect your information. Please read the privacy policy carefully before using the platform."
+      },
+      "payment": {
+        "question": "4. Payment",
+        "answer": "OctopusAd platform services are based on a view purchase system. The customer is responsible for purchasing the service. Paid amounts cannot be refunded except according to the terms stated in the service agreement."
+      },
+      "userRights": {
+        "question": "5. User Rights",
+        "answer": "Users have the full right to control their personal information. They can view, modify, and delete it whenever they want. They can also choose not to receive any marketing communications."
+      },
+      "security": {
+        "question": "6. Security",
+        "answer": "We use the latest and most secure technologies to protect your data. We have a strong firewall and advanced encryption system to protect your information from any potential threats."
+      },
+      "updates": {
+        "question": "7. Updates",
+        "answer": "We are constantly working to improve our services. These improvements may require modifications to these terms. We will notify you of any material changes."
+      },
+      "law": {
+        "question": "8. Law",
+        "answer": "The applicable local laws in Saudi Arabia govern these terms and any dispute that may arise from them."
+      },
+      "services": {
+        "question": "9. Services",
+        "answer": "You can display banners of your online store or services to a wide audience and significantly increase your sales. We provide you with an easy-to-use and effective platform to market your products and services, with professional image design service and short link creation to direct the audience easily."
+      },
+      "bannerSize": {
+        "question": "10. Banner Size",
+        "answer": "The banner size must be 428x1108 to display it on the platform in a way that is easy to read by the audience."
+      },
+      "designProgram": {
+        "question": "11. Design Program",
+        "answer": "You can use Canva to design banner images professionally so you can upload them through the OctopusAd platform. Canva is a wonderful and easy-to-use design tool, perfect for creating attractive advertising banners for your platform."
+      }
+    }
+  }
+}

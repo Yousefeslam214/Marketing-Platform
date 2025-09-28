@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { TokenManager } from "@/lib/auth";
+import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export default function AdminUsers() {
   const { t, isRTL } = useLanguage();
@@ -29,7 +30,7 @@ export default function AdminUsers() {
       id: "1",
       username: "ahmed_rashid",
       email: "ahmed@example.com",
-      role: "advertiser",
+      role: "admin",
       freeViewsCredits: 8500,
       createdAt: "2024-01-15T10:00:00Z",
       adsCount: 5,
@@ -37,9 +38,9 @@ export default function AdminUsers() {
     },
     {
       id: "2",
-      username: "sara_marketing",
+      username: "sara_mohamed",
       email: "sara@boltads.com",
-      role: "marketing",
+      role: "user",
       freeViewsCredits: 10000,
       createdAt: "2024-01-10T09:30:00Z",
       adsCount: 0,
@@ -60,10 +61,9 @@ export default function AdminUsers() {
   const { data: usersData, isLoading: usersDataLoading } = useQuery({
     queryKey: ["/api/users", { limit: 2, page: 2 }],
     queryFn: async () => {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
       const token = TokenManager.getAccessToken();
       const res = await fetch(
-        `${baseUrl}/api/users/?limit=2&page=2`,
+        `${VITE_API_BASE_URL}/api/users/?limit=2&page=2`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -76,7 +76,7 @@ export default function AdminUsers() {
     enabled: !!TokenManager.getAccessToken(),
   });
   // const mockUsers = usersData;
-  console.log("Fetched users:", usersData);
+  console.log("Fetched users:", usersData?.data);
   const mockUsers = mockUsers1;
   // Check admin access
   // if (!isAuthenticated || user?.role !== "admin") {

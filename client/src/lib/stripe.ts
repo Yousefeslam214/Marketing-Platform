@@ -135,21 +135,7 @@ export class PaymentStatusHandler {
     }
   }
 
-  static getStatusColor(status: string): string {
-    switch (status) {
-      case PaymentStatus.SUCCEEDED:
-        return "text-green-600";
-      case PaymentStatus.PROCESSING:
-        return "text-blue-600";
-      case PaymentStatus.REQUIRES_ACTION:
-      case PaymentStatus.REQUIRES_CONFIRMATION:
-        return "text-yellow-600";
-      case PaymentStatus.CANCELED:
-        return "text-red-600";
-      default:
-        return "text-gray-600";
-    }
-  }
+  
 }
 
 // Price formatting utilities

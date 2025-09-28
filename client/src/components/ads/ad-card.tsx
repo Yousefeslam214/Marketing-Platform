@@ -4,6 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AdData } from "@/lib/schema/schema-ads";
+import { getStatusColor } from "@/lib/utils";
+
+export type { AdData };
 
 interface AdCardProps {
   ad: AdData;
@@ -13,6 +16,8 @@ interface AdCardProps {
   onAnalytics?: (id: string) => void;
   onPurchase?: (id: string) => void;
   showActions?: boolean;
+  onApprove?: (id: string) => void; // ✅ new
+  onReject?: (id: string) => void; // ✅ new
 }
 
 export function AdCard({
@@ -23,24 +28,9 @@ export function AdCard({
   onAnalytics,
   onPurchase,
   showActions = true,
+  onApprove,
+  onReject,
 }: AdCardProps) {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "published":
-        return "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400";
-      case "approved":
-        return "bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400";
-      case "pending":
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400";
-      case "rejected":
-        return "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400";
-      case "draft":
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400";
-      default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400";
-    }
-  };
-
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "published":
@@ -57,7 +47,9 @@ export function AdCard({
         return "fas fa-question-circle";
     }
   };
-
+console.log("Ad status:", ad.status, "Has approve/reject:", !!onApprove, !!onReject);
+const normalizedStatus = ad.status.toLowerCase();
+console.log("Normalized status:", normalizedStatus);
   const title = language === "ar" ? ad.titleAr : ad.titleEn;
   const description = language === "ar" ? ad.descriptionAr : ad.descriptionEn;
 
@@ -190,7 +182,32 @@ export function AdCard({
             )}
           </>
         )}
-
+        {(onApprove || onReject) && ad.status === "pending" && (
+          <div className="flex items-center gap-2 mt-3">
+            {onApprove && (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => onApprove(ad.id)}
+                className="flex-1"
+                data-testid={`button-approve-ad-${ad.id}`}>
+                <i className="fas fa-check mr-1"></i>
+                {language === "ar" ? "موافقة" : "Approve"}
+              </Button>
+            )}
+            {onReject && (
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => onReject(ad.id)}
+                className="flex-1"
+                data-testid={`button-reject-ad-${ad.id}`}>
+                <i className="fas fa-times mr-1"></i>
+                {language === "ar" ? "رفض" : "Reject"}
+              </Button>
+            )}
+          </div>
+        )}
         {ad.rejectionReason && (
           <div className="mt-3 pt-3 border-t border-border">
             <p

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { AnalyticsChart } from "@/components/analytics/analytics-chart";
 import { TokenManager } from "@/lib/auth";
+import { getStatusColor } from "@/lib/utils";
 
 export default function Analytics() {
   const { t, isRTL } = useLanguage();
@@ -95,19 +96,6 @@ export default function Analytics() {
       { hour: "22:00", impressions: 1200, clicks: 60 },
       { hour: "23:00", impressions: 1000, clicks: 50 },
     ],
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "published":
-        return "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400";
-      case "approved":
-        return "bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400";
-      case "pending":
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400";
-      default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400";
-    }
   };
 
   return (
