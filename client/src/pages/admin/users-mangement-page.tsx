@@ -16,6 +16,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { useState } from "react";
 import { TokenManager } from "@/lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
@@ -23,8 +31,25 @@ import { useApiQuery } from "@/hooks/useApiQuery";
 
 export default function AdminUsers() {
   const { t, isRTL } = useLanguage();
+  const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+
+  // Adjust limit based on search - show more results when searching
+  const effectiveLimit = searchQuery ? 20 : limit;
+
+  // Reset page when search query or filters change
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    setPage(1); // Reset to first page when searching
+  };
+
+  const handleRoleFilterChange = (value: string) => {
+    setRoleFilter(value);
+    setPage(1); // Reset to first page when filtering
+  };
 
   // const { data: usersData, isLoading: usersDataLoading } = useQuery({
   //   queryKey: ["/api/users", { limit: 2, page: 2 }],
@@ -44,16 +69,14 @@ export default function AdminUsers() {
   //   enabled: !!TokenManager.getAccessToken(),
   // });
 
-const limit = 5;
-const [page, setPage] = useState(1);
    const {
       data : usersData,
       isLoading,
       error,
       refetch,
     } = useApiQuery({
-      key: ["/api/users", page, limit],
-      url: `${VITE_API_BASE_URL}/api/users?page=${page}&limit=${limit}`,
+      key: ["/api/users", page, effectiveLimit],
+      url: `${VITE_API_BASE_URL}/api/users?page=${page}&limit=${effectiveLimit}`,
     });
   
   // const mockUsers = usersData;
@@ -111,23 +134,33 @@ const [page, setPage] = useState(1);
             <div className="flex-1 max-w-sm">
               <Input
                 type="search"
-                placeholder="Search users..."
+                placeholder={t("userManagement", "searchUsers")}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 data-testid="input-search-users"
               />
             </div>
-            <Select value={roleFilter} onValueChange={setRoleFilter}>
+            <Select value={roleFilter} onValueChange={handleRoleFilterChange}>
               <SelectTrigger
                 className="w-[180px]"
                 data-testid="select-role-filter">
-                <SelectValue placeholder="Filter by role" />
+                <SelectValue placeholder={t("userManagement", "filterByRole")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="advertiser">Advertisers</SelectItem>
-                <SelectItem value="marketing">Marketing</SelectItem>
-                <SelectItem value="admin">Admins</SelectItem>
+                <SelectItem value="all">{t("userManagement", "allRoles")}</SelectItem>
+                <SelectItem value="user">{t("userManagement", "users")}</SelectItem>
+                <SelectItem value="admin">{t("userManagement", "admin")}</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={limit.toString()} onValueChange={(value) => setLimit(Number(value))}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder={t("userManagement", "pageSize")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5">5 {t("userManagement", "perPage")}</SelectItem>
+                <SelectItem value="10">10 {t("userManagement", "perPage")}</SelectItem>
+                <SelectItem value="20">20 {t("userManagement", "perPage")}</SelectItem>
+                <SelectItem value="50">50 {t("userManagement", "perPage")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -164,7 +197,7 @@ const [page, setPage] = useState(1);
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-muted-foreground">Credits</p>
+                      <p className="text-muted-foreground">{t("userManagement", "credits")}</p>
                       <p
                         className="font-medium"
                         data-testid={`user-credits-${userData.id}`}>
@@ -172,7 +205,7 @@ const [page, setPage] = useState(1);
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">Ads</p>
+                      <p className="text-muted-foreground">{t("userManagement", "ads")}</p>
                       <p
                         className="font-medium"
                         data-testid={`user-ads-count-${userData.id}`}>
@@ -183,7 +216,7 @@ const [page, setPage] = useState(1);
 
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-muted-foreground">Total Spend</p>
+                      <p className="text-muted-foreground">{t("userManagement", "totalSpend")}</p>
                       <p
                         className="font-medium"
                         data-testid={`user-spend-${userData.id}`}>
@@ -191,7 +224,7 @@ const [page, setPage] = useState(1);
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">Joined</p>
+                      <p className="text-muted-foreground">{t("userManagement", "joined")}</p>
                       <p
                         className="font-medium"
                         data-testid={`user-joined-${userData.id}`}>
@@ -204,31 +237,87 @@ const [page, setPage] = useState(1);
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => setLocation(`/admin/user-details/${userData.id}`)}
                       data-testid={`button-view-user-${userData.id}`}>
                       <i className="fas fa-eye mr-1"></i>
-                      View
+                      {t("userManagement", "view")}
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="outline"
                       size="sm"
                       data-testid={`button-edit-user-${userData.id}`}>
                       <i className="fas fa-edit mr-1"></i>
                       Edit
-                    </Button>
+                    </Button> */}
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
+          {/* Pagination Controls */}
+          {usersData?.data?.pagination && !searchQuery && (
+            <div className="mt-6 flex items-center justify-between">
+              <div className="text-sm text-muted-foreground">
+                {t("userManagement", "showing")} {((usersData.data.pagination.currentPage - 1) * effectiveLimit) + 1} {t("userManagement", "to")}{" "}
+                {Math.min(usersData.data.pagination.currentPage * effectiveLimit, usersData.data.pagination.totalItems)}{" "}
+                {t("userManagement", "of")} {usersData.data.pagination.totalItems} {t("userManagement", "usersTotal")}
+              </div>
+              <Pagination className="mx-0 w-auto">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => usersData.data.pagination.hasPrevious && setPage(page - 1)}
+                      className={
+                        !usersData.data.pagination.hasPrevious
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
+                      }
+                    />
+                  </PaginationItem>
+
+                  {/* Page numbers */}
+                  {Array.from(
+                    { length: Math.min(5, usersData.data.pagination.totalPages) },
+                    (_, i) => {
+                      const pageNum = Math.max(1, usersData.data.pagination.currentPage - 2) + i;
+                      if (pageNum > usersData.data.pagination.totalPages) return null;
+                      return (
+                        <PaginationItem key={pageNum}>
+                          <PaginationLink
+                            isActive={usersData.data.pagination.currentPage === pageNum}
+                            onClick={() => setPage(pageNum)}
+                            className="cursor-pointer">
+                            {pageNum}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    }
+                  )}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => usersData.data.pagination.hasNext && setPage(page + 1)}
+                      className={
+                        !usersData.data.pagination.hasNext
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+
           {filteredUsers?.length === 0 && (
             <div className="text-center py-12">
               <i className="fas fa-users text-6xl text-muted-foreground mb-6"></i>
               <h3 className="text-xl font-semibold text-foreground mb-2">
-                No users found
+                {t("userManagement", "noUsersFound")}
               </h3>
               <p className="text-muted-foreground">
-                Try adjusting your search or filter criteria
+                {t("userManagement", "tryAdjusting")}
               </p>
             </div>
           )}

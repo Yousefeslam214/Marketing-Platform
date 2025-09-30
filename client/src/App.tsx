@@ -41,6 +41,7 @@ import RejectedAds from "./pages/shared/ad/rejected-ads";
 import PendingAds from "./pages/shared/ad/pending-ads";
 import AllAds from "./pages/shared/ad/all-ads";
 import AdminUsers from "./pages/admin/users-mangement-page";
+import UserDetails from "./pages/admin/user-details";
 import AdDetail from "./pages/shared/ad/[id]";
 import AnalyticsToAd from "./pages/user/analytics-to-ad";
 
@@ -182,6 +183,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <AdminUsers />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/user-details/:id"
+        component={() => (
+          <AppLayout>
+            <UserDetails />
           </AppLayout>
         )}
       />
