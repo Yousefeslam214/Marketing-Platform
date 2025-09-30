@@ -229,10 +229,25 @@
   "AdminDashboard": {
     "title": "Admin Dashboard",
     "description": "Overview of admin metrics and system performance",
+    "manageUsers": "Manage Users",
     "totalUsers": "Total Users",
     "activeCampaigns": "Active Campaigns",
     "revenue": "Revenue",
-    "systemErrors": "System Errors"
+    "systemErrors": "System Errors",
+    "loading": "Loading...",
+    "systemPerformance": "System Performance",
+    "recentLogs": "Recent Logs",
+    "noRecentLogs": "No recent logs available",
+    "systemHealth": "System Health",
+    "userActivity": "User Activity",
+    "adApprovals": "Ad Approvals",
+    "systemStats": "System Statistics",
+    "activeUsers": "Active Users",
+    "totalAds": "Total Ads",
+    "pendingReviews": "Pending Reviews",
+    "systemAlerts": "System Alerts",
+    "maintenanceMode": "Maintenance Mode",
+    "backupStatus": "Backup Status"
   },
   "faq": {
     "title": "Frequently Asked Questions",

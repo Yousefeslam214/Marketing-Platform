@@ -5,11 +5,15 @@ import { TokenManager } from "@/lib/auth";
 
 interface UseApiQueryOptions {
   key: (string | number)[]; // query key can be array of strings and numbers
-  url: string;            // API endpoint (relative or full URL)
-  enabled?: boolean;      // optional enable/disable
+  url: string; // API endpoint (relative or full URL)
+  enabled?: boolean; // optional enable/disable
 }
 
-export function useApiQuery<T = any>({ key, url, enabled = true }: UseApiQueryOptions) {
+export function useApiQuery<T = any>({
+  key,
+  url,
+  enabled = true,
+}: UseApiQueryOptions) {
   const [, setLocation] = useLocation();
 
   return useQuery<T>({

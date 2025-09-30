@@ -34,6 +34,7 @@ import {
   adminApprovedAdsPath,
   adminPendingAdsPath,
   adminRejectedAdsPath,
+  campaignPath,
 } from "./lib/paths";
 import ApprovedAds from "./pages/shared/ad/approved-ads";
 import RejectedAds from "./pages/shared/ad/rejected-ads";
@@ -41,6 +42,7 @@ import PendingAds from "./pages/shared/ad/pending-ads";
 import AllAds from "./pages/shared/ad/all-ads";
 import AdminUsers from "./pages/admin/users-mangement-page";
 import AdDetail from "./pages/shared/ad/[id]";
+import AnalyticsToAd from "./pages/user/analytics-to-ad";
 
 function Router() {
   return (
@@ -96,6 +98,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <AllAds />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={campaignPath(":id")}
+        component={(props: { params: { id: string } }) => (
+          <AppLayout>
+            <AnalyticsToAd />
           </AppLayout>
         )}
       />
@@ -184,7 +194,7 @@ function Router() {
         )}
       />
       <Route
-        path="/admin/adminDashboard"
+        path="/admin/dashboard"
         component={() => (
           <AppLayout>
             <AdminDashboard />

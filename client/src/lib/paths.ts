@@ -123,6 +123,6 @@ export function userPath(userId: string) {
 }
 
 export function campaignPath(campaignId: string) {
-  return `/campaigns/${campaignId}`;
+  return `/campaigns/${campaignId}/analytics`;
 }
 
