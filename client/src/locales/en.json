@@ -251,6 +251,22 @@
     "active": "Active",
     "inactive": "Inactive"
   },
+  "auth": {
+    "loginSuccess": "Login successful",
+    "welcomeBack": "Welcome back!",
+    "loginFailed": "Login failed",
+    "invalidCredentials": "Invalid email or password",
+    "title": "Sign In",
+    "description": "Sign in to your marketing platform account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
   "pending": {
     "title": "Pending",
     "description": "Review pending items and approvals",
@@ -356,5 +372,43 @@
         "answer": "You can use Canva to design banner images professionally so you can upload them through the OctopusAd platform. Canva is a wonderful and easy-to-use design tool, perfect for creating attractive advertising banners for your platform."
       }
     }
+  },
+  "adminBilling": {
+    "title": "Admin Billing",
+    "description": "Manage users' subscriptions, invoices, refunds, and errors",
+    "overview": "Overview",
+    "totalRevenue": "Total Revenue",
+    "activeSubscriptions": "Active Subscriptions",
+    "failedPayments": "Failed Payments",
+    "refunds": "Refunds",
+    "adminActions": "Admin Actions",
+    "userIdPlaceholder": "User ID",
+    "userEmailPlaceholder": "User Email",
+    "userNamePlaceholder": "User Name",
+    "adjustBalancePlaceholder": "Adjust Balance (+/-)",
+    "adjustBalance": "Adjust Balance",
+    "selectAction": "Select Action",
+    "forceUpgrade": "Force Upgrade",
+    "forceDowngrade": "Force Downgrade",
+    "cancelSubscription": "Cancel Subscription",
+    "pauseSubscription": "Pause Subscription",
+    "apply": "Apply",
+    "invoicesPayments": "Invoices & Payments",
+    "retry": "Retry",
+    "download": "Download",
+    "errorHandling": "Error & Issue Handling",
+    "errorLogsDescription": "Show transaction error logs here…",
+    "balanceAdjusted": "Balance Adjusted",
+    "balanceAdjustedDescription": "User {userId}: {amount}${amount}",
+    "paymentRetry": "Payment Retry",
+    "paymentRetryDescription": "Retry triggered for {invoiceId}",
+    "paid": "Paid",
+    "failed": "Failed",
+    "pending": "Pending",
+    "refunded": "Refunded",
+    "basicPlan": "Basic Plan",
+    "proPlan": "Pro Plan",
+    "businessPlan": "Business Plan",
+    "enterprisePlan": "Enterprise Plan"
   }
 }
