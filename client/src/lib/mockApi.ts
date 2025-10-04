@@ -13,7 +13,7 @@ const MOCK_RESPONSES: Record<string, any> = {
   "/api/auth/signup": {
     user: MOCK_USER,
   },
-  "/api/auth/me": {
+  "/api/auth/login": {
     user: MOCK_USER,
   },
   "/api/dashboard/metrics": {

@@ -1,15 +1,22 @@
-import { Header } from "@/components/layout/header";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useLanguage } from "@/hooks/use-language";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/hooks/use-language";
+import { Header } from "@/components/layout/header";
+import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { TokenManager } from "@/lib/auth";
-import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
-import { useState } from "react";
 
 // TypeScript interfaces for the API response
 interface PaymentItem {
@@ -74,7 +81,7 @@ export default function AdminBilling() {
   const adjustBalanceMutation = {
     mutate: ({ userId, amount }: { userId: string; amount: number }) => {
       toast({
-        title: "Balance Adjusted",
+        title: t("adminBilling", "balanceAdjusted"),
         description: `User ${userId}: ${amount > 0 ? "+" : ""}$${amount}`,
         variant: "default",
       });
@@ -84,10 +91,10 @@ export default function AdminBilling() {
   };
 
   const retryPaymentMutation = {
-    mutate: (invoiceId: string) => {
+    mutate: (paymentId: string) => {
       toast({
-        title: "Payment Retry",
-        description: `Retry triggered for ${invoiceId}`,
+        title: t("adminBilling", "paymentRetry"),
+        description: `Retry triggered for ${paymentId}`,
         variant: "default",
       });
     },
@@ -95,12 +102,10 @@ export default function AdminBilling() {
 
   return (
     <div className="flex h-screen bg-background">
-      {/* <Sidebar /> */}
-
       <div className="flex-1 overflow-auto">
         <Header
-          title="Admin Billing"
-          description="Manage users’ subscriptions, invoices, refunds, and errors"
+          title={t("adminBilling", "title")}
+          description={t("adminBilling", "description")}
         />
 
         <main className="p-6 space-y-6">
@@ -113,9 +118,10 @@ export default function AdminBilling() {
                   variant="outline"
                   size="sm"
                   onClick={() => refetch()}
-                  disabled={isLoading}
-                >
-                  {isLoading ? t("adminBilling", "loading") : t("adminBilling", "refresh")}
+                  disabled={isLoading}>
+                  {isLoading
+                    ? t("adminBilling", "loading")
+                    : t("adminBilling", "refresh")}
                 </Button>
               </CardTitle>
             </CardHeader>
@@ -127,7 +133,7 @@ export default function AdminBilling() {
                   </p>
                 </div>
               )}
-              
+
               {isLoading ? (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[1, 2, 3, 4].map((i) => (
@@ -164,7 +170,9 @@ export default function AdminBilling() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">{metrics.totalTransactions}</p>
+                    <p className="text-2xl font-bold">
+                      {metrics.totalTransactions}
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       {t("adminBilling", "totalTransactions")}
                     </p>
@@ -189,9 +197,7 @@ export default function AdminBilling() {
                 <Input
                   placeholder={t("adminBilling", "userEmailPlaceholder")}
                 />
-                <Input
-                  placeholder={t("adminBilling", "userNamePlaceholder")}
-                />
+                <Input placeholder={t("adminBilling", "userNamePlaceholder")} />
                 <Input
                   placeholder={t("adminBilling", "adjustBalancePlaceholder")}
                   type="number"
@@ -203,17 +209,31 @@ export default function AdminBilling() {
               <div className="flex gap-4">
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder={t("adminBilling", "selectAction")} />
+                    <SelectValue
+                      placeholder={t("adminBilling", "selectAction")}
+                    />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="upgrade">{t("adminBilling", "forceUpgrade")}</SelectItem>
-                    <SelectItem value="downgrade">{t("adminBilling", "forceDowngrade")}</SelectItem>
-                    <SelectItem value="cancel">{t("adminBilling", "cancelSubscription")}</SelectItem>
-                    <SelectItem value="pause">{t("adminBilling", "pauseSubscription")}</SelectItem>
-                    <SelectItem value="adjust">{t("adminBilling", "adjustBalance")}</SelectItem>
+                    <SelectItem value="upgrade">
+                      {t("adminBilling", "forceUpgrade")}
+                    </SelectItem>
+                    <SelectItem value="downgrade">
+                      {t("adminBilling", "forceDowngrade")}
+                    </SelectItem>
+                    <SelectItem value="cancel">
+                      {t("adminBilling", "cancelSubscription")}
+                    </SelectItem>
+                    <SelectItem value="pause">
+                      {t("adminBilling", "pauseSubscription")}
+                    </SelectItem>
+                    <SelectItem value="adjust">
+                      {t("adminBilling", "adjustBalance")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
-                <Button disabled={!selectedUser}>{t("adminBilling", "apply")}</Button>
+                <Button disabled={!selectedUser}>
+                  {t("adminBilling", "apply")}
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -227,7 +247,9 @@ export default function AdminBilling() {
               {isLoading ? (
                 <div className="space-y-3">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="animate-pulse p-3 border rounded-lg">
+                    <div
+                      key={i}
+                      className="animate-pulse p-3 border rounded-lg">
                       <div className="h-4 bg-muted rounded mb-2"></div>
                       <div className="h-3 bg-muted rounded w-2/3 mb-2"></div>
                       <div className="h-3 bg-muted rounded w-1/3"></div>
@@ -242,17 +264,21 @@ export default function AdminBilling() {
                       className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
                         <p className="font-medium">
-                          {payment.id.substring(0, 8)}... - ${parseFloat(payment.amount).toFixed(2)}
+                          {payment.id.substring(0, 8)}... - $
+                          {parseFloat(payment.amount).toFixed(2)}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          User: {payment.userId.substring(0, 8)}... - {new Date(payment.createdAt).toLocaleDateString()}
+                          User: {payment.userId.substring(0, 8)}... -{" "}
+                          {new Date(payment.createdAt).toLocaleDateString()}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge className={getStatusColor(payment.status)}>
-                            {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                            {payment.status.charAt(0).toUpperCase() +
+                              payment.status.slice(1)}
                           </Badge>
                           <span className="text-xs text-muted-foreground">
-                            {payment.method.toUpperCase()} - {payment.currency.toUpperCase()}
+                            {payment.method.toUpperCase()} -{" "}
+                            {payment.currency.toUpperCase()}
                           </span>
                         </div>
                       </div>
@@ -260,7 +286,9 @@ export default function AdminBilling() {
                         {payment.status === "failed" && (
                           <Button
                             size="sm"
-                            onClick={() => retryPaymentMutation.mutate(payment.id)}>
+                            onClick={() =>
+                              retryPaymentMutation.mutate(payment.id)
+                            }>
                             {t("adminBilling", "retry")}
                           </Button>
                         )}

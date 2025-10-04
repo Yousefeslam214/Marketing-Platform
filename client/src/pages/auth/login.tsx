@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,10 +21,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/hooks/use-language";
 
 export default function Login() {
+  const { isRTL, t } = useLanguage();
   const [, setLocation] = useLocation();
-  const { login, isLoading, isAuthenticated } = useAuth();
+  const { login, isLoading } = useAuth();
   const { toast } = useToast();
 
   const form = useForm<LoginData>({
@@ -36,41 +37,45 @@ export default function Login() {
     },
   });
 
-  // Redirect if already authenticated
-  if (isAuthenticated) {
-    setLocation("/dashboard");
-    return null;
-  }
-
   const onSubmit = async (data: LoginData) => {
     try {
       await login(data);
       setLocation("/dashboard");
       toast({
-        title: "Login successful",
-        description: "Welcome back!",
+        title: t("auth", "loginSuccess") || "Login successful",
+        description: t("auth", "welcomeBack") || "Welcome back!",
       });
     } catch (error: any) {
       toast({
-        title: "Login failed",
-        description: error.message || "Invalid email or password",
+        title: t("auth", "loginFailed") || "Login failed",
+        description:
+          error.message ||
+          t("auth", "invalidCredentials") ||
+          "Invalid email or password",
         variant: "destructive",
       });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div
+      className={`min-h-screen flex items-center justify-center bg-background px-4 ${
+        isRTL ? "rtl" : "ltr"
+      }`}>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <i className="fas fa-bolt text-primary-foreground text-lg"></i>
+          <div className="flex items-center justify-between flex-col mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <i className="fas fa-bolt text-primary-foreground text-lg"></i>
+              </div>
+              <CardTitle className="text-2xl">octopusad</CardTitle>
             </div>
-            <CardTitle className="text-2xl">octopusad</CardTitle>
+            {/* <LanguageToggle /> */}
           </div>
           <CardDescription>
-            Sign in to your marketing platform account
+            {t("auth", "description") ||
+              "Sign in to your marketing platform account"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -81,11 +86,13 @@ export default function Login() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("auth", "email") || "Email"}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder={
+                          t("auth", "emailPlaceholder") || "Enter your email"
+                        }
                         data-testid="input-email"
                         {...field}
                       />
@@ -100,11 +107,14 @@ export default function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("auth", "password") || "Password"}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Enter your password"
+                        placeholder={
+                          t("auth", "passwordPlaceholder") ||
+                          "Enter your password"
+                        }
                         data-testid="input-password"
                         {...field}
                       />
@@ -121,11 +131,14 @@ export default function Login() {
                 data-testid="button-login">
                 {isLoading ? (
                   <>
-                    <i className="fas fa-spinner fa-spin mr-2"></i>
-                    Signing in...
+                    <i
+                      className={`fas fa-spinner fa-spin ${
+                        isRTL ? "ml-2" : "mr-2"
+                      }`}></i>
+                    {t("auth", "signingIn") || "Signing in..."}
                   </>
                 ) : (
-                  "Sign In"
+                  t("auth", "signIn") || "Sign In"
                 )}
               </Button>
             </form>
@@ -133,12 +146,12 @@ export default function Login() {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              {t("auth", "noAccount") || "Don't have an account?"}{" "}
               <Link
                 href="/signup"
                 className="text-primary hover:underline"
                 data-testid="link-signup">
-                Sign up
+                {t("auth", "signUp") || "Sign up"}
               </Link>
             </p>
           </div>

@@ -2,33 +2,24 @@ import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
-// import { Button } from "@/components/ui/button";
 import { AdCard } from "@/components/ads/ad-card";
 import { AdData } from "@/lib/schema/schema-ads";
 import { TokenManager } from "@/lib/auth";
 import { useAdNavigation } from "@/hooks/use-path-handlers";
 import { VITE_API_BASE_URL } from "@/lib/utils";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { DataPagination } from "@/components/ui/data-pagination";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { toast } from "@/hooks/use-toast";
-// import { toast } from "@/components/ui/use-toast";
 
 export default function PendingAds() {
   const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
-  const [page, setPage] = useState(1);
-  const limit = 5;
+  const [page, setPage] = useState<string>("1");
+  const [limit, setLimit] = useState<string>("5");
 
   const { handleViewAd } = useAdNavigation();
 
@@ -47,28 +38,40 @@ export default function PendingAds() {
   console.log(pendingAds);
   const token = TokenManager.getAccessToken();
   const handleApprove = async (id: string) => {
-    const res = await fetch(`${VITE_API_BASE_URL}/api/advertising/${id}/approve`, {
-      method: "PUT",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(
+      `${VITE_API_BASE_URL}/api/advertising/${id}/approve`,
+      {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     if (res.ok) {
       toast({ title: isRTL ? "تمت الموافقة على الإعلان" : "Ad approved" });
       refetch();
     } else {
-      toast({ title: isRTL ? "فشل في الموافقة على الإعلان" : "Failed to approve ad", variant: "destructive" });
+      toast({
+        title: isRTL ? "فشل في الموافقة على الإعلان" : "Failed to approve ad",
+        variant: "destructive",
+      });
     }
   };
 
   const handleReject = async (id: string) => {
-    const res = await fetch(`${VITE_API_BASE_URL}/api/advertising/${id}/reject`, {
-      method: "PUT",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(
+      `${VITE_API_BASE_URL}/api/advertising/${id}/reject`,
+      {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     if (res.ok) {
       toast({ title: isRTL ? "تم رفض الإعلان" : "Ad rejected" });
       refetch();
     } else {
-      toast({ title: isRTL ? "فشل في رفض الإعلان" : "Failed to reject ad", variant: "destructive" });
+      toast({
+        title: isRTL ? "فشل في رفض الإعلان" : "Failed to reject ad",
+        variant: "destructive",
+      });
     }
   };
   if (isLoading) {
@@ -106,24 +109,30 @@ export default function PendingAds() {
 
         <main className="p-6">
           {isLoading ? (
-            <Loading />
+            <div className="min-h-[74vh]">
+              <Loading />
+            </div>
           ) : pendingAds.length > 0 ? (
+                   <div className="min-h-[74vh]">
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+          
               {pendingAds.map((ad: AdData) => (
                 <>
-                  
                   <AdCard
                     key={ad.id}
                     ad={ad}
                     language={isRTL ? "ar" : "en"}
                     onView={handleViewAd}
-                     onApprove={handleApprove}
-                  onReject={handleReject}
+                    onApprove={handleApprove}
+                    onReject={handleReject}
                   />
                 </>
               ))}
             </div>
+            </div>
           ) : (
+                 <div className="min-h-[74vh]">
+          
             <div className="text-center py-12">
               <i className="fas fa-hourglass-half text-6xl text-yellow-500 mb-6"></i>
               <h3 className="text-xl font-semibold text-foreground mb-2">
@@ -135,54 +144,21 @@ export default function PendingAds() {
                   : "Ads you submit for review will appear here until they are approved or rejected."}
               </p>
             </div>
+            </div>
           )}
 
-          {ads?.data?.pagination && (
-            <Pagination className="mt-6" dir={isRTL ? "rtl" : "ltr"}>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() =>
-                      ads.data.pagination.hasPrevious && setPage((p) => p - 1)
-                    }
-                    className={
-                      !ads.data.pagination.hasPrevious
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                    aria-label={isRTL ? "السابق" : "Previous"}
-                  />
-                </PaginationItem>
-
-                {/* Page numbers */}
-                {Array.from(
-                  { length: ads.data.pagination.totalPages },
-                  (_, i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink
-                        isActive={ads.data.pagination.currentPage === i + 1}
-                        onClick={() => setPage(i + 1)}>
-                        {i + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  )
-                )}
-
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() =>
-                      ads.data.pagination.hasNext && setPage((p) => p + 1)
-                    }
-                    className={
-                      !ads.data.pagination.hasNext
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                    aria-label={isRTL ? "التالي" : "Next"}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+          {ads?.pagination && (
+            <DataPagination
+              pagination={ads?.pagination}
+              currentPage={page}
+              onPageChange={setPage}
+              pageSize={limit}
+              onPageSizeChange={setLimit}
+              showPageSizeSelector={true}
+              pageSizeOptions={[5, 10, 20, 50]}
+              showInfo={true}
+              className="mt-6"
+            />
           )}
         </main>
       </div>

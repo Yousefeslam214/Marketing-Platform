@@ -59,8 +59,14 @@ export function userDashboardPath() {
   return "/dashboard";
 }
 
-export function userCampaignsPath() {
+export function campaignsPath() {
   return "/campaigns";
+}
+export function newCampaignsPath() {
+  return "/campaigns/new";
+}
+export function detailedCampaignsPath() {
+  return "/campaigns/:id";
 }
 
 export function userBillingPath() {
@@ -90,6 +96,10 @@ export function helpPath() {
 
 export function contactPath() {
   return "/contact";
+}
+
+export function privacyTermsPath() {
+  return "/privacy-terms";
 }
 
 export function termsPath() {
@@ -122,7 +132,12 @@ export function userPath(userId: string) {
   return `/users/${userId}`;
 }
 
-export function campaignPath(campaignId: string) {
-  return `/campaigns/${campaignId}/analytics`;
+
+
+export function analyticsCampaignPath(campaignId: string) {
+  return `/analytics/${campaignId}`;
 }
 
+export function adminBillingPath() {
+  return `/admin/adminBilling`;
+}

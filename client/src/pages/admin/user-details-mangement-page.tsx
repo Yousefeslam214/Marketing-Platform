@@ -61,8 +61,8 @@ export default function UserDetails() {
     error,
     refetch,
   } = useApiQuery({
-    key: ["/api/users", safeId],
-    url: `${VITE_API_BASE_URL}/api/users/${safeId}`,
+    key: [`/api/user/userDetails/${safeId}`, safeId],
+    url: `${VITE_API_BASE_URL}/api/user/userDetails/${safeId}`,
   });
 
   const deleteUserMutation = useMutation({
@@ -100,12 +100,15 @@ export default function UserDetails() {
   const promoteUserMutation = useMutation({
     mutationFn: async () => {
       const token = TokenManager.getAccessToken();
-      const res = await fetch(`${VITE_API_BASE_URL}/api/users/promote/${safeId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${VITE_API_BASE_URL}/api/users/promote/${safeId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!res.ok) throw new Error("Failed to promote user");
       return res.json();
     },
@@ -172,7 +175,9 @@ export default function UserDetails() {
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
         <div className="flex-1 overflow-auto">
           <div className="text-center py-12">
-            <p className="text-destructive">{t("userDetails", "errorLoadingUser")}</p>
+            <p className="text-destructive">
+              {t("userDetails", "errorLoadingUser")}
+            </p>
             <Button onClick={() => refetch()} className="mt-4">
               {t("userDetails", "retry")}
             </Button>
@@ -197,7 +202,10 @@ export default function UserDetails() {
                 variant="outline"
                 onClick={() => setLocation("/admin/users")}
                 data-testid="button-back-to-users">
-                <i className={`fas fa-arrow-left ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                <i
+                  className={`fas fa-arrow-left ${
+                    isRTL ? "ml-2" : "mr-2"
+                  }`}></i>
                 {t("userDetails", "backToUsers")}
               </Button>
             </div>
@@ -223,7 +231,9 @@ export default function UserDetails() {
                       {user.role}
                     </Badge>
                     <Badge className={getStatusBadgeColor(user.verified)}>
-                      {user.verified ? t("userDetails", "verified") : t("userDetails", "unverified")}
+                      {user.verified
+                        ? t("userDetails", "verified")
+                        : t("userDetails", "unverified")}
                     </Badge>
                   </div>
                 </div>
@@ -233,8 +243,13 @@ export default function UserDetails() {
                       onClick={handlePromoteUser}
                       disabled={isPromoting}
                       variant="default">
-                      <i className={`fas fa-user-shield ${isRTL ? "ml-2" : "mr-2"}`}></i>
-                      {isPromoting ? t("userDetails", "promoting") : t("userDetails", "promoteToAdmin")}
+                      <i
+                        className={`fas fa-user-shield ${
+                          isRTL ? "ml-2" : "mr-2"
+                        }`}></i>
+                      {isPromoting
+                        ? t("userDetails", "promoting")
+                        : t("userDetails", "promoteToAdmin")}
                     </Button>
                   )}
                   <AlertDialog>
@@ -243,19 +258,31 @@ export default function UserDetails() {
                         variant="destructive"
                         disabled={isDeleting}
                         data-testid="button-delete-user">
-                        <i className={`fas fa-trash ${isRTL ? "ml-2" : "mr-2"}`}></i>
-                        {isDeleting ? t("userDetails", "deleting") : t("userDetails", "deleteUser")}
+                        <i
+                          className={`fas fa-trash ${
+                            isRTL ? "ml-2" : "mr-2"
+                          }`}></i>
+                        {isDeleting
+                          ? t("userDetails", "deleting")
+                          : t("userDetails", "deleteUser")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>{t("userDetails", "confirmDelete")}</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          {t("userDetails", "confirmDelete")}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          {t("userDetails", "deleteConfirmDescription").replace("{username}", user.username)}
+                          {t("userDetails", "deleteConfirmDescription").replace(
+                            "{username}",
+                            user.username
+                          )}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>{t("userDetails", "cancel")}</AlertDialogCancel>
+                        <AlertDialogCancel>
+                          {t("userDetails", "cancel")}
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={handleDeleteUser}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
@@ -392,7 +419,9 @@ export default function UserDetails() {
                           <i className="fab fa-facebook text-blue-600"></i>
                         </div>
                         <div>
-                          <p className="font-medium text-foreground">{page.pageName}</p>
+                          <p className="font-medium text-foreground">
+                            {page.pageName}
+                          </p>
                           <p className="text-sm text-muted-foreground">
                             {page.pageType} • ID: {page.pageId}
                           </p>
@@ -404,7 +433,9 @@ export default function UserDetails() {
                             ? "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400"
                             : "bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400"
                         }>
-                        {page.isActive ? t("userDetails", "active") : t("userDetails", "inactive")}
+                        {page.isActive
+                          ? t("userDetails", "active")
+                          : t("userDetails", "inactive")}
                       </Badge>
                     </div>
                   ))}

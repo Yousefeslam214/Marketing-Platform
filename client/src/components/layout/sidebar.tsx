@@ -1,12 +1,13 @@
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage } from "@/hooks/use-language";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   adminDashboardPath,
@@ -15,10 +16,8 @@ import {
   adminPendingAdsPath,
   adminApprovedAdsPath,
   adminRejectedAdsPath,
-  adminAnalyticsPath,
-  adminSettingsPath,
   userDashboardPath,
-  userCampaignsPath,
+  // userCampaignsPath,
   userBillingPath,
   userAnalyticsPath,
   userProfilePath,
@@ -26,7 +25,11 @@ import {
   faqPath,
   helpPath,
   contactPath,
+  privacyTermsPath,
+  adminBillingPath,
+  campaignsPath,
 } from "@/lib/paths";
+import { TokenManager } from "@/lib/auth";
 interface NavigationItem {
   name: string;
   href: string;
@@ -40,10 +43,16 @@ interface NavigationSection {
   items: NavigationItem[];
 }
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const [location] = useLocation();
   const { user, logout } = useAuth();
   const { t, isRTL } = useLanguage();
+  const isMobile = useIsMobile();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const toggleExpanded = (itemName: string) => {
@@ -56,91 +65,107 @@ export function Sidebar() {
 
   // Define navigation sections based on user role
   const navigation: NavigationSection[] = [];
-
+  const role = TokenManager.getRole();
   // Admin section for admin/marketing users
-  // if (user?.role === "admin" || user?.role === "marketing") {
-  // Admin section
-  navigation.push({
-    section: t("sidebar", "adminSection"),
-    items: [
-      {
-        name: t("sidebar", "dashboard"),
-        href: adminDashboardPath(),
-        icon: "fas fa-chart-line",
-        // badge: "3",
-      },
-      {
-        name: t("sidebar", "adsManagement"),
-        href: "#",
-        icon: "fas fa-ad",
-        subItems: [
-          {
-            name: t("sidebar", "AllAds"),
-            href: adminAllAdsPath(),
-            icon: "fas fa-list",
-            // badge: "12",
-          },
-          {
-            name: t("sidebar", "pending"),
-            href: adminPendingAdsPath(),
-            icon: "fas fa-clock",
-            // badge: "3",
-          },
-          {
-            name: t("sidebar", "approved"),
-            href: adminApprovedAdsPath(),
-            icon: "fas fa-check-circle",
-            // badge: "7",
-          },
-          {
-            name: t("sidebar", "rejected"),
-            href: adminRejectedAdsPath(),
-            icon: "fas fa-times-circle",
-            // badge: "2",
-          },
-        ],
-      },
-      {
-        name: t("sidebar", "userManagement"),
-        href: adminUsersPath(),
-        icon: "fas fa-users",
-      },
-    ],
-  });
+  if (role === "admin") {
+    // Admin section
+    navigation.push({
+      section: t("sidebar", "adminSection"),
+      items: [
+        {
+          name: t("sidebar", "dashboard"),
+          href: adminDashboardPath(),
+          icon: "fas fa-chart-line",
+          // badge: "3",
+        },
+        {
+          name: t("sidebar", "adsManagement"),
+          href: "#",
+          icon: "fas fa-ad",
+          subItems: [
+            {
+              name: t("sidebar", "AllAds"),
+              href: adminAllAdsPath(),
+              icon: "fas fa-list",
+              // badge: "12",
+            },
+            {
+              name: t("sidebar", "pending"),
+              href: adminPendingAdsPath(),
+              icon: "fas fa-clock",
+              // badge: "3",
+            },
+            {
+              name: t("sidebar", "approved"),
+              href: adminApprovedAdsPath(),
+              icon: "fas fa-check-circle",
+              // badge: "7",
+            },
+            {
+              name: t("sidebar", "rejected"),
+              href: adminRejectedAdsPath(),
+              icon: "fas fa-times-circle",
+              // badge: "2",
+            },
+          ],
+        },
+        {
+          name: t("sidebar", "userManagement"),
+          href: adminUsersPath(),
+          icon: "fas fa-users",
+        },
+        {
+          name: t("sidebar", "billing"),
+          href: adminBillingPath(),
+          icon: "fas fa-credit-card",
+        },
+      ],
+    });
+  }
 
-  // User section
-  navigation.push({
-    section: t("sidebar", "mainSection"),
-    items: [
-      {
-        name: t("sidebar", "dashboard"),
-        href: userDashboardPath(),
-        icon: "fas fa-chart-line",
-      },
-      {
-        name: t("sidebar", "myAds"),
-        href: userCampaignsPath(),
-        icon: "fas fa-ad",
-      },
-      {
-        name: t("sidebar", "billing"),
-        href: userBillingPath(),
-        icon: "fas fa-credit-card",
-      },
-      {
-        name: t("sidebar", "analytics"),
-        href: userAnalyticsPath(),
-        icon: "fas fa-chart-bar",
-      },
-      {
-        name: t("sidebar", "faq"),
-        href: faqPath(),
-        icon: "fas fa-question-circle",
-      },
-    ],
-  });
-
-  // }
+  if (role === "user") {
+    // User section
+    navigation.push({
+      section: t("sidebar", "mainSection"),
+      items: [
+        {
+          name: t("sidebar", "dashboard"),
+          href: userDashboardPath(),
+          icon: "fas fa-chart-line",
+        },
+        {
+          name: t("sidebar", "myAds"),
+          href: campaignsPath(),
+          icon: "fas fa-ad",
+        },
+        {
+          name: t("sidebar", "billing"),
+          href: userBillingPath(),
+          icon: "fas fa-credit-card",
+        },
+        // {
+        //   name: t("sidebar", "analytics"),
+        //   href: userAnalyticsPath(),
+        //   icon: "fas fa-chart-bar",
+        // },
+        {
+          name: t("sidebar", "faq"),
+          href: faqPath(),
+          icon: "fas fa-question-circle",
+        },
+        {
+          name: t("sidebar", "contact"),
+          href: contactPath(),
+          icon: "fas fa-envelope",
+        },
+        {
+          name: t("sidebar", "privacyTerms"),
+          href: privacyTermsPath(),
+          icon: "fas fa-shield-alt",
+        },
+      ],
+    });
+  }
 
   const renderNavigationItem = (item: NavigationItem, isSubItem = false) => {
     const hasSubItems = item.subItems && item.subItems.length > 0;
@@ -264,86 +289,138 @@ export function Sidebar() {
     );
   };
 
+  // Handle escape key to close mobile sidebar
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMobile && onClose) {
+        onClose();
+      }
+    };
+
+    if (isMobile && isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isMobile, isOpen, onClose]);
+
   return (
-    <div
-      className={`w-64 bg-card flex  !flex-col shadow-lg z-50`}
-      style={{ position: "relative" }}
-      dir={isRTL ? "rtl" : "ltr"}
-      data-testid="sidebar">
-      {/* Sidebar Header */}
-      <div className="p-6 border-b border-border flex !flex-col bg-primary/10">
+    <>
+      {/* Mobile overlay */}
+      {isMobile && isOpen && (
         <div
-          className={`flex items-center gap-3 justify-between ${
-            isRTL ? "flex-row-reverse" : ""
-          }`}>
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow">
-            <i className="fas fa-bolt text-primary-foreground text-lg"></i>
-          </div>
-          <div className={isRTL ? "text-right" : ""}>
-            <h1 className="text-xl font-bold text-primary">
-              {t("sidebar", "appName")}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {t("sidebar", "appTagline")}
-            </p>
-          </div>
-        </div>
-      </div>
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      {/* Navigation */}
-      <nav className="flex-1 p-4">
-        <div className="space-y-2">
-          {navigation.map((section) => (
-            <div key={section.section} className="mb-4">
-              <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
-                {section.section}
-              </p>
-              {section.items.map((item) => renderNavigationItem(item))}
-            </div>
-          ))}
-        </div>
-      </nav>
-
-      {/* Sidebar Footer */}
-      <div className="p-4 border-t border-border bg-primary/5">
-        <div
-          className={`flex items-center gap-3 mb-3 ${
-            isRTL ? "flex-row-reverse" : ""
-          }`}>
-          <Avatar className="w-8 h-8 ring-2 ring-primary">
-            <AvatarImage src="" alt="User avatar" />
-            <AvatarFallback>
-              {user?.username?.slice(0, 2).toUpperCase() || "U"}
-            </AvatarFallback>
-          </Avatar>
+      {/* Sidebar */}
+      <div
+        className={`${
+          isMobile
+            ? `fixed top-0 ${
+                isRTL ? "right-0" : "left-0"
+              } h-full w-64 bg-card flex flex-col shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+                isOpen
+                  ? "translate-x-0"
+                  : isRTL
+                  ? "translate-x-full"
+                  : "-translate-x-full"
+              }`
+            : "w-64 bg-card flex flex-col shadow-lg z-50"
+        }`}
+        style={{ position: isMobile ? "fixed" : "relative" }}
+        dir={isRTL ? "rtl" : "ltr"}
+        data-testid="sidebar">
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-border flex flex-col bg-primary/10">
           <div
-            className={`flex-1 min-w-0 ${isRTL ? "text-right" : "text-left"}`}>
-            <p
-              className="text-sm font-bold text-primary truncate"
-              data-testid="user-name">
-              {user?.username || "yousef"}
-            </p>
-            <p className="text-xs text-muted-foreground truncate capitalize">
-              {user?.role || "admin"}
-            </p>
+            className={`flex items-center gap-3 justify-between ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow">
+                <i className="fas fa-bolt text-primary-foreground text-lg"></i>
+              </div>
+              <div className={isRTL ? "text-right" : ""}>
+                <h1 className="text-xl font-bold text-primary">
+                  {t("sidebar", "appName")}
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  {t("sidebar", "appTagline")}
+                </p>
+              </div>
+            </div>
+
+            {/* Mobile close button */}
+            {isMobile && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                className="md:hidden">
+                <i className="fas fa-times"></i>
+              </Button>
+            )}
           </div>
         </div>
-        <div
-          className={`flex items-center gap-2 ${
-            isRTL ? "flex-row-reverse" : ""
-          }`}>
-          <ThemeToggle />
-          <LanguageToggle />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={logout}
-            data-testid="logout-button"
-            title={t("layout", "logout")}>
-            <i className="fas fa-sign-out-alt text-primary"></i>
-          </Button>
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4">
+          <div className="space-y-2">
+            {navigation.map((section) => (
+              <div key={section.section} className="mb-4">
+                <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
+                  {section.section}
+                </p>
+                {section.items.map((item) => renderNavigationItem(item))}
+              </div>
+            ))}
+          </div>
+        </nav>
+
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-border bg-primary/5">
+          <div
+            className={`flex items-center gap-3 mb-3 ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}>
+            <Avatar className="w-8 h-8 ring-2 ring-primary">
+              <AvatarImage src="" alt="User avatar" />
+              <AvatarFallback>
+                {user?.username?.slice(0, 2).toUpperCase() || "U"}
+              </AvatarFallback>
+            </Avatar>
+            <div
+              className={`flex-1 min-w-0 ${
+                isRTL ? "text-right" : "text-left"
+              }`}>
+              <p
+                className="text-sm font-bold text-primary truncate"
+                data-testid="user-name">
+                {user?.username || "yousef"}
+              </p>
+              <p className="text-xs text-muted-foreground truncate capitalize">
+                {user?.role || "admin"}
+              </p>
+            </div>
+          </div>
+          <div
+            className={`flex items-center gap-2 ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}>
+            <ThemeToggle />
+            <LanguageToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={logout}
+              data-testid="logout-button"
+              title={t("layout", "logout")}>
+              <i className="fas fa-sign-out-alt text-primary"></i>
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

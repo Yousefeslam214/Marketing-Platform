@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export function AdEditor() {
   const [, setLocation] = useLocation();
@@ -41,23 +41,30 @@ export function AdEditor() {
       targetUrl: "",
       targetAudience: "",
       budgetType: "impressions",
+      facebookLink: "",
+      instagramLink: "",
+      tiktokLink: "",
+      youtubeLink: "",
+      snapchatLink: "",
+      googleAdsLink: "",
     },
   });
 
   const createAdMutation = useMutation({
     mutationFn: async (data: CreateAdData) => {
-      const response = await apiRequest("POST", "/api/ads", data);
+      const response = await apiRequest("POST", `${VITE_API_BASE_URL}/api/advertising`, data);
       return response.json();
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/ads"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
       toast({
         title: "Ad created successfully",
         description: "Your ad has been created and saved as draft",
       });
-      setLocation(`/campaigns/${data.ad.id}`);
-    },
-    onError: (error: any) => {
+      console.log(data);
+      setLocation(`/campaigns/${data.data?.AdId}`);
+        },
+        onError: (error: any) => {
       toast({
         title: "Failed to create ad",
         description: error.message || "Please try again",
@@ -192,6 +199,126 @@ export function AdEditor() {
                   Supports JPG, PNG up to 5MB
                 </p>
                 <input type="file" className="hidden" accept="image/*" />
+              </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div>
+              <FormLabel className="text-base font-semibold">Social Media Links (Optional)</FormLabel>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                <FormField
+                  control={form.control}
+                  name="facebookLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Facebook Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://facebook.com/yourpage"
+                          data-testid="input-facebook-link"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="instagramLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Instagram Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://instagram.com/yourprofile"
+                          data-testid="input-instagram-link"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="tiktokLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>TikTok Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://tiktok.com/@yourusername"
+                          data-testid="input-tiktok-link"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="youtubeLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>YouTube Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://youtube.com/channel/yourchannel"
+                          data-testid="input-youtube-link"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="snapchatLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Snapchat Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://snapchat.com/add/yourusername"
+                          data-testid="input-snapchat-link"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="googleAdsLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Google Ads Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://ads.google.com/your-campaign"
+                          data-testid="input-google-ads-link"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 

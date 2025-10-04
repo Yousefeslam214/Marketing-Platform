@@ -1,31 +1,38 @@
-import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TokenManager } from "@/lib/auth";
-import { getStatusColor } from "@/lib/utils";
+import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/useApiQuery";
+import { useState } from "react";
+import { analyticsCampaignPath } from "@/lib/paths";
 
 export default function AdsIndex() {
   const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
 
-  const { data: ads, isLoading } = useQuery({
-    queryKey: ["/api/ads"],
-    enabled: !!TokenManager.getAccessToken(),
-  });
+const [page, setPage] = useState<string>("1");
+const [limit, setLimit] = useState<string>("5");
 
+    const {
+      data: ads,
+      isLoading,
+      error,
+      refetch,
+    } = useApiQuery({
+      key: ["/api/ads", page, limit],
+      url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,
+    });
+
+console.log(ads);
   // Type-safe ads array
-  const safeAds = (ads as any[]) || [];
+  const safeAds = (ads?.data as any[]) || [];
 
-  if (!TokenManager.getAccessToken()) {
-    setLocation("/login");
-    return null;
-  }
+  
 
   const handleCreateAd = () => {
     setLocation("/campaigns/new");
@@ -102,7 +109,7 @@ export default function AdsIndex() {
                         variant="outline"
                         size="sm"
                         onClick={() =>
-                          setLocation(`/campaigns/${ad.id}/analytics`)
+                          setLocation(analyticsCampaignPath(ad.id))
                         }
                         data-testid={`button-analytics-${ad.id}`}>
                         {t("ads", "analytics")}

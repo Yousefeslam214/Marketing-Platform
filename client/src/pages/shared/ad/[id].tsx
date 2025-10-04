@@ -12,6 +12,7 @@ import Loading from "@/components/Loading";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { useState } from "react";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
+import { analyticsCampaignPath } from "@/lib/paths";
 
 interface AdDetailProps {
   params: { id: string };
@@ -59,7 +60,7 @@ export default function AdDetail({ params }: AdDetailProps) {
               <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
               <Button
                 variant="outline"
-                onClick={() => setLocation(`/ads/${id}/analytics`)}
+                onClick={() => setLocation(analyticsCampaignPath(id))}
                 data-testid="button-view-analytics">
                 <i className="fas fa-chart-bar mr-2"></i>
                 View Analytics

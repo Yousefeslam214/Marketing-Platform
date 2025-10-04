@@ -17,7 +17,7 @@ async function fetchInsights(pageId: string, postId: string) {
 export default function AnalyticsToAd() {
   const { id } = useParams();
   const safeId = id ?? ""; 
-
+console.log("Ad ID from URL:", safeId);
   const {
     data: adData,
     isLoading: adLoading,
@@ -40,7 +40,9 @@ export default function AnalyticsToAd() {
   });
 
   if (adLoading) return <p>Loading ad...</p>;
-  if (adError) return <p>Error loading ad.</p>;
+  if (adError) return <p> 
+    {adError.message}
+    Error loading ad.</p>;
 
   return (
     <div className="p-6 space-y-6">

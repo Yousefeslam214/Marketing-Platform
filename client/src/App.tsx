@@ -17,10 +17,12 @@ import Billing from "@/pages/user/billing";
 import PaymentSuccess from "@/pages/user/payment-success";
 import PaymentCancel from "@/pages/user/payment-cancel";
 import Analytics from "@/pages/user/analytics";
+import Contact from "@/pages/user/contact";
+import PrivacyTerms from "@/pages/user/privacy-terms";
 
-import AdminPending from "@/pages/admin/pending";
+// import AdminPending from "@/pages/admin/pending";
 // import AdminUsers from "@/pages/admin/users";
-import MarketingQueue from "@/pages/admin/queue";
+// import MarketingQueue from "@/pages/admin/queue";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 
@@ -32,18 +34,24 @@ import FAQ from "./pages/user/faq";
 import {
   adminAllAdsPath,
   adminApprovedAdsPath,
+  adminBillingPath,
   adminPendingAdsPath,
   adminRejectedAdsPath,
-  campaignPath,
+  analyticsCampaignPath,
+  campaignsPath,
+  detailedCampaignsPath,
+  newCampaignsPath,
+
 } from "./lib/paths";
-import ApprovedAds from "./pages/shared/ad/approved-ads";
-import RejectedAds from "./pages/shared/ad/rejected-ads";
-import PendingAds from "./pages/shared/ad/pending-ads";
-import AllAds from "./pages/shared/ad/all-ads";
+import ApprovedAds from "./pages/admin/ad/approved-ads";
+import RejectedAds from "./pages/admin/ad/rejected-ads";
+import PendingAds from "./pages/admin/ad/pending-ads";
+import AllAds from "./pages/admin/ad/all-ads";
 import AdminUsers from "./pages/admin/users-mangement-page";
-import UserDetails from "./pages/admin/user-details";
-import AdDetail from "./pages/shared/ad/[id]";
+import UserDetails from "./pages/admin/user-details-mangement-page";
+// import AdDetail from "./pages/admin/ad/[id]";
 import AnalyticsToAd from "./pages/user/analytics-to-ad";
+import AdDetail from "./pages/shared/ad/[id]";
 
 function Router() {
   return (
@@ -103,7 +111,7 @@ function Router() {
         )}
       />
       <Route
-        path={campaignPath(":id")}
+        path={analyticsCampaignPath(":id")}
         component={(props: { params: { id: string } }) => (
           <AppLayout>
             <AnalyticsToAd />
@@ -111,7 +119,7 @@ function Router() {
         )}
       />
       <Route
-        path="/campaigns"
+        path={campaignsPath()}
         component={() => (
           <AppLayout>
             <AdsIndex />
@@ -119,7 +127,7 @@ function Router() {
         )}
       />
       <Route
-        path="/campaigns/new"
+        path={newCampaignsPath()}
         component={() => (
           <AppLayout>
             <NewAd />
@@ -127,7 +135,7 @@ function Router() {
         )}
       />
       <Route
-        path="/campaigns/:id"
+        path={detailedCampaignsPath()}
         component={(props: { params: { id: string } }) => (
           <AppLayout>
             <AdDetail params={props.params} />
@@ -143,6 +151,7 @@ function Router() {
         )}
       />
       <Route path="/billing/success" component={() => <PaymentSuccess />} />
+      <Route path="/success" component={() => <PaymentSuccess />} />
       <Route path="/billing/cancel" component={() => <PaymentCancel />} />
       <Route
         path="/faq"
@@ -160,24 +169,31 @@ function Router() {
           </AppLayout>
         )}
       />
-
-      {/* Admin pages */}
       <Route
-        path="/admin/queue"
+        path="/contact"
         component={() => (
           <AppLayout>
-            <MarketingQueue />
+            <Contact />
           </AppLayout>
         )}
       />
       <Route
+        path="/privacy-terms"
+        component={() => (
+          <AppLayout>
+            <PrivacyTerms />
+          </AppLayout>
+        )}
+      />
+
+      {/* <Route
         path="/admin/pending"
         component={() => (
           <AppLayout>
             <AdminPending />
           </AppLayout>
         )}
-      />
+      /> */}
       <Route
         path="/admin/users"
         component={() => (
@@ -195,7 +211,7 @@ function Router() {
         )}
       />
       <Route
-        path="/admin/adminBilling"
+        path={adminBillingPath()}
         component={() => (
           <AppLayout>
             <AdminBilling />

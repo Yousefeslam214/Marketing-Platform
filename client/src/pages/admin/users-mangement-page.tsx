@@ -16,14 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { DataPagination } from "@/components/ui/data-pagination";
 import { useState } from "react";
 import { TokenManager } from "@/lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
@@ -34,21 +27,22 @@ export default function AdminUsers() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState("1");
+  const [limit, setLimit] = useState("5");
 
   // Adjust limit based on search - show more results when searching
-  const effectiveLimit = searchQuery ? 20 : limit;
+  const effectiveLimit = searchQuery ? 20 : Number(limit);
 
   // Reset page when search query or filters change
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-    setPage(1); // Reset to first page when searching
+    setPage("1"); // Reset to first page when searching
   };
 
   const handleRoleFilterChange = (value: string) => {
     setRoleFilter(value);
-    setPage(1); // Reset to first page when filtering
+    setPage("1"); // Reset to first page when filtering
+    setLimit("200"); // Reset limit to default when filtering
   };
 
   // const { data: usersData, isLoading: usersDataLoading } = useQuery({
@@ -69,16 +63,16 @@ export default function AdminUsers() {
   //   enabled: !!TokenManager.getAccessToken(),
   // });
 
-   const {
-      data : usersData,
-      isLoading,
-      error,
-      refetch,
-    } = useApiQuery({
-      key: ["/api/users", page, effectiveLimit],
-      url: `${VITE_API_BASE_URL}/api/users?page=${page}&limit=${effectiveLimit}`,
-    });
-  
+  const {
+    data: usersData,
+    isLoading,
+    error,
+    refetch,
+  } = useApiQuery({
+    key: ["/api/users", page, effectiveLimit],
+    url: `${VITE_API_BASE_URL}/api/users?page=${page}&limit=${effectiveLimit}`,
+  });
+
   // const mockUsers = usersData;
   console.log("Fetched users:", usersData?.data);
   const mockUsers = usersData?.data;
@@ -144,23 +138,41 @@ export default function AdminUsers() {
               <SelectTrigger
                 className="w-[180px]"
                 data-testid="select-role-filter">
-                <SelectValue placeholder={t("userManagement", "filterByRole")} />
+                <SelectValue
+                  placeholder={t("userManagement", "filterByRole")}
+                />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t("userManagement", "allRoles")}</SelectItem>
-                <SelectItem value="user">{t("userManagement", "users")}</SelectItem>
-                <SelectItem value="admin">{t("userManagement", "admin")}</SelectItem>
+                <SelectItem value="all">
+                  {t("userManagement", "allRoles")}
+                </SelectItem>
+                <SelectItem value="user">
+                  {t("userManagement", "users")}
+                </SelectItem>
+                <SelectItem value="admin">
+                  {t("userManagement", "admin")}
+                </SelectItem>
               </SelectContent>
             </Select>
-            <Select value={limit.toString()} onValueChange={(value) => setLimit(Number(value))}>
+            <Select
+              value={limit.toString()}
+              onValueChange={(value) => setLimit(value)}>
               <SelectTrigger className="w-[120px]">
                 <SelectValue placeholder={t("userManagement", "pageSize")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="5">5 {t("userManagement", "perPage")}</SelectItem>
-                <SelectItem value="10">10 {t("userManagement", "perPage")}</SelectItem>
-                <SelectItem value="20">20 {t("userManagement", "perPage")}</SelectItem>
-                <SelectItem value="50">50 {t("userManagement", "perPage")}</SelectItem>
+                <SelectItem value="5">
+                  5 {t("userManagement", "perPage")}
+                </SelectItem>
+                <SelectItem value="10">
+                  10 {t("userManagement", "perPage")}
+                </SelectItem>
+                <SelectItem value="20">
+                  20 {t("userManagement", "perPage")}
+                </SelectItem>
+                <SelectItem value="50">
+                  50 {t("userManagement", "perPage")}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -197,7 +209,9 @@ export default function AdminUsers() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-muted-foreground">{t("userManagement", "credits")}</p>
+                      <p className="text-muted-foreground">
+                        {t("userManagement", "credits")}
+                      </p>
                       <p
                         className="font-medium"
                         data-testid={`user-credits-${userData.id}`}>
@@ -205,7 +219,9 @@ export default function AdminUsers() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">{t("userManagement", "ads")}</p>
+                      <p className="text-muted-foreground">
+                        {t("userManagement", "ads")}
+                      </p>
                       <p
                         className="font-medium"
                         data-testid={`user-ads-count-${userData.id}`}>
@@ -216,7 +232,9 @@ export default function AdminUsers() {
 
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-muted-foreground">{t("userManagement", "totalSpend")}</p>
+                      <p className="text-muted-foreground">
+                        {t("userManagement", "totalSpend")}
+                      </p>
                       <p
                         className="font-medium"
                         data-testid={`user-spend-${userData.id}`}>
@@ -224,7 +242,9 @@ export default function AdminUsers() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">{t("userManagement", "joined")}</p>
+                      <p className="text-muted-foreground">
+                        {t("userManagement", "joined")}
+                      </p>
                       <p
                         className="font-medium"
                         data-testid={`user-joined-${userData.id}`}>
@@ -237,7 +257,9 @@ export default function AdminUsers() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setLocation(`/admin/user-details/${userData.id}`)}
+                      onClick={() =>
+                        setLocation(`/admin/user-details/${userData.id}`)
+                      }
                       data-testid={`button-view-user-${userData.id}`}>
                       <i className="fas fa-eye mr-1"></i>
                       {t("userManagement", "view")}
@@ -256,58 +278,18 @@ export default function AdminUsers() {
           </div>
 
           {/* Pagination Controls */}
-          {usersData?.data?.pagination && !searchQuery && (
-            <div className="mt-6 flex items-center justify-between">
-              <div className="text-sm text-muted-foreground">
-                {t("userManagement", "showing")} {((usersData.data.pagination.currentPage - 1) * effectiveLimit) + 1} {t("userManagement", "to")}{" "}
-                {Math.min(usersData.data.pagination.currentPage * effectiveLimit, usersData.data.pagination.totalItems)}{" "}
-                {t("userManagement", "of")} {usersData.data.pagination.totalItems} {t("userManagement", "usersTotal")}
-              </div>
-              <Pagination className="mx-0 w-auto">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      onClick={() => usersData.data.pagination.hasPrevious && setPage(page - 1)}
-                      className={
-                        !usersData.data.pagination.hasPrevious
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
-                      }
-                    />
-                  </PaginationItem>
-
-                  {/* Page numbers */}
-                  {Array.from(
-                    { length: Math.min(5, usersData.data.pagination.totalPages) },
-                    (_, i) => {
-                      const pageNum = Math.max(1, usersData.data.pagination.currentPage - 2) + i;
-                      if (pageNum > usersData.data.pagination.totalPages) return null;
-                      return (
-                        <PaginationItem key={pageNum}>
-                          <PaginationLink
-                            isActive={usersData.data.pagination.currentPage === pageNum}
-                            onClick={() => setPage(pageNum)}
-                            className="cursor-pointer">
-                            {pageNum}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    }
-                  )}
-
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={() => usersData.data.pagination.hasNext && setPage(page + 1)}
-                      className={
-                        !usersData.data.pagination.hasNext
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
-                      }
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
+          {usersData?.pagination && !searchQuery && (
+            <DataPagination
+              pagination={usersData.pagination}
+              currentPage={page}
+              onPageChange={setPage}
+              pageSize={limit}
+              onPageSizeChange={setLimit}
+              showPageSizeSelector={true}
+              pageSizeOptions={[5, 10, 20, 50]}
+              showInfo={true}
+              className="mt-6"
+            />
           )}
 
           {filteredUsers?.length === 0 && (

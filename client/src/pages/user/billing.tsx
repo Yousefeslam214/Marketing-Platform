@@ -1,29 +1,18 @@
-import { useAuth } from "@/hooks/use-auth";
-import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { apiRequest } from "@/lib/queryClient";
 import { useLanguage } from "@/hooks/use-language";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { TokenManager } from "@/lib/auth";
 import { PaymentService, type PaymentData } from "@/lib/payment-service";
-import { getStatusColor } from "@/lib/utils";
+import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/useApiQuery";
 
 export default function Billing() {
-  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
   const [selectedPackage, setSelectedPackage] = useState("basic");
@@ -34,28 +23,37 @@ export default function Billing() {
     enabled: !!TokenManager.getAccessToken(),
   });
 
+  // Fetch payment history from API
+  // const { data: paymentHistoryResponse, isLoading: isLoadingHistory } =
+  useQuery({
+    queryKey: ["/api/payment/history"],
+    enabled: !!TokenManager.getAccessToken(),
+  });
+
+  const {
+    data: paymentHistoryResponse,
+    isLoading: isLoadingHistory,
+    error,
+    refetch,
+  } = useApiQuery({
+    key: ["/api/payment/history/user"],
+    // enabled: !!TokenManager.getAccessToken(),
+    url: `${VITE_API_BASE_URL}/api/payment/history`,
+  });
+  console.log(paymentHistoryResponse);
+
   // Type-safe metrics with defaults
   const safeMetrics = {
     creditsRemaining: (metrics as any)?.creditsRemaining || 0,
   };
 
-  // Mock purchase history - in real app this would come from API
-  const mockPurchases = [
-    {
-      id: "1",
-      amount: 50,
-      impressions: 50000,
-      status: "completed",
-      createdAt: "2024-01-20T10:00:00Z",
-    },
-    {
-      id: "2",
-      amount: 100,
-      impressions: 125000,
-      status: "completed",
-      createdAt: "2024-01-15T14:30:00Z",
-    },
-  ];
+  // Extract payment history from API response
+  const paymentHistory = (paymentHistoryResponse as any)?.data?.items || [];
+
+  // Helper function to calculate impressions from amount (1000 impressions per dollar)
+  const calculateImpressions = (amount: string) => {
+    return parseFloat(amount) * 1000;
+  };
 
   const impressionPackages = [
     {
@@ -100,7 +98,7 @@ export default function Billing() {
     const pkg = impressionPackages.find((p) => p.id === packageId);
     if (pkg) {
       purchaseMutation.mutate({
-        amount: pkg.amount * 100, // Convert to cents for Stripe
+        amount: pkg.amount, // Convert to cents for Stripe
         impressions: pkg.impressions,
         currency: "USD",
       });
@@ -124,8 +122,6 @@ export default function Billing() {
       });
     }
   };
-
-
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -160,20 +156,21 @@ export default function Billing() {
                   <p
                     className="text-3xl font-bold text-foreground"
                     data-testid="current-balance">
-                    {safeMetrics.creditsRemaining.toLocaleString()}
+                    {/* {safeMetrics.creditsRemaining.toLocaleString()} */}
+                    {paymentHistoryResponse?.data?.balance}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {t("billing", "availableCredits")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-muted-foreground">
+                  {/* <p className="text-sm text-muted-foreground">
                     {t("billing", "freeViewsUsed")}
-                  </p>
-                  <p className="text-lg font-semibold text-foreground">
+                  </p> */}
+                  {/* <p className="text-lg font-semibold text-foreground">
                     {(10000 - safeMetrics.creditsRemaining).toLocaleString()} /
                     10,000
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </CardContent>
@@ -296,35 +293,48 @@ export default function Billing() {
               <CardTitle>{t("billing", "purchaseHistory")}</CardTitle>
             </CardHeader>
             <CardContent>
-              {mockPurchases.length > 0 ? (
+              {isLoadingHistory ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-muted-foreground">
+                    {t("billing", "loading")}
+                  </p>
+                </div>
+              ) : paymentHistory.length > 0 ? (
                 <div className="space-y-4">
-                  {mockPurchases.map((purchase) => (
+                  {paymentHistory.map((payment: any) => (
                     <div
-                      key={purchase.id}
+                      key={payment.id}
                       className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <p
                             className="font-medium text-foreground"
-                            data-testid={`purchase-amount-${purchase.id}`}>
-                            ${purchase.amount}
+                            data-testid={`purchase-amount-${payment.id}`}>
+                            ${parseFloat(payment.amount).toFixed(2)}
                           </p>
-                          <Badge className={getStatusColor(purchase.status)}>
-                            {getStatusText(purchase.status)}
+                          <Badge className={getStatusColor(payment.status)}>
+                            {getStatusText(payment.status)}
                           </Badge>
                         </div>
                         <p
                           className="text-sm text-muted-foreground"
-                          data-testid={`purchase-impressions-${purchase.id}`}>
-                          {purchase.impressions.toLocaleString()}{" "}
+                          data-testid={`purchase-impressions-${payment.id}`}>
+                          {calculateImpressions(
+                            payment.amount
+                          ).toLocaleString()}{" "}
                           {t("billing", "impressions")}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {t("billing", "method")}:{" "}
+                          {payment.method.toUpperCase()}
                         </p>
                       </div>
                       <div className="text-right">
                         <p
                           className="text-sm text-muted-foreground"
-                          data-testid={`purchase-date-${purchase.id}`}>
-                          {new Date(purchase.createdAt).toLocaleDateString()}
+                          data-testid={`purchase-date-${payment.id}`}>
+                          {new Date(payment.createdAt).toLocaleDateString()}
                         </p>
                         <Button variant="ghost" size="sm">
                           <i className="fas fa-download mr-1"></i>

@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery({
-    queryKey: ["/api/auth/me"],
+    queryKey: ["/api/auth/login"],
     queryFn: AuthService.getCurrentUser,
     enabled: !!TokenManager.getAccessToken(),
     retry: false,
@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Check if user was previously authenticated
     if (TokenManager.getAccessToken()) {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/login"] });
     }
   }, [queryClient]);
 
@@ -36,9 +36,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return await AuthService.login(data);
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["/api/auth/me"], data);
+      queryClient.setQueryData(["/login"], data);
+
       // localStorage.setItem("access_token", data.access_token);
-      TokenManager.setTokens(data.access_token);
+
+      TokenManager.setTokens(
+        data.access_token ?? "",
+        data.username ?? "",
+        data.role ?? ""
+      );
+      // TokenManager.setTokens(data.role);
+      // TokenManager.setTokens(data.username);
+
     },
   });
 
@@ -47,23 +56,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return await AuthService.signup(data);
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["/api/auth/me"], data);
+      queryClient.setQueryData(["/api/auth/login"], data);
       // localStorage.setItem("access_token", data.access_token);
-      TokenManager.setTokens(data.access_token);
+      TokenManager.setTokens(data.access_token, data.username ?? "", data.role ?? "");
     },
   });
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
       await AuthService.logout();
-    },
-    onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["/api/auth/me"] });
-
-      TokenManager.clearTokens();
-
-      localStorage.removeItem("isAuthenticated");
-      localStorage.removeItem("access_token");
     },
   });
 

@@ -37,6 +37,13 @@ export const ads = pgTable("ads", {
   publishToken: text("publish_token"),
   approvedBy: varchar("approved_by").references(() => users.id),
   rejectionReason: text("rejection_reason"),
+  // Social media links
+  facebookLink: text("facebook_link"),
+  tiktokLink: text("tiktok_link"),
+  youtubeLink: text("youtube_link"),
+  googleAdsLink: text("google_ads_link"),
+  instagramLink: text("instagram_link"),
+  snapchatLink: text("snapchat_link"),
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
   updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
 });
@@ -209,6 +216,12 @@ export const signupSchema = insertUserSchema.extend({
 export const createAdSchema = insertAdSchema.extend({
   targetAudience: z.string().min(1, "Target audience is required"),
   budgetType: z.enum(["impressions", "clicks"]),
+  facebookLink: z.string().url("Invalid Facebook URL").optional().or(z.literal("")),
+  instagramLink: z.string().url("Invalid Instagram URL").optional().or(z.literal("")),
+  tiktokLink: z.string().url("Invalid TikTok URL").optional().or(z.literal("")),
+  youtubeLink: z.string().url("Invalid YouTube URL").optional().or(z.literal("")),
+  snapchatLink: z.string().url("Invalid Snapchat URL").optional().or(z.literal("")),
+  googleAdsLink: z.string().url("Invalid Google Ads URL").optional().or(z.literal("")),
 });
 
 export const purchaseCreditsSchema = z.object({
