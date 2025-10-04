@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Share2, MessageCircle, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
+import { TokenManager } from "@/lib/auth";
 
 interface Ad {
   id: string;
@@ -37,8 +38,15 @@ export default function AdsFeed() {
   const { toast } = useToast();
   const [page, setPage] = useState(1);
   const [likedAds, setLikedAds] = useState<Set<string>>(new Set());
-
-  const { data: adsResponse, isLoading, error } = useQuery<AdsFeedResponse>({
+  // if (TokenManager.getAccessToken()) {
+  //     window.location.href = "/ads/feed";
+  //     return null;
+  //   }
+  const {
+    data: adsResponse,
+    isLoading,
+    error,
+  } = useQuery<AdsFeedResponse>({
     queryKey: ["/api/advertising/listApprovedAdsForUser", page],
     queryFn: async () => {
       const response = await fetch(
@@ -47,7 +55,9 @@ export default function AdsFeed() {
       if (!response.ok) {
         throw new Error("Failed to fetch ads");
       }
-      return response.json();
+      const rtn = await response.json();
+      console.log(rtn?.data);
+      return rtn;
     },
     retry: 1,
   });
@@ -57,7 +67,7 @@ export default function AdsFeed() {
       const response = await fetch(
         `${VITE_API_BASE_URL}/api/users/ad/${adId}/click`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -65,7 +75,7 @@ export default function AdsFeed() {
       );
 
       if (response.ok) {
-        setLikedAds(prev => {
+        setLikedAds((prev) => {
           const newSet = new Set(prev);
           newSet.add(adId);
           return newSet;
@@ -83,16 +93,17 @@ export default function AdsFeed() {
   const handleShare = (ad: Ad) => {
     const title = language === "en" ? ad.titleEn : ad.titleAr;
     const description = language === "en" ? ad.descriptionEn : ad.descriptionAr;
-    
+    const id = ad.id;
+
     if (navigator.share) {
       navigator.share({
-        title: title,
-        text: description,
         url: window.location.href,
+        title,
+        text: description,
       });
     } else {
       // Fallback: copy to clipboard
-      navigator.clipboard.writeText(`${title}\n${description}\n${window.location.href}`);
+      navigator.clipboard.writeText(`${window.location.href}/${id}`);
       toast({
         title: t("publicFeed", "copiedToClipboard"),
         description: t("publicFeed", "adContentCopied"),
@@ -102,7 +113,7 @@ export default function AdsFeed() {
 
   const loadMore = () => {
     if (adsResponse?.pagination.hasNext) {
-      setPage(prev => prev + 1);
+      setPage((prev) => prev + 1);
     }
   };
 
@@ -130,11 +141,12 @@ export default function AdsFeed() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
             </div>
-            <h1 className="text-xl font-bold text-foreground">octopusad</h1>
+            <h1 className="text-xl font-bold text-foreground">
+              {" "}
+              {t("sidebar", "appName")}
+            </h1>
           </div>
-          <Badge variant="secondary">
-            {t("publicFeed", "title")}
-          </Badge>
+          <Badge variant="secondary">{t("publicFeed", "title")}</Badge>
         </div>
       </header>
 
@@ -155,7 +167,9 @@ export default function AdsFeed() {
         ) : (
           <div className="space-y-6">
             {adsResponse?.data.map((ad) => (
-              <Card key={ad.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <Card
+                key={ad.id}
+                className="overflow-hidden hover:shadow-lg transition-shadow">
                 <CardContent className="p-0">
                   {/* Ad Header */}
                   <div className="p-4 border-b">
@@ -172,7 +186,7 @@ export default function AdsFeed() {
                     <p className="text-foreground mb-4 leading-relaxed">
                       {language === "en" ? ad.descriptionEn : ad.descriptionAr}
                     </p>
-                    
+
                     {ad.imageUrl && (
                       <div className="mb-4">
                         <img
@@ -194,43 +208,40 @@ export default function AdsFeed() {
                           size="sm"
                           onClick={() => handleLike(ad.id)}
                           disabled={likedAds.has(ad.id)}
-                          className={`gap-2 ${likedAds.has(ad.id) ? "text-red-500" : ""}`}
-                        >
-                          <Heart 
-                            className={`h-4 w-4 ${likedAds.has(ad.id) ? "fill-current" : ""}`} 
+                          className={`gap-2 ${
+                            likedAds.has(ad.id) ? "text-red-500" : ""
+                          }`}>
+                          <Heart
+                            className={`h-4 w-4 ${
+                              likedAds.has(ad.id) ? "fill-current" : ""
+                            }`}
                           />
                           {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
                         </Button>
-                        
+
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleShare(ad)}
-                          className="gap-2"
-                        >
+                          className="gap-2">
                           <Share2 className="h-4 w-4" />
                           {t("publicFeed", "share")}
                         </Button>
-                        
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="gap-2"
-                        >
+
+                        <Button variant="ghost" size="sm" className="gap-2">
                           <MessageCircle className="h-4 w-4" />
                           {t("publicFeed", "comment")}
                         </Button>
                       </div>
-                      
-                      <Button
+
+                      {/* <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleLike(ad.id)}
-                        className="gap-2"
-                      >
+                        className="gap-2">
                         <ExternalLink className="h-4 w-4" />
                         {t("publicFeed", "learnMore")}
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </CardContent>
@@ -244,8 +255,7 @@ export default function AdsFeed() {
                   onClick={loadMore}
                   disabled={isLoading}
                   variant="outline"
-                  className="min-w-32"
-                >
+                  className="min-w-32">
                   {isLoading ? (
                     <>
                       <i className="fas fa-spinner fa-spin mr-2"></i>

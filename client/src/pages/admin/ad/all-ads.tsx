@@ -31,7 +31,7 @@ export default function AllAds() {
     key: ["/ads/all", page, limit],
     url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,
   });
-
+console.log(ads);
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
     return null;

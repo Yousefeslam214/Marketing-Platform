@@ -50,8 +50,28 @@ export default function handler(req, res) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  // Default response
-  res
+  // User profile endpoint for getting current user info
+  if (req.url === "/api/auth/me" && req.method === "GET") {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // For testing purposes, return a mock user profile
+    // In a real app, you'd validate the token and return actual user data
+    return res.status(200).json({
+      data: {
+        token: authHeader.replace("Bearer ", ""),
+        username: "test",
+        role: "advertiser",
+        email: "test@example.com"
+      }
+    });
+  }
+
+  // Fallback for unknown endpoints
+  return res
     .status(404)
     .json({ message: "Endpoint not found", url: req.url, method: req.method });
 }

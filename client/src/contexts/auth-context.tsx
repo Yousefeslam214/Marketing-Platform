@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery({
-    queryKey: ["/api/auth/login"],
+    queryKey: ["/api/auth/me"],
     queryFn: AuthService.getCurrentUser,
     enabled: !!TokenManager.getAccessToken(),
     retry: false,
@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Check if user was previously authenticated
     if (TokenManager.getAccessToken()) {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/login"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
     }
   }, [queryClient]);
 

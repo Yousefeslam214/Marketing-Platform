@@ -57,7 +57,7 @@ export class AuthService {
     // await apiRequest("POST", `${BACKEND_URL}/api/auth/logout`);
 
     TokenManager.clearTokens();
-    queryClient.removeQueries({ queryKey: ["/api/auth/login"] });
+    queryClient.removeQueries({ queryKey: ["/api/auth/me"] });
 
     TokenManager.clearTokens();
 
@@ -67,8 +67,9 @@ export class AuthService {
   }
 
   static async getCurrentUser(): Promise<AuthResponse> {
-    const response = await apiRequest("GET", `${BACKEND_URL}/api/auth/login`);
-    return response.json();
+    const response = await apiRequest("GET", `${BACKEND_URL}/api/auth/me`);
+    const result = await response.json();
+    return result.data;
   }
 
   // Role-based access control helpers

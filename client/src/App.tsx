@@ -6,13 +6,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./contexts/auth-context";
 import { ThemeProvider } from "./contexts/theme-context";
 import { AppLayout } from "./components/layout/app-layout";
-
 import Login from "@/pages/auth/login";
 import Signup from "@/pages/auth/signup";
 import Dashboard from "@/pages/user/dashboard";
 import AdsIndex from "@/pages/user/ads/index";
 import NewAd from "@/pages/user/ads/new";
-// import AdDetail from "@/pages/user/ads/[id]";
+import EditAd from "@/pages/user/ads/edit";
+import UploadPhoto from "@/pages/user/ads/upload-photo";
+import AssignCredit from "@/pages/user/ads/assign-credit";
 import Billing from "@/pages/user/billing";
 import PaymentSuccess from "@/pages/user/payment-success";
 import PaymentCancel from "@/pages/user/payment-cancel";
@@ -20,16 +21,9 @@ import Analytics from "@/pages/user/analytics";
 import Contact from "@/pages/user/contact";
 import PrivacyTerms from "@/pages/user/privacy-terms";
 import AdsFeed from "@/pages/public/ads-feed";
-
-// import AdminPending from "@/pages/admin/pending";
-// import AdminUsers from "@/pages/admin/users";
-// import MarketingQueue from "@/pages/admin/queue";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
-
-// import PublicAd from "@/pages/shared/ad/[id]";
 import NotFound from "@/pages/shared/not-found";
-
 import { LanguageProvider } from "./contexts/language-context";
 import FAQ from "./pages/user/faq";
 import {
@@ -41,8 +35,8 @@ import {
   analyticsCampaignPath,
   campaignsPath,
   detailedCampaignsPath,
+  editAdPath,
   newCampaignsPath,
-
 } from "./lib/paths";
 import ApprovedAds from "./pages/admin/ad/approved-ads";
 import RejectedAds from "./pages/admin/ad/rejected-ads";
@@ -50,7 +44,6 @@ import PendingAds from "./pages/admin/ad/pending-ads";
 import AllAds from "./pages/admin/ad/all-ads";
 import AdminUsers from "./pages/admin/users-mangement-page";
 import UserDetails from "./pages/admin/user-details-mangement-page";
-// import AdDetail from "./pages/admin/ad/[id]";
 import AnalyticsToAd from "./pages/user/analytics-to-ad";
 import AdDetail from "./pages/shared/ad/[id]";
 
@@ -132,6 +125,30 @@ function Router() {
         component={() => (
           <AppLayout>
             <NewAd />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={editAdPath(":adId")}
+        component={(props: { params: { adId: string } }) => (
+          <AppLayout>
+            <EditAd />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/ads/:adId/upload-photo"
+        component={(props: { params: { adId: string } }) => (
+          <AppLayout>
+            <UploadPhoto />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/ads/:adId/assign-credit"
+        component={(props: { params: { adId: string } }) => (
+          <AppLayout>
+            <AssignCredit />
           </AppLayout>
         )}
       />
@@ -219,6 +236,15 @@ function Router() {
           </AppLayout>
         )}
       />
+
+      <Route
+        path="/feed"
+        component={() => (
+          <AppLayout>
+            <AdsFeed />
+          </AppLayout>
+        )}
+      />
       <Route
         path="/admin/dashboard"
         component={() => (
@@ -229,11 +255,8 @@ function Router() {
       />
 
       {/* Public shared pages */}
-      <Route
-        path="/feed"
-        component={() => <AdsFeed />}
-      />
-      
+      <Route path="/feed" component={() => <AdsFeed />} />
+
       {/* <Route
         path="/public/:id"
         component={(props: { params: { id: string } }) => (

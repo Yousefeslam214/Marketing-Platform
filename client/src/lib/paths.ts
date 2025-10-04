@@ -132,10 +132,11 @@ export function userPath(userId: string) {
   return `/users/${userId}`;
 }
 
-
-
 export function analyticsCampaignPath(campaignId: string) {
   return `/analytics/${campaignId}`;
+}
+export function editAdPath(adId: string) {
+  return `/ads/${adId}/edit`;
 }
 
 export function adminBillingPath() {

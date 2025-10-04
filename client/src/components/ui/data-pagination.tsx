@@ -19,10 +19,12 @@ import {
 interface PaginationData {
   currentPage: number;
   totalPages: number;
-  totalItems: number;
+  totalItems?: number;
+  totalCount?: number;
   hasPrevious: boolean;
   hasNext: boolean;
   itemsPerPage: number;
+  limit?: number;
 }
 
 interface DataPaginationProps {
@@ -35,6 +37,7 @@ interface DataPaginationProps {
   pageSizeOptions?: number[];
   showInfo?: boolean;
   className?: string;
+  isLoading?: boolean;
 }
 
 export function DataPagination({
@@ -51,11 +54,12 @@ export function DataPagination({
   const { t, isRTL } = useLanguage();
 
   // Calculate range of items being shown
-  const startItem = (pagination.currentPage - 1) * pagination.itemsPerPage + 1;
-  const endItem = Math.min(
-    pagination.currentPage * pagination.itemsPerPage,
-    pagination.totalItems
-  );
+  const itemsPerPage = pagination.itemsPerPage || pagination.limit || 10;
+  const totalItems = pagination.totalItems || pagination.totalCount || 0;
+
+  const startItem =
+    totalItems > 0 ? (pagination.currentPage - 1) * itemsPerPage + 1 : 0;
+  const endItem = Math.min(pagination.currentPage * itemsPerPage, totalItems);
 
   // Generate page numbers to show (max 7 pages visible)
   const getVisiblePages = () => {
@@ -92,10 +96,10 @@ export function DataPagination({
             className={`text-sm text-muted-foreground ${
               isRTL ? "text-right" : "text-left"
             }`}>
-            {pagination.totalItems > 0 ? (
+            {totalItems > 0 ? (
               <span>
                 {t("pagination", "showing")} {startItem} {t("pagination", "to")}{" "}
-                {endItem} {t("pagination", "of")} {pagination.totalItems}{" "}
+                {endItem} {t("pagination", "of")} {totalItems}{" "}
                 {t("pagination", "results")}
               </span>
             ) : (

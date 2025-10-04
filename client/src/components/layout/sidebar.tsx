@@ -120,6 +120,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: adminBillingPath(),
           icon: "fas fa-credit-card",
         },
+         {
+          name: t("sidebar", "adsFeed"),
+          href: "/feed",
+          icon: "fas fa-rss",
+        },
       ],
     });
   }
@@ -163,6 +168,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           name: t("sidebar", "privacyTerms"),
           href: privacyTermsPath(),
           icon: "fas fa-shield-alt",
+        },
+        {
+          name: t("sidebar", "adsFeed"),
+          href: "/feed",
+          icon: "fas fa-rss",
         },
       ],
     });
@@ -216,8 +226,8 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             <div className={`mt-1 space-y-1 ${isRTL ? "mr-4" : "ml-4"}`}>
               {item.subItems?.map((subItem) => (
                 <Link key={subItem.href} href={subItem.href}>
-                  <a
-                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 ${
+                  <div
+                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
                       location === subItem.href
                         ? "active bg-primary text-primary-foreground border-primary"
                         : "hover:bg-accent hover:text-accent-foreground border-transparent"
@@ -246,7 +256,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         {subItem.badge}
                       </Badge>
                     )}
-                  </a>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -257,8 +267,8 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
     return (
       <Link key={item.href} href={item.href}>
-        <a
-          className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 ${
+        <div
+          className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
             location === item.href
               ? "active bg-primary text-primary-foreground border-primary"
               : "hover:bg-accent hover:text-accent-foreground border-transparent"
@@ -285,7 +295,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               {item.badge}
             </Badge>
           )}
-        </a>
+        </div>
       </Link>
     );
   };
@@ -334,9 +344,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         data-testid="sidebar">
         {/* Sidebar Header */}
         <div className="p-6 border-b border-border flex flex-col bg-primary/10">
-          <div
-            className="flex flex-row items-center gap-3 justify-between"
-          >
+          <div className="flex flex-row items-center gap-3 justify-between">
             <div className="flex flex-row items-center gap-3">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow">
                 <i className="fas fa-bolt text-primary-foreground text-lg"></i>
@@ -357,8 +365,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="md:hidden"
-              >
+                className="md:hidden">
                 <i className="fas fa-times"></i>
               </Button>
             )}
@@ -388,7 +395,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             <Avatar className="w-8 h-8 ring-2 ring-primary">
               <AvatarImage src="" alt="User avatar" />
               <AvatarFallback>
-                {user?.username?.slice(0, 2).toUpperCase() || "U"}
+                {user?.slice(0, 2).toUpperCase() || "U"}
               </AvatarFallback>
             </Avatar>
             <div

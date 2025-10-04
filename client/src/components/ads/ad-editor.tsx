@@ -66,7 +66,8 @@ export function AdEditor() {
         description: "Your ad has been created and saved as draft",
       });
       console.log(data);
-      setLocation(`/campaigns/${data.data?.AdId}`);
+      // Redirect to photo upload page first
+      setLocation(`/ads/${data.data?.AdId}/upload-photo`);
     },
     onError: (error: any) => {
       toast({

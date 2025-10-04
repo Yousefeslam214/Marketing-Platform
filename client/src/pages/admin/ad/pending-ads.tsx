@@ -36,7 +36,11 @@ export default function PendingAds() {
   const pendingAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
 
   console.log(pendingAds);
+
+
   const token = TokenManager.getAccessToken();
+
+
 
   
   if (isLoading) {

@@ -45,7 +45,8 @@
     "adminSection": "الإدارة",
     "mainSection": "الرئيسية",
     "appName": "منصة اخطبوط",
-    "appTagline": "منصة التسويق"
+    "appTagline": "منصة التسويق",
+    "adsFeed": "الاعلانات العامة"
   },
   "layout": {
     "notifications": "الإشعارات",
@@ -579,7 +580,7 @@
     "legalContactContent": "للمسائل القانونية أو الأسئلة حول هذه الشروط، يرجى الاتصال بفريقنا القانوني:"
   },
   "publicFeed": {
-    "title": "التغذية العامة",
+    "title": "الاعلانات العامة",
     "sponsored": "إعلان مدفوع",
     "like": "أعجبني",
     "share": "مشاركة",

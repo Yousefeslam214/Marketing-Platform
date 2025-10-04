@@ -9,30 +9,29 @@ import { TokenManager } from "@/lib/auth";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { useState } from "react";
-import { analyticsCampaignPath } from "@/lib/paths";
+import { analyticsCampaignPath, editAdPath } from "@/lib/paths";
+import DataPagination from "@/components/ui/data-pagination";
 
 export default function AdsIndex() {
   const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
 
-const [page, setPage] = useState<string>("1");
-const [limit, setLimit] = useState<string>("5");
+  const [page, setPage] = useState<string>("1");
+  const [limit, setLimit] = useState<string>("5");
 
-    const {
-      data: ads,
-      isLoading,
-      error,
-      refetch,
-    } = useApiQuery({
-      key: ["/api/ads", page, limit],
-      url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,
-    });
+  const {
+    data: ads,
+    isLoading,
+    error,
+    refetch,
+  } = useApiQuery({
+    key: ["/api/ads/user", page, limit],
+    url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,
+  });
 
-console.log(ads);
+  console.log(ads);
   // Type-safe ads array
   const safeAds = (ads?.data as any[]) || [];
-
-  
 
   const handleCreateAd = () => {
     setLocation("/campaigns/new");
@@ -52,7 +51,7 @@ console.log(ads);
           }
         />
 
-        <main className="p-6">
+        <main className="p-6 min-h-[78vh]">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
@@ -109,6 +108,15 @@ console.log(ads);
                         variant="outline"
                         size="sm"
                         onClick={() =>
+                          setLocation(editAdPath(ad.id))
+                        }
+                        data-testid={`button-edit-${ad.id}`}>
+                        {t("ads", "edit")}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
                           setLocation(analyticsCampaignPath(ad.id))
                         }
                         data-testid={`button-analytics-${ad.id}`}>
@@ -137,6 +145,20 @@ console.log(ads);
             </div>
           )}
         </main>
+        {ads?.pagination && (
+          <DataPagination
+            pagination={ads.pagination}
+            currentPage={Number(page)}
+            onPageChange={(p) => setPage(String(p))}
+            pageSize={Number(limit)}
+            onPageSizeChange={(l) => setLimit(String(l))}
+            showPageSizeSelector
+            pageSizeOptions={[5, 10, 20, 50]}
+            showInfo
+            className="mt-6"
+            isLoading={isLoading}
+          />
+        )}
       </div>
     </div>
   );

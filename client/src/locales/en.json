@@ -43,7 +43,8 @@
     "adminSection": "Admin",
     "mainSection": "Main",
     "appName": "OctopusAd",
-    "appTagline": "Marketing Platform"
+    "appTagline": "Marketing Platform",
+    "adsFeed": "Ads Feed"
   },
   "layout": {
     "notifications": "Notifications",

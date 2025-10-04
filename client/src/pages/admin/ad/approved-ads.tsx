@@ -1,5 +1,4 @@
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,6 @@ import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
 
 export default function ApprovedAds() {
-  const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
