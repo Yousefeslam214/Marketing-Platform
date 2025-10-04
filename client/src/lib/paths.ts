@@ -141,3 +141,8 @@ export function analyticsCampaignPath(campaignId: string) {
 export function adminBillingPath() {
   return `/admin/adminBilling`;
 }
+
+// Public routes
+export function publicFeedPath() {
+  return "/feed";
+}

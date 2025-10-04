@@ -574,6 +574,24 @@
     "legalContactTitle": "Legal Contact",
     "legalContactContent": "For legal matters or questions about these terms, please contact our legal team:"
   },
+  "publicFeed": {
+    "title": "Public Feed",
+    "sponsored": "Sponsored",
+    "like": "Like",
+    "share": "Share",
+    "comment": "Comment",
+    "learnMore": "Learn More",
+    "loadMore": "Load More",
+    "loading": "Loading...",
+    "interactionRecorded": "Interaction recorded",
+    "interactionRecordedDesc": "Your interaction has been recorded",
+    "copiedToClipboard": "Copied to clipboard",
+    "adContentCopied": "Ad content copied to clipboard",
+    "errorLoading": "Something went wrong",
+    "unableToLoad": "Unable to load ads feed",
+    "noAdsAvailable": "No ads available",
+    "checkBackLater": "Check back later for new content"
+  },
   "common": {
     "dashboard": "Dashboard",
     "contactSupport": "Contact Support"

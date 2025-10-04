@@ -19,6 +19,7 @@ import PaymentCancel from "@/pages/user/payment-cancel";
 import Analytics from "@/pages/user/analytics";
 import Contact from "@/pages/user/contact";
 import PrivacyTerms from "@/pages/user/privacy-terms";
+import AdsFeed from "@/pages/public/ads-feed";
 
 // import AdminPending from "@/pages/admin/pending";
 // import AdminUsers from "@/pages/admin/users";
@@ -228,6 +229,11 @@ function Router() {
       />
 
       {/* Public shared pages */}
+      <Route
+        path="/feed"
+        component={() => <AdsFeed />}
+      />
+      
       {/* <Route
         path="/public/:id"
         component={(props: { params: { id: string } }) => (

@@ -578,6 +578,24 @@
     "legalContactTitle": "الاتصال القانوني",
     "legalContactContent": "للمسائل القانونية أو الأسئلة حول هذه الشروط، يرجى الاتصال بفريقنا القانوني:"
   },
+  "publicFeed": {
+    "title": "التغذية العامة",
+    "sponsored": "إعلان مدفوع",
+    "like": "أعجبني",
+    "share": "مشاركة",
+    "comment": "تعليق",
+    "learnMore": "اعرف المزيد",
+    "loadMore": "تحميل المزيد",
+    "loading": "جاري التحميل...",
+    "interactionRecorded": "تم تسجيل التفاعل",
+    "interactionRecordedDesc": "تم تسجيل تفاعلك بنجاح",
+    "copiedToClipboard": "تم النسخ للحافظة",
+    "adContentCopied": "تم نسخ محتوى الإعلان للحافظة",
+    "errorLoading": "حدث خطأ ما",
+    "unableToLoad": "لا يمكن تحميل تغذية الإعلانات",
+    "noAdsAvailable": "لا توجد إعلانات متاحة",
+    "checkBackLater": "تحقق لاحقًا للحصول على محتوى جديد"
+  },
   "common": {
     "dashboard": "لوحة التحكم",
     "contactSupport": "اتصل بالدعم"

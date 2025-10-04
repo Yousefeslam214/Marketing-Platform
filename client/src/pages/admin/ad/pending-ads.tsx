@@ -14,9 +14,9 @@ import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { toast } from "@/hooks/use-toast";
+import { handleApprove, handleReject } from "@/lib/helper-ad";
 
 export default function PendingAds() {
-  const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
@@ -37,43 +37,8 @@ export default function PendingAds() {
 
   console.log(pendingAds);
   const token = TokenManager.getAccessToken();
-  const handleApprove = async (id: string) => {
-    const res = await fetch(
-      `${VITE_API_BASE_URL}/api/advertising/${id}/approve`,
-      {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    if (res.ok) {
-      toast({ title: isRTL ? "تمت الموافقة على الإعلان" : "Ad approved" });
-      refetch();
-    } else {
-      toast({
-        title: isRTL ? "فشل في الموافقة على الإعلان" : "Failed to approve ad",
-        variant: "destructive",
-      });
-    }
-  };
 
-  const handleReject = async (id: string) => {
-    const res = await fetch(
-      `${VITE_API_BASE_URL}/api/advertising/${id}/reject`,
-      {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    if (res.ok) {
-      toast({ title: isRTL ? "تم رفض الإعلان" : "Ad rejected" });
-      refetch();
-    } else {
-      toast({
-        title: isRTL ? "فشل في رفض الإعلان" : "Failed to reject ad",
-        variant: "destructive",
-      });
-    }
-  };
+  
   if (isLoading) {
     <Loading />;
   }
@@ -113,37 +78,35 @@ export default function PendingAds() {
               <Loading />
             </div>
           ) : pendingAds.length > 0 ? (
-                   <div className="min-h-[74vh]">
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
-          
-              {pendingAds.map((ad: AdData) => (
-                <>
-                  <AdCard
-                    key={ad.id}
-                    ad={ad}
-                    language={isRTL ? "ar" : "en"}
-                    onView={handleViewAd}
-                    onApprove={handleApprove}
-                    onReject={handleReject}
-                  />
-                </>
-              ))}
-            </div>
+            <div className="min-h-[74vh]">
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+                {pendingAds.map((ad: AdData) => (
+                  <>
+                    <AdCard
+                      key={ad.id}
+                      ad={ad}
+                      language={isRTL ? "ar" : "en"}
+                      onView={handleViewAd}
+                      onApprove={() => handleApprove(ad.id, isRTL, refetch)}
+                      onReject={() => handleReject(ad.id, isRTL, refetch)}
+                    />
+                  </>
+                ))}
+              </div>
             </div>
           ) : (
-                 <div className="min-h-[74vh]">
-          
-            <div className="text-center py-12">
-              <i className="fas fa-hourglass-half text-6xl text-yellow-500 mb-6"></i>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                {isRTL ? "لا توجد إعلانات معلقة بعد" : "No pending ads yet"}
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                {isRTL
-                  ? "ستظهر الإعلانات التي ترسلها للمراجعة هنا حتى يتم الموافقة عليها أو رفضها."
-                  : "Ads you submit for review will appear here until they are approved or rejected."}
-              </p>
-            </div>
+            <div className="min-h-[74vh]">
+              <div className="text-center py-12">
+                <i className="fas fa-hourglass-half text-6xl text-yellow-500 mb-6"></i>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  {isRTL ? "لا توجد إعلانات معلقة بعد" : "No pending ads yet"}
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  {isRTL
+                    ? "ستظهر الإعلانات التي ترسلها للمراجعة هنا حتى يتم الموافقة عليها أو رفضها."
+                    : "Ads you submit for review will appear here until they are approved or rejected."}
+                </p>
+              </div>
             </div>
           )}
 
