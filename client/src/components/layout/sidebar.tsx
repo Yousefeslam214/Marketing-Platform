@@ -50,10 +50,12 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const [location] = useLocation();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const { t, isRTL } = useLanguage();
   const isMobile = useIsMobile();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const user = TokenManager.getUsername();
+  const role = TokenManager.getRole();
 
   const toggleExpanded = (itemName: string) => {
     setExpandedItems((prev) =>
@@ -65,7 +67,6 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
   // Define navigation sections based on user role
   const navigation: NavigationSection[] = [];
-  const role = TokenManager.getRole();
   // Admin section for admin/marketing users
   if (role === "admin") {
     // Admin section
@@ -334,10 +335,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         {/* Sidebar Header */}
         <div className="p-6 border-b border-border flex flex-col bg-primary/10">
           <div
-            className={`flex items-center gap-3 justify-between ${
-              isRTL ? "flex-row-reverse" : ""
-            }`}>
-            <div className="flex items-center gap-3">
+            className="flex flex-row items-center gap-3 justify-between"
+          >
+            <div className="flex flex-row items-center gap-3">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow">
                 <i className="fas fa-bolt text-primary-foreground text-lg"></i>
               </div>
@@ -357,7 +357,8 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="md:hidden">
+                className="md:hidden"
+              >
                 <i className="fas fa-times"></i>
               </Button>
             )}
@@ -397,10 +398,10 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               <p
                 className="text-sm font-bold text-primary truncate"
                 data-testid="user-name">
-                {user?.username || "yousef"}
+                {user || "userName 404"}
               </p>
               <p className="text-xs text-muted-foreground truncate capitalize">
-                {user?.role || "admin"}
+                {role || "userRole 404"}
               </p>
             </div>
           </div>

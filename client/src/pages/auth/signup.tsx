@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, type SignupData } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
+import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,7 +25,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
-  const { signup, isLoading, isAuthenticated } = useAuth();
+  const { signup, isLoading, user } = useAuth();
+  const { t, isRTL } = useLanguage();
   const { toast } = useToast();
 
   const form = useForm<SignupData>({
@@ -34,12 +36,12 @@ export default function Signup() {
       username: "",
       password: "",
       confirmPassword: "",
-      role: "advertiser",
+      role: "user",
     },
   });
 
   // Redirect if already authenticated
-  if (isAuthenticated) {
+  if (user) {
     setLocation("/dashboard");
     return null;
   }
@@ -49,21 +51,23 @@ export default function Signup() {
       await signup(data);
       setLocation("/dashboard");
       toast({
-        title: "Account created",
-        description:
-          "Welcome to octopusad! Your account has been created successfully.",
+        title: t("auth", "accountCreated"),
+        description: t("auth", "accountCreatedSuccess"),
       });
     } catch (error: any) {
       toast({
-        title: "Signup failed",
-        description: error.message || "Failed to create account",
+        title: t("auth", "signupFailed"),
+        description: error.message || t("auth", "signupFailedMessage"),
         variant: "destructive",
       });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div
+      className={`min-h-screen flex items-center justify-center bg-background px-4 ${
+        isRTL ? "rtl" : "ltr"
+      }`}>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -72,9 +76,7 @@ export default function Signup() {
             </div>
             <CardTitle className="text-2xl">octopusad</CardTitle>
           </div>
-          <CardDescription>
-            Create your marketing platform account
-          </CardDescription>
+          <CardDescription>{t("auth", "signupDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -84,11 +86,11 @@ export default function Signup() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("auth", "email")}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder={t("auth", "emailPlaceholder")}
                         data-testid="input-email"
                         {...field}
                       />
@@ -103,11 +105,11 @@ export default function Signup() {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>{t("auth", "username")}</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder="Choose a username"
+                        placeholder={t("auth", "usernamePlaceholder")}
                         data-testid="input-username"
                         {...field}
                       />
@@ -122,11 +124,11 @@ export default function Signup() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("auth", "password")}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Create a password"
+                        placeholder={t("auth", "passwordPlaceholder2")}
                         data-testid="input-password"
                         {...field}
                       />
@@ -141,11 +143,11 @@ export default function Signup() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>{t("auth", "confirmPassword")}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Confirm your password"
+                        placeholder={t("auth", "confirmPasswordPlaceholder")}
                         data-testid="input-confirm-password"
                         {...field}
                       />
@@ -163,10 +165,10 @@ export default function Signup() {
                 {isLoading ? (
                   <>
                     <i className="fas fa-spinner fa-spin mr-2"></i>
-                    Creating account...
+                    {t("auth", "creatingAccount")}
                   </>
                 ) : (
-                  "Create Account"
+                  t("auth", "createAccount")
                 )}
               </Button>
             </form>
@@ -174,12 +176,12 @@ export default function Signup() {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Already have an account?{" "}
+              {t("auth", "alreadyHaveAccount")}{" "}
               <Link
                 href="/login"
                 className="text-primary hover:underline"
                 data-testid="link-login">
-                Sign in
+                {t("auth", "signIn2")}
               </Link>
             </p>
           </div>

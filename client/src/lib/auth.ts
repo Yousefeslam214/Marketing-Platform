@@ -19,7 +19,7 @@ export class AuthService {
 
     const result = await response.json();
     console.log("Login response:", result);
-    const rtnData = result?.data
+    const rtnData = result?.data;
     if (rtnData?.token) {
       TokenManager.setTokens(rtnData.token, rtnData.username, rtnData.role);
       return {
@@ -34,10 +34,23 @@ export class AuthService {
   static async signup(data: SignupData): Promise<AuthResponse> {
     const response = await apiRequest(
       "POST",
-      `${BACKEND_URL}/api/auth/signup`,
+      `${BACKEND_URL}/api/auth/register`,
       data
     );
-    return response.json();
+
+    const result = await response.json();
+    console.log("Signup response:", result);
+    const rtnData = result?.data;
+
+    if (rtnData?.token) {
+      TokenManager.setTokens(rtnData.token, rtnData.username, rtnData.role);
+      return {
+        role: rtnData?.role,
+        username: rtnData?.username,
+        access_token: rtnData?.token,
+      };
+    }
+    throw new AuthError("Invalid signup response", "INVALID_RESPONSE");
   }
 
   static async logout(): Promise<void> {

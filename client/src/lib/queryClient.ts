@@ -1,7 +1,8 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 import { TokenManager } from "./auth";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -26,7 +27,9 @@ export async function apiRequest(
   // Add Bearer token if available
   const token = TokenManager.getAccessToken();
   if (token) {
-    (config.headers as Record<string, string>).Authorization = `Bearer ${token}`;
+    (
+      config.headers as Record<string, string>
+    ).Authorization = `Bearer ${token}`;
   }
 
   if (data) {

@@ -14,6 +14,7 @@ export function Header({ title, description, actions }: HeaderProps) {
   return (
     <header
       className="bg-card border-b border-border px-6 py-4
+      h-[97px]
       
       "
       data-testid="page-header">

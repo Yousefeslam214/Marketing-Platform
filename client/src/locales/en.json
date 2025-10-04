@@ -292,7 +292,22 @@
     "signIn": "Sign In",
     "signingIn": "Signing in...",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "signupTitle": "Create Account",
+    "signupDescription": "Create your marketing platform account",
+    "username": "Username",
+    "usernamePlaceholder": "Choose a username",
+    "passwordPlaceholder2": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "createAccount": "Create Account",
+    "creatingAccount": "Creating account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn2": "Sign in",
+    "accountCreated": "Account created",
+    "accountCreatedSuccess": "Welcome to octopusad! Your account has been created successfully.",
+    "signupFailed": "Signup failed",
+    "signupFailedMessage": "Failed to create account"
   },
   "pending": {
     "title": "Pending",

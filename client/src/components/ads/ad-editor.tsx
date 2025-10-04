@@ -52,7 +52,11 @@ export function AdEditor() {
 
   const createAdMutation = useMutation({
     mutationFn: async (data: CreateAdData) => {
-      const response = await apiRequest("POST", `${VITE_API_BASE_URL}/api/advertising`, data);
+      const response = await apiRequest(
+        "POST",
+        `${VITE_API_BASE_URL}/api/advertising`,
+        data
+      );
       return response.json();
     },
     onSuccess: (data) => {
@@ -63,8 +67,8 @@ export function AdEditor() {
       });
       console.log(data);
       setLocation(`/campaigns/${data.data?.AdId}`);
-        },
-        onError: (error: any) => {
+    },
+    onError: (error: any) => {
       toast({
         title: "Failed to create ad",
         description: error.message || "Please try again",
@@ -204,7 +208,9 @@ export function AdEditor() {
 
             {/* Social Media Links */}
             <div>
-              <FormLabel className="text-base font-semibold">Social Media Links (Optional)</FormLabel>
+              <FormLabel className="text-base font-semibold">
+                Social Media Links (Optional)
+              </FormLabel>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
                 <FormField
                   control={form.control}

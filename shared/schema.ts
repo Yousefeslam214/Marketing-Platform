@@ -1,30 +1,65 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, integer, boolean, jsonb, decimal, pgEnum } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  varchar,
+  timestamp,
+  integer,
+  boolean,
+  jsonb,
+  decimal,
+  pgEnum,
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // Enums
-export const userRoleEnum = pgEnum("user_role", ["advertiser", "marketing", "admin"]);
-export const adStatusEnum = pgEnum("ad_status", ["draft", "pending", "approved", "rejected", "published", "paused"]);
-export const purchaseStatusEnum = pgEnum("purchase_status", ["pending", "completed", "failed", "refunded"]);
+export const userRoleEnum = pgEnum("user_role", [
+  "user",
+  "admin",
+]);
+export const adStatusEnum = pgEnum("ad_status", [
+  "draft",
+  "pending",
+  "approved",
+  "rejected",
+  "published",
+  "paused",
+]);
+export const purchaseStatusEnum = pgEnum("purchase_status", [
+  "pending",
+  "completed",
+  "failed",
+  "refunded",
+]);
 
 // Tables
 export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
-  role: userRoleEnum("role").notNull().default("advertiser"),
+  role: userRoleEnum("role").notNull().default("user"),
   freeViewsCredits: integer("free_views_credits").notNull().default(10000),
   stripeCustomerId: text("stripe_customer_id"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .default(sql`now()`),
 });
 
 export const ads = pgTable("ads", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").notNull().references(() => users.id),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  userId: varchar("user_id")
+    .notNull()
+    .references(() => users.id),
   titleEn: text("title_en").notNull(),
   titleAr: text("title_ar").notNull(),
   descriptionEn: text("description_en").notNull(),
@@ -44,61 +79,97 @@ export const ads = pgTable("ads", {
   googleAdsLink: text("google_ads_link"),
   instagramLink: text("instagram_link"),
   snapchatLink: text("snapchat_link"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .default(sql`now()`),
 });
 
 export const purchases = pgTable("purchases", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").notNull().references(() => users.id),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  userId: varchar("user_id")
+    .notNull()
+    .references(() => users.id),
   adId: varchar("ad_id").references(() => ads.id),
   amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
   impressionsAllocated: integer("impressions_allocated").notNull().default(0),
   status: purchaseStatusEnum("status").notNull().default("pending"),
   stripeSessionId: text("stripe_session_id"),
   stripePaymentIntentId: text("stripe_payment_intent_id"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .default(sql`now()`),
 });
 
 export const impressionsEvents = pgTable("impressions_events", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   eventId: varchar("event_id").notNull().unique(),
-  adId: varchar("ad_id").notNull().references(() => ads.id),
+  adId: varchar("ad_id")
+    .notNull()
+    .references(() => ads.id),
   source: text("source").notNull().default("web"),
   viewerHash: text("viewer_hash"),
   ipHash: text("ip_hash"),
   userAgent: text("user_agent"),
   fallbackHash: text("fallback_hash"),
   metadata: jsonb("metadata"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
 });
 
 export const clicksEvents = pgTable("clicks_events", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   eventId: varchar("event_id").notNull(),
-  adId: varchar("ad_id").notNull().references(() => ads.id),
-  impressionEventId: varchar("impression_event_id").references(() => impressionsEvents.id),
+  adId: varchar("ad_id")
+    .notNull()
+    .references(() => ads.id),
+  impressionEventId: varchar("impression_event_id").references(
+    () => impressionsEvents.id
+  ),
   source: text("source").notNull().default("web"),
   ipHash: text("ip_hash"),
   userAgent: text("user_agent"),
   metadata: jsonb("metadata"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
 });
 
 export const aggregatedStats = pgTable("aggregated_stats", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  adId: varchar("ad_id").notNull().references(() => ads.id),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  adId: varchar("ad_id")
+    .notNull()
+    .references(() => ads.id),
   date: timestamp("date").notNull(),
   impressions: integer("impressions").notNull().default(0),
   clicks: integer("clicks").notNull().default(0),
   ctr: decimal("ctr", { precision: 5, scale: 4 }).notNull().default("0"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .default(sql`now()`),
 });
 
 export const auditLogs = pgTable("audit_logs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id),
   action: text("action").notNull(),
   resourceType: text("resource_type").notNull(),
@@ -106,7 +177,9 @@ export const auditLogs = pgTable("audit_logs", {
   details: jsonb("details"),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
 });
 
 // Relations
@@ -142,13 +215,16 @@ export const purchasesRelations = relations(purchases, ({ one }) => ({
   }),
 }));
 
-export const impressionsEventsRelations = relations(impressionsEvents, ({ one, many }) => ({
-  ad: one(ads, {
-    fields: [impressionsEvents.adId],
-    references: [ads.id],
-  }),
-  clicksEvents: many(clicksEvents),
-}));
+export const impressionsEventsRelations = relations(
+  impressionsEvents,
+  ({ one, many }) => ({
+    ad: one(ads, {
+      fields: [impressionsEvents.adId],
+      references: [ads.id],
+    }),
+    clicksEvents: many(clicksEvents),
+  })
+);
 
 export const clicksEventsRelations = relations(clicksEvents, ({ one }) => ({
   ad: one(ads, {
@@ -190,7 +266,9 @@ export const insertPurchaseSchema = createInsertSchema(purchases).omit({
   updatedAt: true,
 });
 
-export const insertImpressionEventSchema = createInsertSchema(impressionsEvents).omit({
+export const insertImpressionEventSchema = createInsertSchema(
+  impressionsEvents
+).omit({
   id: true,
   createdAt: true,
 });
@@ -206,22 +284,44 @@ export const loginSchema = z.object({
   password: z.string().min(8),
 });
 
-export const signupSchema = insertUserSchema.extend({
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+export const signupSchema = insertUserSchema
+  .extend({
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 export const createAdSchema = insertAdSchema.extend({
   targetAudience: z.string().min(1, "Target audience is required"),
   budgetType: z.enum(["impressions", "clicks"]),
-  facebookLink: z.string().url("Invalid Facebook URL").optional().or(z.literal("")),
-  instagramLink: z.string().url("Invalid Instagram URL").optional().or(z.literal("")),
+  facebookLink: z
+    .string()
+    .url("Invalid Facebook URL")
+    .optional()
+    .or(z.literal("")),
+  instagramLink: z
+    .string()
+    .url("Invalid Instagram URL")
+    .optional()
+    .or(z.literal("")),
   tiktokLink: z.string().url("Invalid TikTok URL").optional().or(z.literal("")),
-  youtubeLink: z.string().url("Invalid YouTube URL").optional().or(z.literal("")),
-  snapchatLink: z.string().url("Invalid Snapchat URL").optional().or(z.literal("")),
-  googleAdsLink: z.string().url("Invalid Google Ads URL").optional().or(z.literal("")),
+  youtubeLink: z
+    .string()
+    .url("Invalid YouTube URL")
+    .optional()
+    .or(z.literal("")),
+  snapchatLink: z
+    .string()
+    .url("Invalid Snapchat URL")
+    .optional()
+    .or(z.literal("")),
+  googleAdsLink: z
+    .string()
+    .url("Invalid Google Ads URL")
+    .optional()
+    .or(z.literal("")),
 });
 
 export const purchaseCreditsSchema = z.object({

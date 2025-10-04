@@ -148,7 +148,7 @@ export default function Billing() {
           {/* Current Balance */}
           <Card>
             <CardHeader>
-              <CardTitle>Current Balance</CardTitle>
+              <CardTitle>{t("billing", "currentBalance")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
@@ -244,7 +244,7 @@ export default function Billing() {
               {/* Custom Amount */}
               <div className="p-6 border border-border rounded-lg">
                 <h4 className="text-lg font-semibold text-foreground mb-4">
-                  Custom Amount
+                  {t("billing", "customAmount")}
                 </h4>
                 <div className="flex items-center gap-4">
                   <div className="flex-1">

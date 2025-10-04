@@ -302,7 +302,22 @@
     "signIn": "تسجيل الدخول",
     "signingIn": "جاري تسجيل الدخول...",
     "noAccount": "ليس لديك حساب؟",
-    "signUp": "إنشاء حساب"
+    "signUp": "إنشاء حساب",
+    "signupTitle": "إنشاء حساب",
+    "signupDescription": "أنشئ حساب منصة التسويق الخاص بك",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "اختر اسم مستخدم",
+    "passwordPlaceholder2": "أنشئ كلمة مرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أكد كلمة المرور",
+    "createAccount": "إنشاء حساب",
+    "creatingAccount": "جاري إنشاء الحساب...",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "signIn2": "تسجيل الدخول",
+    "accountCreated": "تم إنشاء الحساب",
+    "accountCreatedSuccess": "مرحبًا بك في octopusad! تم إنشاء حسابك بنجاح.",
+    "signupFailed": "فشل إنشاء الحساب",
+    "signupFailedMessage": "فشل في إنشاء الحساب"
   },
   "pending": {
     "title": "قيد الانتظار",
