@@ -22,6 +22,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import PublicHeader from "@/components/layout/publicHeader";
 
 interface ContactForm {
   name: string;
@@ -76,43 +77,8 @@ export default function Contact() {
       `}
       dir={isRTL ? "rtl" : "ltr"}>
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div
-            className={`flex items-center space-x-2 ${
-              isRTL ? "space-x-reverse" : ""
-            }`}>
-            <Link href="/">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`flex items-center space-x-2 ${
-                  isRTL ? "space-x-reverse" : ""
-                }`}>
-                {/* className="flex items-center space-x-2"> */}
-                <ArrowLeft className="w-4 h-4" />
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
-                </div>
-                <span className="font-bold text-xl">DocuChatAI</span>
-              </Button>
-            </Link>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <ThemeToggle />
-            <LanguageToggle />
-            <Link href="/login">
-              <Button variant="ghost" size="sm">
-                {t("contact", "login")}
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">{t("contact", "signup")}</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      
+      <PublicHeader />
 
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
