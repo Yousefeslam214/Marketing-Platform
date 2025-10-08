@@ -34,13 +34,19 @@ interface AdEditorUpdateProps {
   isUpdate?: boolean;
 }
 
-export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdateProps) {
+export function AdEditor({
+  adId,
+  existingData,
+  isUpdate = false,
+}: AdEditorUpdateProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(existingData?.imageUrl || null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(
+    existingData?.imageUrl || null
+  );
 
   const form = useForm<CreateAdData>({
     resolver: zodResolver(createAdSchema),
@@ -67,21 +73,24 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append("photo", file);
-      
-      const response = await fetch(`${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
-        },
-        body: formData,
-      });
-      
+
+      const response = await fetch(
+        `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${TokenManager.getAccessToken()}`,
+          },
+          body: formData,
+        }
+      );
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Upload error:", response.status, errorText);
         throw new Error(`Upload failed: ${response.status} - ${errorText}`);
       }
-      
+
       return response.json();
     },
     onSuccess: (data) => {
@@ -113,7 +122,9 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
     },
   });
 
-  const handlePhotoSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       // Validate file type
@@ -125,7 +136,7 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
         });
         return;
       }
-      
+
       // Validate file size (5MB limit)
       if (file.size > 5 * 1024 * 1024) {
         toast({
@@ -135,11 +146,11 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
         });
         return;
       }
-      
+
       // Show local preview immediately
       const localPreview = URL.createObjectURL(file);
       setPhotoPreview(localPreview);
-      
+
       setUploadingPhoto(true);
       try {
         await uploadPhotoMutation.mutateAsync(file);
@@ -297,19 +308,21 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
                               size="sm"
                               className="absolute top-2 right-2"
                               onClick={() => {
-                                if (photoPreview && photoPreview.startsWith("blob:")) {
+                                if (
+                                  photoPreview &&
+                                  photoPreview.startsWith("blob:")
+                                ) {
                                   URL.revokeObjectURL(photoPreview);
                                 }
                                 setPhotoPreview(null);
                                 form.setValue("imageUrl", "");
-                              }}
-                            >
+                              }}>
                               <i className="fas fa-trash mr-2"></i>
                               Remove
                             </Button>
                           </div>
                         )}
-                        
+
                         {/* Upload Button */}
                         <div className="flex items-center gap-4">
                           <input
@@ -323,8 +336,9 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
                             type="button"
                             variant="outline"
                             onClick={() => fileInputRef.current?.click()}
-                            disabled={uploadingPhoto || uploadPhotoMutation.isPending}
-                          >
+                            disabled={
+                              uploadingPhoto || uploadPhotoMutation.isPending
+                            }>
                             {uploadingPhoto || uploadPhotoMutation.isPending ? (
                               <>
                                 <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -343,9 +357,13 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
                             </span>
                           )}
                         </div>
-                        
+
                         {/* Hidden input for form validation */}
-                        <Input type="hidden" {...field} value={field.value || ""} />
+                        <Input
+                          type="hidden"
+                          {...field}
+                          value={field.value || ""}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -404,8 +422,7 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
-                    data-testid="select-budget-type"
-                  >
+                    data-testid="select-budget-type">
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select budget type" />
@@ -541,8 +558,7 @@ export function AdEditor({ adId, existingData, isUpdate = false }: AdEditorUpdat
               type="submit"
               className="w-full"
               disabled={updateAdMutation.isPending}
-              data-testid="button-update-ad"
-            >
+              data-testid="button-update-ad">
               {updateAdMutation.isPending ? (
                 <>
                   <i className="fas fa-spinner fa-spin mr-2"></i>

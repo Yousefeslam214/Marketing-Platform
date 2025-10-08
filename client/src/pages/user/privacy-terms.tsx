@@ -160,7 +160,7 @@ export default function PrivacyTerms() {
                           {t("privacyTerms", "contactContent")}
                         </p>
                         <p className="text-primary font-medium mt-2">
-                          privacy@docuchatai.com
+                          privacy@Octopus Ad.com
                         </p>
                       </section>
                     </div>
@@ -178,7 +178,7 @@ export default function PrivacyTerms() {
                     {t("privacyTerms", "termsTitle")}
                   </CardTitle>
                 </CardHeader>
-                <CardContent >
+                <CardContent>
                   <ScrollArea
                     className={`h-[600px] pr-4 direction-${
                       isRTL ? "rtl" : "ltr"
@@ -306,7 +306,7 @@ export default function PrivacyTerms() {
                           {t("privacyTerms", "legalContactContent")}
                         </p>
                         <p className="text-primary font-medium mt-2">
-                          legal@docuchatai.com
+                          legal@OctopusAd.com
                         </p>
                       </section>
                     </div>

@@ -18,7 +18,9 @@ import Billing from "@/pages/user/billing";
 import PaymentSuccess from "@/pages/user/payment-success";
 import PaymentCancel from "@/pages/user/payment-cancel";
 import Analytics from "@/pages/user/analytics";
-import Contact from "@/pages/user/contact";
+import PublicContact from "@/pages/public/contact";
+import PublicFAQ from "@/pages/public/faq";
+import PublicPrivacyTerms from "@/pages/public/privacy-terms";
 import PrivacyTerms from "@/pages/user/privacy-terms";
 import AdsFeed from "@/pages/public/ads-feed";
 import AdminBilling from "@/pages/admin/AdminBilling";
@@ -46,23 +48,20 @@ import AdminUsers from "./pages/admin/users-mangement-page";
 import UserDetails from "./pages/admin/user-details-mangement-page";
 import AnalyticsToAd from "./pages/user/analytics-to-ad";
 import AdDetail from "./pages/shared/ad/[id]";
+import LandingPage from "./pages/public/landing";
 
 function Router() {
   return (
     <Switch>
       {/* Public pages */}
+      <Route path="/" component={LandingPage} />
+      <Route path="/contact" component={PublicContact} />
+      <Route path="/faq" component={PublicFAQ} />
+      <Route path="/privacy-terms" component={PublicPrivacyTerms} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
 
       {/* Pages with AppLayout */}
-      <Route
-        path="/"
-        component={() => (
-          <AppLayout>
-            <Dashboard />
-          </AppLayout>
-        )}
-      />
       <Route
         path="/dashboard"
         component={() => (
@@ -184,14 +183,6 @@ function Router() {
         component={() => (
           <AppLayout>
             <Analytics />
-          </AppLayout>
-        )}
-      />
-      <Route
-        path="/contact"
-        component={() => (
-          <AppLayout>
-            <Contact />
           </AppLayout>
         )}
       />

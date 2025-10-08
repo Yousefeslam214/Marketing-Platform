@@ -120,7 +120,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: adminBillingPath(),
           icon: "fas fa-credit-card",
         },
-         {
+        {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
           icon: "fas fa-rss",

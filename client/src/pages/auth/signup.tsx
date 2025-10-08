@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { TokenManager } from "@/lib/auth";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -41,7 +42,7 @@ export default function Signup() {
   });
 
   // Redirect if already authenticated
-  if (user) {
+  if (TokenManager.getAccessToken()) {
     setLocation("/dashboard");
     return null;
   }
@@ -50,6 +51,7 @@ export default function Signup() {
     try {
       await signup(data);
       setLocation("/dashboard");
+      window.location.reload();
       toast({
         title: t("auth", "accountCreated"),
         description: t("auth", "accountCreatedSuccess"),

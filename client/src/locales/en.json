@@ -521,7 +521,7 @@
     "termsOfService": "Terms of Service",
     "privacyTitle": "Privacy Policy",
     "introductionTitle": "Introduction",
-    "introductionContent": "This Privacy Policy describes how DocuChatAI ('we', 'our', or 'us') collects, uses, and protects your personal information when you use our advertising platform and services.",
+    "introductionContent": "This Privacy Policy describes how Octopus Ad ('we', 'our', or 'us') collects, uses, and protects your personal information when you use our advertising platform and services.",
     "dataCollectionTitle": "Information We Collect",
     "personalInfoTitle": "Personal Information",
     "personalInfoContent": "We collect information you provide directly to us, such as when you create an account, make purchases, or contact support. This includes your name, email address, billing information, and communications.",
@@ -547,9 +547,9 @@
     "contactContent": "If you have questions about this Privacy Policy or our data practices, please contact our privacy team:",
     "termsTitle": "Terms of Service",
     "acceptanceTitle": "Acceptance of Terms",
-    "acceptanceContent": "By accessing and using DocuChatAI's advertising platform, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.",
+    "acceptanceContent": "By accessing and using Octopus Ad's advertising platform, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.",
     "serviceTitle": "Service Description",
-    "serviceContent": "DocuChatAI provides an advertising platform that allows users to create, manage, and track digital marketing campaigns. Our service includes ad creation tools, targeting options, analytics, and billing management.",
+    "serviceContent": "Octopus Ad provides an advertising platform that allows users to create, manage, and track digital marketing campaigns. Our service includes ad creation tools, targeting options, analytics, and billing management.",
     "responsibilitiesTitle": "User Responsibilities",
     "responsibilitiesAccurate": "Provide accurate and up-to-date account information",
     "responsibilitiesLawful": "Use the service only for lawful purposes",
@@ -565,9 +565,9 @@
     "paymentBilling": "All fees are billed in advance and are non-refundable except as required by law. You authorize us to charge your selected payment method for all fees incurred.",
     "paymentRefunds": "Refunds may be provided at our sole discretion for unused advertising credits within 30 days of purchase, subject to our refund policy.",
     "intellectualTitle": "Intellectual Property",
-    "intellectualContent": "All content, features, and functionality of our service are owned by DocuChatAI and are protected by copyright, trademark, and other intellectual property laws. You retain ownership of your advertising content.",
+    "intellectualContent": "All content, features, and functionality of our service are owned by Octopus Ad and are protected by copyright, trademark, and other intellectual property laws. You retain ownership of your advertising content.",
     "liabilityTitle": "Limitation of Liability",
-    "liabilityContent": "DocuChatAI shall not be liable for any indirect, incidental, special, or consequential damages resulting from your use of our service. Our total liability shall not exceed the amount paid by you in the 12 months preceding the claim.",
+    "liabilityContent": "Octopus Ad shall not be liable for any indirect, incidental, special, or consequential damages resulting from your use of our service. Our total liability shall not exceed the amount paid by you in the 12 months preceding the claim.",
     "terminationTitle": "Termination",
     "terminationContent": "We may terminate or suspend your account at any time for violation of these terms. You may terminate your account at any time by contacting support. Upon termination, your right to use the service ceases immediately.",
     "changesTitle": "Changes to Terms",
@@ -592,6 +592,107 @@
     "unableToLoad": "Unable to load ads feed",
     "noAdsAvailable": "No ads available",
     "checkBackLater": "Check back later for new content"
+  },
+  "landing": {
+    "navigation": {
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "pricing": "Pricing",
+      "contact": "Contact"
+    },
+    "hero": {
+      "badge": "🚀 Advanced Marketing Platform",
+      "title": "Grow Your Business with Smart Advertising",
+      "subtitle": "Create, manage, and optimize your advertising campaigns across multiple platforms. Get real-time analytics and maximize your ROI with our intelligent marketing platform.",
+      "getStarted": "Get Started Free",
+      "watchDemo": "Watch Demo",
+      "features": {
+        "noSetup": "No Setup Required",
+        "multiPlatform": "Multi-Platform",
+        "analytics": "Real-time Analytics"
+      },
+      "dashboard": {
+        "title": "Campaign Dashboard",
+        "live": "Live",
+        "campaigns": "Campaigns",
+        "engagement": "Engagement",
+        "leads": "Leads",
+        "performance": "Performance Analytics"
+      }
+    },
+    "features": {
+      "title": "Everything You Need to Succeed",
+      "subtitle": "Our platform provides comprehensive tools to create, manage, and optimize your advertising campaigns with ease.",
+      "items": {
+        "easySetup": {
+          "title": "Easy Setup",
+          "description": "Get started in minutes with our intuitive interface. No technical knowledge required."
+        },
+        "analytics": {
+          "title": "Advanced Analytics",
+          "description": "Track performance with detailed insights and real-time reporting on all your campaigns."
+        },
+        "multiPlatform": {
+          "title": "Multi-Platform Support",
+          "description": "Manage campaigns across Facebook, Instagram, Google, and more from one dashboard."
+        },
+        "secure": {
+          "title": "Enterprise Security",
+          "description": "Your data is protected with bank-level security and encrypted storage."
+        },
+        "realTime": {
+          "title": "Real-Time Updates",
+          "description": "Monitor your campaigns in real-time and make data-driven decisions instantly."
+        },
+        "support": {
+          "title": "24/7 Support",
+          "description": "Get help when you need it with our dedicated support team available around the clock."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Get your advertising campaigns up and running in just four simple steps.",
+      "getStarted": "Start Your First Campaign",
+      "steps": {
+        "signup": {
+          "title": "Sign Up",
+          "description": "Create your free account and get instant access to our platform."
+        },
+        "setup": {
+          "title": "Setup Profile",
+          "description": "Configure your business profile and connect your advertising accounts."
+        },
+        "create": {
+          "title": "Create Campaigns",
+          "description": "Design and launch your advertising campaigns with our easy-to-use tools."
+        },
+        "track": {
+          "title": "Track & Optimize",
+          "description": "Monitor performance and optimize your campaigns for better results."
+        }
+      }
+    },
+    "stats": {
+      "campaigns": "Active Campaigns",
+      "clients": "Happy Clients",
+      "uptime": "Uptime",
+      "support": "Support"
+    },
+    "cta": {
+      "title": "Ready to Transform Your Marketing?",
+      "subtitle": "Join thousands of businesses already growing with our platform.",
+      "getStarted": "Start Free Trial",
+      "contact": "Talk to Sales"
+    },
+    "footer": {
+      "description": "The most powerful marketing platform to grow your business with intelligent advertising solutions.",
+      "product": "Product",
+      "support": "Support",
+      "contact": "Contact",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    }
   },
   "common": {
     "dashboard": "Dashboard",

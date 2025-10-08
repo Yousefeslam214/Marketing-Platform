@@ -47,7 +47,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       );
       // TokenManager.setTokens(data.role);
       // TokenManager.setTokens(data.username);
-
     },
   });
 
@@ -58,7 +57,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     onSuccess: (data) => {
       queryClient.setQueryData(["/api/auth/login"], data);
       // localStorage.setItem("access_token", data.access_token);
-      TokenManager.setTokens(data.access_token, data.username ?? "", data.role ?? "");
+      TokenManager.setTokens(
+        data.access_token,
+        data.username ?? "",
+        data.role ?? ""
+      );
     },
   });
 

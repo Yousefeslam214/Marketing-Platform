@@ -41,6 +41,7 @@ export default function Login() {
     try {
       await login(data);
       setLocation("/dashboard");
+      window.location.reload();
       toast({
         title: t("auth", "loginSuccess") || "Login successful",
         description: t("auth", "welcomeBack") || "Welcome back!",
