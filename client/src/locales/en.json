@@ -359,60 +359,88 @@
   },
   "faq": {
     "title": "Frequently Asked Questions",
-    "description": "Find answers to common questions about our platform",
+    "description": "Find answers to common questions about our platform, features, and services. Can't find what you're looking for? Contact our support team.",
     "searchPlaceholder": "Search FAQ...",
-    "generalTitle": "General",
-    "accountTitle": "Account & Billing",
-    "adsTitle": "Advertising",
-    "supportTitle": "Support",
-    "questions": {
-      "introduction": {
-        "question": "Introduction",
-        "answer": "OctopusAd offers a modern marketing services network to improve the reach of your ads on the internet and purchase clicks. By using our service, you agree to the terms of service specified below."
+    "helpCenter": "Help Center",
+    "stillNeedHelp": "Still need help?",
+    "supportTeamHere": "Our support team is here to help you succeed. Reach out anytime!",
+    "contactSupport": "Contact Support",
+    "scheduleCall": "Schedule a Call",
+    "averageResponseTime": "Average Response Time",
+    "customerSatisfaction": "Customer Satisfaction",
+    "supportAvailable": "Support Available",
+    "categories": {
+      "general": {
+        "title": "General Questions",
+        "icon": "MessageCircle",
+        "questions": [
+          {
+            "question": "How quickly will I receive a response?",
+            "answer": "We typically respond to all inquiries within 24 hours during business days."
+          },
+          {
+            "question": "What payment methods do you accept?",
+            "answer": "We accept all major credit cards, PayPal, and bank transfers for enterprise accounts."
+          },
+          {
+            "question": "Do you offer refunds for unused credits?",
+            "answer": "Yes, we offer refunds for unused credits within 30 days of purchase. Contact support for assistance."
+          }
+        ]
       },
-      "serviceUsage": {
-        "question": "1. Service Usage",
-        "answer": "You must provide accurate, truthful, and non-misleading information when creating your ads using the OctopusAd platform. We have the right to modify, suspend, or refuse to publish ads that may violate laws or these terms of service."
+      "billing": {
+        "title": "Billing & Pricing",
+        "icon": "CreditCard",
+        "questions": [
+          {
+            "question": "What are your pricing plans?",
+            "answer": "We offer flexible pricing plans starting from $29/month for small businesses up to custom enterprise solutions. All plans include our core advertising tools and analytics."
+          },
+          {
+            "question": "How do I upgrade my plan?",
+            "answer": "You can upgrade your plan at any time from your billing settings. The upgrade will be prorated based on your current billing cycle."
+          },
+          {
+            "question": "Do you offer refunds?",
+            "answer": "Yes, we offer a 30-day money-back guarantee for all paid plans. Contact our support team for assistance."
+          }
+        ]
       },
-      "contentRights": {
-        "question": "2. Content and Property Rights",
-        "answer": "You are responsible for all content you publish through our platform. This includes banner images, texts, links, and any other materials. By displaying this content through the OctopusAd platform, you grant us a license to use this content within the scope of providing our services to you and users."
-      },
-      "privacy": {
-        "question": "3. Privacy",
-        "answer": "We are committed to protecting your privacy and personal data. Your use of our platform is subject to our privacy policy that details how we collect, use, and protect your information. Please read the privacy policy carefully before using the platform."
-      },
-      "payment": {
-        "question": "4. Payment",
-        "answer": "OctopusAd platform services are based on a view purchase system. The customer is responsible for purchasing the service. Paid amounts cannot be refunded except according to the terms stated in the service agreement."
-      },
-      "userRights": {
-        "question": "5. User Rights",
-        "answer": "Users have the full right to control their personal information. They can view, modify, and delete it whenever they want. They can also choose not to receive any marketing communications."
+      "adManagement": {
+        "title": "Ad Management",
+        "icon": "Target",
+        "questions": [
+          {
+            "question": "How do I create my first ad campaign?",
+            "answer": "Navigate to the Campaigns section and click 'Create New Ad'. Follow our step-by-step wizard to set up your targeting, budget, and creative content."
+          },
+          {
+            "question": "What targeting options are available?",
+            "answer": "We offer demographic targeting, interest-based targeting, location targeting, and behavioral targeting to help you reach your ideal audience."
+          },
+          {
+            "question": "How long does it take for ads to be approved?",
+            "answer": "Most ads are reviewed and approved within 24 hours. Complex campaigns may take up to 48 hours for review."
+          }
+        ]
       },
       "security": {
-        "question": "6. Security",
-        "answer": "We use the latest and most secure technologies to protect your data. We have a strong firewall and advanced encryption system to protect your information from any potential threats."
-      },
-      "updates": {
-        "question": "7. Updates",
-        "answer": "We are constantly working to improve our services. These improvements may require modifications to these terms. We will notify you of any material changes."
-      },
-      "law": {
-        "question": "8. Law",
-        "answer": "The applicable local laws in Saudi Arabia govern these terms and any dispute that may arise from them."
-      },
-      "services": {
-        "question": "9. Services",
-        "answer": "You can display banners of your online store or services to a wide audience and significantly increase your sales. We provide you with an easy-to-use and effective platform to market your products and services, with professional image design service and short link creation to direct the audience easily."
-      },
-      "bannerSize": {
-        "question": "10. Banner Size",
-        "answer": "The banner size must be 428x1108 to display it on the platform in a way that is easy to read by the audience."
-      },
-      "designProgram": {
-        "question": "11. Design Program",
-        "answer": "You can use Canva to design banner images professionally so you can upload them through the OctopusAd platform. Canva is a wonderful and easy-to-use design tool, perfect for creating attractive advertising banners for your platform."
+        "title": "Account & Security",
+        "icon": "Shield",
+        "questions": [
+          {
+            "question": "How do I reset my password?",
+            "answer": "Click 'Forgot Password' on the login page and follow the instructions sent to your email address."
+          },
+          {
+            "question": "Is my data secure?",
+            "answer": "Yes, we use enterprise-grade security measures including SSL encryption, regular security audits, and comply with GDPR and CCPA regulations."
+          },
+          {
+            "question": "Can I delete my account?",
+            "answer": "Yes, you can delete your account from the account settings. Please note this action is irreversible and all data will be permanently removed."
+          }
+        ]
       }
     }
   },

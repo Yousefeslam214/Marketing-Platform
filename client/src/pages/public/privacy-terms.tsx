@@ -19,54 +19,105 @@ import {
 export default function PrivacyTerms() {
   const { t, isRTL } = useLanguage();
 
-  const sections = [
+  // Get sections from translations
+  const privacySections = [
     {
       icon: <Eye className="w-5 h-5" />,
-      title: "Personal Information Collection",
-      content: "We collect information you provide directly to us, such as when you create an account, make purchases, or contact support. This includes your name, email address, billing information, and communications."
+      title: t("privacyTerms", "personalInfoTitle"),
+      content: t("privacyTerms", "personalInfoContent")
     },
     {
       icon: <Globe className="w-5 h-5" />,
-      title: "How We Use Your Data",
-      content: "We use your information to provide, maintain, and improve our services, process transactions, send communications, and comply with legal obligations. We do not sell your personal information to third parties."
+      title: t("privacyTerms", "dataUseTitle"),
+      content: t("privacyTerms", "dataUseService") + ". " + t("privacyTerms", "dataUseCommunication") + "."
     },
     {
       icon: <Lock className="w-5 h-5" />,
-      title: "Data Protection & Security",
-      content: "We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction."
+      title: t("privacyTerms", "securityTitle"),
+      content: t("privacyTerms", "securityContent")
     },
     {
       icon: <UserCheck className="w-5 h-5" />,
-      title: "Your Rights",
-      content: "You have the right to access, update, or delete your personal information. You may also request data portability and have the right to opt-out of certain communications."
+      title: t("privacyTerms", "rightsTitle"),
+      content: t("privacyTerms", "rightsAccess") + ", " + t("privacyTerms", "rightsCorrection") + ", " + t("privacyTerms", "rightsDeletion") + "."
     }
   ];
 
-  const termsSection = [
+  const termsSections = [
     {
       icon: <Scale className="w-5 h-5" />,
-      title: "Acceptance of Terms",
-      content: "By accessing and using our services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services."
+      title: t("privacyTerms", "acceptanceTitle"),
+      content: t("privacyTerms", "acceptanceContent")
     },
     {
       icon: <FileText className="w-5 h-5" />,
-      title: "Description of Services",
-      content: "Our platform provides digital advertising tools and analytics to help businesses create, manage, and optimize their marketing campaigns. We reserve the right to modify or discontinue services at any time."
+      title: t("privacyTerms", "serviceTitle"),
+      content: t("privacyTerms", "serviceContent")
     },
     {
       icon: <UserCheck className="w-5 h-5" />,
-      title: "User Obligations",
-      content: "You are responsible for maintaining the confidentiality of your account, ensuring your content complies with our policies, and using our services in accordance with applicable laws and these terms."
+      title: t("privacyTerms", "responsibilitiesTitle"),
+      content: t("privacyTerms", "responsibilitiesAccurate") + ". " + t("privacyTerms", "responsibilitiesLawful") + "."
     },
     {
       icon: <Shield className="w-5 h-5" />,
-      title: "Termination",
-      content: "We may terminate or suspend your account at any time for violation of these terms. You may terminate your account at any time by contacting support. Upon termination, your right to use the service ceases immediately."
+      title: t("privacyTerms", "terminationTitle"),
+      content: t("privacyTerms", "terminationContent")
     }
   ];
 
   return (
-    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between">
+          <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
+            <Link href="/">
+              <Button variant="ghost" size="sm" className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
+                <ArrowLeft className="w-4 h-4" />
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
+                </div>
+                <span className="font-bold text-xl">DocuChatAI</span>
+              </Button>
+            </Link>
+          </div>
+          
+          <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
+            <ThemeToggle />
+            <LanguageToggle />
+            <Link href="/login">
+              <Button variant="ghost" size="sm">
+                {t("contact", "login")}
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button size="sm">
+                {t("contact", "signup")}
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
+        <div className="container relative">
+          <div className="text-center space-y-4 mb-16">
+            <Badge variant="secondary" className="w-fit mx-auto">
+              <Shield className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t("privacyTerms", "lastUpdated")}
+            </Badge>
+            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
+              {t("privacyTerms", "title")}
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              {t("privacyTerms", "subtitle")}
+            </p>
+          </div>
+        </div>
+      </section>
       {/* Navigation */}
       <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
@@ -131,12 +182,12 @@ export default function PrivacyTerms() {
         <div className="container">
           <div className="max-w-4xl mx-auto space-y-12">
             <div>
-              <h2 className="text-3xl font-bold mb-8 flex items-center">
-                <Shield className="w-8 h-8 mr-3 text-primary" />
-                Privacy Policy
+              <h2 className={`text-3xl font-bold mb-8 flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Shield className={`w-8 h-8 text-primary ${isRTL ? 'ml-3' : 'mr-3'}`} />
+                {t("privacyTerms", "privacyTitle")}
               </h2>
               <div className="grid gap-6">
-                {sections.map((section, index) => (
+                {privacySections.map((section, index) => (
                   <Card key={index} className="border-0 shadow-lg">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-3">
@@ -159,8 +210,8 @@ export default function PrivacyTerms() {
             {/* Contact for Privacy */}
             <Card className="border-0 shadow-lg bg-gradient-to-r from-primary/5 to-secondary/5">
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Privacy Contact</h3>
-                <p className="text-muted-foreground mb-4">If you have questions about this Privacy Policy or our data practices, please contact our privacy team:</p>
+                <h3 className="text-xl font-semibold mb-2">{t("privacyTerms", "contactTitle")}</h3>
+                <p className="text-muted-foreground mb-4">{t("privacyTerms", "contactContent")}</p>
                 <div className="bg-muted/50 p-4 rounded-lg">
                   <p className="font-medium">Email: privacy@docuchatai.com</p>
                   <p className="font-medium">Address: San Francisco, CA</p>
@@ -170,12 +221,12 @@ export default function PrivacyTerms() {
 
             {/* Terms of Service */}
             <div>
-              <h2 className="text-3xl font-bold mb-8 flex items-center">
-                <Scale className="w-8 h-8 mr-3 text-primary" />
-                Terms of Service
+              <h2 className={`text-3xl font-bold mb-8 flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Scale className={`w-8 h-8 text-primary ${isRTL ? 'ml-3' : 'mr-3'}`} />
+                {t("privacyTerms", "termsTitle")}
               </h2>
               <div className="grid gap-6">
-                {termsSection.map((section, index) => (
+                {termsSections.map((section, index) => (
                   <Card key={index} className="border-0 shadow-lg">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-3">
@@ -198,8 +249,8 @@ export default function PrivacyTerms() {
             {/* Legal Contact */}
             <Card className="border-0 shadow-lg bg-gradient-to-r from-primary/5 to-secondary/5">
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Legal Contact</h3>
-                <p className="text-muted-foreground mb-4">For legal matters or questions about these terms, please contact our legal team:</p>
+                <h3 className="text-xl font-semibold mb-2">{t("privacyTerms", "legalContactTitle")}</h3>
+                <p className="text-muted-foreground mb-4">{t("privacyTerms", "legalContactContent")}</p>
                 <div className="bg-muted/50 p-4 rounded-lg">
                   <p className="font-medium">Email: legal@docuchatai.com</p>
                   <p className="font-medium">Address: San Francisco, CA</p>
@@ -213,17 +264,17 @@ export default function PrivacyTerms() {
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <FileText className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Questions about our policies?</h3>
+                <h3 className="text-2xl font-bold mb-2">{t("faq", "stillNeedHelp")}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Our team is here to help clarify any questions you may have about our privacy policy or terms of service.
+                  {t("faq", "supportTeamHere")}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'space-x-reverse' : ''}`}>
                   <Link href="/contact">
-                    <Button size="lg">Contact Us</Button>
+                    <Button size="lg">{t("faq", "contactSupport")}</Button>
                   </Link>
                   <Link href="/faq">
                     <Button variant="outline" size="lg">
-                      View FAQ
+                      {t("sidebar", "faq")}
                     </Button>
                   </Link>
                 </div>
@@ -237,28 +288,28 @@ export default function PrivacyTerms() {
       <footer className="py-12 border-t bg-muted/50">
         <div className="container">
           <div className="text-center space-y-4">
-            <div className="flex items-center justify-center space-x-2">
+            <div className={`flex items-center justify-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
               </div>
               <span className="font-bold text-xl">DocuChatAI</span>
             </div>
             <p className="text-muted-foreground">
-              The most powerful marketing platform to grow your business with intelligent advertising solutions.
+              {t("contact", "footerDescription")}
             </p>
-            <div className="flex justify-center space-x-6 text-sm">
+            <div className={`flex justify-center space-x-6 text-sm ${isRTL ? 'space-x-reverse' : ''}`}>
               <Link href="/contact" className="text-muted-foreground hover:text-primary">
-                Contact
+                {t("sidebar", "contact")}
               </Link>
               <Link href="/privacy-terms" className="text-muted-foreground hover:text-primary">
-                Privacy & Terms
+                {t("sidebar", "privacyTerms")}
               </Link>
               <Link href="/faq" className="text-muted-foreground hover:text-primary">
-                FAQ
+                {t("sidebar", "faq")}
               </Link>
             </div>
             <div className="border-t pt-8 text-center text-muted-foreground">
-              <p>&copy; 2025 DocuChatAI. All rights reserved.</p>
+              <p>&copy; 2025 DocuChatAI. {t("contact", "allRightsReserved")}</p>
             </div>
           </div>
         </div>

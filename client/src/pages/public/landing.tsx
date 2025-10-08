@@ -11,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
+import PublicHeader from "@/components/layout/publicHeader";
 
 export default function LandingPage() {
   const { language, isRTL } = useLanguage();
@@ -269,70 +270,7 @@ export default function LandingPage() {
     
     `}>
       {/* Navigation */}
-      <nav
-        className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60
-    flex flex-col items-center justify-center
-    ">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <button
-              className="flex items-center space-x-2"
-              onClick={() => (location.href = "/")}>
-              <img src="/logo.webp" alt="Logo" className="w-[100px] h-10" />
-            </button>
-          </div>
-
-          <div
-            className={` hidden md:flex items-center space-x-6
-          direction: ${isRTL ? "rtl" : "ltr"}`}>
-            <a
-              href="#features"
-              className="text-sm font-medium hover:text-primary transition-colors
-              
-              ">
-              {content.nav.features}
-            </a>
-            <a
-              href="#how-it-works"
-              className="text-sm font-medium hover:text-primary transition-colors">
-              {content.nav.howItWorks}
-            </a>
-            <a
-              href="#pricing"
-              className="text-sm font-medium hover:text-primary transition-colors">
-              {content.nav.pricing}
-            </a>
-            <Link href="/faq">
-              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                {content.nav.faq}
-              </span>
-            </Link>
-            <Link href="/privacy-terms">
-              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                {content.nav.terms}
-              </span>
-            </Link>
-            <Link href="/contact">
-              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                {content.nav.contact}
-              </span>
-            </Link>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <ThemeToggle />
-            <LanguageToggle />
-            <Link href="/login">
-              <Button variant="ghost" size="sm">
-                {content.nav.login}
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">{content.nav.signup}</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <PublicHeader />
 
       {/* Hero Section */}
       <section

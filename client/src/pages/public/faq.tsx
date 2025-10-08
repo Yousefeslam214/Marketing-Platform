@@ -25,53 +25,38 @@ import {
 export default function FAQ() {
   const { t, isRTL } = useLanguage();
 
+  // Get FAQ categories from translations
   const faqCategories = [
     {
       icon: <MessageCircle className="w-5 h-5" />,
-      title: "General Questions",
-      items: [
-        { question: "How quickly will I receive a response?", answer: "We typically respond to all inquiries within 24 hours during business days." },
-        { question: "What payment methods do you accept?", answer: "We accept all major credit cards, PayPal, and bank transfers for enterprise accounts." },
-        { question: "Do you offer refunds for unused credits?", answer: "Yes, we offer refunds for unused credits within 30 days of purchase. Contact support for assistance." },
-      ]
+      title: t("faq", "categories.general.title"),
+      items: t("faq", "categories.general.questions") || []
     },
     {
       icon: <CreditCard className="w-5 h-5" />,
-      title: "Billing & Pricing",
-      items: [
-        { question: "What are your pricing plans?", answer: "We offer flexible pricing plans starting from $29/month for small businesses up to custom enterprise solutions. All plans include our core advertising tools and analytics." },
-        { question: "How do I upgrade my plan?", answer: "You can upgrade your plan at any time from your billing settings. The upgrade will be prorated based on your current billing cycle." },
-        { question: "Do you offer refunds?", answer: "Yes, we offer a 30-day money-back guarantee for all paid plans. Contact our support team for assistance." },
-      ]
+      title: t("faq", "categories.billing.title"),
+      items: t("faq", "categories.billing.questions") || []
     },
     {
       icon: <Target className="w-5 h-5" />,
-      title: "Ad Management",
-      items: [
-        { question: "How do I create my first ad campaign?", answer: "Navigate to the Campaigns section and click 'Create New Ad'. Follow our step-by-step wizard to set up your targeting, budget, and creative content." },
-        { question: "What targeting options are available?", answer: "We offer demographic targeting, interest-based targeting, location targeting, and behavioral targeting to help you reach your ideal audience." },
-        { question: "How long does it take for ads to be approved?", answer: "Most ads are reviewed and approved within 24 hours. Complex campaigns may take up to 48 hours for review." },
-      ]
+      title: t("faq", "categories.adManagement.title"),
+      items: t("faq", "categories.adManagement.questions") || []
     },
     {
       icon: <Shield className="w-5 h-5" />,
-      title: "Account & Security",
-      items: [
-        { question: "How do I reset my password?", answer: "Click 'Forgot Password' on the login page and follow the instructions sent to your email address." },
-        { question: "Is my data secure?", answer: "Yes, we use enterprise-grade security measures including SSL encryption, regular security audits, and comply with GDPR and CCPA regulations." },
-        { question: "Can I delete my account?", answer: "Yes, you can delete your account from the account settings. Please note this action is irreversible and all data will be permanently removed." },
-      ]
+      title: t("faq", "categories.security.title"),
+      items: t("faq", "categories.security.questions") || []
     }
   ];
 
   return (
-    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Navigation */}
       <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
             <Link href="/">
-              <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+              <Button variant="ghost" size="sm" className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
                 <ArrowLeft className="w-4 h-4" />
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
@@ -81,22 +66,17 @@ export default function FAQ() {
             </Link>
           </div>
           
-          <div className="flex items-center space-x-2">
-            <Link href="/faq-ar">
-              <Button variant="outline" size="sm">
-                العربية
-              </Button>
-            </Link>
+          <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
             <ThemeToggle />
             <LanguageToggle />
             <Link href="/login">
               <Button variant="ghost" size="sm">
-                Login
+                {t("contact", "login")}
               </Button>
             </Link>
             <Link href="/signup">
               <Button size="sm">
-                Sign Up
+                {t("contact", "signup")}
               </Button>
             </Link>
           </div>
@@ -109,14 +89,14 @@ export default function FAQ() {
         <div className="container relative">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
-              <HelpCircle className="w-4 h-4 mr-2" />
-              Help Center
+              <HelpCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t("faq", "helpCenter")}
             </Badge>
             <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
-              Frequently Asked Questions
+              {t("faq", "title")}
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Find answers to common questions about our platform, features, and services. Can't find what you're looking for? Contact our support team.
+              {t("faq", "description")}
             </p>
           </div>
         </div>
@@ -161,17 +141,17 @@ export default function FAQ() {
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <MessageCircle className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Still need help?</h3>
+                <h3 className="text-2xl font-bold mb-2">{t("faq", "stillNeedHelp")}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Our support team is here to help you succeed. Reach out anytime!
+                  {t("faq", "supportTeamHere")}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'space-x-reverse' : ''}`}>
                   <Link href="/contact">
-                    <Button size="lg">Contact Support</Button>
+                    <Button size="lg">{t("faq", "contactSupport")}</Button>
                   </Link>
                   <Button variant="outline" size="lg">
-                    <Clock className="w-4 h-4 mr-2" />
-                    Schedule a Call
+                    <Clock className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {t("faq", "scheduleCall")}
                   </Button>
                 </div>
               </CardContent>
@@ -183,27 +163,27 @@ export default function FAQ() {
       {/* Quick Stats */}
       <section className="py-16 bg-muted/50">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto ${isRTL ? 'rtl' : 'ltr'}`}>
             <div className="text-center">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <Clock className="w-6 h-6 text-primary" />
               </div>
               <div className="text-2xl font-bold">24h</div>
-              <div className="text-muted-foreground">Average Response Time</div>
+              <div className="text-muted-foreground">{t("faq", "averageResponseTime")}</div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <Zap className="w-6 h-6 text-primary" />
               </div>
               <div className="text-2xl font-bold">99.9%</div>
-              <div className="text-muted-foreground">Customer Satisfaction</div>
+              <div className="text-muted-foreground">{t("faq", "customerSatisfaction")}</div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <Shield className="w-6 h-6 text-primary" />
               </div>
               <div className="text-2xl font-bold">24/7</div>
-              <div className="text-muted-foreground">Support Available</div>
+              <div className="text-muted-foreground">{t("faq", "supportAvailable")}</div>
             </div>
           </div>
         </div>
@@ -213,28 +193,28 @@ export default function FAQ() {
       <footer className="py-12 border-t bg-muted/50">
         <div className="container">
           <div className="text-center space-y-4">
-            <div className="flex items-center justify-center space-x-2">
+            <div className={`flex items-center justify-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
               </div>
               <span className="font-bold text-xl">DocuChatAI</span>
             </div>
             <p className="text-muted-foreground">
-              The most powerful marketing platform to grow your business with intelligent advertising solutions.
+              {t("contact", "footerDescription")}
             </p>
-            <div className="flex justify-center space-x-6 text-sm">
+            <div className={`flex justify-center space-x-6 text-sm ${isRTL ? 'space-x-reverse' : ''}`}>
               <Link href="/contact" className="text-muted-foreground hover:text-primary">
-                Contact
+                {t("sidebar", "contact")}
               </Link>
               <Link href="/privacy-terms" className="text-muted-foreground hover:text-primary">
-                Privacy & Terms
+                {t("sidebar", "privacyTerms")}
               </Link>
               <Link href="/faq" className="text-muted-foreground hover:text-primary">
-                FAQ
+                {t("sidebar", "faq")}
               </Link>
             </div>
             <div className="border-t pt-8 text-center text-muted-foreground">
-              <p>&copy; 2025 DocuChatAI. All rights reserved.</p>
+              <p>&copy; 2025 DocuChatAI. {t("contact", "allRightsReserved")}</p>
             </div>
           </div>
         </div>

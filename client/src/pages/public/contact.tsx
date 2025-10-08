@@ -147,7 +147,7 @@ export default function Contact() {
                   {/* Email */}
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6">
-                      <div className="flex items-center space-x-4">
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                           <Mail className="h-6 w-6 text-primary" />
                         </div>
@@ -166,7 +166,7 @@ export default function Contact() {
                   {/* Phone */}
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6">
-                      <div className="flex items-center space-x-4">
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                           <Phone className="h-6 w-6 text-primary" />
                         </div>
@@ -185,7 +185,7 @@ export default function Contact() {
                   {/* Address */}
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6">
-                      <div className="flex items-center space-x-4">
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                           <MapPin className="h-6 w-6 text-primary" />
                         </div>
@@ -204,7 +204,7 @@ export default function Contact() {
                   {/* Working Hours */}
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6">
-                      <div className="flex items-center space-x-4">
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                           <Clock className="h-6 w-6 text-primary" />
                         </div>
@@ -226,7 +226,7 @@ export default function Contact() {
                   <h3 className="font-semibold mb-4">
                     {t("contact", "followUs")}
                   </h3>
-                  <div className="flex space-x-4">
+                  <div className={`flex space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
                     <a
                       href="#"
                       className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
@@ -353,7 +353,7 @@ export default function Contact() {
       ">
         <div className="container">
           <div className="text-center space-y-4">
-            <div className="flex items-center justify-center space-x-2">
+            <div className={`flex items-center justify-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
               {/*
                 <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
                 */}
