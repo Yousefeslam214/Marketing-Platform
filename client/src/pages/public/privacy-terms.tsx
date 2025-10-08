@@ -83,6 +83,11 @@ export default function PrivacyTerms() {
           </div>
           
           <div className="flex items-center space-x-2">
+            <Link href="/privacy-terms-ar">
+              <Button variant="outline" size="sm">
+                العربية
+              </Button>
+            </Link>
             <ThemeToggle />
             <LanguageToggle />
             <Link href="/login">

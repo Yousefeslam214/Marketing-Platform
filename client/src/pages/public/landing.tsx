@@ -24,6 +24,8 @@ export default function LandingPage() {
             features: "المزايا",
             howItWorks: "كيف يعمل",
             pricing: "الأسعار",
+            faq: "الأسئلة الشائعة",
+            terms: "الشروط والأحكام",
             contact: "اتصل بنا",
             login: "تسجيل الدخول",
             signup: "إنشاء حساب",
@@ -139,6 +141,8 @@ export default function LandingPage() {
             features: "Features",
             howItWorks: "How It Works",
             pricing: "Pricing",
+            faq: "FAQ",
+            terms: "Terms",
             contact: "Contact",
             login: "Login",
             signup: "Sign Up",
@@ -298,11 +302,21 @@ export default function LandingPage() {
               className="text-sm font-medium hover:text-primary transition-colors">
               {content.nav.pricing}
             </a>
-            <a
-              href="#contact"
-              className="text-sm font-medium hover:text-primary transition-colors">
-              {content.nav.contact}
-            </a>
+            <Link href="/faq">
+              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+                {content.nav.faq}
+              </span>
+            </Link>
+            <Link href="/privacy-terms">
+              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+                {content.nav.terms}
+              </span>
+            </Link>
+            <Link href="/contact">
+              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+                {content.nav.contact}
+              </span>
+            </Link>
           </div>
 
           <div className="flex items-center space-x-2">
@@ -639,29 +653,24 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">{content.footer.support}</h4>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
-                  <a
-                    href="#contact"
+                  <Link
+                    href="/contact"
                     className="hover:text-primary transition-colors">
                     {content.nav.contact}
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link
                     href="/faq"
                     className="hover:text-primary transition-colors">
-                    FAQ
+                    {content.nav.faq}
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/privacy-terms"
                     className="hover:text-primary transition-colors">
-                    {content.footer.privacy}
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-primary transition-colors">
-                    {content.footer.contact}
+                    {content.nav.terms}
                   </Link>
                 </li>
               </ul>

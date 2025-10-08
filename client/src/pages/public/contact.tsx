@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +21,7 @@ import {
   Linkedin,
   ArrowLeft,
 } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 
 interface ContactForm {
   name: string;
@@ -51,12 +51,12 @@ export default function Contact() {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+
       toast({
         title: t("contact", "successTitle"),
         description: t("contact", "successMessage"),
       });
-      
+
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
       toast({
@@ -70,13 +70,26 @@ export default function Contact() {
   };
 
   return (
-    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div
+      className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}
+      flex flex-col items-center
+      `}
+      dir={isRTL ? "rtl" : "ltr"}>
       {/* Navigation */}
       <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div
+            className={`flex items-center space-x-2 ${
+              isRTL ? "space-x-reverse" : ""
+            }`}>
             <Link href="/">
-              <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`flex items-center space-x-2 ${
+                  isRTL ? "space-x-reverse" : ""
+                }`}>
+                {/* className="flex items-center space-x-2"> */}
                 <ArrowLeft className="w-4 h-4" />
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
@@ -85,19 +98,17 @@ export default function Contact() {
               </Button>
             </Link>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <ThemeToggle />
             <LanguageToggle />
             <Link href="/login">
               <Button variant="ghost" size="sm">
-                Login
+                {t("contact", "login")}
               </Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm">
-                Sign Up
-              </Button>
+              <Button size="sm">{t("contact", "signup")}</Button>
             </Link>
           </div>
         </div>
@@ -110,7 +121,7 @@ export default function Contact() {
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
               <Mail className="w-4 h-4 mr-2" />
-              Get in Touch
+              {t("contact", "getInTouch")}
             </Badge>
             <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
               {t("contact", "title")}
@@ -129,7 +140,9 @@ export default function Contact() {
             {/* Contact Information */}
             <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold mb-6">{t("contact", "infoTitle")}</h2>
+                <h2 className="text-2xl font-bold mb-6">
+                  {t("contact", "infoTitle")}
+                </h2>
                 <div className="grid gap-6">
                   {/* Email */}
                   <Card className="border-0 shadow-lg">
@@ -139,8 +152,12 @@ export default function Contact() {
                           <Mail className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                          <h3 className="font-semibold">{t("contact", "email")}</h3>
-                          <p className="text-muted-foreground">support@docuchatai.com</p>
+                          <h3 className="font-semibold">
+                            {t("contact", "email")}
+                          </h3>
+                          <p className="text-muted-foreground">
+                            support@docuchatai.com
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -154,8 +171,12 @@ export default function Contact() {
                           <Phone className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                          <h3 className="font-semibold">{t("contact", "phone")}</h3>
-                          <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                          <h3 className="font-semibold">
+                            {t("contact", "phone")}
+                          </h3>
+                          <p className="text-muted-foreground">
+                            +1 (555) 123-4567
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -169,8 +190,12 @@ export default function Contact() {
                           <MapPin className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                          <h3 className="font-semibold">{t("contact", "address")}</h3>
-                          <p className="text-muted-foreground">{t("contact", "addressValue")}</p>
+                          <h3 className="font-semibold">
+                            {t("contact", "address")}
+                          </h3>
+                          <p className="text-muted-foreground">
+                            {t("contact", "addressValue")}
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -184,8 +209,12 @@ export default function Contact() {
                           <Clock className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                          <h3 className="font-semibold">{t("contact", "hours")}</h3>
-                          <p className="text-muted-foreground">{t("contact", "hoursValue")}</p>
+                          <h3 className="font-semibold">
+                            {t("contact", "hours")}
+                          </h3>
+                          <p className="text-muted-foreground">
+                            {t("contact", "hoursValue")}
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -194,18 +223,28 @@ export default function Contact() {
 
                 {/* Social Media */}
                 <div className="mt-8">
-                  <h3 className="font-semibold mb-4">{t("contact", "followUs")}</h3>
+                  <h3 className="font-semibold mb-4">
+                    {t("contact", "followUs")}
+                  </h3>
                   <div className="flex space-x-4">
-                    <a href="#" className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a
+                      href="#"
+                      className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Facebook className="h-5 w-5" />
                     </a>
-                    <a href="#" className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a
+                      href="#"
+                      className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Twitter className="h-5 w-5" />
                     </a>
-                    <a href="#" className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a
+                      href="#"
+                      className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Instagram className="h-5 w-5" />
                     </a>
-                    <a href="#" className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a
+                      href="#"
+                      className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Linkedin className="h-5 w-5" />
                     </a>
                   </div>
@@ -217,7 +256,9 @@ export default function Contact() {
             <div>
               <Card className="border-0 shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl">{t("contact", "formTitle")}</CardTitle>
+                  <CardTitle className="text-2xl">
+                    {t("contact", "formTitle")}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -228,7 +269,9 @@ export default function Contact() {
                           id="name"
                           type="text"
                           value={formData.name}
-                          onChange={(e) => handleInputChange("name", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("name", e.target.value)
+                          }
                           placeholder={t("contact", "namePlaceholder")}
                           required
                         />
@@ -239,37 +282,47 @@ export default function Contact() {
                           id="email"
                           type="email"
                           value={formData.email}
-                          onChange={(e) => handleInputChange("email", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("email", e.target.value)
+                          }
                           placeholder={t("contact", "emailPlaceholder")}
                           required
                         />
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
-                      <Label htmlFor="subject">{t("contact", "subject")} *</Label>
+                      <Label htmlFor="subject">
+                        {t("contact", "subject")} *
+                      </Label>
                       <Input
                         id="subject"
                         type="text"
                         value={formData.subject}
-                        onChange={(e) => handleInputChange("subject", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("subject", e.target.value)
+                        }
                         placeholder={t("contact", "subjectPlaceholder")}
                         required
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
-                      <Label htmlFor="message">{t("contact", "message")} *</Label>
+                      <Label htmlFor="message">
+                        {t("contact", "message")} *
+                      </Label>
                       <Textarea
                         id="message"
                         value={formData.message}
-                        onChange={(e) => handleInputChange("message", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("message", e.target.value)
+                        }
                         placeholder={t("contact", "messagePlaceholder")}
                         rows={6}
                         required
                       />
                     </div>
-                    
+
                     <Button
                       type="submit"
                       size="lg"
@@ -293,20 +346,31 @@ export default function Contact() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t bg-muted/50">
+      <footer
+        className="py-12 border-t bg-muted/50
+      flex flex-col items-center
+      w-full
+      ">
         <div className="container">
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              {/*
                 <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
+                */}
+              <div className="w-[100px] h-12  flex items-center justify-center">
+                <img
+                  src="../../../public/logo.webp"
+                  alt="Logo"
+                  //   className="h-6 w-auto"
+                />
               </div>
-              <span className="font-bold text-xl">DocuChatAI</span>
+              {/* <span className="font-bold text-xl">DocuChatAI</span> */}
             </div>
             <p className="text-muted-foreground">
-              The most powerful marketing platform to grow your business with intelligent advertising solutions.
+              {t("contact", "footerDescription")}
             </p>
             <div className="border-t pt-8 text-center text-muted-foreground">
-              <p>&copy; 2025 DocuChatAI. All rights reserved.</p>
+              <p>&copy; 2025 DocuChatAI. {t("contact", "allRightsReserved")}</p>
             </div>
           </div>
         </div>

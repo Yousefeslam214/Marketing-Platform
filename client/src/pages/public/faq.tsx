@@ -82,6 +82,11 @@ export default function FAQ() {
           </div>
           
           <div className="flex items-center space-x-2">
+            <Link href="/faq-ar">
+              <Button variant="outline" size="sm">
+                العربية
+              </Button>
+            </Link>
             <ThemeToggle />
             <LanguageToggle />
             <Link href="/login">
