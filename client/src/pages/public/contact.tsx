@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import PublicHeader from "@/components/layout/publicHeader";
+import PublicFooter from "@/components/layout/publicFooter";
 
 interface ContactForm {
   name: string;
@@ -311,36 +312,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer
-        className="py-12 border-t bg-muted/50
-      flex flex-col items-center
-      w-full
-      ">
-        <div className="container">
-          <div className="text-center space-y-4">
-            <div className={`flex items-center justify-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
-              {/*
-                <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
-                */}
-              <div className="w-[100px] h-12  flex items-center justify-center">
-                <img
-                  src="../../../public/logo.webp"
-                  alt="Logo"
-                  //   className="h-6 w-auto"
-                />
-              </div>
-              {/* <span className="font-bold text-xl">DocuChatAI</span> */}
-            </div>
-            <p className="text-muted-foreground">
-              {t("contact", "footerDescription")}
-            </p>
-            <div className="border-t pt-8 text-center text-muted-foreground">
-              <p>&copy; 2025 DocuChatAI. {t("contact", "allRightsReserved")}</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+     <PublicFooter />
     </div>
   );
 }

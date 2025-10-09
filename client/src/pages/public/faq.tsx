@@ -22,6 +22,7 @@ import {
   Zap,
 } from "lucide-react";
 import PublicHeader from "@/components/layout/publicHeader";
+import PublicFooter from "@/components/layout/publicFooter";
 
 export default function FAQ() {
   const { t, isRTL } = useLanguage();
@@ -31,29 +32,31 @@ export default function FAQ() {
     {
       icon: <MessageCircle className="w-5 h-5" />,
       title: t("faq", "categories.general.title"),
-      items: t("faq", "categories.general.questions") || []
+      items: t("faq", "categories.general.questions") || [],
     },
     {
       icon: <CreditCard className="w-5 h-5" />,
       title: t("faq", "categories.billing.title"),
-      items: t("faq", "categories.billing.questions") || []
+      items: t("faq", "categories.billing.questions") || [],
     },
     {
       icon: <Target className="w-5 h-5" />,
       title: t("faq", "categories.adManagement.title"),
-      items: t("faq", "categories.adManagement.questions") || []
+      items: t("faq", "categories.adManagement.questions") || [],
     },
     {
       icon: <Shield className="w-5 h-5" />,
       title: t("faq", "categories.security.title"),
-      items: t("faq", "categories.security.questions") || []
-    }
+      items: t("faq", "categories.security.questions") || [],
+    },
   ];
 
   return (
-    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div
+      className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}
+      dir={isRTL ? "rtl" : "ltr"}>
       {/* Navigation */}
-    
+
       <PublicHeader />
 
       {/* Hero Section */}
@@ -62,7 +65,7 @@ export default function FAQ() {
         <div className="container relative">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
-              <HelpCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              <HelpCircle className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
               {t("faq", "helpCenter")}
             </Badge>
             <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
@@ -93,7 +96,9 @@ export default function FAQ() {
                   <CardContent>
                     <Accordion type="single" collapsible className="w-full">
                       {category.items.map((item, index) => (
-                        <AccordionItem key={index} value={`item-${categoryIndex}-${index}`}>
+                        <AccordionItem
+                          key={index}
+                          value={`item-${categoryIndex}-${index}`}>
                           <AccordionTrigger className="text-left">
                             {item.question}
                           </AccordionTrigger>
@@ -114,16 +119,21 @@ export default function FAQ() {
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <MessageCircle className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">{t("faq", "stillNeedHelp")}</h3>
+                <h3 className="text-2xl font-bold mb-2">
+                  {t("faq", "stillNeedHelp")}
+                </h3>
                 <p className="text-muted-foreground mb-6">
                   {t("faq", "supportTeamHere")}
                 </p>
-                <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'space-x-reverse' : ''}`}>
+                <div
+                  className={`flex flex-col sm:flex-row gap-4 justify-center ${
+                    isRTL ? "space-x-reverse" : ""
+                  }`}>
                   <Link href="/contact">
                     <Button size="lg">{t("faq", "contactSupport")}</Button>
                   </Link>
                   <Button variant="outline" size="lg">
-                    <Clock className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    <Clock className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
                     {t("faq", "scheduleCall")}
                   </Button>
                 </div>
@@ -136,62 +146,42 @@ export default function FAQ() {
       {/* Quick Stats */}
       <section className="py-16 bg-muted/50">
         <div className="container">
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto ${isRTL ? 'rtl' : 'ltr'}`}>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto ${
+              isRTL ? "rtl" : "ltr"
+            }`}>
             <div className="text-center">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <Clock className="w-6 h-6 text-primary" />
               </div>
               <div className="text-2xl font-bold">24h</div>
-              <div className="text-muted-foreground">{t("faq", "averageResponseTime")}</div>
+              <div className="text-muted-foreground">
+                {t("faq", "averageResponseTime")}
+              </div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <Zap className="w-6 h-6 text-primary" />
               </div>
               <div className="text-2xl font-bold">99.9%</div>
-              <div className="text-muted-foreground">{t("faq", "customerSatisfaction")}</div>
+              <div className="text-muted-foreground">
+                {t("faq", "customerSatisfaction")}
+              </div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <Shield className="w-6 h-6 text-primary" />
               </div>
               <div className="text-2xl font-bold">24/7</div>
-              <div className="text-muted-foreground">{t("faq", "supportAvailable")}</div>
+              <div className="text-muted-foreground">
+                {t("faq", "supportAvailable")}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t bg-muted/50">
-        <div className="container">
-          <div className="text-center space-y-4">
-            <div className={`flex items-center justify-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
-              </div>
-              <span className="font-bold text-xl">DocuChatAI</span>
-            </div>
-            <p className="text-muted-foreground">
-              {t("contact", "footerDescription")}
-            </p>
-            <div className={`flex justify-center space-x-6 text-sm ${isRTL ? 'space-x-reverse' : ''}`}>
-              <Link href="/contact" className="text-muted-foreground hover:text-primary">
-                {t("sidebar", "contact")}
-              </Link>
-              <Link href="/privacy-terms" className="text-muted-foreground hover:text-primary">
-                {t("sidebar", "privacyTerms")}
-              </Link>
-              <Link href="/faq" className="text-muted-foreground hover:text-primary">
-                {t("sidebar", "faq")}
-              </Link>
-            </div>
-            <div className="border-t pt-8 text-center text-muted-foreground">
-              <p>&copy; 2025 DocuChatAI. {t("contact", "allRightsReserved")}</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

@@ -58,15 +58,15 @@ export default function Dashboard() {
                 <i className={`fas fa-plus ${direction ? "ml-2" : "mr-2"}`}></i>
                 {t("dashboard", "createNewAd")}
               </Button>
-              <div className="relative">
+              {/* <div className="relative">
                 <Button
                   variant="ghost"
                   size="icon"
                   data-testid="button-notifications">
-                  <i className="fas fa-bell text-lg"></i>
+                   <i className="fas fa-bell text-lg"></i>
                   <span className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full"></span>
                 </Button>
-              </div>
+              </div> */}
             </div>
           }
         />
@@ -286,7 +286,10 @@ export default function Dashboard() {
                     className="w-full"
                     onClick={handlePurchaseCredits}
                     data-testid="button-purchase-credits">
-                    <i className={`fas fa-plus ${direction ? "ml-2" : "mr-2"}`}></i>
+                    <i
+                      className={`fas fa-plus ${
+                        direction ? "ml-2" : "mr-2"
+                      }`}></i>
                     {t("dashboard", "purchaseMoreCredits")}
                   </Button>
                 </div>

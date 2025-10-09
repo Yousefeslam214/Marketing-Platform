@@ -154,21 +154,21 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         //   href: userAnalyticsPath(),
         //   icon: "fas fa-chart-bar",
         // },
-        {
-          name: t("sidebar", "faq"),
-          href: faqPath(),
-          icon: "fas fa-question-circle",
-        },
-        {
-          name: t("sidebar", "contact"),
-          href: contactPath(),
-          icon: "fas fa-envelope",
-        },
-        {
-          name: t("sidebar", "privacyTerms"),
-          href: privacyTermsPath(),
-          icon: "fas fa-shield-alt",
-        },
+        // {
+        //   name: t("sidebar", "faq"),
+        //   href: faqPath(),
+        //   icon: "fas fa-question-circle",
+        // },
+        // {
+        //   name: t("sidebar", "contact"),
+        //   href: contactPath(),
+        //   icon: "fas fa-envelope",
+        // },
+        // {
+        //   name: t("sidebar", "privacyTerms"),
+        //   href: privacyTermsPath(),
+        //   icon: "fas fa-shield-alt",
+        // },
         {
           name: t("sidebar", "adsFeed"),
           href: "/feed",

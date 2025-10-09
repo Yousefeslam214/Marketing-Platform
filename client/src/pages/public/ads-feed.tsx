@@ -8,6 +8,7 @@ import { Heart, Share2, MessageCircle, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
+import PublicFooter from "@/components/layout/publicFooter";
 
 interface Ad {
   id: string;
@@ -285,6 +286,7 @@ export default function AdsFeed() {
           </div>
         )}
       </main>
+      <PublicFooter />  
     </div>
   );
 }
