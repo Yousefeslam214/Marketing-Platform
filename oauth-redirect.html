@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OAuth Redirect</title>
+    <script>
+      console.log("OAuth redirect page loaded");
+      console.log("Current URL:", window.location.href);
+      console.log("Is popup?", window.opener && window.opener !== window);
+
+      // Check if we're in a popup and on the production domain
+      if (
+        window.opener &&
+        window.location.hostname === "marketing-platform-six.vercel.app"
+      ) {
+        console.log(
+          "Detected popup on production domain, redirecting to local..."
+        );
+
+        // Redirect to local development server with the same path and query params
+        const localUrl = `http://localhost:3000${window.location.pathname}${window.location.search}`;
+        console.log("Redirecting to:", localUrl);
+
+        window.location.href = localUrl;
+      }
+    </script>
+  </head>
+  <body>
+    <div
+      style="text-align: center; padding: 50px; font-family: Arial, sans-serif">
+      <h2>Redirecting...</h2>
+      <p>Please wait while we complete your authentication.</p>
+    </div>
+  </body>
+</html>

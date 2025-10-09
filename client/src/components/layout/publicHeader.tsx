@@ -22,8 +22,7 @@ const PublicHeader = () => {
   };
 
   return (
-    <nav
-      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -31,7 +30,11 @@ const PublicHeader = () => {
             <button
               className="flex items-center space-x-2"
               onClick={() => (location.href = "/")}>
-              <img src="/logo.webp" alt="Logo" className="w-20 h-8 sm:w-[100px] sm:h-10" />
+              <img
+                src="/logo.webp"
+                alt="Logo"
+                className="w-20 h-8 sm:w-[100px] sm:h-10"
+              />
             </button>
           </div>
 
@@ -70,6 +73,11 @@ const PublicHeader = () => {
                 {t("sidebar", "contact" as any)}
               </span>
             </Link>
+            <Link href="/feed">
+              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+                {t("sidebar", "adsFeed" as any)}
+              </span>
+            </Link>
           </div>
 
           {/* Desktop Actions */}
@@ -99,7 +107,9 @@ const PublicHeader = () => {
               <div className="w-6 h-6 flex flex-col justify-center items-center">
                 <span
                   className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                    isMobileMenuOpen ? "rotate-45 translate-y-1" : "-translate-y-0.5"
+                    isMobileMenuOpen
+                      ? "rotate-45 translate-y-1"
+                      : "-translate-y-0.5"
                   }`}
                 />
                 <span
@@ -109,7 +119,9 @@ const PublicHeader = () => {
                 />
                 <span
                   className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                    isMobileMenuOpen ? "-rotate-45 -translate-y-1" : "translate-y-0.5"
+                    isMobileMenuOpen
+                      ? "-rotate-45 -translate-y-1"
+                      : "translate-y-0.5"
                   }`}
                 />
               </div>

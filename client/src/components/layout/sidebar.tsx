@@ -120,6 +120,13 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: adminBillingPath(),
           icon: "fas fa-credit-card",
         },
+
+        {
+          name: t("sidebar", "impressionRatios"),
+          href: "/admin/impression-ratios",
+          icon: "fas fa-chart-bar",
+        },
+
         {
           name: t("sidebar", "adsFeed"),
           href: "/feed",

@@ -50,7 +50,9 @@ const PublicFooter = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">{t("landing", "footer.product" as any)}</h4>
+            <h4 className="font-semibold mb-4">
+              {t("landing", "footer.product" as any)}
+            </h4>
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <a
@@ -84,7 +86,9 @@ const PublicFooter = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">{t("landing", "footer.support" as any)}</h4>
+            <h4 className="font-semibold mb-4">
+              {t("landing", "footer.support" as any)}
+            </h4>
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <Link

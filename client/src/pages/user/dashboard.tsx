@@ -1,6 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
@@ -10,32 +11,124 @@ import { AnalyticsChart } from "@/components/analytics/analytics-chart";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import { TokenManager } from "@/lib/auth";
+import { useApiQuery } from "@/hooks/useApiQuery";
+import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [, setLocation] = useLocation();
-  const { direction, t, language, toggleLanguage } = useLanguage();
+  const { isRTL, t, language, toggleLanguage } = useLanguage();
 
   const access_token = TokenManager.getAccessToken();
-  const { data: metrics, isLoading: metricsLoading } = useQuery({
-    queryKey: ["/api/dashboard/metrics"],
-    enabled: !!access_token,
+  // const { data: dashboardData, isLoading: metricsLoading } = useQuery({
+  //   queryKey: ["/api/dashboard/user"],
+  //   enabled: !!access_token,
+  // });
+  // console.log(dashboardData?.data);
+  const {
+    data: dashboardData,
+    isLoading: metricsLoading,
+    error,
+    refetch,
+  } = useApiQuery({
+    key: ["/api/dashboard/user"],
+    url: `${VITE_API_BASE_URL}/api/dashboard/user`,
   });
 
-  // Type-safe metrics with defaults
-  const safeMetrics = {
-    totalImpressions: (metrics as any)?.totalImpressions || 0,
-    totalClicks: (metrics as any)?.totalClicks || 0,
-    ctr: (metrics as any)?.ctr || 0,
-    creditsRemaining: (metrics as any)?.creditsRemaining || 0,
-  };
+  // Check for token in URL parameters and auto-authenticate
+  useEffect(() => {
+    // Only run token detection logic if we're on the dashboard page
+    const currentPath = window.location.pathname;
+    if (!currentPath.includes('/dashboard')) {
+      console.log("Not on dashboard page, skipping token detection");
+      return;
+    }
 
-  // Redirect to login if not authenticated
-  if (!access_token) {
-    console.log("Not authenticated, redirecting to login");
-    setLocation("/login");
-    return null;
-  }
+    // Handle both correct (?token=...) and incorrect (&token=...) URL formats
+    let tokenFromUrl = null;
+    
+    // First, try standard URL parameters (after ?)
+    const urlParams = new URLSearchParams(window.location.search);
+    tokenFromUrl = urlParams.get("token");
+    const roleFromUrl = urlParams.get("role");
+    const usernameFromUrl = urlParams.get("username");
+    console.log("Token from URL:", tokenFromUrl);
+    console.log("Role from URL:", roleFromUrl);
+    console.log("Username from URL:", usernameFromUrl);
+    console.log("Full URL:", window.location.href);
+    console.log("urlParams", urlParams);
+    
+    // If no token found and URL contains &token=, handle the incorrect format
+    if (!tokenFromUrl && window.location.href.includes("&token=")) {
+      console.log("🔧 Detected incorrect URL format with &token= instead of ?token=");
+      
+      // Extract token from the malformed URL
+      const urlParts = window.location.href.split("&token=");
+      if (urlParts.length > 1) {
+        // Get the token part and remove any additional parameters
+        tokenFromUrl = urlParts[1].split("&")[0];
+        console.log("🔧 Extracted token from malformed URL:", tokenFromUrl);
+        
+        // Fix the URL format and redirect to correct format
+        const baseUrl = urlParts[0];
+        const correctUrl = `${baseUrl}?token=${tokenFromUrl}`;
+        console.log("🔧 Redirecting to correct URL format:", correctUrl);
+        window.location.href = correctUrl;
+        return; // Exit early as we're redirecting
+      }
+    }
+    
+    console.log("Token from URL:", tokenFromUrl);
+    
+    if (tokenFromUrl) {
+      // Set the token in localStorage for authentication
+      TokenManager.setTokens(
+        tokenFromUrl, 
+        usernameFromUrl || "", 
+        roleFromUrl || ""
+      );
+      
+      // Remove token from URL for security and clean URL
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+      
+      console.log("Token from URL detected and set:", tokenFromUrl);
+      
+      // Trigger refetch of dashboard data with new token
+      setTimeout(() => {
+        refetch();
+      }, 100);
+    } else {
+      // No token in URL, check if user is authenticated
+      const currentToken = TokenManager.getAccessToken();
+      if (!currentToken) {
+        console.log("No token in URL and not authenticated, redirecting to login");
+        setLocation("/login");
+        return;
+      }
+    }
+  }, [refetch, setLocation]);
+
+  console.log(dashboardData?.data);
+  // const dashboardData2 = Array.isArray(dashboardData?.data) ? (dashboardData?.data as AdData[]) : [];
+
+  // Type-safe metrics with defaults from the new API structure
+  const stats = (dashboardData as any)?.data?.stats || {};
+  const topAds = (dashboardData as any)?.data?.topAds || [];
+  const chartData = (dashboardData as any)?.data?.chartData || [];
+  const activity = (dashboardData as any)?.data?.activity || [];
+
+  const safeMetrics = {
+    totalImpressions: stats.totalImpressions || 0,
+    impressionGrowth: stats.impressionGrowth || 0,
+    totalClicks: stats.totalClicks || 0,
+    clickGrowth: stats.clickGrowth || 0,
+    ctr: stats.clickThroughRate || 0,
+    ctrGrowth: stats.ctrGrowth || 0,
+    creditsRemaining: stats.remainingBalance || 0,
+    balanceGrowth: stats.balanceGrowth || 0,
+  };
+  console.log(safeMetrics);
 
   const handleCreateAd = () => {
     setLocation("/campaigns/new");
@@ -46,7 +139,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className={`flex h-screen bg-background ${direction}`}>
+    <div className={`flex h-screen bg-background ${isRTL}`}>
       <div className="flex-1 overflow-auto">
         <Header
           title={t("dashboard", "title")}
@@ -55,7 +148,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-4">
               <LanguageToggle />
               <Button onClick={handleCreateAd} data-testid="button-create-ad">
-                <i className={`fas fa-plus ${direction ? "ml-2" : "mr-2"}`}></i>
+                <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
                 {t("dashboard", "createNewAd")}
               </Button>
               {/* <div className="relative">
@@ -82,8 +175,13 @@ export default function Dashboard() {
                   </div>
                   <Badge
                     variant="secondary"
-                    className="bg-green-100 text-green-700">
-                    +12.5%
+                    className={`${
+                      safeMetrics.totalImpressions >= 0
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}>
+                    {safeMetrics.impressionGrowth >= 0 ? "+" : ""}
+                    {safeMetrics.impressionGrowth.toFixed(1)}%
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
@@ -107,8 +205,13 @@ export default function Dashboard() {
                   </div>
                   <Badge
                     variant="secondary"
-                    className="bg-green-100 text-green-700">
-                    +8.2%
+                    className={`${
+                      safeMetrics.clickGrowth >= 0
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}>
+                    {safeMetrics.clickGrowth >= 0 ? "+" : ""}
+                    {safeMetrics.clickGrowth.toFixed(1)}%
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
@@ -132,8 +235,13 @@ export default function Dashboard() {
                   </div>
                   <Badge
                     variant="secondary"
-                    className="bg-red-100 text-red-700">
-                    -0.3%
+                    className={`${
+                      safeMetrics.ctrGrowth >= 0
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}>
+                    {safeMetrics.ctrGrowth >= 0 ? "+" : ""}
+                    {safeMetrics.ctrGrowth.toFixed(1)}%
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
@@ -157,8 +265,13 @@ export default function Dashboard() {
                   </div>
                   <Badge
                     variant="secondary"
-                    className="bg-green-100 text-green-700">
-                    +15.7%
+                    className={`${
+                      safeMetrics.balanceGrowth >= 0
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}>
+                    {safeMetrics.balanceGrowth >= 0 ? "+" : ""}
+                    {safeMetrics.balanceGrowth.toFixed(1)}%
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
@@ -190,7 +303,7 @@ export default function Dashboard() {
                       <option>{t("dashboard", "last90Days")}</option>
                     </select>
                   </div>
-                  <AnalyticsChart />
+                  <AnalyticsChart data={chartData} />
                 </CardContent>
               </Card>
             </div>
@@ -202,20 +315,59 @@ export default function Dashboard() {
                   {t("dashboard", "topPerformingAds")}
                 </h3>
                 <div className="space-y-4">
-                  <div className="text-center py-8">
-                    <i className="fas fa-ad text-4xl text-muted-foreground mb-4"></i>
-                    <p className="text-sm text-muted-foreground">
-                      {t("dashboard", "noAdsCreated")}
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2"
-                      onClick={handleCreateAd}
-                      data-testid="button-create-first-ad">
-                      {t("dashboard", "createFirstAd")}
-                    </Button>
-                  </div>
+                  {topAds.length > 0 ? (
+                    topAds.slice(0, 3).map((ad: any) => (
+                      <div
+                        key={ad.id}
+                        className="flex items-center space-x-4 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                        <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
+                          {ad.imageUrl ? (
+                            <img
+                              src={ad.imageUrl}
+                              alt={language === "ar" ? ad.titleAr : ad.titleEn}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <i className="fas fa-ad text-muted-foreground"></i>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm truncate">
+                            {language === "ar" ? ad.titleAr : ad.titleEn}
+                          </p>
+                          <div className="flex items-center space-x-4 text-xs text-muted-foreground mt-1">
+                            <span>
+                              <i className="fas fa-eye mr-1"></i>
+                              {ad.impressions.toLocaleString()}
+                            </span>
+                            <span>
+                              <i className="fas fa-mouse-pointer mr-1"></i>
+                              {ad.clicks.toLocaleString()}
+                            </span>
+                            <span>
+                              <i className="fas fa-percentage mr-1"></i>
+                              {ad.ctr.toFixed(2)}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8">
+                      <i className="fas fa-ad text-4xl text-muted-foreground mb-4"></i>
+                      <p className="text-sm text-muted-foreground">
+                        {t("dashboard", "noAdsCreated")}
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-2"
+                        onClick={handleCreateAd}
+                        data-testid="button-create-first-ad">
+                        {t("dashboard", "createFirstAd")}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -228,12 +380,101 @@ export default function Dashboard() {
                 <h3 className="text-lg font-semibold text-foreground mb-6">
                   {t("dashboard", "recentActivity")}
                 </h3>
-                <div className="text-center py-8">
-                  <i className="fas fa-history text-4xl text-muted-foreground mb-4"></i>
-                  <p className="text-sm text-muted-foreground">
-                    {t("dashboard", "noRecentActivity")}
-                  </p>
-                </div>
+                {activity.length > 0 ? (
+                  <div className="space-y-3">
+                    {activity.slice(0, 5).map((item: any) => {
+                      const getActivityIcon = (type: string) => {
+                        switch (type) {
+                          case "click":
+                            return "fas fa-mouse-pointer text-blue-500";
+                          case "impression":
+                            return "fas fa-eye text-green-500";
+                          case "conversion":
+                            return "fas fa-check-circle text-purple-500";
+                          default:
+                            return "fas fa-activity text-gray-500";
+                        }
+                      };
+
+                      const getActivityText = (type: string) => {
+                        switch (type) {
+                          case "click":
+                            return (
+                              t("dashboard", "clickActivity") || "Ad clicked"
+                            );
+                          case "impression":
+                            return (
+                              t("dashboard", "impressionActivity") ||
+                              "Ad viewed"
+                            );
+                          case "conversion":
+                            return (
+                              t("dashboard", "conversionActivity") ||
+                              "Conversion"
+                            );
+                          default:
+                            return (
+                              t("dashboard", "unknownActivity") || "Activity"
+                            );
+                        }
+                      };
+
+                      const formatTime = (dateString: string) => {
+                        const date = new Date(dateString);
+                        const now = new Date();
+                        const diffInMinutes = Math.floor(
+                          (now.getTime() - date.getTime()) / (1000 * 60)
+                        );
+
+                        if (diffInMinutes < 1)
+                          return t("dashboard", "justNow") || "Just now";
+                        if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+                        if (diffInMinutes < 1440)
+                          return `${Math.floor(diffInMinutes / 60)}h ago`;
+                        return date.toLocaleDateString();
+                      };
+
+                      return (
+                        <div
+                          key={item.id}
+                          className={`flex items-center p-3 border rounded-lg hover:bg-muted/50 transition-colors ${
+                            isRTL ? "space-x-reverse" : ""
+                          }`}
+                          style={{ gap: "12px" }}>
+                          <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                            <i
+                              className={`${getActivityIcon(
+                                item.type
+                              )} text-xs`}></i>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium">
+                              {getActivityText(item.type)}
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {item.adTitle}
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <span className="text-xs text-muted-foreground">
+                              {formatTime(item.createdAt)}
+                            </span>
+                            <Badge variant="outline" className="text-xs mt-1">
+                              {item.type}
+                            </Badge>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <i className="fas fa-history text-4xl text-muted-foreground mb-4"></i>
+                    <p className="text-sm text-muted-foreground">
+                      {t("dashboard", "noRecentActivity")}
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -276,9 +517,12 @@ export default function Dashboard() {
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-foreground">
-                        {10000 - safeMetrics.creditsRemaining}
+                        {Math.max(
+                          0,
+                          10000 - safeMetrics.creditsRemaining
+                        ).toLocaleString()}
                       </p>
-                      <p className="text-xs text-green-600">of 10,000</p>
+                      <p className="text-xs text-muted-foreground">of 10,000</p>
                     </div>
                   </div>
 
@@ -286,10 +530,7 @@ export default function Dashboard() {
                     className="w-full"
                     onClick={handlePurchaseCredits}
                     data-testid="button-purchase-credits">
-                    <i
-                      className={`fas fa-plus ${
-                        direction ? "ml-2" : "mr-2"
-                      }`}></i>
+                    <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
                     {t("dashboard", "purchaseMoreCredits")}
                   </Button>
                 </div>

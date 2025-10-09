@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useLanguage } from "@/hooks/use-language";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ interface AdDetailProps {
 export default function AdDetail({ params }: AdDetailProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
   const { id } = params;
   const limit = 5;
@@ -64,15 +66,18 @@ export default function AdDetail({ params }: AdDetailProps) {
       // queryClient.invalidateQueries({ queryKey: [`/api/advertising/${id}`] });
 
       toast({
-        title: "Credit Assigned Successfully",
-        description: `${data.data.credit} credit(s) assigned to ad campaign`,
+        title: t("adDetail", "creditAssignedSuccess"),
+        description: `${data.data.credit} ${t(
+          "adDetail",
+          "creditsAssignedMessage"
+        )}`,
       });
       refetch(); // Refresh ad data
     },
     onError: (error: any) => {
       toast({
-        title: "Failed to Assign Credit",
-        description: error.message || "Please try again",
+        title: t("adDetail", "failedToAssignCredit"),
+        description: error.message || t("adDetail", "pleaseRetryLater"),
         variant: "destructive",
       });
     },
@@ -90,17 +95,16 @@ export default function AdDetail({ params }: AdDetailProps) {
     },
     onSuccess: () => {
       toast({
-        title: "Ad Activated Successfully",
-        description: "Your ad campaign is now active and running",
+        title: t("adDetail", "adActivatedSuccess"),
+        description: t("adDetail", "campaignActiveMessage"),
       });
       refetch(); // Refresh ad data
     },
     onError: (error: any) => {
       toast({
-        title: "Failed to Activate Ad",
+        title: t("adDetail", "failedToActivateAd"),
         description:
-          error.message ||
-          "Cannot activate ad: insufficient impression credits",
+          error.message || t("adDetail", "insufficientCreditsMessage"),
         variant: "destructive",
       });
     },
@@ -138,8 +142,8 @@ export default function AdDetail({ params }: AdDetailProps) {
       assignCreditMutation.mutate(creditAmount);
     } else {
       toast({
-        title: "Invalid Credit Amount",
-        description: "Please enter a valid credit amount",
+        title: t("adDetail", "invalidCreditAmount"),
+        description: t("adDetail", "enterValidCredit"),
         variant: "destructive",
       });
     }
@@ -163,8 +167,10 @@ export default function AdDetail({ params }: AdDetailProps) {
     return (
       <div className="flex flex-center justify-center h-screen bg-background">
         <ErrorState
-          title="Failed to load metrics"
-          message={(error as Error)?.message || "Please try again later."}
+          title={t("adDetail", "failedToLoadMetrics")}
+          message={
+            (error as Error)?.message || t("adDetail", "pleaseRetryLater")
+          }
           onRetry={() => refetch()}
           showHomeButton
           onHome={() => (window.location.href = "/")} // or use your router
@@ -174,11 +180,11 @@ export default function AdDetail({ params }: AdDetailProps) {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
         <Header
           title={ad.titleEn}
-          description="Ad campaign details and performance"
+          description={t("adDetail", "description")}
           actions={
             <div className="flex items-center gap-2 flex-wrap">
               <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
@@ -187,7 +193,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                 onClick={() => setLocation(analyticsCampaignPath(id))}
                 data-testid="button-view-analytics">
                 <i className="fas fa-chart-bar mr-2"></i>
-                View Analytics
+                {t("adDetail", "viewAnalytics")}
               </Button>
               {ad.status === "approved" && (
                 <>
@@ -195,7 +201,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                     onClick={() => setLocation(`/ads/${id}/purchase`)}
                     data-testid="button-purchase-impressions">
                     <i className="fas fa-credit-card mr-2"></i>
-                    Purchase Impressions
+                    {t("adDetail", "purchaseImpressions")}
                   </Button>
                 </>
               )}
@@ -210,14 +216,14 @@ export default function AdDetail({ params }: AdDetailProps) {
               {/* Performance Overview */}
               <Card className="lg:col-span-2">
                 <CardHeader>
-                  <CardTitle>Performance Overview</CardTitle>
+                  <CardTitle>{t("adDetail", "performanceOverview")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 rounded-lg">
                       <i className="fas fa-eye text-blue-600 text-2xl mb-2"></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Impressions Credit
+                        {t("adDetail", "impressionsCredit")}
                       </h4>
                       <p className="text-2xl font-bold text-blue-600">
                         {ad.impressionsCredit?.toLocaleString() || 0}
@@ -227,7 +233,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                     <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20 rounded-lg">
                       <i className="fas fa-dollar-sign text-green-600 text-2xl mb-2"></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Amount Spent
+                        {t("adDetail", "amountSpent")}
                       </h4>
                       <p className="text-2xl font-bold text-green-600">
                         ${ad.spended?.toLocaleString() || 0}
@@ -237,7 +243,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                     <div className="text-center p-4 bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950/20 dark:to-red-900/20 rounded-lg">
                       <i className="fas fa-heart text-red-600 text-2xl mb-2"></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Likes Count
+                        {t("adDetail", "likesCount")}
                       </h4>
                       <p className="text-2xl font-bold text-red-600">
                         {ad.likesCount?.toLocaleString() || 0}
@@ -252,13 +258,15 @@ export default function AdDetail({ params }: AdDetailProps) {
                             : "fa-pause text-gray-600"
                         } text-2xl mb-2`}></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Status
+                        {t("adDetail", "status")}
                       </h4>
                       <p
                         className={`text-lg font-bold ${
                           ad.active ? "text-green-600" : "text-gray-600"
                         }`}>
-                        {ad.active ? "Active" : "Inactive"}
+                        {ad.active
+                          ? t("adDetail", "active")
+                          : t("adDetail", "inactive")}
                       </p>
                     </div>
                   </div>
@@ -269,12 +277,14 @@ export default function AdDetail({ params }: AdDetailProps) {
 
               <Card className="lg:col-span-2">
                 <CardHeader>
-                  <CardTitle>Campaign Management</CardTitle>
+                  <CardTitle>{t("adDetail", "campaignManagement")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-4 flex-wrap">
                     <div className="flex items-center gap-2">
-                      <Label htmlFor="credit-amount">Assign Credits:</Label>
+                      <Label htmlFor="credit-amount">
+                        {t("adDetail", "assignCredits")}:
+                      </Label>
                       <Input
                         id="credit-amount"
                         type="number"
@@ -295,12 +305,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                         {assignCreditMutation.isPending ? (
                           <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
-                            Assigning...
+                            {t("adDetail", "assigning")}
                           </>
                         ) : (
                           <>
                             <i className="fas fa-coins mr-2"></i>
-                            Assign Credit
+                            {t("adDetail", "assignCredit")}
                           </>
                         )}
                       </Button>
@@ -315,12 +325,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                         {activateAdMutation.isPending ? (
                           <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
-                            Activating...
+                            {t("adDetail", "activating")}
                           </>
                         ) : (
                           <>
                             <i className="fas fa-rocket mr-2"></i>
-                            Activate Campaign
+                            {t("adDetail", "activateCampaign")}
                           </>
                         )}
                       </Button>
@@ -332,15 +342,15 @@ export default function AdDetail({ params }: AdDetailProps) {
                         variant="default"
                         data-testid="button-activate-ad-main">
                         {deActivateAdMutation.isPending ? (
-                            <>
+                          <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
-                            DeActivating...
-                            </>
-                          ) : (
-                            <>
+                            {t("adDetail", "deactivating")}
+                          </>
+                        ) : (
+                          <>
                             <i className="fas fa-ban mr-2"></i>
-                            DeActivate Campaign
-                            </>
+                            {t("adDetail", "deactivateCampaign")}
+                          </>
                         )}
                       </Button>
                     </div>
@@ -349,8 +359,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                   <div className="mt-4 p-3 bg-muted/50 rounded-lg">
                     <p className="text-sm text-muted-foreground">
                       <i className="fas fa-info-circle mr-2"></i>
-                      Assign credits to this campaign before activation. Each
-                      credit represents impression capacity for your ads.
+                      {t("adDetail", "creditAssignInfo")}
                     </p>
                   </div>
                 </CardContent>
@@ -359,12 +368,12 @@ export default function AdDetail({ params }: AdDetailProps) {
               {/* Ad Content */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Ad Content</CardTitle>
+                  <CardTitle>{t("adDetail", "adContent")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      English Title
+                      {t("adDetail", "englishTitle")}
                     </h4>
                     <p className="text-foreground" data-testid="ad-title-en">
                       {ad.titleEn}
@@ -373,7 +382,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Arabic Title
+                      {t("adDetail", "arabicTitle")}
                     </h4>
                     <p
                       className="text-foreground"
@@ -385,7 +394,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      English Description
+                      {t("adDetail", "englishDescription")}
                     </h4>
                     <p
                       className="text-foreground"
@@ -396,7 +405,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Arabic Description
+                      {t("adDetail", "arabicDescription")}
                     </h4>
                     <p
                       className="text-foreground"
@@ -408,15 +417,15 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Target URL
+                      {t("adDetail", "websiteUrl")}
                     </h4>
                     <a
-                      href={ad.targetUrl}
+                      href={ad.websiteUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary hover:underline"
                       data-testid="ad-target-url">
-                      {ad.targetUrl}
+                      {ad.websiteUrl}
                     </a>
                   </div>
                 </CardContent>
@@ -425,12 +434,12 @@ export default function AdDetail({ params }: AdDetailProps) {
               {/* Ad Details */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Campaign Details</CardTitle>
+                  <CardTitle>{t("adDetail", "campaignDetails")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Campaign Status
+                      {t("adDetail", "campaignStatus")}
                     </h4>
                     <div className="flex items-center gap-2">
                       <Badge className={getStatusColor(ad.status)}>
@@ -441,7 +450,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                           variant="outline"
                           className="text-green-600 border-green-600">
                           <i className="fas fa-play mr-1"></i>
-                          Active
+                          {t("adDetail", "active")}
                         </Badge>
                       )}
                     </div>
@@ -449,7 +458,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Target Audience
+                      {t("adDetail", "targetAudience")}
                     </h4>
                     <p
                       className="text-foreground"
@@ -457,10 +466,23 @@ export default function AdDetail({ params }: AdDetailProps) {
                       {ad.targetAudience}
                     </p>
                   </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                      {t("adDetail", "targetCities")}
+                    </h4>
+                    <p
+                      className="text-foreground"
+                      data-testid="ad-target-cities">
+                      {Array.isArray(ad.targetCities) &&
+                      ad.targetCities.length > 0
+                        ? ad.targetCities.join(", ")
+                        : "N/A"}
+                    </p>
+                  </div>
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Budget Type
+                      {t("adDetail", "budgetType")}
                     </h4>
                     <p
                       className="text-foreground capitalize"

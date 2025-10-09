@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Authentication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-link {
+            display: block;
+            margin: 10px 0;
+            padding: 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .test-link:hover {
+            background: #0056b3;
+        }
+        .code {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Token Authentication Test</h1>
+        
+        <p>This page demonstrates the token-based authentication feature for the dashboard.</p>
+        
+        <h2>How it works:</h2>
+        <ol>
+            <li>User visits dashboard with a token parameter: <code>/dashboard?token=YOUR_TOKEN</code></li>
+            <li>Dashboard detects the token in URL parameters</li>
+            <li>Token is automatically saved to localStorage</li>
+            <li>Token is removed from URL for security</li>
+            <li>Dashboard loads user data using the provided token</li>
+        </ol>
+
+        <h2>Test Examples:</h2>
+        
+        <div class="note">
+            <strong>Note:</strong> Replace "EXAMPLE_TOKEN" with a real JWT token from your authentication system to test.
+        </div>
+
+        <p><strong>Local Development:</strong></p>
+        <div class="code">http://localhost:3000/dashboard?token=EXAMPLE_TOKEN</div>
+        <a href="http://localhost:3000/dashboard?token=EXAMPLE_TOKEN" class="test-link">
+            🚀 Test with Example Token (Local)
+        </a>
+
+        <p><strong>Production:</strong></p>
+        <div class="code">https://yourdomain.com/dashboard?token=EXAMPLE_TOKEN</div>
+        
+        <h2>Implementation Details:</h2>
+        <ul>
+            <li>✅ Reusable TokenAuth component</li>
+            <li>✅ Used in both user and admin dashboards</li>
+            <li>✅ URL parameter detection with <code>URLSearchParams</code></li>
+            <li>✅ Automatic token storage using <code>TokenManager</code></li>
+            <li>✅ URL cleanup after token extraction</li>
+            <li>✅ Dashboard data refetch with new token</li>
+            <li>✅ Backward compatibility with normal login flow</li>
+            <li>✅ Comprehensive logging for debugging</li>
+        </ul>
+
+        <h2>Security Features:</h2>
+        <ul>
+            <li>🔒 Token removed from URL immediately after detection</li>
+            <li>🔒 Token stored securely in localStorage</li>
+            <li>🔒 Normal authentication checks still apply</li>
+            <li>🔒 Invalid tokens will be rejected by API</li>
+        </ul>
+
+        <div class="note">
+            <strong>Component Architecture:</strong><br>
+            The token authentication logic is now implemented as a reusable <code>TokenAuth</code> component:<br><br>
+            <code>&lt;TokenAuth onRefetch={refetch} /&gt;</code><br><br>
+            This component is used in both user and admin dashboards, providing consistent behavior and easy maintenance.
+        </div>
+
+        <div class="note">
+            <strong>Usage Example:</strong><br>
+            Send users a link like: <code>/dashboard?token=eyJhbGciOiJIUzI1NiIs...</code><br>
+            They will be automatically logged in and redirected to a clean dashboard URL.
+        </div>
+    </div>
+</body>
+</html>

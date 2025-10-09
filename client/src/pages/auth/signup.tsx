@@ -26,7 +26,7 @@ import { TokenManager } from "@/lib/auth";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
-  const { signup, isLoading, user } = useAuth();
+  const { signup, loginWithGoogle, isLoading, user } = useAuth();
   const { t, isRTL } = useLanguage();
   const { toast } = useToast();
 
@@ -60,6 +60,18 @@ export default function Signup() {
       toast({
         title: t("auth", "signupFailed"),
         description: error.message || t("auth", "signupFailedMessage"),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    try {
+      await loginWithGoogle();
+    } catch (error: any) {
+      toast({
+        title: t("auth", "signupFailed"),
+        description: error.message || "Google authentication failed",
         variant: "destructive",
       });
     }
@@ -175,6 +187,30 @@ export default function Signup() {
               </Button>
             </form>
           </Form>
+
+          <div className="mt-4">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full mt-4"
+              onClick={handleGoogleSignup}
+              disabled={isLoading}
+              data-testid="button-google-signup">
+              <i className={`fab fa-google ${isRTL ? "ml-2" : "mr-2"}`}></i>
+              Continue with Google
+            </Button>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -27,6 +28,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
+import { locationOptions } from "./targeting-form";
 
 interface AdEditorUpdateProps {
   adId: string;
@@ -55,9 +57,10 @@ export function AdEditor({
       titleAr: existingData?.titleAr || "",
       descriptionEn: existingData?.descriptionEn || "",
       descriptionAr: existingData?.descriptionAr || "",
-      targetUrl: existingData?.targetUrl || "",
+      websiteUrl: existingData?.websiteUrl || "",
       imageUrl: existingData?.imageUrl || "",
       targetAudience: existingData?.targetAudience || "",
+      targetCities: (existingData as any)?.targetCities || ["riyadh"],
       budgetType: existingData?.budgetType || "impressions",
       facebookLink: existingData?.facebookLink || "",
       instagramLink: existingData?.instagramLink || "",
@@ -285,100 +288,105 @@ export function AdEditor({
             </div>
 
             {/* Photo Upload Section */}
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="imageUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ad Photo</FormLabel>
-                    <FormControl>
-                      <div className="space-y-4">
-                        {/* Photo Preview */}
-                        {photoPreview && (
-                          <div className="relative">
-                            <img
-                              src={photoPreview}
-                              alt="Ad preview"
-                              className="w-full max-w-md h-48 object-cover rounded-lg border"
+            {isUpdate && (
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ad Photo</FormLabel>
+                      <FormControl>
+                        <div className="space-y-4">
+                          {/* Photo Preview */}
+                          {photoPreview && (
+                            <div className="relative">
+                              <img
+                                src={photoPreview}
+                                alt="Ad preview"
+                                className="w-full max-w-md h-48 object-cover rounded-lg border"
+                              />
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="sm"
+                                className="absolute top-2 right-2"
+                                onClick={() => {
+                                  if (
+                                    photoPreview &&
+                                    photoPreview.startsWith("blob:")
+                                  ) {
+                                    URL.revokeObjectURL(photoPreview);
+                                  }
+                                  setPhotoPreview(null);
+                                  form.setValue("imageUrl", "");
+                                }}>
+                                <i className="fas fa-trash mr-2"></i>
+                                Remove
+                              </Button>
+                            </div>
+                          )}
+
+                          {/* Upload Button */}
+                          <div className="flex items-center gap-4">
+                            <input
+                              ref={fileInputRef}
+                              type="file"
+                              accept="image/*"
+                              onChange={handlePhotoSelect}
+                              className="hidden"
                             />
                             <Button
                               type="button"
-                              variant="destructive"
-                              size="sm"
-                              className="absolute top-2 right-2"
-                              onClick={() => {
-                                if (
-                                  photoPreview &&
-                                  photoPreview.startsWith("blob:")
-                                ) {
-                                  URL.revokeObjectURL(photoPreview);
-                                }
-                                setPhotoPreview(null);
-                                form.setValue("imageUrl", "");
-                              }}>
-                              <i className="fas fa-trash mr-2"></i>
-                              Remove
+                              variant="outline"
+                              onClick={() => fileInputRef.current?.click()}
+                              disabled={
+                                uploadingPhoto || uploadPhotoMutation.isPending
+                              }>
+                              {uploadingPhoto ||
+                              uploadPhotoMutation.isPending ? (
+                                <>
+                                  <i className="fas fa-spinner fa-spin mr-2"></i>
+                                  Uploading...
+                                </>
+                              ) : (
+                                <>
+                                  <i className="fas fa-upload mr-2"></i>
+                                  {photoPreview
+                                    ? "Change Photo"
+                                    : "Upload Photo"}
+                                </>
+                              )}
                             </Button>
-                          </div>
-                        )}
-
-                        {/* Upload Button */}
-                        <div className="flex items-center gap-4">
-                          <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept="image/*"
-                            onChange={handlePhotoSelect}
-                            className="hidden"
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => fileInputRef.current?.click()}
-                            disabled={
-                              uploadingPhoto || uploadPhotoMutation.isPending
-                            }>
-                            {uploadingPhoto || uploadPhotoMutation.isPending ? (
-                              <>
-                                <i className="fas fa-spinner fa-spin mr-2"></i>
-                                Uploading...
-                              </>
-                            ) : (
-                              <>
-                                <i className="fas fa-upload mr-2"></i>
-                                {photoPreview ? "Change Photo" : "Upload Photo"}
-                              </>
+                            {!photoPreview && (
+                              <span className="text-sm text-muted-foreground">
+                                JPG, PNG up to 5MB
+                              </span>
                             )}
-                          </Button>
-                          {!photoPreview && (
-                            <span className="text-sm text-muted-foreground">
-                              JPG, PNG up to 5MB
-                            </span>
-                          )}
+                          </div>
+
+                          {/* Hidden input for form validation */}
+                          <Input
+                            type="hidden"
+                            {...field}
+                            value={field.value || ""}
+                          />
                         </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
 
-                        {/* Hidden input for form validation */}
-                        <Input
-                          type="hidden"
-                          {...field}
-                          value={field.value || ""}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Target URL */}
+            {/* Website URL */}
             <FormField
               control={form.control}
-              name="targetUrl"
+              name="websiteUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Target URL</FormLabel>
+                  <FormLabel>Website URL</FormLabel>
                   <FormControl>
                     <Input
                       type="url"
@@ -407,6 +415,49 @@ export function AdEditor({
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Target Cities */}
+            <FormField
+              control={form.control}
+              name="targetCities"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Target Cities</FormLabel>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {locationOptions.map((city) => (
+                      <div
+                        key={city.value}
+                        className="flex items-center space-x-2">
+                        <Checkbox
+                          id={city.value}
+                          checked={field.value?.includes(city.value)}
+                          onCheckedChange={(checked) => {
+                            const currentCities = field.value || [];
+
+                            if (checked) {
+                              field.onChange([...currentCities, city.value]); // ✅ store only the value, not the full object
+                            } else {
+                              field.onChange(
+                                currentCities.filter((c) => c !== city.value)
+                              ); // ✅ remove correctly
+                            }
+                          }}
+                        />
+                        <div className="mx-2">
+                          <label
+                            htmlFor={city.value}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize
+                                           mx-2">
+                            {city.label} {/* ✅ show readable label */}
+                          </label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}

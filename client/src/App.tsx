@@ -8,6 +8,8 @@ import { ThemeProvider } from "./contexts/theme-context";
 import { AppLayout } from "./components/layout/app-layout";
 import Login from "@/pages/auth/login";
 import Signup from "@/pages/auth/signup";
+import GoogleCallback from "@/pages/auth/google-callback";
+import GoogleDirectAuth from "@/pages/auth/google-direct-auth";
 import Dashboard from "@/pages/user/dashboard";
 import AdsIndex from "@/pages/user/ads/index";
 import NewAd from "@/pages/user/ads/new";
@@ -52,28 +54,77 @@ import UserDetails from "./pages/admin/user-details-mangement-page";
 import AnalyticsToAd from "./pages/user/analytics-to-ad";
 import AdDetail from "./pages/shared/ad/[id]";
 import LandingPage from "./pages/public/landing";
+import PublicHeader from "./components/layout/publicHeader";
+import { PublicLayout } from "./components/layout/public-layout";
+import { TokenManager } from "./lib/auth";
+import AdminImpressionRatios from "./pages/admin/AdminImpressionRatios";
 
 function Router() {
+  const role = TokenManager.getRole();
+  let auth = false;
+  if (TokenManager.getAccessToken()) auth = true;
+  console.log("Auth status in Router:", auth);
+  console.log("Access Token:", TokenManager.getAccessToken());
   return (
     <Switch>
       {/* Public pages */}
-      <Route path="/" component={LandingPage} />
-      <Route path="/contact" component={PublicContact} />
-      <Route path="/faq" component={PublicFAQ} />
-      <Route path="/privacy-terms" component={PublicPrivacyTerms} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-
-      {/* Pages with AppLayout */}
+      {!auth ? (
+        <Route
+          path="/feed"
+          component={() => (
+            <PublicLayout>
+              <AdsFeed />
+            </PublicLayout>
+          )}
+        />
+      ) : (
+        <Route
+          path="/feed"
+          component={() => (
+            <AppLayout>
+              <AdsFeed />
+            </AppLayout>
+          )}
+        />
+      )}
       <Route
-        path="/dashboard"
+        path="/"
         component={() => (
-          <AppLayout>
-            <Dashboard />
-          </AppLayout>
+          <PublicLayout>
+            <LandingPage />
+          </PublicLayout>
         )}
       />
-
+      <Route
+        path="/contact"
+        component={() => (
+          <PublicLayout>
+            <PublicContact />
+          </PublicLayout>
+        )}
+      />
+      <Route
+        path="/faq"
+        component={() => (
+          <PublicLayout>
+            <PublicFAQ />
+          </PublicLayout>
+        )}
+      />
+      <Route
+        path="/privacy-terms"
+        component={() => (
+          <PublicLayout>
+            <PublicPrivacyTerms />
+          </PublicLayout>
+        )}
+      />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/auth/google/callback" component={GoogleCallback} />
+      <Route path="/google/callback" component={GoogleCallback} />
+      <Route path="/api/auth/google/login" component={GoogleDirectAuth} />
+      {/* Pages with AppLayout */}
       <Route
         path={adminPendingAdsPath()}
         component={() => (
@@ -197,7 +248,6 @@ function Router() {
           </AppLayout>
         )}
       />
-
       {/* <Route
         path="/admin/pending"
         component={() => (
@@ -230,27 +280,43 @@ function Router() {
           </AppLayout>
         )}
       />
-
+    
+    {role !== "admin" ? (
+    <Route
+      path="/dashboard"
+      component={() => (
+        <AppLayout>
+          <Dashboard />
+        </AppLayout>
+      )}
+    />
+  ) : (
+    <Route
+      path="/dashboard"
+      component={() => (
+        <AppLayout>
+          <AdminDashboard />
+        </AppLayout>
+      )}
+    />
+  )}
+      <Route
+        path="/admin/impression-ratios"
+        component={() => (
+          <AppLayout>
+            <AdminImpressionRatios />
+          </AppLayout>
+        )}
+      />
       <Route
         path="/feed"
         component={() => (
           <AppLayout>
+            {/* <PublicHeader /> */}
             <AdsFeed />
           </AppLayout>
         )}
       />
-      <Route
-        path="/admin/dashboard"
-        component={() => (
-          <AppLayout>
-            <AdminDashboard />
-          </AppLayout>
-        )}
-      />
-
-      {/* Public shared pages */}
-      <Route path="/feed" component={() => <AdsFeed />} />
-
       {/* <Route
         path="/public/:id"
         component={(props: { params: { id: string } }) => (
@@ -259,7 +325,6 @@ function Router() {
           </AppLayout>
         )}
       /> */}
-
       {/* Fallback 404 */}
       <Route
         component={() => (

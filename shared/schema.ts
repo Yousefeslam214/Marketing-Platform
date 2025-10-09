@@ -61,10 +61,11 @@ export const ads = pgTable("ads", {
   titleAr: text("title_ar").notNull(),
   descriptionEn: text("description_en").notNull(),
   descriptionAr: text("description_ar").notNull(),
-  targetUrl: text("target_url").notNull(),
+  websiteUrl: text("target_url").notNull(),
   imageUrl: text("image_url"),
   status: adStatusEnum("status").notNull().default("draft"),
   targetAudience: text("target_audience"),
+  targetCities: jsonb("target_cities").notNull().default('["riyadh"]'),
   budgetType: text("budget_type"), // "impressions" or "clicks"
   publishToken: text("publish_token"),
   approvedBy: varchar("approved_by").references(() => users.id),

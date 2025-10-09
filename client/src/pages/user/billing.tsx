@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { toast, useToast } from "@/hooks/use-toast";
 import { TokenManager } from "@/lib/auth";
 import { PaymentService, type PaymentData } from "@/lib/payment-service";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
@@ -30,17 +30,19 @@ export default function Billing() {
     enabled: !!TokenManager.getAccessToken(),
   });
 
-  const {
-    data: paymentHistoryResponse,
-    isLoading: isLoadingHistory,
-    error,
-    refetch,
-  } = useApiQuery({
-    key: ["/api/payment/history/user"],
-    // enabled: !!TokenManager.getAccessToken(),
-    url: `${VITE_API_BASE_URL}/api/payment/history`,
-  });
-  console.log(paymentHistoryResponse);
+  const { data: paymentHistoryResponse, isLoading: isLoadingHistory } =
+    useApiQuery({
+      key: ["/api/payment/history/user"],
+      // enabled: !!TokenManager.getAccessToken(),
+      url: `${VITE_API_BASE_URL}/api/payment/history`,
+    });
+
+  // Fetch impression ratios from API
+  const { data: impressionRatiosResponse, isLoading: isLoadingRatios } =
+    useApiQuery({
+      key: ["/api/users/impression-ratios"],
+      url: `${VITE_API_BASE_URL}/api/users/impression-ratios`,
+    });
 
   // Type-safe metrics with defaults
   const safeMetrics = {
@@ -50,30 +52,37 @@ export default function Billing() {
   // Extract payment history from API response
   const paymentHistory = (paymentHistoryResponse as any)?.data?.items || [];
 
-  // Helper function to calculate impressions from amount (1000 impressions per dollar)
+  // Extract impression ratios and find SAR ratio
+  const impressionRatios = (impressionRatiosResponse as any)?.data || [];
+  const sarRatio = impressionRatios.find(
+    (ratio: any) => ratio.currency === "sar"
+  );
+  const impressionsPerSAR = sarRatio?.impressionsPerUnit || 1000; // Default to 1000 if not found
+
+  // Helper function to calculate impressions from amount using API ratio
   const calculateImpressions = (amount: string) => {
-    return parseFloat(amount) * 1000;
+    return parseFloat(amount) * impressionsPerSAR;
   };
 
   const impressionPackages = [
     {
       id: "basic",
       nameKey: "basicPackage",
-      impressions: 50000,
+      impressions: 50 * impressionsPerSAR, // 50 SAR worth of impressions
       amount: 50,
       popular: false,
     },
     {
       id: "professional",
       nameKey: "professionalPackage",
-      impressions: 125000,
+      impressions: 100 * impressionsPerSAR, // 100 SAR worth of impressions
       amount: 100,
       popular: true,
     },
     {
       id: "enterprise",
       nameKey: "enterprisePackage",
-      impressions: 300000,
+      impressions: 200 * impressionsPerSAR, // 200 SAR worth of impressions
       amount: 200,
       popular: false,
     },
@@ -98,26 +107,28 @@ export default function Billing() {
     const pkg = impressionPackages.find((p) => p.id === packageId);
     if (pkg) {
       purchaseMutation.mutate({
-        amount: pkg.amount, // Convert to cents for Stripe
+        amount: pkg.amount ?? 0,
         impressions: pkg.impressions,
-        currency: "USD",
+        currency: "SAR",
       });
     }
   };
 
   const handleCustomPurchase = () => {
     const amount = parseFloat(customAmount);
-    if (amount >= 10) {
-      const impressions = amount * 1000; // 1000 impressions per dollar
+    const minAmount = 10; // Minimum in SAR
+
+    if (amount >= minAmount) {
+      const impressions = amount * impressionsPerSAR; // Use API ratio
       purchaseMutation.mutate({
-        amount: amount * 100, // Convert to cents for Stripe
+        amount: Math.round(amount),
         impressions,
-        currency: "USD",
+        currency: "SAR",
       });
     } else {
       toast({
         title: t("billing", "invalidAmount"),
-        description: t("billing", "minimumAmountError"),
+        description: `${t("billing", "minimumAmountError")} ر.س${minAmount}`,
         variant: "destructive",
       });
     }
@@ -164,13 +175,22 @@ export default function Billing() {
                   </p>
                 </div>
                 <div className="text-right">
-                  {/* <p className="text-sm text-muted-foreground">
-                    {t("billing", "freeViewsUsed")}
-                  </p> */}
-                  {/* <p className="text-lg font-semibold text-foreground">
-                    {(10000 - safeMetrics.creditsRemaining).toLocaleString()} /
-                    10,000
-                  </p> */}
+                  {isLoadingRatios ? (
+                    <div className="animate-pulse">
+                      <div className="h-4 bg-muted rounded w-24 mb-2"></div>
+                      <div className="h-3 bg-muted rounded w-16"></div>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-sm font-medium text-foreground">
+                        {impressionsPerSAR.toLocaleString()}{" "}
+                        {t("billing", "impressionsPerSAR")}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("billing", "rateInfo")}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -182,86 +202,185 @@ export default function Billing() {
               <CardTitle>{t("billing", "impressionPackages")}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                {impressionPackages.map((pkg) => (
-                  <div
-                    key={pkg.id}
-                    className={`p-6 rounded-lg border-2 transition-colors ${
-                      selectedPackage === pkg.id
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
-                    } ${pkg.popular ? "ring-2 ring-primary/20" : ""}`}>
-                    {pkg.popular && (
-                      <Badge className="mb-3 bg-primary text-primary-foreground">
-                        {t("billing", "mostPopular")}
-                      </Badge>
-                    )}
-                    <h3
-                      className="text-lg font-semibold text-foreground mb-2"
-                      data-testid={`package-name-${pkg.id}`}>
-                      {t("billing", pkg.nameKey as any)}
-                    </h3>
-                    <div className="mb-4">
-                      <p
-                        className="text-3xl font-bold text-foreground"
-                        data-testid={`package-price-${pkg.id}`}>
-                        ${pkg.amount}
-                      </p>
-                      <p
-                        className="text-sm text-muted-foreground"
-                        data-testid={`package-impressions-${pkg.id}`}>
-                        {pkg.impressions.toLocaleString()} impressions
-                      </p>
+              {isLoadingRatios ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="p-6 rounded-lg border-2 animate-pulse">
+                      <div className="h-6 bg-muted rounded mb-4"></div>
+                      <div className="h-8 bg-muted rounded mb-2"></div>
+                      <div className="h-4 bg-muted rounded mb-4"></div>
+                      <div className="h-3 bg-muted rounded mb-4"></div>
+                      <div className="h-10 bg-muted rounded"></div>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      ${(pkg.amount / (pkg.impressions / 1000)).toFixed(3)} per
-                      1K impressions
-                    </p>
-                    <Button
-                      className="w-full"
-                      variant={
-                        selectedPackage === pkg.id ? "default" : "outline"
-                      }
-                      onClick={() => {
-                        setSelectedPackage(pkg.id);
-                        handlePurchase(pkg.id);
-                      }}
-                      disabled={purchaseMutation.isPending}
-                      data-testid={`button-select-package-${pkg.id}`}>
-                      {purchaseMutation.isPending ? (
-                        <>
-                          <i className="fas fa-spinner fa-spin mr-2"></i>
-                          {t("billing", "processing")}
-                        </>
-                      ) : (
-                        t("billing", "selectPackage")
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                  {impressionPackages.map((pkg) => {
+                    return (
+                      <div
+                        key={pkg.id}
+                        className={`flex flex-col justify-between p-6 rounded-lg border-2 transition-colors ${
+                          selectedPackage === pkg.id
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        } ${pkg.popular ? "ring-2 ring-primary/20" : ""}`}>
+                        {pkg.popular && (
+                          <Badge
+                            className="
+                          flex flex-col items-center justify-center pb--2 pt-1
+                          mb-3 bg-primary text-primary-foreground">
+                            {t("billing", "mostPopular")}
+                          </Badge>
+                        )}
+                        <div>
+                          <h3
+                            className={`text-lg font-semibold text-foreground mb-2 ${
+                              isRTL ? "text-right" : "text-left"
+                            }`}
+                            data-testid={`package-name-${pkg.id}`}>
+                            {t("billing", pkg.nameKey as any)}
+                          </h3>
+                          <div
+                            className={`mb-4 ${
+                              isRTL ? "text-right" : "text-left"
+                            }`}>
+                            <p
+                              className="text-3xl font-bold text-foreground"
+                              data-testid={`package-price-${pkg.id}`}>
+                              {isRTL ? `${pkg.amount} ر.س` : `ر.س${pkg.amount}`}
+                            </p>
+                            <p
+                              className="text-sm text-muted-foreground"
+                              data-testid={`package-impressions-${pkg.id}`}>
+                              {pkg.impressions.toLocaleString()}{" "}
+                              {t("billing", "impressions")}
+                            </p>
+                          </div>
+                        </div>
+
+                        <Button
+                          className="w-full"
+                          variant={
+                            selectedPackage === pkg.id ? "default" : "outline"
+                          }
+                          onClick={() => {
+                            setSelectedPackage(pkg.id);
+                            handlePurchase(pkg.id);
+                          }}
+                          disabled={purchaseMutation.isPending}
+                          data-testid={`button-select-package-${pkg.id}`}>
+                          {purchaseMutation.isPending ? (
+                            <>
+                              <i
+                                className={`fas fa-spinner fa-spin ${
+                                  isRTL ? "ml-2" : "mr-2"
+                                }`}></i>
+                              {t("billing", "processing")}
+                            </>
+                          ) : (
+                            t("billing", "selectPackage")
+                          )}
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {/* Purchase Selected Package */}
+
+              {/* Purchase Selected Package */}
+              {selectedPackage && (
+                <div
+                  className={`flex items-center justify-between p-4 bg-muted/50 rounded-lg mb-6 ${
+                    isRTL ? "flex-row-reverse" : ""
+                  }`}>
+                  <div className={isRTL ? "text-right" : "text-left"}>
+                    <p className="text-sm font-medium text-foreground">
+                      {t("billing", "packageSelected")}:{" "}
+                      {t(
+                        "billing",
+                        impressionPackages.find((p) => p.id === selectedPackage)
+                          ?.nameKey as any
                       )}
-                    </Button>
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {isRTL
+                        ? `${
+                            impressionPackages.find(
+                              (p) => p.id === selectedPackage
+                            )?.amount || 0
+                          } ر.س`
+                        : `ر.س${
+                            impressionPackages.find(
+                              (p) => p.id === selectedPackage
+                            )?.amount || 0
+                          }`}{" "}
+                      -{" "}
+                      {impressionPackages
+                        .find((p) => p.id === selectedPackage)
+                        ?.impressions.toLocaleString()}{" "}
+                      {t("billing", "impressions")}
+                    </p>
                   </div>
-                ))}
-              </div>
+                  <Button
+                    onClick={() => handlePurchase(selectedPackage)}
+                    disabled={purchaseMutation.isPending}
+                    className="min-w-[120px]"
+                    data-testid="button-purchase-selected">
+                    {purchaseMutation.isPending ? (
+                      <>
+                        <i
+                          className={`fas fa-spinner fa-spin ${
+                            isRTL ? "ml-2" : "mr-2"
+                          }`}></i>
+                        {t("billing", "processing")}
+                      </>
+                    ) : (
+                      t("billing", "purchase")
+                    )}
+                  </Button>
+                </div>
+              )}
 
               {/* Custom Amount */}
               <div className="p-6 border border-border rounded-lg">
                 <h4 className="text-lg font-semibold text-foreground mb-4">
                   {t("billing", "customAmount")}
                 </h4>
-                <div className="flex items-center gap-4">
+                <div
+                  className={`flex items-center gap-4 ${
+                    isRTL ? "flex-row-reverse" : ""
+                  }`}>
                   <div className="flex-1">
-                    <Input
-                      type="number"
-                      placeholder={t("billing", "enterAmount")}
-                      value={customAmount}
-                      onChange={(e) => setCustomAmount(e.target.value)}
-                      min="10"
-                      step="1"
-                      data-testid="input-custom-amount"
-                    />
+                    <div className="relative">
+                      <span
+                        className={`absolute top-1/2 transform -translate-y-1/2 text-muted-foreground ${
+                          isRTL ? "right-3" : "left-3"
+                        }`}>
+                        ر.س
+                      </span>
+                      <Input
+                        type="number"
+                        placeholder={t("billing", "enterAmount")}
+                        value={customAmount}
+                        onChange={(e) => setCustomAmount(e.target.value)}
+                        min="10"
+                        step="1"
+                        className={isRTL ? "pr-12 text-right" : "pl-12"}
+                        data-testid="input-custom-amount"
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                    </div>
                     {customAmount && parseFloat(customAmount) >= 10 && (
                       <p className="text-xs text-muted-foreground mt-1">
                         {t("billing", "youllReceive")}{" "}
-                        {(parseFloat(customAmount) * 1000).toLocaleString()}{" "}
-                        impressions
+                        {(
+                          parseFloat(customAmount) * impressionsPerSAR
+                        ).toLocaleString()}{" "}
+                        {t("billing", "impressions")}
                       </p>
                     )}
                   </div>
@@ -275,7 +394,10 @@ export default function Billing() {
                     data-testid="button-custom-purchase">
                     {purchaseMutation.isPending ? (
                       <>
-                        <i className="fas fa-spinner fa-spin mr-2"></i>
+                        <i
+                          className={`fas fa-spinner fa-spin ${
+                            isRTL ? "ml-2" : "mr-2"
+                          }`}></i>
                         {t("billing", "processing")}
                       </>
                     ) : (
@@ -311,7 +433,9 @@ export default function Billing() {
                           <p
                             className="font-medium text-foreground"
                             data-testid={`purchase-amount-${payment.id}`}>
-                            ${parseFloat(payment.amount).toFixed(2)}
+                            {isRTL
+                              ? `${parseFloat(payment.amount).toFixed(2)} ر.س`
+                              : `ر.س${parseFloat(payment.amount).toFixed(2)}`}
                           </p>
                           <Badge className={getStatusColor(payment.status)}>
                             {getStatusText(payment.status)}
@@ -330,7 +454,7 @@ export default function Billing() {
                           {payment.method.toUpperCase()}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className={`${isRTL ? "text-left" : "text-right"}`}>
                         <p
                           className="text-sm text-muted-foreground"
                           data-testid={`purchase-date-${payment.id}`}>

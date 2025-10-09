@@ -4,11 +4,20 @@ import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Heart, Share2, MessageCircle, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
-import PublicFooter from "@/components/layout/publicFooter";
+// import PublicFooter from "@/components/layout/publicFooter";
+import { DataPagination } from "@/components/ui/data-pagination";
+import { locationOptions } from "@/components/ads/targeting-form";
 
 interface Ad {
   id: string;
@@ -18,6 +27,7 @@ interface Ad {
   descriptionEn: string;
   descriptionAr: string;
   likesCount: number;
+  websiteUrl?: string | null;
 }
 
 interface AdsFeedResponse {
@@ -38,6 +48,8 @@ export default function AdsFeed() {
   const { t, language, isRTL } = useLanguage();
   const { toast } = useToast();
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const [targetCities, setTargetCities] = useState<string[]>(["riyadh"]);
   const [likedAds, setLikedAds] = useState<Set<string>>(new Set());
   // if (TokenManager.getAccessToken()) {
   //     window.location.href = "/ads/feed";
@@ -48,10 +60,18 @@ export default function AdsFeed() {
     isLoading,
     error,
   } = useQuery<AdsFeedResponse>({
-    queryKey: ["/api/advertising/listApprovedAdsForUser", page],
+    queryKey: [
+      "/api/advertising/listApprovedAdsForUser",
+      page,
+      limit,
+      targetCities,
+    ],
     queryFn: async () => {
+      const targetCitiesParam = JSON.stringify(targetCities);
       const response = await fetch(
-        `${VITE_API_BASE_URL}/api/advertising/listApprovedAdsForUser?page=${page}&limit=6`
+        `${VITE_API_BASE_URL}/api/advertising/listApprovedAdsForUser?page=${page}&limit=${limit}&targetCities=${encodeURIComponent(
+          targetCitiesParam
+        )}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch ads");
@@ -62,7 +82,6 @@ export default function AdsFeed() {
     },
     retry: 1,
   });
-
   const handleLike = async (adId: string) => {
     try {
       const response = await fetch(
@@ -112,10 +131,18 @@ export default function AdsFeed() {
     }
   };
 
-  const loadMore = () => {
-    if (adsResponse?.pagination.hasNext) {
-      setPage((prev) => prev + 1);
-    }
+  const handlePageChange = (newPage: string) => {
+    setPage(parseInt(newPage));
+  };
+
+  const handlePageSizeChange = (newLimit: string) => {
+    setLimit(parseInt(newLimit));
+    setPage(1); // Reset to first page when changing page size
+  };
+
+  const handleCityChange = (city: string) => {
+    setTargetCities([city]);
+    setPage(1); // Reset to first page when changing city
   };
 
   if (error) {
@@ -136,7 +163,7 @@ export default function AdsFeed() {
   return (
     <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
@@ -147,14 +174,30 @@ export default function AdsFeed() {
               {t("sidebar", "appName")}
             </h1>
           </div>
-          <Badge variant="secondary">{t("publicFeed", "title")}</Badge>
+          <div className="flex items-center gap-4">
+            <Select
+              value={locationOptions[0].value}
+              onValueChange={handleCityChange}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Select city" />
+              </SelectTrigger>
+              <SelectContent>
+                {locationOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Badge variant="secondary">{t("publicFeed", "title")}</Badge>
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6 max-w-2xl">
-        {isLoading && page === 1 ? (
-          <div className="space-y-6">
+      <main className="p-6 min-h-[78vh]">
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
             {[...Array(3)].map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardContent className="p-6">
@@ -166,43 +209,46 @@ export default function AdsFeed() {
             ))}
           </div>
         ) : (
-          <div className="space-y-6">
-            {adsResponse?.data.map((ad) => (
-              <Card
-                key={ad.id}
-                className="overflow-hidden hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  {/* Ad Header */}
-                  <div className="p-4 border-b">
-                    <h2 className="font-semibold text-lg text-foreground">
-                      {language === "en" ? ad.titleEn : ad.titleAr}
-                    </h2>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {t("publicFeed", "sponsored")}
-                    </p>
-                  </div>
+          <div className="w-full flex flex-col items-center space-y-8">
+            {/* Ads List */}
+            <div className="w-full max-w-5xl grid  gap-6
+             grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
+            ">
+              {adsResponse?.data.map((ad) => (
+                <Card
+                  key={ad.id}
+                  className="overflow-hidden hover:shadow-md transition-shadow duration-300">
+                  <CardContent className="p-0">
+                    {/* Header */}
+                    <div className="p-4 border-b">
+                      <h2 className="text-lg font-semibold text-foreground">
+                        {language === "en" ? ad.titleEn : ad.titleAr}
+                      </h2>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {t("publicFeed", "sponsored")}
+                      </p>
+                    </div>
 
-                  {/* Ad Content */}
-                  <div className="p-4">
-                    <p className="text-foreground mb-4 leading-relaxed">
-                      {language === "en" ? ad.descriptionEn : ad.descriptionAr}
-                    </p>
+                    {/* Content */}
+                    <div className="p-4 space-y-4">
+                      <p className="text-foreground leading-relaxed">
+                        {language === "en"
+                          ? ad.descriptionEn
+                          : ad.descriptionAr}
+                      </p>
 
-                    {ad.imageUrl && (
-                      <div className="mb-4">
+                      {ad.imageUrl && (
                         <img
                           src={ad.imageUrl}
                           alt={language === "en" ? ad.titleEn : ad.titleAr}
                           className="w-full h-64 object-cover rounded-lg"
                           loading="lazy"
                         />
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
 
-                  {/* Ad Actions */}
-                  <div className="px-4 pb-4">
-                    <div className="flex items-center justify-between pt-3 border-t">
+                    {/* Actions */}
+                    <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between">
                       <div className="flex items-center gap-1">
                         <Button
                           variant="ghost"
@@ -235,45 +281,51 @@ export default function AdsFeed() {
                         </Button>
                       </div>
 
-                      {/* <Button
+                      <Button
                         variant="outline"
-                        size="sm"
-                        onClick={() => handleLike(ad.id)}
+                        onClick={() => {
+                          if (ad.websiteUrl) {
+                            window.open(
+                              ad.websiteUrl,
+                              "_blank",
+                              "noopener,noreferrer"
+                            );
+                          }
+                        }}
                         className="gap-2">
                         <ExternalLink className="h-4 w-4" />
-                        {t("publicFeed", "learnMore")}
-                      </Button> */}
+                        {t("publicFeed", "website")}
+                      </Button>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-            {/* Load More Button */}
-            {adsResponse?.pagination.hasNext && (
-              <div className="flex justify-center py-6">
-                <Button
-                  onClick={loadMore}
-                  disabled={isLoading}
-                  variant="outline"
-                  className="min-w-32">
-                  {isLoading ? (
-                    <>
-                      <i className="fas fa-spinner fa-spin mr-2"></i>
-                      {t("publicFeed", "loading")}
-                    </>
-                  ) : (
-                    t("publicFeed", "loadMore")
-                  )}
-                </Button>
-              </div>
+            {/* Pagination */}
+            {adsResponse?.pagination && (
+              <DataPagination
+                pagination={{
+                  ...adsResponse.pagination,
+                  itemsPerPage: limit,
+                  totalItems: adsResponse.pagination.totalCount,
+                }}
+                currentPage={page.toString()}
+                onPageChange={handlePageChange}
+                pageSize={limit.toString()}
+                onPageSizeChange={handlePageSizeChange}
+                showPageSizeSelector
+                pageSizeOptions={[6, 12, 18, 24]}
+                showInfo
+                className="mt-4"
+              />
             )}
 
             {/* Empty State */}
             {adsResponse?.data.length === 0 && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className="fas fa-ad text-2xl text-muted-foreground"></i>
+              <div className="flex flex-col items-center text-center py-12">
+                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                  <i className="fas fa-ad text-2xl text-muted-foreground" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">
                   {t("publicFeed", "noAdsAvailable")}
@@ -286,7 +338,6 @@ export default function AdsFeed() {
           </div>
         )}
       </main>
-      <PublicFooter />  
     </div>
   );
 }

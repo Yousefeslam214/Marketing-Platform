@@ -87,9 +87,9 @@ export function DataPagination({
     <div className={`flex flex-col gap-4 ${className}`}>
       {/* Info and page size selector */}
       <div
-        className={`flex items-center justify-between ${
-          isRTL ? "flex-row-reverse" : ""
-        }`}>
+        className={`flex items-center justify-between
+       ${!showPageSizeSelector ? "flex-col" : ""}
+          ${isRTL ? "flex-row-reverse" : ""}`}>
         {/* Results info */}
         {showInfo && (
           <div
@@ -115,7 +115,7 @@ export function DataPagination({
               isRTL ? "flex-row-reverse" : ""
             }`}>
             <span className="text-sm text-muted-foreground">
-              {t("pagination", "itemsPerPage")}:
+              {t("pagination", "itemsPerPage")}
             </span>
             <Select
               value={pageSize?.toString() || "10"}

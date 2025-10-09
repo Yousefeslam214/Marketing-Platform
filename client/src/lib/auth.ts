@@ -72,6 +72,68 @@ export class AuthService {
     return result.data;
   }
 
+  static async getGoogleAuthUrl(): Promise<string> {
+    // Backend is not using redirect_uri parameter correctly, so get URL as-is
+    // The popup will handle the production redirect URL
+    const response = await apiRequest(
+      "GET",
+      `${BACKEND_URL}/api/auth/google/generateAuthUrl`
+    );
+    const result = await response.json();
+    console.log("Google auth URL response:", result);
+
+    // Handle different possible response structures
+    const authUrl =
+      result?.data?.authUrl ||
+      result?.data?.url ||
+      result?.authUrl ||
+      result?.url;
+
+    if (!authUrl) {
+      console.error("No auth URL found in response:", result);
+      throw new AuthError(
+        "Failed to get Google authentication URL",
+        "NO_AUTH_URL"
+      );
+    }
+
+    return authUrl;
+  }
+
+  static async handleGoogleCallback(code: string): Promise<AuthResponse> {
+    const response = await apiRequest(
+      "POST",
+      `${BACKEND_URL}/api/auth/google/callback`,
+      { code }
+    );
+    const result = await response.json();
+    const rtnData = result?.data;
+
+    if (rtnData?.token) {
+      TokenManager.setTokens(rtnData.token, rtnData.username, rtnData.role);
+      return {
+        role: rtnData?.role,
+        username: rtnData?.username,
+        access_token: rtnData?.token,
+      };
+    }
+    throw new AuthError("Invalid Google auth response", "INVALID_RESPONSE");
+  }
+
+  static async handleGoogleDirectAuth(
+    token: string,
+    username: string,
+    role: string
+  ): Promise<AuthResponse> {
+    // Handle direct authentication when token is already provided
+    TokenManager.setTokens(token, username, role);
+    return {
+      role: role,
+      username: username,
+      access_token: token,
+    };
+  }
+
   // Role-based access control helpers
   static hasRole(user: User | null, roles: string[]): boolean {
     return user ? roles.includes(user.role) : false;

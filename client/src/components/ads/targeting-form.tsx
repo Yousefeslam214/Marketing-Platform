@@ -49,6 +49,34 @@ interface TargetingFormProps {
   defaultValues?: Partial<TargetingData>;
   isLoading?: boolean;
 }
+export const locationOptions = [
+  { value: "riyadh", label: "Riyadh / الرياض" },
+  { value: "jeddah", label: "Jeddah / جدة" },
+  { value: "mecca", label: "Mecca / مكة" },
+  { value: "medina", label: "Medina / المدينة المنورة" },
+  { value: "dammam", label: "Dammam / الدمام" },
+  { value: "khobar", label: "Khobar / الخبر" },
+  { value: "dhahran", label: "Dhahran / الظهران" },
+  { value: "jubail", label: "Jubail / الجبيل" },
+  { value: "tabuk", label: "Tabuk / تبوك" },
+  { value: "abha", label: "Abha / أبها" },
+  { value: "khamis-mushait", label: "Khamis Mushait / خميس مشيط" },
+  { value: "taif", label: "Taif / الطائف" },
+  { value: "qassim", label: "Qassim / القصيم" },
+  { value: "buraydah", label: "Buraydah / بريدة" },
+  { value: "hail", label: "Hail / حائل" },
+  { value: "najran", label: "Najran / نجران" },
+  { value: "jazan", label: "Jazan / جازان" },
+  { value: "yanbu", label: "Yanbu / ينبع" },
+  { value: "al-kharj", label: "Al Kharj / الخرج" },
+  { value: "hafr-al-batin", label: "Hafr Al Batin / حفر الباطن" },
+  { value: "al-baha", label: "Al Baha / الباحة" },
+  { value: "ar-ar", label: "Arar / عرعر" },
+  { value: "sakaka", label: "Sakaka / سكاكا" },
+  { value: "al-majmaah", label: "Al Majma'ah / المجمعة" },
+  { value: "al-qatif", label: "Al Qatif / القطيف" },
+  { value: "al-zulfi", label: "Al Zulfi / الزلفي" },
+];
 
 export function TargetingForm({
   onSubmit,
@@ -84,17 +112,6 @@ export function TargetingForm({
     { value: "shopping", label: "Shopping" },
     { value: "automotive", label: "Automotive" },
     { value: "real-estate", label: "Real Estate" },
-  ];
-
-  const locationOptions = [
-    { value: "saudi-arabia", label: "Saudi Arabia" },
-    { value: "riyadh", label: "Riyadh" },
-    { value: "jeddah", label: "Jeddah" },
-    { value: "dammam", label: "Dammam" },
-    { value: "mecca", label: "Mecca" },
-    { value: "medina", label: "Medina" },
-    { value: "gcc", label: "GCC Countries" },
-    { value: "middle-east", label: "Middle East" },
   ];
 
   return (

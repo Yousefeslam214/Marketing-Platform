@@ -26,7 +26,7 @@ import { useLanguage } from "@/hooks/use-language";
 export default function Login() {
   const { isRTL, t } = useLanguage();
   const [, setLocation] = useLocation();
-  const { login, isLoading } = useAuth();
+  const { login, loginWithGoogle, isLoading } = useAuth();
   const { toast } = useToast();
 
   const form = useForm<LoginData>({
@@ -58,6 +58,20 @@ export default function Login() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      console.log("Starting Google authentication...");
+      await loginWithGoogle();
+    } catch (error: any) {
+      console.error("Google login error:", error);
+      toast({
+        title: t("auth", "loginFailed") || "Login failed",
+        description: error.message || "Google authentication failed",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div
       className={`min-h-screen flex items-center justify-center bg-background px-4 ${
@@ -67,10 +81,13 @@ export default function Login() {
         <CardHeader className="text-center">
           <div className="flex items-center justify-between flex-col mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <i className="fas fa-bolt text-primary-foreground text-lg"></i>
-              </div>
-              <CardTitle className="text-2xl">octopusad</CardTitle>
+              <img
+                src="../../../public/logo.webp"
+                alt="Logo"
+                className="h-11"
+              />
+              {/* <CardTitle className="text-2xl">
+              </CardTitle> */}
             </div>
             {/* <LanguageToggle /> */}
           </div>
@@ -144,6 +161,30 @@ export default function Login() {
               </Button>
             </form>
           </Form>
+
+          <div className="mt-4">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full mt-4"
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+              data-testid="button-google-login">
+              <i className={`fab fa-google ${isRTL ? "ml-2" : "mr-2"}`}></i>
+              Continue with Google
+            </Button>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">

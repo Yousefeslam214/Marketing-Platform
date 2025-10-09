@@ -16,7 +16,7 @@ import PublicFooter from "@/components/layout/publicFooter";
 
 export default function LandingPage() {
   const { language, isRTL, t } = useLanguage();
-//   localStorage.clear();
+  //   localStorage.clear();
 
   return (
     <div
@@ -33,7 +33,8 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
         <div className="container relative px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className={`space-y-6 md:space-y-8 ${isRTL ? "lg:order-2" : ""}`}>
+            <div
+              className={`space-y-6 md:space-y-8 ${isRTL ? "lg:order-2" : ""}`}>
               <div className="space-y-4">
                 <Badge variant="secondary" className="w-fit">
                   {t("landing", "hero.badge" as any)}
@@ -78,12 +79,17 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className={`relative mt-8 lg:mt-0 ${isRTL ? "lg:order-1" : ""}`}>
+            <div
+              className={`relative mt-8 lg:mt-0 ${isRTL ? "lg:order-1" : ""}`}>
               <div className="relative bg-gradient-to-br from-primary to-secondary rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl">
                 <div className="bg-background rounded-lg p-4 sm:p-6 space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm sm:text-base font-semibold">{t("landing", "hero.dashboard.title" as any)}</h3>
-                    <Badge variant="secondary" className="text-xs">{t("landing", "hero.dashboard.live" as any)}</Badge>
+                    <h3 className="text-sm sm:text-base font-semibold">
+                      {t("landing", "hero.dashboard.title" as any)}
+                    </h3>
+                    <Badge variant="secondary" className="text-xs">
+                      {t("landing", "hero.dashboard.live" as any)}
+                    </Badge>
                   </div>
                   <div className="grid grid-cols-3 gap-2 sm:gap-4">
                     <div className="text-center">
@@ -106,7 +112,9 @@ export default function LandingPage() {
                       <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-500">
                         12.4K
                       </div>
-                      <div className="text-xs text-muted-foreground">{t("landing", "hero.dashboard.leads" as any)}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {t("landing", "hero.dashboard.leads" as any)}
+                      </div>
                     </div>
                   </div>
                   <div className="h-24 sm:h-32 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-lg flex items-end justify-center p-2 sm:p-4">
@@ -141,33 +149,33 @@ export default function LandingPage() {
               {
                 icon: "fas fa-rocket",
                 titleKey: "features.items.easySetup.title",
-                descKey: "features.items.easySetup.description"
+                descKey: "features.items.easySetup.description",
               },
               {
-                icon: "fas fa-chart-bar", 
+                icon: "fas fa-chart-bar",
                 titleKey: "features.items.analytics.title",
-                descKey: "features.items.analytics.description"
+                descKey: "features.items.analytics.description",
               },
               {
                 icon: "fas fa-globe",
-                titleKey: "features.items.multiPlatform.title", 
-                descKey: "features.items.multiPlatform.description"
+                titleKey: "features.items.multiPlatform.title",
+                descKey: "features.items.multiPlatform.description",
               },
               {
                 icon: "fas fa-shield-alt",
                 titleKey: "features.items.secure.title",
-                descKey: "features.items.secure.description"
+                descKey: "features.items.secure.description",
               },
               {
                 icon: "fas fa-clock",
                 titleKey: "features.items.realTime.title",
-                descKey: "features.items.realTime.description"
+                descKey: "features.items.realTime.description",
               },
               {
                 icon: "fas fa-headset",
                 titleKey: "features.items.support.title",
-                descKey: "features.items.support.description"
-              }
+                descKey: "features.items.support.description",
+              },
             ].map((feature, index) => (
               <Card
                 key={index}
@@ -176,7 +184,9 @@ export default function LandingPage() {
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <i className={`${feature.icon} text-primary text-xl`}></i>
                   </div>
-                  <CardTitle className="text-xl">{t("landing", feature.titleKey as any)}</CardTitle>
+                  <CardTitle className="text-xl">
+                    {t("landing", feature.titleKey as any)}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
@@ -207,26 +217,26 @@ export default function LandingPage() {
                 step: "1",
                 icon: "fas fa-user-plus",
                 titleKey: "howItWorks.steps.signup.title",
-                descKey: "howItWorks.steps.signup.description"
+                descKey: "howItWorks.steps.signup.description",
               },
               {
-                step: "2", 
+                step: "2",
                 icon: "fas fa-cog",
                 titleKey: "howItWorks.steps.setup.title",
-                descKey: "howItWorks.steps.setup.description"
+                descKey: "howItWorks.steps.setup.description",
               },
               {
                 step: "3",
-                icon: "fas fa-bullhorn", 
+                icon: "fas fa-bullhorn",
                 titleKey: "howItWorks.steps.create.title",
-                descKey: "howItWorks.steps.create.description"
+                descKey: "howItWorks.steps.create.description",
               },
               {
                 step: "4",
                 icon: "fas fa-chart-line",
-                titleKey: "howItWorks.steps.track.title", 
-                descKey: "howItWorks.steps.track.description"
-              }
+                titleKey: "howItWorks.steps.track.title",
+                descKey: "howItWorks.steps.track.description",
+              },
             ].map((step, index) => (
               <div key={index} className="text-center space-y-4">
                 <div className="relative">
@@ -238,8 +248,12 @@ export default function LandingPage() {
                     {step.step}
                   </div>
                 </div>
-                <h3 className="text-xl font-semibold">{t("landing", step.titleKey as any)}</h3>
-                <p className="text-muted-foreground">{t("landing", step.descKey as any)}</p>
+                <h3 className="text-xl font-semibold">
+                  {t("landing", step.titleKey as any)}
+                </h3>
+                <p className="text-muted-foreground">
+                  {t("landing", step.descKey as any)}
+                </p>
               </div>
             ))}
           </div>
@@ -260,25 +274,33 @@ export default function LandingPage() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center text-primary-foreground">
             <div>
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">10K+</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+                10K+
+              </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
                 {t("landing", "stats.campaigns" as any)}
               </div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">500+</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+                500+
+              </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
                 {t("landing", "stats.clients" as any)}
               </div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">99.9%</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+                99.9%
+              </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
                 {t("landing", "stats.uptime" as any)}
               </div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">24/7</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+                24/7
+              </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
                 {t("landing", "stats.support" as any)}
               </div>
@@ -294,7 +316,9 @@ export default function LandingPage() {
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
               {t("landing", "cta.title" as any)}
             </h2>
-            <p className="text-lg sm:text-xl mb-6 sm:mb-8 opacity-90">{t("landing", "cta.subtitle" as any)}</p>
+            <p className="text-lg sm:text-xl mb-6 sm:mb-8 opacity-90">
+              {t("landing", "cta.subtitle" as any)}
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/signup">
                 <Button
@@ -319,7 +343,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-    <PublicFooter />
+      <PublicFooter />
     </div>
   );
 }

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -25,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
+import { locationOptions } from "./targeting-form";
 
 export function AdEditor() {
   const [, setLocation] = useLocation();
@@ -38,8 +40,9 @@ export function AdEditor() {
       titleAr: "",
       descriptionEn: "",
       descriptionAr: "",
-      targetUrl: "",
+      websiteUrl: "",
       targetAudience: "",
+      targetCities: ["riyadh"],
       budgetType: "impressions",
       facebookLink: "",
       instagramLink: "",
@@ -172,13 +175,13 @@ export function AdEditor() {
               />
             </div>
 
-            {/* Target URL */}
+            {/* Website URL */}
             <FormField
               control={form.control}
-              name="targetUrl"
+              name="websiteUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Target URL</FormLabel>
+                  <FormLabel>Website URL</FormLabel>
                   <FormControl>
                     <Input
                       type="url"
@@ -193,7 +196,7 @@ export function AdEditor() {
             />
 
             {/* Image Upload */}
-            <div>
+            {/* <div>
               <FormLabel>Ad Image</FormLabel>
               <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer mt-2">
                 <i className="fas fa-cloud-upload-alt text-4xl text-muted-foreground mb-4"></i>
@@ -205,7 +208,7 @@ export function AdEditor() {
                 </p>
                 <input type="file" className="hidden" accept="image/*" />
               </div>
-            </div>
+            </div> */}
 
             {/* Social Media Links */}
             <div>
@@ -382,6 +385,53 @@ export function AdEditor() {
                         <SelectItem value="clicks">Pay per click</SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Target Cities */}
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="targetCities"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Target Cities</FormLabel>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {locationOptions.map((city) => (
+                        <div
+                          key={city.value}
+                          className="flex items-center space-x-2">
+                          <Checkbox
+                            id={city.value}
+                            checked={field.value?.includes(city.value)}
+                            onCheckedChange={(checked) => {
+                              const currentCities = field.value || [];
+
+                              if (checked) {
+                                field.onChange([...currentCities, city.value]); // ✅ store only the value, not the full object
+                              } else {
+                                field.onChange(
+                                  currentCities.filter((c) => c !== city.value)
+                                ); // ✅ remove correctly
+                              }
+                            }}
+                          />
+                          <div className="mx-2">
+                            <label
+                              htmlFor={city.value}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize
+                            mx-2">
+                              {city.label} {/* ✅ show readable label */}
+                            </label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
                     <FormMessage />
                   </FormItem>
                 )}

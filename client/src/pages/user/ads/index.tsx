@@ -89,7 +89,9 @@ export default function AdsIndex() {
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground
+                    flex flex-col overflow-hidden
+                    ">
                       <span>
                         {t("ads", "target")}: {ad.targetAudience}
                       </span>
