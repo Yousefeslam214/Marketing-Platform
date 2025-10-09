@@ -84,10 +84,11 @@ export default function PrivacyTerms() {
 
   return (
     <div
-      className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}
+      className={`min-h-screen bg-background 
+        flex flex-col align-center
+        ${isRTL ? "rtl" : "ltr"}`}
       dir={isRTL ? "rtl" : "ltr"}>
-      {/* Navigation */}
-      <PublicHeader />
+  
 
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
@@ -107,76 +108,15 @@ export default function PrivacyTerms() {
           </div>
         </div>
       </section>
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Link href="/">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center space-x-2">
-                <ArrowLeft className="w-4 h-4" />
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <i className="fas fa-bullhorn text-primary-foreground text-sm"></i>
-                </div>
-                <span className="font-bold text-xl">DocuChatAI</span>
-              </Button>
-            </Link>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Link href="/privacy-terms-ar">
-              <Button variant="outline" size="sm">
-                العربية
-              </Button>
-            </Link>
-            <ThemeToggle />
-            <LanguageToggle />
-            <Link href="/login">
-              <Button variant="ghost" size="sm">
-                Login
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">Sign Up</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
-        <div className="container relative">
-          <div className="text-center space-y-4 mb-16">
-            <Badge variant="secondary" className="w-fit mx-auto">
-              <Shield className="w-4 h-4 mr-2" />
-              Legal Information
-            </Badge>
-            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
-              Privacy Policy & Terms of Service
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Learn how we protect your data and understand the terms of using
-              our platform. Your privacy and trust are important to us.
-            </p>
-            <div className="text-sm text-muted-foreground">
-              Last updated: January 1, 2025
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       {/* Privacy Policy */}
       <section className="py-20">
         <div className="container">
           <div className="max-w-4xl mx-auto space-y-12">
             <div>
               <h2
-                className={`text-3xl font-bold mb-8 flex items-center ${
-                  isRTL ? "flex-row-reverse" : ""
-                }`}>
+                className={`text-3xl font-bold mb-8 flex items-center
+                   `}>
                 <Shield
                   className={`w-8 h-8 text-primary ${isRTL ? "ml-3" : "mr-3"}`}
                 />
@@ -213,7 +153,7 @@ export default function PrivacyTerms() {
                   {t("privacyTerms", "contactContent")}
                 </p>
                 <div className="bg-muted/50 p-4 rounded-lg">
-                  <p className="font-medium">Email: privacy@docuchatai.com</p>
+                  <p className="font-medium">Email: info@octopusad.com</p>
                   <p className="font-medium">Address: San Francisco, CA</p>
                 </div>
               </CardContent>
@@ -222,9 +162,8 @@ export default function PrivacyTerms() {
             {/* Terms of Service */}
             <div>
               <h2
-                className={`text-3xl font-bold mb-8 flex items-center ${
-                  isRTL ? "flex-row-reverse" : ""
-                }`}>
+                className={`text-3xl font-bold mb-8 flex items-center 
+                `}>
                 <Scale
                   className={`w-8 h-8 text-primary ${isRTL ? "ml-3" : "mr-3"}`}
                 />
@@ -261,7 +200,7 @@ export default function PrivacyTerms() {
                   {t("privacyTerms", "legalContactContent")}
                 </p>
                 <div className="bg-muted/50 p-4 rounded-lg">
-                  <p className="font-medium">Email: legal@docuchatai.com</p>
+                  <p className="font-medium">Email: info@octopusad.com</p>
                   <p className="font-medium">Address: San Francisco, CA</p>
                 </div>
               </CardContent>
@@ -298,7 +237,6 @@ export default function PrivacyTerms() {
         </div>
       </section>
 
-      <PublicFooter />
     </div>
   );
 }

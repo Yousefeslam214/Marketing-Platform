@@ -228,12 +228,17 @@ export default function Billing() {
                             : "border-border hover:border-primary/50"
                         } ${pkg.popular ? "ring-2 ring-primary/20" : ""}`}>
                         {pkg.popular && (
-                          <Badge
-                            className="
-                          flex flex-col items-center justify-center pb--2 pt-1
-                          mb-3 bg-primary text-primary-foreground">
-                            {t("billing", "mostPopular")}
-                          </Badge>
+                          <div
+                            className={`w-full ${
+                              isRTL ? "text-right " : "text-left "
+                            } flex flex-start  items-center mb-1`}>
+                            <Badge
+                              className="
+                            flex flex-col items-center justify-center pb--2 pt-1
+                            mb-3 bg-primary text-primary-foreground max-w-20">
+                              {t("billing", "mostPopular")}
+                            </Badge>
+                          </div>
                         )}
                         <div>
                           <h3

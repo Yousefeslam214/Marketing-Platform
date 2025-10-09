@@ -33,14 +33,16 @@ export default function AdminDashboard() {
   useEffect(() => {
     // Only run token detection logic if we're on the dashboard page
     const currentPath = window.location.pathname;
-    if (!currentPath.includes('/dashboard')) {
-      console.log("Admin Dashboard: Not on dashboard page, skipping token detection");
+    if (!currentPath.includes("/dashboard")) {
+      console.log(
+        "Admin Dashboard: Not on dashboard page, skipping token detection"
+      );
       return;
     }
 
     // Handle both correct (?token=...) and incorrect (&token=...) URL formats
     let tokenFromUrl = null;
-    
+
     // First, try standard URL parameters (after ?)
     const urlParams = new URLSearchParams(window.location.search);
     tokenFromUrl = urlParams.get("token");
@@ -51,43 +53,54 @@ export default function AdminDashboard() {
     console.log("Admin Dashboard Username from URL:", usernameFromUrl);
     console.log("Admin Dashboard Full URL:", window.location.href);
     console.log("Admin Dashboard urlParams", urlParams);
-    
+
     // If no token found and URL contains &token=, handle the incorrect format
     if (!tokenFromUrl && window.location.href.includes("&token=")) {
-      console.log("🔧 Admin Dashboard: Detected incorrect URL format with &token= instead of ?token=");
-      
+      console.log(
+        "🔧 Admin Dashboard: Detected incorrect URL format with &token= instead of ?token="
+      );
+
       // Extract token from the malformed URL
       const urlParts = window.location.href.split("&token=");
       if (urlParts.length > 1) {
         // Get the token part and remove any additional parameters
         tokenFromUrl = urlParts[1].split("&")[0];
-        console.log("🔧 Admin Dashboard: Extracted token from malformed URL:", tokenFromUrl);
-        
+        console.log(
+          "🔧 Admin Dashboard: Extracted token from malformed URL:",
+          tokenFromUrl
+        );
+
         // Fix the URL format and redirect to correct format
         const baseUrl = urlParts[0];
         const correctUrl = `${baseUrl}?token=${tokenFromUrl}`;
-        console.log("🔧 Admin Dashboard: Redirecting to correct URL format:", correctUrl);
+        console.log(
+          "🔧 Admin Dashboard: Redirecting to correct URL format:",
+          correctUrl
+        );
         window.location.href = correctUrl;
         return; // Exit early as we're redirecting
       }
     }
-    
+
     console.log("Admin Dashboard Token from URL:", tokenFromUrl);
-    
+
     if (tokenFromUrl) {
       // Set the token in localStorage for authentication
       TokenManager.setTokens(
-        tokenFromUrl, 
-        usernameFromUrl || "", 
+        tokenFromUrl,
+        usernameFromUrl || "",
         roleFromUrl || "admin"
       );
-      
+
       // Remove token from URL for security and clean URL
       const newUrl = window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
-      
-      console.log("Admin Dashboard: Token from URL detected and set:", tokenFromUrl);
-      
+
+      console.log(
+        "Admin Dashboard: Token from URL detected and set:",
+        tokenFromUrl
+      );
+
       // Trigger refetch of dashboard data with new token
       setTimeout(() => {
         refetch();
@@ -96,7 +109,9 @@ export default function AdminDashboard() {
       // No token in URL, check if user is authenticated
       const currentToken = TokenManager.getAccessToken();
       if (!currentToken) {
-        console.log("Admin Dashboard: No token in URL and not authenticated, redirecting to login");
+        console.log(
+          "Admin Dashboard: No token in URL and not authenticated, redirecting to login"
+        );
         setLocation("/login");
         return;
       }
@@ -222,7 +237,7 @@ export default function AdminDashboard() {
                 <p className="text-2xl font-bold text-foreground">
                   {isLoading
                     ? t("AdminDashboard", "loading")
-                    : `$${safeMetrics.totalRevenue.toLocaleString()}`}
+                    : `SAR ${safeMetrics.totalRevenue.toLocaleString()}`}
                 </p>
               </CardContent>
             </Card>
@@ -314,10 +329,10 @@ export default function AdminDashboard() {
                         <div
                           key={activity.id}
                           className={`flex items-start p-3 
-                            over
+                            overflow-hidden
                             border rounded-lg hover:bg-muted/50 transition-colors ${
-                            isRTL ? "space-x-reverse" : ""
-                          }`}
+                              isRTL ? "space-x-reverse" : ""
+                            }`}
                           style={{ gap: "12px" }}>
                           <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center mt-0.5">
                             <i
@@ -454,9 +469,9 @@ export default function AdminDashboard() {
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-foreground">
-                        ${systemOverview.totalRevenue || 0}
+                        SAR{systemOverview.totalRevenue || 0}
                       </p>
-                      <p className="text-xs text-green-600">USD</p>
+                      <p className="text-xs text-green-600">SAR</p>
                     </div>
                   </div>
 

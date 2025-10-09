@@ -20,6 +20,7 @@ import Billing from "@/pages/user/billing";
 import PaymentSuccess from "@/pages/user/payment-success";
 import PaymentCancel from "@/pages/user/payment-cancel";
 import Analytics from "@/pages/user/analytics";
+import Profile from "@/pages/user/profile";
 import PublicContact from "@/pages/public/contact";
 // import PublicContactArabic from "@/pages/public/contact-ar";
 import PublicFAQ from "@/pages/public/faq";
@@ -28,6 +29,8 @@ import PublicPrivacyTerms from "@/pages/public/privacy-terms";
 // import PublicPrivacyTermsArabic from "@/pages/public/privacy-terms-ar";
 import PrivacyTerms from "@/pages/user/privacy-terms";
 import AdsFeed from "@/pages/public/ads-feed";
+import PaymentSuccessPage from "@/pages/shared/payment-success";
+import PaymentFailedPage from "@/pages/shared/payment-failed";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import NotFound from "@/pages/shared/not-found";
@@ -124,6 +127,32 @@ function Router() {
       <Route path="/auth/google/callback" component={GoogleCallback} />
       <Route path="/google/callback" component={GoogleCallback} />
       <Route path="/api/auth/google/login" component={GoogleDirectAuth} />
+      
+      {/* Payment result pages */}
+      <Route
+        path="/payment-success"
+        component={() => (
+          <PublicLayout>
+            <PaymentSuccessPage />
+          </PublicLayout>
+        )}
+      />
+      <Route
+        path="/payment-failed"
+        component={() => (
+          <PublicLayout>
+            <PaymentFailedPage />
+          </PublicLayout>
+        )}
+      />
+       <Route
+        path="/user-contact"
+        component={() => (
+          <AppLayout>
+            <PublicContact />
+          </AppLayout>
+        )}
+      />
       {/* Pages with AppLayout */}
       <Route
         path={adminPendingAdsPath()}
@@ -225,7 +254,7 @@ function Router() {
       <Route path="/success" component={() => <PaymentSuccess />} />
       <Route path="/billing/cancel" component={() => <PaymentCancel />} />
       <Route
-        path="/faq"
+        path="/user-faq"
         component={() => (
           <AppLayout>
             <FAQ />
@@ -237,6 +266,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <Analytics />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/profile"
+        component={() => (
+          <AppLayout>
+            <Profile />
           </AppLayout>
         )}
       />
@@ -264,6 +301,7 @@ function Router() {
           </AppLayout>
         )}
       />
+      
       <Route
         path="/admin/user-details/:id"
         component={() => (

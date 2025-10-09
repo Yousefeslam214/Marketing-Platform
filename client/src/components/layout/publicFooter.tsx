@@ -119,11 +119,11 @@ const PublicFooter = () => {
             <ul className="space-y-2 text-muted-foreground">
               <li className="flex items-center">
                 <i className="fas fa-envelope mr-2"></i>
-                support@docuchatai.com
+                info@octopusad.com
               </li>
               <li className="flex items-center">
                 <i className="fas fa-phone mr-2"></i>
-                +1 (555) 123-4567
+                0502274696
               </li>
               <li className="flex items-center">
                 <i className="fas fa-map-marker-alt mr-2"></i>
@@ -141,7 +141,7 @@ const PublicFooter = () => {
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2025 DocuChatAI. All rights reserved.</p>
+          <p>&copy; 2025 Octopus. All rights reserved.</p>
         </div>
       </div>
     </footer>

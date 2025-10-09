@@ -111,7 +111,7 @@ export default function FAQ() {
         serviceUsage: {
           question: "1. Service Usage",
           answer:
-            "You must provide accurate, truthful, and non-misleading information when creating your ads using the OctopusAd platform. We have the right to modify, suspend, or refuse to publish ads that may violate laws or these terms of service.",
+            "You must provide accurate, truthful, and non-misleading information when creating your ads using the OctopusAd platform. We have the right to modify, suspend, or refuse to `publi`sh ads that may violate laws or these terms of service.",
         },
         contentRights: {
           question: "2. Content and Property Rights",

@@ -9,13 +9,77 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { LanguageToggle } from "@/components/ui/language-toggle";
-import PublicHeader from "@/components/layout/publicHeader";
-import PublicFooter from "@/components/layout/publicFooter";
+import { useState, useEffect } from "react";
+import { Check, AlertCircle, RefreshCw } from "lucide-react";
+import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export default function LandingPage() {
   const { language, isRTL, t } = useLanguage();
+  const [pricingData, setPricingData] = useState<any>(null);
+  const [pricingLoading, setPricingLoading] = useState(true);
+  const [pricingError, setPricingError] = useState(false);
+
+  // Fetch impression ratios from API
+  useEffect(() => {
+    const fetchPricingData = async () => {
+      try {
+        setPricingLoading(true);
+        setPricingError(false);
+
+        const response = await fetch(
+          `${VITE_API_BASE_URL}/api/users/impression-ratios`
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          // Find SAR pricing data
+          const sarData = data.data.find(
+            (item: any) => item.currency === "sar"
+          );
+          setPricingData(sarData);
+        } else {
+          setPricingError(true);
+        }
+      } catch (error) {
+        console.error("Error fetching pricing data:", error);
+        setPricingError(true);
+      } finally {
+        setPricingLoading(false);
+      }
+    };
+
+    fetchPricingData();
+  }, []);
+
+  const retryFetchPricing = () => {
+    const fetchPricingData = async () => {
+      try {
+        setPricingLoading(true);
+        setPricingError(false);
+
+        const response = await fetch(
+          `${VITE_API_BASE_URL}/api/users/impression-ratios`
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          const sarData = data.data.find(
+            (item: any) => item.currency === "sar"
+          );
+          setPricingData(sarData);
+        } else {
+          setPricingError(true);
+        }
+      } catch (error) {
+        console.error("Error fetching pricing data:", error);
+        setPricingError(true);
+      } finally {
+        setPricingLoading(false);
+      }
+    };
+    fetchPricingData();
+  };
+
   //   localStorage.clear();
 
   return (
@@ -25,9 +89,6 @@ export default function LandingPage() {
       flex flex-col items-center justify-center  w-full
     
     `}>
-      {/* Navigation */}
-      <PublicHeader />
-
       {/* Hero Section */}
       <section className="relative py-12 sm:py-16 md:py-20 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
@@ -269,6 +330,124 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section id="pricing" className="py-12 sm:py-16 md:py-20 bg-muted/50">
+        <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-4 mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+              {t("landing", "pricing.title" as any)}
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+              {t("landing", "pricing.subtitle" as any)}
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            {pricingLoading ? (
+              <Card className="p-8 text-center">
+                <div className="flex items-center justify-center space-x-2">
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>{t("landing", "pricing.loading" as any)}</span>
+                </div>
+              </Card>
+            ) : pricingError ? (
+              <Card className="p-8 text-center">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center space-x-2 text-red-600">
+                    <AlertCircle className="w-5 h-5" />
+                    <span>{t("landing", "pricing.error" as any)}</span>
+                  </div>
+                  <Button onClick={retryFetchPricing} variant="outline">
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    {t("landing", "pricing.retry" as any)}
+                  </Button>
+                </div>
+              </Card>
+            ) : !pricingData ? (
+              <Card className="p-8 text-center">
+                <span className="text-muted-foreground">
+                  {t("landing", "pricing.noData" as any)}
+                </span>
+              </Card>
+            ) : (
+              <div className="max-w-md mx-auto">
+                {/* Single Pricing Plan */}
+                <Card className="border-2 border-primary shadow-xl relative">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <Badge className="px-3 py-1">Best Value</Badge>
+                  </div>
+                  <CardHeader className="text-center pb-6 pt-8">
+                    <CardTitle className="text-2xl mb-4">
+                      Simple Pricing
+                    </CardTitle>
+                    <div className="space-y-2">
+                      <div className="text-4xl font-bold text-primary">
+                        {(1 / pricingData.impressionsPerUnit).toFixed(3)}{" "}
+                        {t("landing", "pricing.currency" as any)}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {t("landing", "pricing.perImpression" as any)}
+                      </div>
+                      <div className="text-xl font-semibold text-primary mt-4">
+                        {pricingData.impressionsPerUnit}{" "}
+                        {t("landing", "pricing.impressions" as any)} = 1{" "}
+                        {t("landing", "pricing.currency" as any)}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center">
+                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <span className="text-sm">
+                          {t("landing", "pricing.features.analytics" as any)}
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <span className="text-sm">
+                          {t(
+                            "landing",
+                            "pricing.features.multiPlatform" as any
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <span className="text-sm">
+                          {t("landing", "pricing.features.support" as any)}
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <span className="text-sm">
+                          {t("landing", "pricing.features.reporting" as any)}
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <span className="text-sm">
+                          {t("landing", "pricing.features.optimization" as any)}
+                        </span>
+                      </div>
+                      {/* <div className="flex items-center">
+                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <span className="text-sm">{t("landing", "pricing.features.api" as any)}</span>
+                      </div> */}
+                    </div>
+                    <Link href="/signup" className="block">
+                      <Button className="w-full" size="lg">
+                        {t("landing", "pricing.getStarted" as any)}
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-primary w-full">
         <div className="container px-4 sm:px-6 lg:px-8">
@@ -310,7 +489,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 w-full">
+      <section className="py-12 sm:py-16 md:py-20 w-full flex flex-col items-center justify-center">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 sm:p-8 md:p-12 text-center text-primary-foreground max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
@@ -329,21 +508,21 @@ export default function LandingPage() {
                   {t("landing", "cta.getStarted" as any)}
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full sm:w-auto border-primary-foreground text-primary hover:bg-primary-foreground
-                hover:scale-105 transition-transform
-                ">
-                <i className="fas fa-phone mr-2"></i>
-                {t("landing", "cta.contact" as any)}
-              </Button>
+              <Link href="tel:0502274696" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto border-primary-foreground text-primary hover:bg-primary-foreground
+                  hover:scale-105 transition-transform
+                  ">
+                  <i className="fas fa-phone mr-2"></i>
+                  {t("landing", "cta.contact" as any)}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
-
-      <PublicFooter />
     </div>
   );
 }

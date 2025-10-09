@@ -77,9 +77,7 @@ export default function Contact() {
       flex flex-col items-center
       `}
       dir={isRTL ? "rtl" : "ltr"}>
-      {/* Navigation */}
-      
-      <PublicHeader />
+    
 
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
@@ -123,7 +121,7 @@ export default function Contact() {
                             {t("contact", "email")}
                           </h3>
                           <p className="text-muted-foreground">
-                            support@docuchatai.com
+                            info@octopusad.com
                           </p>
                         </div>
                       </div>
@@ -142,7 +140,7 @@ export default function Contact() {
                             {t("contact", "phone")}
                           </h3>
                           <p className="text-muted-foreground">
-                            +1 (555) 123-4567
+                            0502274696
                           </p>
                         </div>
                       </div>
@@ -312,7 +310,7 @@ export default function Contact() {
         </div>
       </section>
 
-     <PublicFooter />
+ 
     </div>
   );
 }

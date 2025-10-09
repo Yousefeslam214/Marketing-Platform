@@ -211,7 +211,8 @@ export default function AdsFeed() {
         ) : (
           <div className="w-full flex flex-col items-center space-y-8">
             {/* Ads List */}
-            <div className="w-full max-w-5xl grid  gap-6
+            <div
+              className="w-full max-w-5xl grid  gap-6
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
             ">
               {adsResponse?.data.map((ad) => (
@@ -302,27 +303,8 @@ export default function AdsFeed() {
               ))}
             </div>
 
-            {/* Pagination */}
-            {adsResponse?.pagination && (
-              <DataPagination
-                pagination={{
-                  ...adsResponse.pagination,
-                  itemsPerPage: limit,
-                  totalItems: adsResponse.pagination.totalCount,
-                }}
-                currentPage={page.toString()}
-                onPageChange={handlePageChange}
-                pageSize={limit.toString()}
-                onPageSizeChange={handlePageSizeChange}
-                showPageSizeSelector
-                pageSizeOptions={[6, 12, 18, 24]}
-                showInfo
-                className="mt-4"
-              />
-            )}
-
             {/* Empty State */}
-            {adsResponse?.data.length === 0 && (
+            {adsResponse?.data.length === 0 ? (
               <div className="flex flex-col items-center text-center py-12">
                 <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
                   <i className="fas fa-ad text-2xl text-muted-foreground" />
@@ -334,6 +316,27 @@ export default function AdsFeed() {
                   {t("publicFeed", "checkBackLater")}
                 </p>
               </div>
+            ) : (
+              <>
+                {/* Pagination */}
+                {adsResponse?.pagination && (
+                  <DataPagination
+                    pagination={{
+                      ...adsResponse.pagination,
+                      itemsPerPage: limit,
+                      totalItems: adsResponse.pagination.totalCount,
+                    }}
+                    currentPage={page.toString()}
+                    onPageChange={handlePageChange}
+                    pageSize={limit.toString()}
+                    onPageSizeChange={handlePageSizeChange}
+                    showPageSizeSelector
+                    pageSizeOptions={[6, 12, 18, 24]}
+                    showInfo
+                    className="mt-4"
+                  />
+                )}
+              </>
             )}
           </div>
         )}

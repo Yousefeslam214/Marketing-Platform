@@ -73,65 +73,59 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     navigation.push({
       section: t("sidebar", "adminSection"),
       items: [
+      {
+        name: t("sidebar", "dashboard"),
+        href: adminDashboardPath(),
+        icon: "fas fa-chart-line",
+      },
+      {
+        name: t("sidebar", "adsManagement"),
+        href: "#",
+        icon: "fas fa-ad",
+        subItems: [
         {
-          name: t("sidebar", "dashboard"),
-          href: adminDashboardPath(),
-          icon: "fas fa-chart-line",
-          // badge: "3",
+          name: t("sidebar", "AllAds"),
+          href: adminAllAdsPath(),
+          icon: "fas fa-list",
         },
         {
-          name: t("sidebar", "adsManagement"),
-          href: "#",
-          icon: "fas fa-ad",
-          subItems: [
-            {
-              name: t("sidebar", "AllAds"),
-              href: adminAllAdsPath(),
-              icon: "fas fa-list",
-              // badge: "12",
-            },
-            {
-              name: t("sidebar", "pending"),
-              href: adminPendingAdsPath(),
-              icon: "fas fa-clock",
-              // badge: "3",
-            },
-            {
-              name: t("sidebar", "approved"),
-              href: adminApprovedAdsPath(),
-              icon: "fas fa-check-circle",
-              // badge: "7",
-            },
-            {
-              name: t("sidebar", "rejected"),
-              href: adminRejectedAdsPath(),
-              icon: "fas fa-times-circle",
-              // badge: "2",
-            },
-          ],
+          name: t("sidebar", "pending"),
+          href: adminPendingAdsPath(),
+          icon: "fas fa-clock",
         },
         {
-          name: t("sidebar", "userManagement"),
-          href: adminUsersPath(),
-          icon: "fas fa-users",
+          name: t("sidebar", "approved"),
+          href: adminApprovedAdsPath(),
+          icon: "fas fa-check-circle",
         },
         {
-          name: t("sidebar", "billing"),
-          href: adminBillingPath(),
-          icon: "fas fa-credit-card",
+          name: t("sidebar", "rejected"),
+          href: adminRejectedAdsPath(),
+          icon: "fas fa-times-circle",
         },
-
-        {
-          name: t("sidebar", "impressionRatios"),
-          href: "/admin/impression-ratios",
-          icon: "fas fa-chart-bar",
-        },
-
-        {
-          name: t("sidebar", "adsFeed"),
-          href: "/feed",
-          icon: "fas fa-rss",
-        },
+        ],
+      },
+      {
+        name: t("sidebar", "userManagement"),
+        href: adminUsersPath(),
+        icon: "fas fa-users",
+      },
+      {
+        name: t("sidebar", "billing"),
+        href: adminBillingPath(),
+        icon: "fas fa-credit-card",
+      },
+      {
+        name: t("sidebar", "impressionRatios"),
+        href: "/admin/impression-ratios",
+        icon: "fas fa-chart-bar",
+      },
+      {
+        name: t("sidebar", "adsFeed"),
+        href: "/feed",
+        icon: "fas fa-rss",
+      },
+     
       ],
     });
   }
@@ -161,16 +155,16 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         //   href: userAnalyticsPath(),
         //   icon: "fas fa-chart-bar",
         // },
-        // {
-        //   name: t("sidebar", "faq"),
-        //   href: faqPath(),
-        //   icon: "fas fa-question-circle",
-        // },
-        // {
-        //   name: t("sidebar", "contact"),
-        //   href: contactPath(),
-        //   icon: "fas fa-envelope",
-        // },
+        {
+          name: t("sidebar", "faq"),
+          href: "/user-faq",
+          icon: "fas fa-question-circle",
+        },
+        {
+          name: t("sidebar", "contact"),
+          href: "/user-contact",
+          icon: "fas fa-envelope",
+        },
         // {
         //   name: t("sidebar", "privacyTerms"),
         //   href: privacyTermsPath(),
@@ -399,12 +393,14 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             className={`flex items-center gap-3 mb-3 ${
               isRTL ? "flex-row-reverse" : ""
             }`}>
-            <Avatar className="w-8 h-8 ring-2 ring-primary">
-              <AvatarImage src="" alt="User avatar" />
-              <AvatarFallback>
-                {user?.slice(0, 2).toUpperCase() || "U"}
-              </AvatarFallback>
-            </Avatar>
+                <Link href="/profile">
+                <Avatar className="w-8 h-8 ring-2 ring-primary cursor-pointer">
+                  <AvatarImage src="" alt="User avatar" />
+                  <AvatarFallback>
+                  {user?.slice(0, 2).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                </Link>
             <div
               className={`flex-1 min-w-0 ${
                 isRTL ? "text-right" : "text-left"
