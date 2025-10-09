@@ -275,19 +275,19 @@ const PublicHeader = () => {
           className={` hidden md:flex items-center space-x-6
             direction: ${isRTL ? "rtl" : "ltr"}`}>
           <a
-            href="#features"
+            href="/#features"
             className="text-sm font-medium hover:text-primary transition-colors
                 
                 ">
             {content.nav.features}
           </a>
           <a
-            href="#how-it-works"
+            href="/#how-it-works"
             className="text-sm font-medium hover:text-primary transition-colors">
             {content.nav.howItWorks}
           </a>
           <a
-            href="#pricing"
+            href="/#pricing"
             className="text-sm font-medium hover:text-primary transition-colors">
             {content.nav.pricing}
           </a>

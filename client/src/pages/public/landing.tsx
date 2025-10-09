@@ -492,7 +492,7 @@ export default function LandingPage() {
                 <Button
                   size="lg"
                   variant="secondary"
-                  className="w-full sm:w-auto">
+                  className="w-full sm:w-auto hover:scale-105 transition-transform hover:text-primary">
                   <i className="fas fa-rocket mr-2"></i>
                   {content.cta.getStarted}
                 </Button>
@@ -500,7 +500,9 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+                className="w-full sm:w-auto border-primary-foreground text-primary hover:bg-primary-foreground
+                hover:scale-105 transition-transform
+                ">
                 <i className="fas fa-phone mr-2"></i>
                 {content.cta.contact}
               </Button>
