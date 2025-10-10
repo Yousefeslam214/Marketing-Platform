@@ -130,7 +130,7 @@ export function AdCard({
                   className="flex-1"
                   data-testid={`button-view-ad-${ad.id}`}>
                   <i className="fas fa-eye mr-1"></i>
-                  {(t as any).ads.card.buttons.view}
+                  {(t as any)("ads", "card.buttons.view") || "View"}
                 </Button>
 
                 {onEdit && (
@@ -141,7 +141,7 @@ export function AdCard({
                     className="flex-1"
                     data-testid={`button-edit-ad-${ad.id}`}>
                     <i className="fas fa-edit mr-1"></i>
-                    {(t as any).ads.card.buttons.edit}
+                    {(t as any)("ads", "card.buttons.edit") || "Edit"}
                   </Button>
                 )}
 
@@ -153,7 +153,7 @@ export function AdCard({
                     className="flex-1"
                     data-testid={`button-analytics-ad-${ad.id}`}>
                     <i className="fas fa-chart-bar mr-1"></i>
-                    {(t as any).ads.card.buttons.analytics}
+                    {(t as any)("ads", "card.buttons.analytics") || "Analytics"}
                   </Button>
                 )}
               </div>
@@ -166,7 +166,8 @@ export function AdCard({
                   className="w-full mt-3"
                   data-testid={`button-purchase-ad-${ad.id}`}>
                   <i className="fas fa-credit-card mr-1"></i>
-                  {(t as any).ads.card.buttons.purchaseImpressions}
+                  {(t as any)("ads", "card.buttons.purchaseImpressions") ||
+                    "Purchase Impressions"}
                 </Button>
               )}
 
@@ -179,7 +180,8 @@ export function AdCard({
                       className="text-xs text-primary hover:underline flex items-center gap-1"
                       data-testid={`link-public-ad-${ad.id}`}>
                       <i className="fas fa-external-link-alt"></i>
-                      {(t as any).ads.card.buttons.viewPublicAd}
+                      {(t as any)("ads", "card.buttons.viewPublicAd") ||
+                        "View Public Ad"}
                     </a>
                   </Link>
                 </div>
@@ -201,7 +203,7 @@ export function AdCard({
                   ) : (
                     <i className="fas fa-check mr-1"></i>
                   )}
-                  {(t as any).ads.card.buttons.approve}
+                  {(t as any)("ads", "card.buttons.approve") || "Approve"}
                 </Button>
               )}
               {onReject && (
@@ -217,7 +219,7 @@ export function AdCard({
                   ) : (
                     <i className="fas fa-times mr-1"></i>
                   )}
-                  {(t as any).ads.card.buttons.reject}
+                  {(t as any)("ads", "card.buttons.reject") || "Reject"}
                 </Button>
               )}
             </div>
@@ -227,7 +229,11 @@ export function AdCard({
               <p
                 className="text-xs text-destructive"
                 data-testid={`ad-rejection-reason-${ad.id}`}>
-                <strong>{(t as any).ads.card.rejectionReason}</strong>{" "}
+                <strong>
+                  {(t as any)("ads", "card.rejectionReason") ||
+                    "Rejection Reason"}
+                  :
+                </strong>{" "}
                 {ad.rejectionReason}
               </p>
             </div>

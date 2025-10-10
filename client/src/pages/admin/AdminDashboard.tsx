@@ -385,7 +385,9 @@ export default function AdminDashboard() {
                       <p className="text-lg font-bold text-foreground">
                         {systemOverview.totalAds || 0}
                       </p>
-                      <p className="text-xs text-green-600">ads</p>
+                      <p className="text-xs text-green-600">
+                        {t("AdminDashboard", "adsLabel")}
+                      </p>
                     </div>
                   </div>
 
@@ -395,24 +397,26 @@ export default function AdminDashboard() {
                         {t("AdminDashboard", "pendingReviews")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Ads waiting for approval
+                        {t("AdminDashboard", "adsWaitingForApproval")}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-foreground">
                         {systemOverview.pendingAds || 0}
                       </p>
-                      <p className="text-xs text-yellow-600">pending</p>
+                      <p className="text-xs text-yellow-600">
+                        {t("AdminDashboard", "pendingLabel")}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        Click Through Rate
+                        {t("AdminDashboard", "clickThroughRate")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Overall system CTR
+                        {t("AdminDashboard", "overallSystemCtr")}
                       </p>
                     </div>
                     <div className="text-right">
@@ -430,16 +434,16 @@ export default function AdminDashboard() {
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
-                  Performance Metrics
+                  {t("AdminDashboard", "performanceMetrics")}
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        Total Clicks
+                        {t("AdminDashboard", "totalClicks")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        All-time click count
+                        {t("AdminDashboard", "allTimeClicks")}
                       </p>
                     </div>
                     <div className="text-right">
@@ -453,10 +457,10 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        Platform Revenue
+                        {t("AdminDashboard", "platformRevenue")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Total revenue generated
+                        {t("AdminDashboard", "totalRevenueGenerated")}
                       </p>
                     </div>
                     <div className="text-right">
@@ -470,21 +474,21 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        System Health
+                        {t("AdminDashboard", "systemHealth")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Overall platform status
+                        {t("AdminDashboard", "overallPlatformStatus")}
                       </p>
                     </div>
                     <div className="text-right">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <p className="text-sm font-medium text-green-600">
-                          Operational
+                          {t("AdminDashboard", "operational")}
                         </p>
                       </div>
                       <p className="text-xs text-green-600">
-                        All systems running
+                        {t("AdminDashboard", "allSystemsRunning")}
                       </p>
                     </div>
                   </div>

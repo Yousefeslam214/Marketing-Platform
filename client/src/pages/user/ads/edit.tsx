@@ -58,12 +58,12 @@ export default function UpdateAd() {
   if (error || !adData?.success) {
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 ">
           <Header
             title={t("ads", "updateAd.title" as any)}
             description={t("ads", "updateAd.description" as any)}
           />
-          <main className="p-6">
+          <main className="p-6 h-full">
             <div className="max-w-4xl mx-auto">
               <ErrorState
                 title={t("ads", "updateAd.failedToLoad" as any)}
@@ -78,7 +78,7 @@ export default function UpdateAd() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto min-h-0">
         <Header
           title={t("ads", "updateAd.title" as any)}
           description={t("ads", "updateAd.description" as any)}

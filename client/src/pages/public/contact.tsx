@@ -195,7 +195,10 @@ export default function Contact() {
                 </div>
 
                 {/* Social Media */}
-                <div className="mt-8">
+                <div className="mt-8
+                flex flex-col items-center
+
+                ">
                   <h3 className="font-semibold mb-4">
                     {t("contact", "followUs")}
                   </h3>

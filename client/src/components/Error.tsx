@@ -34,7 +34,6 @@ export function ErrorState({
           <div className="flex gap-3">
             {onRetry && (
               <Button onClick={onRetry} data-testid="button-retry">
-              
                 {language === "ar" ? (
                   <>
                     {(t as any)("error", "retry") || "Retry"}

@@ -66,8 +66,7 @@ function Router() {
   const role = TokenManager.getRole();
   let auth = false;
   if (TokenManager.getAccessToken()) auth = true;
-  
-  
+
   return (
     <Switch>
       {/* Public pages */}
@@ -127,7 +126,7 @@ function Router() {
       <Route path="/auth/google/callback" component={GoogleCallback} />
       <Route path="/google/callback" component={GoogleCallback} />
       <Route path="/api/auth/google/login" component={GoogleDirectAuth} />
-      
+
       {/* Payment result pages */}
       <Route
         path="/payment-success"
@@ -145,7 +144,7 @@ function Router() {
           </PublicLayout>
         )}
       />
-       <Route
+      <Route
         path="/user-contact"
         component={() => (
           <AppLayout>
@@ -309,7 +308,7 @@ function Router() {
           </AppLayout>
         )}
       />
-      
+
       <Route
         path="/admin/user-details/:id"
         component={() => (
@@ -326,26 +325,34 @@ function Router() {
           </AppLayout>
         )}
       />
-    
-    {role !== "admin" ? (
-    <Route
-      path="/dashboard"
-      component={() => (
-        <AppLayout>
-          <Dashboard />
-        </AppLayout>
+
+      {role !== "admin" ? (
+        <Route
+          path="/dashboard"
+          component={() => (
+            <AppLayout>
+              <Dashboard />
+            </AppLayout>
+          )}
+        />
+      ) : (
+        <Route
+          path="/dashboard"
+          component={() => (
+            <AppLayout>
+              <AdminDashboard />
+            </AppLayout>
+          )}
+        />
       )}
-    />
-  ) : (
-    <Route
-      path="/dashboard"
-      component={() => (
-        <AppLayout>
-          <AdminDashboard />
-        </AppLayout>
-      )}
-    />
-  )}
+      <Route
+        path="/admin/dashboard"
+        component={() => (
+          <AppLayout>
+            <AdminDashboard />
+          </AppLayout>
+        )}
+      />
       <Route
         path="/admin/impression-ratios"
         component={() => (

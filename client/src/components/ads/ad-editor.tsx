@@ -67,8 +67,8 @@ export function AdEditor() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
       toast({
-        title: (t as any).ads.editor.success.title,
-        description: (t as any).ads.editor.success.description,
+        title: t("ads", "newAd.createSuccess"),
+        description: t("ads", "newAd.description"),
       });
 
       // Check if we have a valid AdId
@@ -76,8 +76,8 @@ export function AdEditor() {
       if (!adId) {
         console.error("No AdId in response:", data);
         toast({
-          title: (t as any).ads.editor.warning.title,
-          description: (t as any).ads.editor.warning.description,
+          title: t("ads", "newAd.createFailed"),
+          description: t("ads", "updateAdFailedDescription"),
           variant: "destructive",
         });
         setLocation("/ads"); // Redirect to ads list instead
@@ -91,8 +91,8 @@ export function AdEditor() {
     },
     onError: (error: any) => {
       toast({
-        title: (t as any).ads.editor.error.title,
-        description: error.message || (t as any).ads.editor.error.description,
+        title: t("ads", "updateAdFailed"),
+        description: error.message || t("ads", "updateAdFailedDescription"),
         variant: "destructive",
       });
     },
@@ -105,7 +105,7 @@ export function AdEditor() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{(t as any).ads.editor.card.title}</CardTitle>
+  <CardTitle>{t("ads", "newAd.title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -117,14 +117,12 @@ export function AdEditor() {
                 name="titleEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editor.form.titleEn}</FormLabel>
+                    <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={
-                          (t as any).ads.editor.form.titleEnPlaceholder
-                        }
+                        placeholder={t("ads", "titleEnPlaceholder")}
                         data-testid="input-title-en"
-                        {...field}
+                         {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -137,15 +135,13 @@ export function AdEditor() {
                 name="titleAr"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editor.form.titleAr}</FormLabel>
+                    <FormLabel>{t("ads", "titleArLabel")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={
-                          (t as any).ads.editor.form.titleArPlaceholder
-                        }
+                        placeholder={t("ads", "titleArPlaceholder")}
                         dir="rtl"
                         data-testid="input-title-ar"
-                        {...field}
+                         {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -161,17 +157,13 @@ export function AdEditor() {
                 name="descriptionEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      {(t as any).ads.editor.form.descriptionEn}
-                    </FormLabel>
+                    <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={
-                          (t as any).ads.editor.form.descriptionEnPlaceholder
-                        }
+                        placeholder={t("ads", "descriptionEnPlaceholder")}
                         className="h-24 resize-none"
                         data-testid="textarea-description-en"
-                        {...field}
+                         {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -184,18 +176,14 @@ export function AdEditor() {
                 name="descriptionAr"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      {(t as any).ads.editor.form.descriptionAr}
-                    </FormLabel>
+                    <FormLabel>{t("ads", "descriptionArLabel")}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={
-                          (t as any).ads.editor.form.descriptionArPlaceholder
-                        }
+                        placeholder={t("ads", "descriptionArPlaceholder")}
                         dir="rtl"
                         className="h-24 resize-none"
                         data-testid="textarea-description-ar"
-                        {...field}
+                         {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -210,15 +198,13 @@ export function AdEditor() {
               name="websiteUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{(t as any).ads.editor.form.websiteUrl}</FormLabel>
+                  <FormLabel>{t("ads", "websiteUrlLabel")}</FormLabel>
                   <FormControl>
                     <Input
                       type="url"
-                      placeholder={
-                        (t as any).ads.editor.form.websiteUrlPlaceholder
-                      }
+                      placeholder={t("ads", "websiteUrlPlaceholder")}
                       data-testid="input-target-url"
-                      {...field}
+                       {...field} // field is of type { field: any }
                     />
                   </FormControl>
                   <FormMessage />
@@ -244,7 +230,7 @@ export function AdEditor() {
             {/* Social Media Links */}
             <div>
               <FormLabel className="text-base font-semibold">
-                {(t as any).ads.editor.form.socialMediaLinks}
+                {t("ads", "socialMediaLinksLabel")}
               </FormLabel>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
                 <FormField
@@ -252,17 +238,13 @@ export function AdEditor() {
                   name="facebookLink"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        {(t as any).ads.editor.form.facebookLink}
-                      </FormLabel>
+                      <FormLabel>{t("ads", "facebookLinkLabel")}</FormLabel>
                       <FormControl>
                         <Input
                           type="url"
-                          placeholder={
-                            (t as any).ads.editor.form.facebookPlaceholder
-                          }
+                          placeholder="https://facebook.com/..."
                           data-testid="input-facebook-link"
-                          {...field}
+                           {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -275,13 +257,13 @@ export function AdEditor() {
                   name="instagramLink"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Instagram Link</FormLabel>
+                      <FormLabel>{t("ads", "instagramLinkLabel")}</FormLabel>
                       <FormControl>
                         <Input
                           type="url"
                           placeholder="https://instagram.com/yourprofile"
                           data-testid="input-instagram-link"
-                          {...field}
+                           {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -294,13 +276,13 @@ export function AdEditor() {
                   name="tiktokLink"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>TikTok Link</FormLabel>
+                      <FormLabel>{t("ads", "tiktokLinkLabel")}</FormLabel>
                       <FormControl>
                         <Input
                           type="url"
                           placeholder="https://tiktok.com/@yourusername"
                           data-testid="input-tiktok-link"
-                          {...field}
+                           {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -313,13 +295,13 @@ export function AdEditor() {
                   name="youtubeLink"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>YouTube Link</FormLabel>
+                      <FormLabel>{t("ads", "youtubeLinkLabel")}</FormLabel>
                       <FormControl>
                         <Input
                           type="url"
                           placeholder="https://youtube.com/channel/yourchannel"
                           data-testid="input-youtube-link"
-                          {...field}
+                           {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -332,13 +314,13 @@ export function AdEditor() {
                   name="snapchatLink"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Snapchat Link</FormLabel>
+                      <FormLabel>{t("ads", "snapchatLinkLabel")}</FormLabel>
                       <FormControl>
                         <Input
                           type="url"
                           placeholder="https://snapchat.com/add/yourusername"
                           data-testid="input-snapchat-link"
-                          {...field}
+                           {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -351,13 +333,13 @@ export function AdEditor() {
                   name="googleAdsLink"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Google Ads Link</FormLabel>
+                      <FormLabel>{t("ads", "googleAdsLinkLabel")}</FormLabel>
                       <FormControl>
                         <Input
                           type="url"
                           placeholder="https://ads.google.com/your-campaign"
                           data-testid="input-google-ads-link"
-                          {...field}
+                           {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -374,9 +356,7 @@ export function AdEditor() {
                 name="targetAudience"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      {(t as any).ads.editor.form.targetAudience}
-                    </FormLabel>
+                    <FormLabel>{t("ads", "targetAudienceLabel")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
@@ -384,24 +364,21 @@ export function AdEditor() {
                         <SelectTrigger data-testid="select-target-audience">
                           <SelectValue
                             placeholder={
-                              (t as any).ads.editor.form.selectAudience
+                              t("ads", "targetAudiencePlaceholder")
                             }
                           />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="general">
-                          {(t as any).ads.editor.form.audienceOptions.general}
-                        </SelectItem>
-                        <SelectItem value="tech">
-                          {(t as any).ads.editor.form.audienceOptions.tech}
-                        </SelectItem>
-                        <SelectItem value="business">
-                          {(t as any).ads.editor.form.audienceOptions.business}
-                        </SelectItem>
-                        <SelectItem value="students">
-                          {(t as any).ads.editor.form.audienceOptions.students}
-                        </SelectItem>
+                        <SelectItem value="general">{t("ads", "audienceGeneral")}</SelectItem>
+                        <SelectItem value="cars">{t("ads", "audienceCars")}</SelectItem>
+                        <SelectItem value="tech">{t("ads", "audienceTech") || "Tech"}</SelectItem>
+                        <SelectItem value="machines">{t("ads", "audienceMachines")}</SelectItem>
+                        <SelectItem value="students">{t("ads", "audienceStudents")}</SelectItem>
+                        <SelectItem value="animals">{t("ads", "audienceAnimals")}</SelectItem>
+                        <SelectItem value="furniture">{t("ads", "audienceFurniture")}</SelectItem>
+                        <SelectItem value="services">{t("ads", "audienceServices")}</SelectItem>
+                        <SelectItem value="jobs">{t("ads", "audienceJobs")}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -414,9 +391,7 @@ export function AdEditor() {
                 name="budgetType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      {(t as any).ads.editor.form.budgetType}
-                    </FormLabel>
+                    <FormLabel>{t("ads", "budgetTypeLabel")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
@@ -424,18 +399,16 @@ export function AdEditor() {
                         <SelectTrigger data-testid="select-budget-type">
                           <SelectValue
                             placeholder={
-                              (t as any).ads.editor.form.selectBudgetType
+                              t("ads", "budgetTypePlaceholder")
                             }
                           />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="impressions">
-                          {(t as any).ads.editor.form.budgetOptions.impressions}
-                        </SelectItem>
-                        <SelectItem value="clicks">
+                        <SelectItem value="impressions">{t("ads", "impressions")}</SelectItem>
+                        {/* <SelectItem value="clicks">
                           {(t as any).ads.editor.form.budgetOptions.clicks}
-                        </SelectItem>
+                        </SelectItem> */}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -451,9 +424,7 @@ export function AdEditor() {
                 name="targetCities"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      {(t as any).ads.editor.form.targetCities}
-                    </FormLabel>
+                    <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {locationOptions.map((city) => (
@@ -462,15 +433,20 @@ export function AdEditor() {
                           className="flex items-center space-x-2">
                           <Checkbox
                             id={city.value}
-                            checked={(field.value as string[])?.includes(city.value)}
+                            checked={(field.value as string[])?.includes(
+                              city.value
+                            )}
                             onCheckedChange={(checked) => {
-                              const currentCities = (field.value as string[]) || [];
+                              const currentCities =
+                                (field.value as string[]) || [];
 
                               if (checked) {
                                 field.onChange([...currentCities, city.value]); // ✅ store only the value, not the full object
                               } else {
                                 field.onChange(
-                                  currentCities.filter((c: string) => c !== city.value)
+                                  currentCities.filter(
+                                    (c: string) => c !== city.value
+                                  )
                                 ); // ✅ remove correctly
                               }
                             }}
@@ -500,7 +476,7 @@ export function AdEditor() {
                 variant="outline"
                 onClick={() => setLocation("/campaigns")}
                 data-testid="button-cancel">
-                {(t as any).ads.editor.buttons.cancel}
+                {t("profile", "actions.cancel")}
               </Button>
               <Button
                 type="submit"
@@ -509,10 +485,10 @@ export function AdEditor() {
                 {createAdMutation.isPending ? (
                   <>
                     <i className="fas fa-spinner fa-spin mr-2"></i>
-                    {(t as any).ads.editor.buttons.saving}
+                    {t("ads", "uploading")}
                   </>
                 ) : (
-                  (t as any).ads.editor.buttons.saveDraft
+                  t("ads", "createAd")
                 )}
               </Button>
             </div>

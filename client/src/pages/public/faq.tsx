@@ -42,22 +42,27 @@ export default function FAQ() {
     {
       icon: <MessageCircle className="w-5 h-5" />,
       title: (t as any)("faq", "categories.general.title"),
-      items: ((t as any)("faq", "categories.general.questions") as FAQItem[]) || [],
+      items:
+        ((t as any)("faq", "categories.general.questions") as FAQItem[]) || [],
     },
     {
       icon: <CreditCard className="w-5 h-5" />,
       title: (t as any)("faq", "categories.billing.title"),
-      items: ((t as any)("faq", "categories.billing.questions") as FAQItem[]) || [],
+      items:
+        ((t as any)("faq", "categories.billing.questions") as FAQItem[]) || [],
     },
     {
       icon: <Target className="w-5 h-5" />,
       title: (t as any)("faq", "categories.adManagement.title"),
-      items: ((t as any)("faq", "categories.adManagement.questions") as FAQItem[]) || [],
+      items:
+        ((t as any)("faq", "categories.adManagement.questions") as FAQItem[]) ||
+        [],
     },
     {
       icon: <Shield className="w-5 h-5" />,
       title: (t as any)("faq", "categories.security.title"),
-      items: ((t as any)("faq", "categories.security.questions") as FAQItem[]) || [],
+      items:
+        ((t as any)("faq", "categories.security.questions") as FAQItem[]) || [],
     },
   ];
 
@@ -65,7 +70,6 @@ export default function FAQ() {
     <div
       className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}
       dir={isRTL ? "rtl" : "ltr"}>
-     
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
@@ -102,7 +106,10 @@ export default function FAQ() {
                   </CardHeader>
                   <CardContent>
                     <Accordion type="single" collapsible className="w-full">
-                      {(Array.isArray(category.items) ? category.items : []).map((item, index) => (
+                      {(Array.isArray(category.items)
+                        ? category.items
+                        : []
+                      ).map((item, index) => (
                         <AccordionItem
                           key={index}
                           value={`item-${categoryIndex}-${index}`}>
@@ -187,8 +194,6 @@ export default function FAQ() {
           </div>
         </div>
       </section>
-
-      
     </div>
   );
 }
