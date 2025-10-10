@@ -1,7 +1,7 @@
-import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import Loading from "@/components/Loading";
+import { ErrorState } from "@/components/Error";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,11 +14,9 @@ import { useApiQuery } from "@/hooks/useApiQuery";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export default function AdminDashboard() {
-  const { user } = useAuth();
   const [, setLocation] = useLocation();
-  const { language, isRTL, t } = useLanguage();
+  const { isRTL, t } = useLanguage();
 
-  const access_token = TokenManager.getAccessToken();
   const {
     data: adminData,
     isLoading,
@@ -29,14 +27,63 @@ export default function AdminDashboard() {
     url: `${VITE_API_BASE_URL}/api/dashboard/admin`,
   });
 
+  // Show loading UI while fetching
+  if (isLoading) {
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <Header
+            title={t("AdminDashboard", "title")}
+            description={t("AdminDashboard", "description")}
+          />
+
+          <main className="p-6">
+            <Loading />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state when API call fails
+  if (error) {
+    const getErrorMessage = (err: unknown) => {
+      if (!err) return "An unexpected error has occurred.";
+      if (typeof err === "string") return err;
+      if (err instanceof Error) return err.message;
+      try {
+        return JSON.stringify(err);
+      } catch {
+        return "An unexpected error has occurred.";
+      }
+    };
+
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <Header
+            title={t("AdminDashboard", "title")}
+            description={t("AdminDashboard", "description")}
+          />
+
+          <main className="p-6">
+            <ErrorState
+              message={getErrorMessage(error)}
+              onRetry={() => refetch && refetch()}
+              showHomeButton={true}
+              onHome={() => setLocation("/dashboard")}
+            />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
   // Check for token in URL parameters and auto-authenticate
   useEffect(() => {
     // Only run token detection logic if we're on the dashboard page
     const currentPath = window.location.pathname;
     if (!currentPath.includes("/dashboard")) {
-      console.log(
-        "Admin Dashboard: Not on dashboard page, skipping token detection"
-      );
       return;
     }
 
@@ -51,27 +98,16 @@ export default function AdminDashboard() {
 
     // If no token found and URL contains &token=, handle the incorrect format
     if (!tokenFromUrl && window.location.href.includes("&token=")) {
-      console.log(
-        "🔧 Admin Dashboard: Detected incorrect URL format with &token= instead of ?token="
-      );
-
       // Extract token from the malformed URL
       const urlParts = window.location.href.split("&token=");
       if (urlParts.length > 1) {
         // Get the token part and remove any additional parameters
         tokenFromUrl = urlParts[1].split("&")[0];
-        console.log(
-          "🔧 Admin Dashboard: Extracted token from malformed URL:",
-          tokenFromUrl
-        );
 
         // Fix the URL format and redirect to correct format
         const baseUrl = urlParts[0];
         const correctUrl = `${baseUrl}?token=${tokenFromUrl}`;
-        console.log(
-          "🔧 Admin Dashboard: Redirecting to correct URL format:",
-          correctUrl
-        );
+
         window.location.href = correctUrl;
         return; // Exit early as we're redirecting
       }
@@ -89,11 +125,6 @@ export default function AdminDashboard() {
       const newUrl = window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
 
-      console.log(
-        "Admin Dashboard: Token from URL detected and set:",
-        tokenFromUrl
-      );
-
       // Trigger refetch of dashboard data with new token
       setTimeout(() => {
         refetch();
@@ -102,9 +133,6 @@ export default function AdminDashboard() {
       // No token in URL, check if user is authenticated
       const currentToken = TokenManager.getAccessToken();
       if (!currentToken) {
-        console.log(
-          "Admin Dashboard: No token in URL and not authenticated, redirecting to login"
-        );
         setLocation("/login");
         return;
       }
@@ -112,10 +140,10 @@ export default function AdminDashboard() {
   }, [refetch, setLocation]);
 
   // Extract data from the new API structure
-  const stats = (adminData as any)?.data?.stats || {};
-  const chartData = (adminData as any)?.data?.chartData || [];
-  const recentActivity = (adminData as any)?.data?.recentActivity || [];
-  const systemOverview = (adminData as any)?.data?.systemOverview || {};
+  const stats = adminData?.data?.stats || {};
+  const chartData = adminData?.data?.chartData || [];
+  const recentActivity = adminData?.data?.recentActivity || [];
+  const systemOverview = adminData?.data?.systemOverview || {};
 
   const safeMetrics = {
     totalUsers: stats.totalUsers || 0,

@@ -1,8 +1,6 @@
-import { useAuth } from "@/hooks/use-auth";
+
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,9 +16,10 @@ import {
 } from "@/components/ui/select";
 import { DataPagination } from "@/components/ui/data-pagination";
 import { useState } from "react";
-import { TokenManager } from "@/lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { useApiQuery } from "@/hooks/useApiQuery";
+import Loading from "@/components/Loading";
+import { ErrorState } from "@/components/Error";
 
 export default function AdminUsers() {
   const { t, isRTL } = useLanguage();
@@ -45,24 +44,7 @@ export default function AdminUsers() {
     setLimit("200"); // Reset limit to default when filtering
   };
 
-  // const { data: usersData, isLoading: usersDataLoading } = useQuery({
-  //   queryKey: ["/api/users", { limit: 2, page: 2 }],
-  //   queryFn: async () => {
-  //     const token = TokenManager.getAccessToken();
-  //     const res = await fetch(
-  //       `${VITE_API_BASE_URL}/api/users/?limit=2&page=2`,
-  //       {
-  //         headers: {
-  //           Authorization: token ? `Bearer ${token}` : "",
-  //         },
-  //       }
-  //     );
-  //     if (!res.ok) throw new Error("Failed to fetch users");
-  //     return res.json();
-  //   },
-  //   enabled: !!TokenManager.getAccessToken(),
-  // });
-
+  
   const {
     data: usersData,
     isLoading,
@@ -76,6 +58,57 @@ export default function AdminUsers() {
   // const mockUsers = usersData;
 
   const mockUsers = usersData?.data;
+  // Show loading indicator while fetching users
+  if (isLoading) {
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <Header
+            title={t("userManagement", "title")}
+            description={t("userManagement", "description")}
+          />
+
+          <main className="p-6">
+            <Loading />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state when API call fails
+  if (error) {
+    const getErrorMessage = (err: unknown) => {
+      if (!err) return "An unexpected error has occurred.";
+      if (typeof err === "string") return err;
+      if (err instanceof Error) return err.message;
+      try {
+        return JSON.stringify(err);
+      } catch {
+        return "An unexpected error has occurred.";
+      }
+    };
+
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <Header
+            title={t("userManagement", "title")}
+            description={t("userManagement", "description")}
+          />
+
+          <main className="p-6">
+            <ErrorState
+              message={getErrorMessage(error)}
+              onRetry={() => refetch && refetch()}
+              showHomeButton={true}
+              onHome={() => setLocation("/dashboard")}
+            />
+          </main>
+        </div>
+      </div>
+    );
+  }
   // Check admin access
   // if (!isAuthenticated || user?.role !== "admin") {
   //   setLocation("/dashboard");
