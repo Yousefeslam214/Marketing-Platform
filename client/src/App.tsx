@@ -45,6 +45,7 @@ import {
   campaignsPath,
   detailedCampaignsPath,
   editAdPath,
+  editCampaignsPath,
   newCampaignsPath,
 } from "./lib/paths";
 import ApprovedAds from "./pages/admin/ad/approved-ads";
@@ -209,6 +210,14 @@ function Router() {
       />
       <Route
         path={editAdPath(":adId")}
+        component={() => (
+          <AppLayout>
+            <EditAd />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={editCampaignsPath(":adId")}
         component={() => (
           <AppLayout>
             <EditAd />

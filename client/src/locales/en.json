@@ -310,12 +310,13 @@
         "resolution": "Use high-resolution images (minimum 800x600px)",
         "lighting": "Ensure good lighting and clear visibility",
         "textHeavy": "Avoid text-heavy images",
-        "relevance": "Use images that relate to your target audience"
+        "relevance": "Use images that relate to your target audience",
+        "max1mb": "Do not upload pictures larger than 1MB"
       },
       "invalidFileType": "Invalid file type",
       "selectImageFile": "Please select an image file",
       "fileTooLarge": "File too large",
-      "fileSizeLimit": "Please select an image smaller than 5MB. Current size: {size}MB",
+  "fileSizeLimit": "Please select an image smaller than 1MB. Current size: {size}MB",
       "photoRequired": "Photo required",
       "uploadPhotoToContinue": "Please upload a photo before continuing",
       "continueToCredit": "Continue to Credit Assignment",
@@ -323,7 +324,9 @@
       "photoUploaded": "Photo uploaded successfully",
       "photoUploadDescription": "Your ad photo has been uploaded",
       "uploadFailed": "Failed to upload photo",
-      "supportedFormats": "Supports JPG, PNG up to 5MB",
+  "supportedFormats": "Supports JPG, PNG up to 1MB",
+  "currentFileSize": "Current file size: {size}MB",
+  "fileSelected": "File Selected",
       "dragAndDrop": "Upload your ad photo",
       "chooseHighQuality": "Choose a high-quality image that represents your ad"
     },

@@ -11,7 +11,7 @@ import { editAdPath } from "@/lib/paths";
 import DataPagination from "@/components/ui/data-pagination";
 
 export default function AdsIndex() {
-  const [,setLocation] = useLocation();
+  const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
 
   const [page, setPage] = useState<string>("1");
@@ -86,27 +86,47 @@ export default function AdsIndex() {
                       <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
                         <div className="text-center text-muted-foreground">
                           <i className="fas fa-image text-2xl mb-2 block"></i>
-                          <div className="text-sm">{t("ads", "noImage") || "No image"}</div>
+                          <div className="text-sm">
+                            {t("ads", "noImage") || "No image"}
+                          </div>
                         </div>
                       </div>
                     )}
 
                     <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
                       <div>
-                        <div className="text-xs">{t("ads", "impressions") || "Impressions"}</div>
-                        <div className="font-medium">{ad.impressionsCredit?.toLocaleString?.() ?? ad.totalImpressions ?? 0}</div>
+                        <div className="text-xs">
+                          {t("ads", "impressions") || "Impressions"}
+                        </div>
+                        <div className="font-medium">
+                          {ad.impressionsCredit?.toLocaleString?.() ??
+                            ad.totalImpressions ??
+                            0}
+                        </div>
                       </div>
                       <div>
-                        <div className="text-xs">{t("ads", "spent") || "Spent"}</div>
-                        <div className="font-medium">${ad.spended?.toLocaleString?.() ?? 0}</div>
+                        <div className="text-xs">
+                          {t("ads", "spent") || "Spent"}
+                        </div>
+                        <div className="font-medium">
+                          ${ad.spended?.toLocaleString?.() ?? 0}
+                        </div>
                       </div>
                       <div>
-                        <div className="text-xs">{t("ads", "likes") || "Likes"}</div>
+                        <div className="text-xs">
+                          {t("ads", "likes") || "Likes"}
+                        </div>
                         <div className="font-medium">{ad.likesCount ?? 0}</div>
                       </div>
                       <div>
-                        <div className="text-xs">{t("ads", "targetCities") || "Cities"}</div>
-                        <div className="font-medium">{Array.isArray(ad.targetCities) ? ad.targetCities.join(", ") : ad.targetCities || "-"}</div>
+                        <div className="text-xs">
+                          {t("ads", "targetCities") || "Cities"}
+                        </div>
+                        <div className="font-medium">
+                          {Array.isArray(ad.targetCities)
+                            ? ad.targetCities.join(", ")
+                            : ad.targetCities || "-"}
+                        </div>
                       </div>
                     </div>
 

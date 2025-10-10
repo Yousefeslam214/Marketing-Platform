@@ -314,7 +314,7 @@ export function AdEditor() {
                   )}
                 />
 
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="googleAdsLink"
                   render={({ field }) => (
@@ -331,7 +331,7 @@ export function AdEditor() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
               </div>
             </div>
 

@@ -106,19 +106,24 @@ export default function UploadPhoto() {
       // Validate file type
       if (!file.type.startsWith("image/")) {
         toast({
-          title: "Invalid File Type",
-          description: "Please select an image file.",
+          title: t("ads.uploadPhoto.invalidFileType", "Invalid file type"),
+          description: t("ads.uploadPhoto.selectImageFile", "Please select an image file"),
           variant: "destructive",
         });
         return;
       }
 
-      // Validate file size (5MB limit)
-      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+      // Validate file size (1MB limit)
+      const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
       if (file.size > maxSizeInBytes) {
+        const sizeStr = (file.size / 1024 / 1024).toFixed(2);
+        const raw = t(
+          "ads.uploadPhoto.fileSizeLimit",
+          "Please select an image smaller than 1MB. Current size: {size}MB"
+        );
         toast({
-          title: "File Too Large",
-          description: "Please select a file smaller than 5MB.",
+          title: t("ads.uploadPhoto.fileTooLarge", "File too large"),
+          description: raw.replace("{size}", sizeStr),
           variant: "destructive",
         });
         return;
@@ -127,35 +132,23 @@ export default function UploadPhoto() {
       // Show local preview immediately
       const localPreview = URL.createObjectURL(file);
       setPhotoPreview(localPreview);
+      const sizeStr = (file.size / 1024 / 1024).toFixed(2);
+      const currentRaw = t(
+        "ads.uploadPhoto.currentFileSize",
+        "Current file size: {size}MB"
+      );
       toast({
-        title: "File Selected",
-        description: `Current file size: ${(file.size / 1024 / 1024).toFixed(
-          2
-        )}MB`,
+        title: t("ads.uploadPhoto.fileSelected", "File Selected"),
+        description: currentRaw.replace("{size}", sizeStr),
       });
-      setUploadingPhoto(true);
-      try {
-        await uploadPhotoMutation.mutateAsync(file);
-      } catch (error) {
-
-        toast({
-          title: "Upload Failed",
-          variant: "destructive",
-          description: error instanceof Error ? error.message : "",
-        });
-      }
-
-      // Show local preview immediately
-      const localPreview1 = URL.createObjectURL(file);
-      setPhotoPreview(localPreview1);
 
       setUploadingPhoto(true);
       try {
         await uploadPhotoMutation.mutateAsync(file);
       } catch (error) {
-        // Error handled in mutation onError
+        // Error handled in mutation onError, but show fallback message
         toast({
-          title: "Upload Failed",
+          title: t("ads.uploadPhoto.uploadFailed", "Upload Failed"),
           variant: "destructive",
           description: error instanceof Error ? error.message : "",
         });

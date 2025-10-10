@@ -27,58 +27,7 @@ export default function AdminDashboard() {
     url: `${VITE_API_BASE_URL}/api/dashboard/admin`,
   });
 
-  // Show loading UI while fetching
-  if (isLoading) {
-    return (
-      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
-          <Header
-            title={t("AdminDashboard", "title")}
-            description={t("AdminDashboard", "description")}
-          />
-
-          <main className="p-6">
-            <Loading />
-          </main>
-        </div>
-      </div>
-    );
-  }
-
-  // Show error state when API call fails
-  if (error) {
-    const getErrorMessage = (err: unknown) => {
-      if (!err) return "An unexpected error has occurred.";
-      if (typeof err === "string") return err;
-      if (err instanceof Error) return err.message;
-      try {
-        return JSON.stringify(err);
-      } catch {
-        return "An unexpected error has occurred.";
-      }
-    };
-
-    return (
-      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
-          <Header
-            title={t("AdminDashboard", "title")}
-            description={t("AdminDashboard", "description")}
-          />
-
-          <main className="p-6">
-            <ErrorState
-              message={getErrorMessage(error)}
-              onRetry={() => refetch && refetch()}
-              showHomeButton={true}
-              onHome={() => setLocation("/dashboard")}
-            />
-          </main>
-        </div>
-      </div>
-    );
-  }
-
+ 
   // Check for token in URL parameters and auto-authenticate
   useEffect(() => {
     // Only run token detection logic if we're on the dashboard page
@@ -155,6 +104,60 @@ export default function AdminDashboard() {
     totalImpressions: stats.totalImpressions || 0,
     impressionGrowth: stats.impressionGrowth || 0,
   };
+
+
+
+   // Show loading UI while fetching
+  if (isLoading) {
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <Header
+            title={t("AdminDashboard", "title")}
+            description={t("AdminDashboard", "description")}
+          />
+
+          <main className="p-6">
+            <Loading />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state when API call fails
+  if (error) {
+    const getErrorMessage = (err: unknown) => {
+      if (!err) return "An unexpected error has occurred.";
+      if (typeof err === "string") return err;
+      if (err instanceof Error) return err.message;
+      try {
+        return JSON.stringify(err);
+      } catch {
+        return "An unexpected error has occurred.";
+      }
+    };
+
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <Header
+            title={t("AdminDashboard", "title")}
+            description={t("AdminDashboard", "description")}
+          />
+
+          <main className="p-6">
+            <ErrorState
+              message={getErrorMessage(error)}
+              onRetry={() => refetch && refetch()}
+              showHomeButton={true}
+              onHome={() => setLocation("/dashboard")}
+            />
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>

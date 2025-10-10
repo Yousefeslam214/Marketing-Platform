@@ -136,6 +136,9 @@ export function userPath(userId: string) {
 export function editAdPath(adId: string) {
   return `/ads/${adId}/edit`;
 }
+export function editCampaignsPath(adId: string) {
+  return `/campaigns/${adId}/edit`;
+}
 
 export function adminBillingPath() {
   return `/admin/adminBilling`;
