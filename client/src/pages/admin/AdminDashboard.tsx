@@ -241,7 +241,7 @@ export default function AdminDashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 bg-chart-3/10 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-dollar-sign text-chart-3"></i>
+                    <i className="fas fa-sar-sign text-chart-3"></i>
                   </div>
                   <Badge
                     variant="secondary"
@@ -328,7 +328,7 @@ export default function AdminDashboard() {
                           case "user_signup":
                             return "fas fa-user-plus text-purple-500";
                           case "purchase":
-                            return "fas fa-dollar-sign text-green-600";
+                            return "fas fa-sar-sign text-green-600";
                           default:
                             return "fas fa-activity text-gray-500";
                         }

@@ -106,7 +106,7 @@ export function AdCard({
               <span
                 data-testid={`ad-budget-${ad.id}`}
                 className="flex flex-col items-center justify-center text-center max-w-[50%]">
-                <i className="fas fa-dollar-sign mr-1"></i>
+                <i className="fas fa-sar-sign mr-1"></i>
                 {ad.budgetType}
               </span>
             </div>

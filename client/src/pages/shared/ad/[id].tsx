@@ -228,12 +228,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                     </div>
 
                     <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20 rounded-lg">
-                      <i className="fas fa-dollar-sign text-green-600 text-2xl mb-2"></i>
+                      <i className="fas fa-sar-sign text-green-600 text-2xl mb-2"></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
                         {t("adDetail", "amountSpent")}
                       </h4>
                       <p className="text-2xl font-bold text-green-600">
-                        ${ad.spended?.toLocaleString() || 0}
+                         SAR {ad.spended?.toLocaleString() || 0}
                       </p>
                     </div>
 

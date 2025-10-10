@@ -318,7 +318,7 @@ export default function UserDetails() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-dollar-sign text-green-600"></i>
+                    <i className="fas fa-sar-sign text-green-600"></i>
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">

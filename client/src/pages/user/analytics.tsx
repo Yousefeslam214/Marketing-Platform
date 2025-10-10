@@ -217,7 +217,7 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 bg-chart-4/10 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-dollar-sign text-chart-4"></i>
+                    <i className="fas fa-sar-sign text-chart-4"></i>
                   </div>
                   <Badge
                     variant="secondary"
