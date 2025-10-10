@@ -1,8 +1,5 @@
-import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,18 +14,13 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 export default function Dashboard() {
   // const { user } = useAuth();
   const [, setLocation] = useLocation();
-  const { isRTL, t, language, toggleLanguage } = useLanguage();
+  const { isRTL, t, language } = useLanguage();
 
-  const access_token = TokenManager.getAccessToken();
-  // const { data: dashboardData, isLoading: metricsLoading } = useQuery({
-  //   queryKey: ["/api/dashboard/user"],
-  //   enabled: !!access_token,
-  // });
-  //
+
   const {
     data: dashboardData,
     isLoading: metricsLoading,
-    error,
+   
     refetch,
   } = useApiQuery({
     key: ["/api/dashboard/user"],
@@ -98,10 +90,10 @@ export default function Dashboard() {
   // const dashboardData2 = Array.isArray(dashboardData?.data) ? (dashboardData?.data as AdData[]) : [];
 
   // Type-safe metrics with defaults from the new API structure
-  const stats = (dashboardData as any)?.data?.stats || {};
-  const topAds = (dashboardData as any)?.data?.topAds || [];
-  const chartData = (dashboardData as any)?.data?.chartData || [];
-  const activity = (dashboardData as any)?.data?.activity || [];
+  const stats = dashboardData?.data?.stats || {};
+  const topAds = dashboardData?.data?.topAds || [];
+  const chartData = dashboardData?.data?.chartData || [];
+  const activity = dashboardData?.data?.activity || [];
 
   const safeMetrics = {
     totalImpressions: stats.totalImpressions || 0,
@@ -506,7 +498,7 @@ export default function Dashboard() {
                           10000 - safeMetrics.creditsRemaining
                         ).toLocaleString()}
                       </p>
-                      <p className="text-xs text-muted-foreground">of 10,000</p>
+                      <p className="text-xs text-muted-foreground">{t("dashboard", "of10000")}</p>
                     </div>
                   </div>
 

@@ -1,11 +1,13 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AuthService, TokenManager } from "@/lib/auth";
 import type { User, LoginData, SignupData } from "@shared/schema";
+import type { AuthResponse } from "@/lib/auth";
 import { toast } from "@/hooks/use-toast";
 
 interface AuthContextType {
-  user: User | null;
+  // user can be either the full User type or the lighter AuthResponse returned by AuthService
+  user: User | AuthResponse | null;
   accessToken: string | null;
   login: (data: LoginData) => Promise<void>;
   signup: (data: SignupData) => Promise<void>;
@@ -16,7 +18,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery({
@@ -99,8 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // // window.location.href = `${window.location.origin}/api/auth/google/login?redirect_uri=${encodeURIComponent(redirectUri)}`;
 
   //   } catch (error) {
-  //     console.error("Google authentication error:", error);
-  //     throw new Error(
+  //       //     throw new Error(
   //       `Failed to initiate Google authentication: ${
   //         error instanceof Error ? error.message : "Unknown error"
   //       }`
@@ -129,8 +130,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   //     // res.redirect("/dashboard");
 
   //   } catch (error) {
-  //     console.error("Google authentication error:", error);
-  //     throw new Error(
+  //       //     throw new Error(
   //       `Failed to initiate Google authentication: ${
   //         error instanceof Error ? error.message : "Unknown error"
   //       }`
@@ -162,118 +162,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // After successful authentication, the backend should redirect back to your app's callback route
       // Handle the callback in your frontend to complete the login process
       return;
-
-      // Pure localStorage-based communication (no postMessage due to COOP)
-      return new Promise<void>((resolve, reject) => {
-        let authCompleted = false;
-        let pollInterval: NodeJS.Timeout;
-        let timeoutId: NodeJS.Timeout;
-
-        // Generate a unique key for this auth session
-        const authKey = `google_auth_${Date.now()}_${Math.random()
-          .toString(36)
-          .substr(2, 9)}`;
-
-        // Store the auth key so popup can find it
-        localStorage.setItem(`${authKey}_pending`, window.location.origin);
-        console.log(
-          "💾 Stored pending auth key in localStorage:",
-          `${authKey}_pending`
-        );
-        console.log(
-          "🗂️ Current localStorage google_auth keys:",
-          Object.keys(localStorage).filter((k) => k.includes("google_auth"))
-        );
-
-        // Poll localStorage for auth result
-        const pollForAuthResult = () => {
-          const authResult = localStorage.getItem(authKey);
-          const allKeys = Object.keys(localStorage).filter((key) =>
-            key.includes("google_auth")
-          );
-          console.log(
-            `🔍 [${new Date().toLocaleTimeString()}] Polling for auth result with key: ${authKey}`
-          );
-
-          if (authResult) {
-            try {
-              const result = JSON.parse(authResult);
-
-              localStorage.removeItem(authKey); // Clean up
-              localStorage.removeItem(`${authKey}_pending`); // Clean up pending
-
-              if (result.success && result.token) {
-                authCompleted = true;
-
-                AuthService.handleGoogleDirectAuth(
-                  result.token,
-                  result.username,
-                  result.role
-                ).then(() => {
-                  queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
-                  toast({
-                    title: "Login successful",
-                    description: `Welcome back, ${result.username}!`,
-                  });
-                  cleanup();
-                  resolve();
-                  setTimeout(() => {
-                    window.location.href = "/dashboard";
-                  }, 500);
-                });
-              } else if (result.error) {
-                authCompleted = true;
-
-                cleanup();
-                reject(new Error(result.error));
-              }
-            } catch (err) {
-              console.error(
-                "Error parsing auth result from localStorage:",
-                err
-              );
-            }
-          }
-        };
-
-        // Cleanup function
-        const cleanup = () => {
-          if (pollInterval) clearInterval(pollInterval);
-          if (timeoutId) clearTimeout(timeoutId);
-          localStorage.removeItem(authKey);
-          localStorage.removeItem(`${authKey}_pending`);
-        };
-
-        // Start polling for localStorage updates
-        pollInterval = setInterval(pollForAuthResult, 1000);
-
-        // Timeout after 5 minutes
-        timeoutId = setTimeout(() => {
-          if (!authCompleted) {
-            cleanup();
-            reject(new Error("Authentication timeout"));
-          }
-        }, 5 * 60 * 1000);
-      });
-    } catch (error: any) {
-      console.error("Google authentication error:", error);
+    } catch (error) {
       toast({
         title: "Authentication failed",
-        description: error.message || "Failed to authenticate with Google",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to authenticate with Google",
         variant: "destructive",
       });
       throw error;
     }
   };
 
-  const [accessToken, setAccessToken] = useState<string | null>(() =>
-    localStorage.getItem("access_token")
-  );
-
   return (
     <AuthContext.Provider
       value={{
-        user: (user as any)?.user || null,
+        user: user || null,
         accessToken: TokenManager.getAccessToken(),
         login,
         signup,

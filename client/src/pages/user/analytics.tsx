@@ -1,11 +1,7 @@
-import { useAuth } from "@/hooks/use-auth";
-import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useLanguage } from "@/hooks/use-language";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -29,17 +25,23 @@ export default function Analytics() {
     enabled: !!TokenManager.getAccessToken(),
   });
 
-  const { data: metrics } = useQuery({
+  type Metrics = {
+    totalImpressions?: number;
+    totalClicks?: number;
+    ctr?: number;
+  };
+
+  const { data: metrics } = useQuery<Metrics>({
     queryKey: ["/api/dashboard/metrics"],
     enabled: !!TokenManager.getAccessToken(),
   });
 
   // Type-safe data with defaults
-  const safeAds = (ads as any[]) || [];
+  const safeAds = ads || [];
   const safeMetrics = {
-    totalImpressions: (metrics as any)?.totalImpressions || 0,
-    totalClicks: (metrics as any)?.totalClicks || 0,
-    ctr: (metrics as any)?.ctr || 0,
+    totalImpressions: metrics?.totalImpressions || 0,
+    totalClicks: metrics?.totalClicks || 0,
+    ctr: metrics?.ctr || 0,
   };
 
   // Mock detailed analytics data
@@ -100,7 +102,6 @@ export default function Analytics() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-
       <div className="flex-1 overflow-auto">
         <Header
           title={t("analytics", "title")}
@@ -117,10 +118,10 @@ export default function Analytics() {
                 <SelectValue placeholder="Select time range" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="24hours">Last 24 hours</SelectItem>
-                <SelectItem value="7days">Last 7 days</SelectItem>
-                <SelectItem value="30days">Last 30 days</SelectItem>
-                <SelectItem value="90days">Last 90 days</SelectItem>
+                <SelectItem value="24hours">{t("analytics", "last24Hours")}</SelectItem>
+                <SelectItem value="7days">{t("analytics", "last7Days")}</SelectItem>
+                <SelectItem value="30days">{t("analytics", "last30Days")}</SelectItem>
+                <SelectItem value="90days">{t("analytics", "last90Days")}</SelectItem>
               </SelectContent>
             </Select>
 
@@ -131,7 +132,7 @@ export default function Analytics() {
                 <SelectValue placeholder="Filter by ad" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Ads</SelectItem>
+                <SelectItem value="all">{t("analytics", "allAds")}</SelectItem>
                 {safeAds.map((ad: any) => (
                   <SelectItem key={ad.id} value={ad.id}>
                     {ad.titleEn}
@@ -241,7 +242,7 @@ export default function Analytics() {
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Performance Trend</CardTitle>
+                  <CardTitle>{t("analytics", "performanceTrend")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <AnalyticsChart />
@@ -252,7 +253,9 @@ export default function Analytics() {
             {/* Top Performing Ads */}
             <Card>
               <CardHeader>
-                <CardTitle>Top Performing Ads</CardTitle>
+                <CardTitle>
+                  {t("analytics", "topPerformingAds")}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -295,7 +298,7 @@ export default function Analytics() {
           {/* Hourly Performance */}
           <Card>
             <CardHeader>
-              <CardTitle>Hourly Performance</CardTitle>
+              <CardTitle>{t("analytics", "hourlyPerformance")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-12 gap-2">
@@ -319,7 +322,7 @@ export default function Analytics() {
               <div className="mt-4 flex items-center justify-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-primary/20 rounded"></div>
-                  <span>Impressions by hour</span>
+                  <span>{t("analytics", "impressionsByHour")}</span>
                 </div>
               </div>
             </CardContent>

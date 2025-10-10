@@ -1,19 +1,15 @@
-import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { AdCard } from "@/components/ads/ad-card";
 import { AdData } from "@/lib/schema/schema-ads";
-import { TokenManager } from "@/lib/auth";
 import { useAdNavigation } from "@/hooks/use-path-handlers";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { DataPagination } from "@/components/ui/data-pagination";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
 import { useApiQuery } from "@/hooks/useApiQuery";
-import { toast } from "@/hooks/use-toast";
 import { handleApprove, handleReject } from "@/lib/helper-ad";
 
 export default function PendingAds() {
@@ -35,8 +31,6 @@ export default function PendingAds() {
   });
 
   const pendingAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
-
-  const token = TokenManager.getAccessToken();
 
   // Enhanced approve handler with loading state
   const handleApproveWithLoading = async (adId: string) => {

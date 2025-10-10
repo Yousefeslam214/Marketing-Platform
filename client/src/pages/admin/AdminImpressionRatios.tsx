@@ -109,7 +109,7 @@ export default function AdminImpressionRatios() {
       queryClient.invalidateQueries({ queryKey: ["impression-ratios"] });
       refetch();
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast({
         title: t("impressionRatios", "updateError"),
         description: error.message || t("impressionRatios", "invalidData"),

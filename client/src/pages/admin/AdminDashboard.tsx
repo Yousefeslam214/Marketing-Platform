@@ -452,7 +452,7 @@ export default function AdminDashboard() {
                         {systemOverview.ctr ? systemOverview.ctr.toFixed(2) : 0}
                         %
                       </p>
-                      <p className="text-xs text-blue-600">rate</p>
+                      <p className="text-xs text-blue-600">{t("AdminDashboard", "rate")}</p>
                     </div>
                   </div>
                 </div>
@@ -478,7 +478,7 @@ export default function AdminDashboard() {
                       <p className="text-lg font-bold text-foreground">
                         {systemOverview.totalClicks || 0}
                       </p>
-                      <p className="text-xs text-blue-600">clicks</p>
+                      <p className="text-xs text-blue-600"> {t("AdminDashboard", "clicks")}</p>
                     </div>
                   </div>
 
@@ -493,9 +493,12 @@ export default function AdminDashboard() {
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-foreground">
-                        SAR{systemOverview.totalRevenue || 0}
+                        {t("AdminDashboard", "currency")}{" "}
+                        {systemOverview.totalRevenue || 0}
                       </p>
-                      <p className="text-xs text-green-600">SAR</p>
+                      <p className="text-xs text-green-600">
+                        {t("AdminDashboard", "currency")}
+                      </p>
                     </div>
                   </div>
 

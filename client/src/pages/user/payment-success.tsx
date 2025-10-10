@@ -14,7 +14,7 @@ export default function PaymentSuccess() {
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
   const [isVerifying, setIsVerifying] = useState(true);
-  const [paymentDetails, setPaymentDetails] = useState<any>(null);
+  const [paymentDetails, setPaymentDetails] = useState(null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -57,12 +57,13 @@ export default function PaymentSuccess() {
         });
       }
     } catch (error) {
-      console.error("Payment verification failed:", error);
       toast({
         title: t("billing", "verifyingPayment") || "Verification Error",
         description:
-          t("billing", "contactSupportCredits") ||
-          "Failed to verify payment. Please contact support.",
+          error instanceof Error
+            ? error.message
+            : t("billing", "contactSupportCredits") ||
+              "Failed to verify payment. Please contact support.",
         variant: "destructive",
       });
     } finally {
@@ -70,9 +71,7 @@ export default function PaymentSuccess() {
     }
   };
 
-  const handleContinue = () => {
-    setLocation("/billing");
-  };
+
 
   if (isVerifying) {
     return (

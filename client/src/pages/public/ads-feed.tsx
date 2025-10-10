@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useLanguage } from "@/hooks/use-language";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { locationOptions } from "@/components/ads/targeting-form";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { DataPagination } from "@/components/ui/data-pagination";
 import {
   Select,
   SelectContent,
@@ -11,11 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Heart, Share2, MessageCircle, ExternalLink } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
-import { DataPagination } from "@/components/ui/data-pagination";
-import { locationOptions } from "@/components/ads/targeting-form";
+import { useQuery } from "@tanstack/react-query";
+import { ExternalLink, Heart, MessageCircle, Share2 } from "lucide-react";
+import { useState } from "react";
 
 interface Ad {
   id: string;
@@ -71,13 +71,11 @@ export default function AdsFeed() {
           targetCitiesParam
         )}`
       );
-      console.log(adsResponse?.data || "No ads data");
-      if (!response.ok) {
+    if (!response.ok) {
         throw new Error("Failed to fetch ads");
       }
       const rtn = await response.json();
-console.log(rtn, "ads response");
-      return rtn;
+   return rtn;
 
     },
     retry: 1,
@@ -106,7 +104,13 @@ console.log(rtn, "ads response");
         });
       }
     } catch (error) {
-      console.error("Failed to record interaction:", error);
+   toast({
+        title: t("publicFeed", "error"),
+        description:
+          (error instanceof Error ? error.message : "") ||
+          t("publicFeed", "likeErrorDesc"),
+        variant: "destructive",
+      });
     }
   };
 
@@ -300,7 +304,7 @@ console.log(rtn, "ads response");
                           }}
                           className="gap-2">
                           <ExternalLink className="h-4 w-4" />
-                          {(t as any)("publicFeed", "website")}
+                          {t("publicFeed", "website")}
                         </Button>
                       </div>
                     </CardContent>

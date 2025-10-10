@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   XCircle,
   RefreshCw,
@@ -16,11 +16,22 @@ import {
 import { Badge } from "../../components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
 import { useLanguage } from "../../hooks/use-language";
-import contact from "../public/contact";
+
+type ErrorData = {
+  errorCode: string | null;
+  errorMessage: string | null;
+  transactionId: string | null;
+  orderId: string | null;
+  merchantOrderId: string | null;
+  amount: string | null;
+  currency: string;
+  reason: string | null;
+  timestamp: string;
+};
 
 export default function PaymentFailed() {
   const { t } = useLanguage();
-  const [errorData, setErrorData] = useState<any>(null);
+  const [errorData, setErrorData] = useState<ErrorData | null>(null);
 
   useEffect(() => {
     // Extract error data from URL parameters
@@ -36,16 +47,7 @@ export default function PaymentFailed() {
     const currency = urlParams.get("currency") || "EGP";
     const reason = urlParams.get("reason");
 
-    console.log("Payment Failed Page - URL Params:", {
-      errorCode,
-      errorMessage,
-      transactionId,
-      orderId,
-      merchantOrderId,
-      amount,
-      currency,
-      reason,
-    });
+    
 
     setErrorData({
       errorCode,
@@ -142,12 +144,12 @@ export default function PaymentFailed() {
               <XCircle className="w-8 h-8 text-red-600" />
             </div>
             <CardTitle className="text-2xl font-bold text-red-800">
-              {getErrorTitle(errorData?.errorCode)}
+              {getErrorTitle(errorData?.errorCode ?? null)}
             </CardTitle>
             <p className="text-gray-600 mt-2">
               {getErrorDescription(
-                errorData?.errorCode,
-                errorData?.errorMessage
+                errorData?.errorCode ?? null,
+                errorData?.errorMessage ?? null
               )}
             </p>
           </CardHeader>

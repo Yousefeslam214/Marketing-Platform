@@ -30,7 +30,7 @@ interface SocialMediaPage {
   isActive: boolean;
 }
 
-interface UserDetails {
+interface UserDetailsInterface {
   id: string;
   username: string;
   email: string;
@@ -85,7 +85,7 @@ export default function UserDetails() {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       setLocation("/admin/users");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast({
         title: t("userDetails", "deleteError"),
         description: error.message || t("userDetails", "failedToDeleteUser"),
@@ -119,7 +119,7 @@ export default function UserDetails() {
       });
       refetch();
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast({
         title: t("userDetails", "promoteError"),
         description: error.message || t("userDetails", "failedToPromoteUser"),
@@ -187,7 +187,7 @@ export default function UserDetails() {
     );
   }
 
-  const user = userData?.data as UserDetails;
+  const user = userData?.data as UserDetailsInterface;
   if (!user) return null;
 
   return (

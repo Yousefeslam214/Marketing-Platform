@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/errorUtils";
 
 export default function GoogleCallback() {
   const [statusMessage, setStatusMessage] = useState(
@@ -60,9 +62,14 @@ export default function GoogleCallback() {
             data.message || "Invalid response format from backend"
           );
         }
-      } catch (error: any) {
-        console.error("Google OAuth callback error:", error);
-        setStatusMessage(`Authentication failed: ${error.message}`);
+      } catch (error) {
+        const message = getErrorMessage(error);
+        toast({
+          title: "Authentication Error",
+          description: message,
+          variant: "destructive",
+        });
+        setStatusMessage(`Authentication failed: ${message}`);
 
         // Redirect to login page after showing error
         setTimeout(() => {
@@ -83,7 +90,7 @@ export default function GoogleCallback() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
             </div>
-            <CardTitle className="text-2xl">octopusad</CardTitle>
+            <CardTitle className="text-2xl">{t("auth", "loginTitle")}</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="text-center">
@@ -93,7 +100,7 @@ export default function GoogleCallback() {
             </div>
             <p className="text-muted-foreground">{statusMessage}</p>
             <p className="text-xs text-muted-foreground">
-              Please don't close this window...
+              Please don&#39;t close this window...
             </p>
           </div>
         </CardContent>

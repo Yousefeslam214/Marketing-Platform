@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/accordion";
 import {
   HelpCircle,
-  ArrowLeft,
   MessageCircle,
   CreditCard,
   Shield,
@@ -94,7 +93,8 @@ export default function FAQ() {
       </section>
 
       {/* FAQ Content */}
-      <section className="py-20 w-full
+      <section
+        className="py-20 w-full
       flex flex-col items-center ">
         <div className="container">
           <div className="max-w-4xl mx-auto">
@@ -163,7 +163,8 @@ export default function FAQ() {
       </section>
 
       {/* Quick Stats */}
-      <section className="py-16 bg-muted/50
+      <section
+        className="py-16 bg-muted/50
       
       w-full
       flex flex-col items-center

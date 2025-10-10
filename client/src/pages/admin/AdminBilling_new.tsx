@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -77,18 +76,7 @@ export default function AdminBilling() {
   };
   const paymentItems = billingData?.items || [];
 
-  // Mock mutations for admin actions (just show toast messages)
-  const adjustBalanceMutation = {
-    mutate: ({ userId, amount }: { userId: string; amount: number }) => {
-      toast({
-        title: t("adminBilling", "balanceAdjusted"),
-        description: `User ${userId}: ${amount > 0 ? "+" : ""}$${amount}`,
-        variant: "default",
-      });
-      setSelectedUser("");
-      setAdjustAmount("");
-    },
-  };
+ 
 
   const retryPaymentMutation = {
     mutate: (paymentId: string) => {

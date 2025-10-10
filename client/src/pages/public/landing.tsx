@@ -12,10 +12,11 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { Check, AlertCircle, RefreshCw } from "lucide-react";
 import { VITE_API_BASE_URL } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 export default function LandingPage() {
-  const { language, isRTL, t } = useLanguage();
-  const [pricingData, setPricingData] = useState<any>(null);
+  const { isRTL, t } = useLanguage();
+  const [pricingData, setPricingData] = useState(null);
   const [pricingLoading, setPricingLoading] = useState(true);
   const [pricingError, setPricingError] = useState(false);
 
@@ -41,7 +42,12 @@ export default function LandingPage() {
           setPricingError(true);
         }
       } catch (error) {
-        console.error("Error fetching pricing data:", error);
+        toast({
+          title: t("landing", "fetchErrorTitle"),
+          description:
+            (error instanceof Error ? error.message : "") ||
+            t("landing", "fetchErrorDesc"),
+        });
         setPricingError(true);
       } finally {
         setPricingLoading(false);
@@ -71,8 +77,13 @@ export default function LandingPage() {
           setPricingError(true);
         }
       } catch (error) {
-        console.error("Error fetching pricing data:", error);
         setPricingError(true);
+        toast({
+          title: t("landing", "fetchErrorTitle"),
+          description:
+            (error instanceof Error ? error.message : "") ||
+            t("landing", "fetchErrorDesc"),
+        });
       } finally {
         setPricingLoading(false);
       }
@@ -98,13 +109,13 @@ export default function LandingPage() {
               className={`space-y-6 md:space-y-8 ${isRTL ? "lg:order-2" : ""}`}>
               <div className="space-y-4">
                 <Badge variant="secondary" className="w-fit">
-                  {t("landing", "hero.badge" as any)}
+                  {t("landing", "hero.badge")}
                 </Badge>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                  {t("landing", "hero.title" as any)}
+                  {t("landing", "hero.title")}
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground max-w-lg">
-                  {t("landing", "hero.subtitle" as any)}
+                  {t("landing", "hero.subtitle")}
                 </p>
               </div>
 
@@ -112,7 +123,7 @@ export default function LandingPage() {
                 <Link href="/signup">
                   <Button size="lg" className="w-full sm:w-auto">
                     <i className="fas fa-play-circle mr-2"></i>
-                    {t("landing", "hero.getStarted" as any)}
+                    {t("landing", "hero.getStarted")}
                   </Button>
                 </Link>
                 <Button
@@ -120,22 +131,22 @@ export default function LandingPage() {
                   size="lg"
                   className="w-full sm:w-auto">
                   <i className="fas fa-video mr-2"></i>
-                  {t("landing", "hero.watchDemo" as any)}
+                  {t("landing", "hero.watchDemo")}
                 </Button>
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mr-2"></i>
-                  {t("landing", "hero.features.noSetup" as any)}
+                  {t("landing", "hero.features.noSetup")}
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mr-2"></i>
-                  {t("landing", "hero.features.multiPlatform" as any)}
+                  {t("landing", "hero.features.multiPlatform")}
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mr-2"></i>
-                  {t("landing", "hero.features.analytics" as any)}
+                  {t("landing", "hero.features.analytics")}
                 </div>
               </div>
             </div>
@@ -146,10 +157,10 @@ export default function LandingPage() {
                 <div className="bg-background rounded-lg p-4 sm:p-6 space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm sm:text-base font-semibold">
-                      {t("landing", "hero.dashboard.title" as any)}
+                      {t("landing", "hero.dashboard.title")}
                     </h3>
                     <Badge variant="secondary" className="text-xs">
-                      {t("landing", "hero.dashboard.live" as any)}
+                      {t("landing", "hero.dashboard.live")}
                     </Badge>
                   </div>
                   <div className="grid grid-cols-3 gap-2 sm:gap-4">
@@ -158,7 +169,7 @@ export default function LandingPage() {
                         2.5K
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {t("landing", "hero.dashboard.campaigns" as any)}
+                        {t("landing", "hero.dashboard.campaigns")}
                       </div>
                     </div>
                     <div className="text-center">
@@ -166,7 +177,7 @@ export default function LandingPage() {
                         85%
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {t("landing", "hero.dashboard.engagement" as any)}
+                        {t("landing", "hero.dashboard.engagement")}
                       </div>
                     </div>
                     <div className="text-center">
@@ -174,7 +185,7 @@ export default function LandingPage() {
                         12.4K
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {t("landing", "hero.dashboard.leads" as any)}
+                        {t("landing", "hero.dashboard.leads")}
                       </div>
                     </div>
                   </div>
@@ -182,7 +193,7 @@ export default function LandingPage() {
                     <div className="text-center">
                       <i className="fas fa-chart-line text-xl sm:text-2xl md:text-3xl text-primary mb-1 sm:mb-2"></i>
                       <div className="text-xs sm:text-sm text-muted-foreground">
-                        {t("landing", "hero.dashboard.performance" as any)}
+                        {t("landing", "hero.dashboard.performance")}
                       </div>
                     </div>
                   </div>
@@ -198,10 +209,10 @@ export default function LandingPage() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-              {t("landing", "features.title" as any)}
+              {t("landing", "features.title")}
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t("landing", "features.subtitle" as any)}
+              {t("landing", "features.subtitle")}
             </p>
           </div>
 
@@ -265,10 +276,10 @@ export default function LandingPage() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-              {t("landing", "howItWorks.title" as any)}
+              {t("landing", "howItWorks.title")}
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t("landing", "howItWorks.subtitle" as any)}
+              {t("landing", "howItWorks.subtitle")}
             </p>
           </div>
 
@@ -323,7 +334,7 @@ export default function LandingPage() {
             <Link href="/signup">
               <Button size="lg">
                 <i className="fas fa-arrow-right mr-2"></i>
-                {t("landing", "howItWorks.getStarted" as any)}
+                {t("landing", "howItWorks.getStarted")}
               </Button>
             </Link>
           </div>
@@ -335,10 +346,10 @@ export default function LandingPage() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-              {t("landing", "pricing.title" as any)}
+              {t("landing", "pricing.title")}
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t("landing", "pricing.subtitle" as any)}
+              {t("landing", "pricing.subtitle")}
             </p>
           </div>
 
@@ -347,7 +358,7 @@ export default function LandingPage() {
               <Card className="p-8 text-center">
                 <div className="flex items-center justify-center space-x-2">
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>{t("landing", "pricing.loading" as any)}</span>
+                  <span>{t("landing", "pricing.loading")}</span>
                 </div>
               </Card>
             ) : pricingError ? (
@@ -355,18 +366,18 @@ export default function LandingPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-center space-x-2 text-red-600">
                     <AlertCircle className="w-5 h-5" />
-                    <span>{t("landing", "pricing.error" as any)}</span>
+                    <span>{t("landing", "pricing.error")}</span>
                   </div>
                   <Button onClick={retryFetchPricing} variant="outline">
                     <RefreshCw className="w-4 h-4 mr-2" />
-                    {t("landing", "pricing.retry" as any)}
+                    {t("landing", "pricing.retry")}
                   </Button>
                 </div>
               </Card>
             ) : !pricingData ? (
               <Card className="p-8 text-center">
                 <span className="text-muted-foreground">
-                  {t("landing", "pricing.noData" as any)}
+                  {t("landing", "pricing.noData")}
                 </span>
               </Card>
             ) : (
@@ -374,24 +385,24 @@ export default function LandingPage() {
                 {/* Single Pricing Plan */}
                 <Card className="border-2 border-primary shadow-xl relative">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="px-3 py-1">Best Value</Badge>
+                    <Badge className="px-3 py-1">{t("landing", "pricing.bestValue")}</Badge>
                   </div>
                   <CardHeader className="text-center pb-6 pt-8">
                     <CardTitle className="text-2xl mb-4">
-                      Simple Pricing
+                      {t("landing", "pricing.simplePricing")}
                     </CardTitle>
                     <div className="space-y-2">
                       <div className="text-4xl font-bold text-primary">
                         {(1 / pricingData.impressionsPerUnit).toFixed(3)}{" "}
-                        {t("landing", "pricing.currency" as any)}
+                        {t("landing", "pricing.currency")}
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {t("landing", "pricing.perImpression" as any)}
+                        {t("landing", "pricing.perImpression")}
                       </div>
                       <div className="text-xl font-semibold text-primary mt-4">
                         {pricingData.impressionsPerUnit}{" "}
-                        {t("landing", "pricing.impressions" as any)} = 1{" "}
-                        {t("landing", "pricing.currency" as any)}
+                        {t("landing", "pricing.impressions")} = 1{" "}
+                        {t("landing", "pricing.currency")}
                       </div>
                     </div>
                   </CardHeader>
@@ -400,7 +411,7 @@ export default function LandingPage() {
                       <div className="flex items-center">
                         <Check className="w-5 h-5 text-green-500 mr-3" />
                         <span className="text-sm">
-                          {t("landing", "pricing.features.analytics" as any)}
+                          {t("landing", "pricing.features.analytics")}
                         </span>
                       </div>
                       <div className="flex items-center">
@@ -415,29 +426,29 @@ export default function LandingPage() {
                       <div className="flex items-center">
                         <Check className="w-5 h-5 text-green-500 mr-3" />
                         <span className="text-sm">
-                          {t("landing", "pricing.features.support" as any)}
+                          {t("landing", "pricing.features.support")}
                         </span>
                       </div>
                       <div className="flex items-center">
                         <Check className="w-5 h-5 text-green-500 mr-3" />
                         <span className="text-sm">
-                          {t("landing", "pricing.features.reporting" as any)}
+                          {t("landing", "pricing.features.reporting")}
                         </span>
                       </div>
                       <div className="flex items-center mb-2">
                         <Check className="w-5 h-5 text-green-500 mr-3" />
                         <span className="text-sm">
-                          {t("landing", "pricing.features.optimization" as any)}
+                          {t("landing", "pricing.features.optimization")}
                         </span>
                       </div>
                       {/* <div className="flex items-center">
                         <Check className="w-5 h-5 text-green-500 mr-3" />
-                        <span className="text-sm">{t("landing", "pricing.features.api" as any)}</span>
+                        <span className="text-sm">{t("landing", "pricing.features.api")}</span>
                       </div> */}
                     </div>
                     <Link href="/signup" className="block">
                       <Button className="w-full" size="lg">
-                        {t("landing", "pricing.getStarted" as any)}
+                        {t("landing", "pricing.getStarted")}
                       </Button>
                     </Link>
                   </CardContent>
@@ -457,7 +468,7 @@ export default function LandingPage() {
                 10K+
               </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
-                {t("landing", "stats.campaigns" as any)}
+                {t("landing", "stats.campaigns")}
               </div>
             </div>
             <div>
@@ -465,7 +476,7 @@ export default function LandingPage() {
                 500+
               </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
-                {t("landing", "stats.clients" as any)}
+                {t("landing", "stats.clients")}
               </div>
             </div>
             <div>
@@ -473,7 +484,7 @@ export default function LandingPage() {
                 99.9%
               </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
-                {t("landing", "stats.uptime" as any)}
+                {t("landing", "stats.uptime")}
               </div>
             </div>
             <div>
@@ -481,7 +492,7 @@ export default function LandingPage() {
                 24/7
               </div>
               <div className="text-sm sm:text-base text-primary-foreground/80">
-                {t("landing", "stats.support" as any)}
+                {t("landing", "stats.support")}
               </div>
             </div>
           </div>
@@ -493,10 +504,10 @@ export default function LandingPage() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 sm:p-8 md:p-12 text-center text-primary-foreground max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-              {t("landing", "cta.title" as any)}
+              {t("landing", "cta.title")}
             </h2>
             <p className="text-lg sm:text-xl mb-6 sm:mb-8 opacity-90">
-              {t("landing", "cta.subtitle" as any)}
+              {t("landing", "cta.subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/signup">
@@ -505,7 +516,7 @@ export default function LandingPage() {
                   variant="secondary"
                   className="w-full sm:w-auto hover:scale-105 transition-transform hover:text-primary">
                   <i className="fas fa-rocket mr-2"></i>
-                  {t("landing", "cta.getStarted" as any)}
+                  {t("landing", "cta.getStarted")}
                 </Button>
               </Link>
               <Link href="tel:0502274696" className="w-full sm:w-auto">
@@ -516,7 +527,7 @@ export default function LandingPage() {
                   hover:scale-105 transition-transform
                   ">
                   <i className="fas fa-phone mr-2"></i>
-                  {t("landing", "cta.contact" as any)}
+                  {t("landing", "cta.contact")}
                 </Button>
               </Link>
             </div>

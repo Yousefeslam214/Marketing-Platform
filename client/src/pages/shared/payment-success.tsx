@@ -12,7 +12,7 @@ import { useLanguage } from "../../hooks/use-language";
 
 export default function PaymentSuccess() {
   const { t } = useLanguage();
-  const [transactionData, setTransactionData] = useState<any>(null);
+  const [transactionData, setTransactionData] = useState(null);
 
   useEffect(() => {
     // Extract payment data from URL parameters
@@ -25,16 +25,6 @@ export default function PaymentSuccess() {
     const merchantOrderId = urlParams.get("merchant_order_id");
     const success = urlParams.get("success") === "true";
     const pending = urlParams.get("pending") === "true";
-
-    console.log("Payment Success Page - URL Params:", {
-      transactionId,
-      amount,
-      currency,
-      orderId,
-      merchantOrderId,
-      success,
-      pending,
-    });
 
     setTransactionData({
       transactionId,

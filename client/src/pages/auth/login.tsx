@@ -9,7 +9,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   Form,
@@ -22,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
+import { getErrorMessage } from "@/lib/errorUtils";
 
 export default function Login() {
   const { isRTL, t } = useLanguage();
@@ -46,13 +46,12 @@ export default function Login() {
         title: t("auth", "loginSuccess") || "Login successful",
         description: t("auth", "welcomeBack") || "Welcome back!",
       });
-    } catch (error: any) {
+    } catch (error) {
+      const message = getErrorMessage(error);
       toast({
         title: t("auth", "loginFailed") || "Login failed",
         description:
-          error.message ||
-          t("auth", "invalidCredentials") ||
-          "Invalid email or password",
+          message || t("auth", "invalidCredentials") || "Invalid email or password",
         variant: "destructive",
       });
     }
@@ -61,11 +60,11 @@ export default function Login() {
   const handleGoogleLogin = async () => {
     try {
       await loginWithGoogle();
-    } catch (error: any) {
-      console.error("Google login error:", error);
+    } catch (error) {
+      const message = getErrorMessage(error);
       toast({
         title: t("auth", "loginFailed") || "Login failed",
-        description: error.message || "Google authentication failed",
+        description: message || "Google authentication failed",
         variant: "destructive",
       });
     }

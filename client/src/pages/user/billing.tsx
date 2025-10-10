@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { toast, useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { TokenManager } from "@/lib/auth";
 import { PaymentService, type PaymentData } from "@/lib/payment-service";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
@@ -17,11 +17,6 @@ export default function Billing() {
   const { t, isRTL } = useLanguage();
   const [selectedPackage, setSelectedPackage] = useState("basic");
   const [customAmount, setCustomAmount] = useState("");
-
-  const { data: metrics } = useQuery({
-    queryKey: ["/api/dashboard/metrics"],
-    enabled: !!TokenManager.getAccessToken(),
-  });
 
   // Fetch payment history from API
   // const { data: paymentHistoryResponse, isLoading: isLoadingHistory } =
@@ -44,16 +39,11 @@ export default function Billing() {
       url: `${VITE_API_BASE_URL}/api/users/impression-ratios`,
     });
 
-  // Type-safe metrics with defaults
-  const safeMetrics = {
-    creditsRemaining: (metrics as any)?.creditsRemaining || 0,
-  };
-
   // Extract payment history from API response
-  const paymentHistory = (paymentHistoryResponse as any)?.data?.items || [];
+  const paymentHistory = paymentHistoryResponse?.data?.items || [];
 
   // Extract impression ratios and find SAR ratio
-  const impressionRatios = (impressionRatiosResponse as any)?.data || [];
+  const impressionRatios = impressionRatiosResponse?.data || [];
   const sarRatio = impressionRatios.find(
     (ratio: any) => ratio.currency === "sar"
   );
@@ -94,7 +84,7 @@ export default function Billing() {
       await PaymentService.redirectToCheckout(paymentData);
       return { success: true };
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast({
         title: t("billing", "purchaseFailed"),
         description: error.message || t("billing", "paymentSessionError"),

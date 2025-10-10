@@ -1,14 +1,11 @@
 import { useLocation } from "wouter";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TokenManager } from "@/lib/auth";
 import { ErrorState } from "@/components/Error";
 import Loading from "@/components/Loading";
 import { useApiQuery } from "@/hooks/useApiQuery";
@@ -17,6 +14,7 @@ import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
 import { analyticsCampaignPath } from "@/lib/paths";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface AdDetailProps {
   params: { id: string };
@@ -28,13 +26,13 @@ export default function AdDetail({ params }: AdDetailProps) {
   const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
   const { id } = params;
-  const limit = 5;
-  const [page, setPage] = useState(1);
+
+
   const [creditAmount, setCreditAmount] = useState<number>(1);
 
   const { data, isLoading, error, refetch } = useApiQuery({
-    key: [`/ads/${id}`, page, limit],
-    url: `${VITE_API_BASE_URL}/api/advertising/${id}?page=${page}&limit=${limit}&status=approved`,
+    key: [`/ads/${id}`],
+    url: `${VITE_API_BASE_URL}/api/advertising/${id}`,
   });
 
   // Assign credit mutation
@@ -636,7 +634,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                 ad.googleAdsLink) && (
                 <Card className="lg:col-span-2">
                   <CardHeader>
-                    <CardTitle>Social Media Links</CardTitle>
+                    <CardTitle>{t("analytics", "socialMediaLinks")}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

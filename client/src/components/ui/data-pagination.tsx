@@ -42,7 +42,6 @@ interface DataPaginationProps {
 
 export function DataPagination({
   pagination,
-  currentPage,
   onPageChange,
   pageSize,
   onPageSizeChange,

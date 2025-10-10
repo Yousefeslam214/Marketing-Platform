@@ -89,7 +89,6 @@ export class AuthService {
       result?.url;
 
     if (!authUrl) {
-      console.error("No auth URL found in response:", result);
       throw new AuthError(
         "Failed to get Google authentication URL",
         "NO_AUTH_URL"

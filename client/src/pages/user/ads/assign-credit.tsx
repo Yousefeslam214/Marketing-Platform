@@ -8,7 +8,6 @@ import { Header } from "@/components/layout/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -23,6 +22,7 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLanguage } from "@/hooks/use-language";
 
 // Dynamic schema that takes the max balance
 const createCreditSchema = (maxBalance: number) =>
@@ -44,6 +44,7 @@ export default function AssignCredit() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useLanguage();
 
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
@@ -130,7 +131,7 @@ export default function AssignCredit() {
       });
       setLocation(`/campaigns/${params.adId}`);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast({
         title: "Failed to assign credit",
         description: error.message || "Please try again",
@@ -156,8 +157,8 @@ export default function AssignCredit() {
     <div className="flex h-screen bg-background">
       <div className="flex-1 overflow-auto">
         <Header
-          title="Assign Credit"
-          description="Assign advertising credits to your new campaign"
+          title={t("userAds", "assignCredit")}
+          description={t("userAds", "assignCreditDescription")}
         />
 
         <main className="p-6">
@@ -181,11 +182,10 @@ export default function AssignCredit() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <i className="fas fa-coins text-yellow-600"></i>
-                    Assign Advertising Credits
+                    {t("userAds", "assignAdvertisingCredits")}
                   </CardTitle>
                   <p className="text-muted-foreground">
-                    Your ad has been created successfully! Now assign credits to
-                    start your campaign.
+                    {t("userAds", "adCreatedSuccessfully")}
                   </p>
                 </CardHeader>
                 <CardContent>
@@ -194,7 +194,7 @@ export default function AssignCredit() {
                     <i className="fas fa-wallet text-blue-600"></i>
                     <AlertDescription className="ml-2">
                       <div className="flex items-center justify-between">
-                        <span>Available Balance:</span>
+                        <span>{t("userAds", "availableBalance")}:</span>
                         <span className="text-xl font-bold text-blue-600">
                           {userBalance.toLocaleString()} Credits
                         </span>
@@ -211,7 +211,7 @@ export default function AssignCredit() {
                         name="credit"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Credit Amount</FormLabel>
+                            <FormLabel>{t("userAds", "creditAmount")}</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
@@ -228,13 +228,13 @@ export default function AssignCredit() {
                             <div className="text-sm text-muted-foreground mt-2">
                               <div className="flex items-center gap-2 mb-1">
                                 <i className="fas fa-info-circle text-blue-500"></i>
-                                Credits determine how many impressions your ad
-                                will receive
+                                {t("userAds", "creditsDetermineImpressions")}
                               </div>
                               <div className="flex items-center gap-2">
                                 <i className="fas fa-lightbulb text-yellow-500"></i>
-                                Maximum available:{" "}
-                                {userBalance.toLocaleString()} credits
+                                {t("userAds", "maximumAvailable")}:
+                                {userBalance.toLocaleString()}{" "}
+                                {t("userAds", "credits")}
                               </div>
                             </div>
                           </FormItem>
@@ -243,7 +243,7 @@ export default function AssignCredit() {
 
                       <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
                         <h4 className="font-medium mb-2">
-                          Suggested Credit Amounts:
+                          {t("userAds", "suggestedCreditAmounts")}:
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-3">
                           {userBalance >= 100 && (
@@ -252,10 +252,10 @@ export default function AssignCredit() {
                               onClick={() => form.setValue("credit", 100)}
                               className="text-center p-3 bg-white dark:bg-gray-800 rounded border hover:bg-green-50 dark:hover:bg-green-950/20 transition-colors">
                               <div className="font-bold text-green-600">
-                                100 Credits
+                                {t("userAds", "100Credits")}
                               </div>
                               <div className="text-muted-foreground">
-                                Small test campaign
+                                {t("userAds", "smallTestCampaign")}
                               </div>
                             </button>
                           )}
@@ -265,10 +265,10 @@ export default function AssignCredit() {
                               onClick={() => form.setValue("credit", 250)}
                               className="text-center p-3 bg-white dark:bg-gray-800 rounded border hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors">
                               <div className="font-bold text-blue-600">
-                                250 Credits
+                                {t("userAds", "250Credits")}
                               </div>
                               <div className="text-muted-foreground">
-                                Medium campaign
+                                {t("userAds", "mediumCampaign")}
                               </div>
                             </button>
                           )}
@@ -283,10 +283,11 @@ export default function AssignCredit() {
                               }
                               className="text-center p-3 bg-white dark:bg-gray-800 rounded border hover:bg-purple-50 dark:hover:bg-purple-950/20 transition-colors">
                               <div className="font-bold text-purple-600">
-                                {Math.min(500, userBalance)} Credits
+                                {Math.min(500, userBalance)}{" "}
+                                {t("userAds", "credits")}
                               </div>
                               <div className="text-muted-foreground">
-                                Large campaign
+                                {t("userAds", "largeCampaign")}
                               </div>
                             </button>
                           )}
@@ -298,10 +299,11 @@ export default function AssignCredit() {
                               }
                               className="col-span-3 text-center p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded border border-yellow-200 dark:border-yellow-800 hover:bg-yellow-100 dark:hover:bg-yellow-950/30 transition-colors">
                               <div className="font-bold text-yellow-600">
-                                All {userBalance} Credits
+                                {t("userAds", "all")} {userBalance}{" "}
+                                {t("userAds", "credits")}
                               </div>
                               <div className="text-muted-foreground">
-                                Use all available credits
+                                {t("userAds", "useAllAvailableCredits")}
                               </div>
                             </button>
                           )}
@@ -314,7 +316,7 @@ export default function AssignCredit() {
                             onClick={() => setLocation("/billing")}
                             className="text-xs">
                             <i className="fas fa-plus mr-2"></i>
-                            Add More Credits
+                            {t("userAds", "addMoreCredits")}
                           </Button>
                         </div>
                       </div>
@@ -327,12 +329,12 @@ export default function AssignCredit() {
                           {isLoading || assignCreditMutation.isPending ? (
                             <>
                               <i className="fas fa-spinner fa-spin mr-2"></i>
-                              Assigning Credit...
+                              {t("userAds", "assigningCredit")}
                             </>
                           ) : (
                             <>
                               <i className="fas fa-credit-card mr-2"></i>
-                              Assign Credit
+                              {t("userAds", "assignCredit")}
                             </>
                           )}
                         </Button>
@@ -343,7 +345,7 @@ export default function AssignCredit() {
                           disabled={
                             isLoading || assignCreditMutation.isPending
                           }>
-                          Skip for Now
+                          {t("userAds", "skipForNow")}
                         </Button>
                       </div>
                     </form>

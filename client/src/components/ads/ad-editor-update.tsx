@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -33,7 +34,7 @@ import { useLanguage } from "@/hooks/use-language";
 
 interface AdEditorUpdateProps {
   adId: string;
-  existingData: any;
+  existingData: Partial<CreateAdData> | any;
   isUpdate?: boolean;
 }
 
@@ -44,14 +45,13 @@ export function AdEditor({
 }: AdEditorUpdateProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
+  const { t } = useLanguage();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(
     existingData?.imageUrl || null
   );
-console.log("Existing Data:", existingData);
   const form = useForm<CreateAdData>({
     resolver: zodResolver(createAdSchema),
     defaultValues: {
@@ -97,7 +97,6 @@ console.log("Existing Data:", existingData);
       // ensure photo preview reflects server image
       setPhotoPreview(existingData.imageUrl || null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingData]);
 
   // Photo upload mutation
@@ -119,7 +118,6 @@ console.log("Existing Data:", existingData);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Upload error:", response.status, errorText);
         throw new Error(`Upload failed: ${response.status} - ${errorText}`);
       }
 
@@ -186,7 +184,7 @@ console.log("Existing Data:", existingData);
       setUploadingPhoto(true);
       try {
         await uploadPhotoMutation.mutateAsync(file);
-      } catch (error) {
+      } catch {
         // Error handled in mutation onError
       } finally {
         setUploadingPhoto(false);
@@ -203,7 +201,7 @@ console.log("Existing Data:", existingData);
       );
       return response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
       queryClient.invalidateQueries({ queryKey: [`/api/advertising/${adId}`] });
       toast({
@@ -454,7 +452,7 @@ console.log("Existing Data:", existingData);
                       <SelectItem value="cars">
                         {t("ads", "audienceCars")}
                       </SelectItem>
-                      <SelectItem value="tech">{t("ads", "audienceTech") || "Tech"}</SelectItem>
+                      <SelectItem value="tech">{(t as any)("ads", "audienceTech") || "Tech"}</SelectItem>
                       <SelectItem value="machines">
                         {t("ads", "audienceMachines")}
                       </SelectItem>
@@ -546,8 +544,7 @@ console.log("Existing Data:", existingData);
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="impressions">{t("ads", "impressions")}</SelectItem>
-                      {/* <SelectItem value="clicks">Clicks</SelectItem> */}
-                    </SelectContent>
+                       </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>

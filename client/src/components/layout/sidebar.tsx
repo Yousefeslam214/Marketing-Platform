@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
-
 import {
   adminDashboardPath,
   adminUsersPath,
@@ -17,15 +16,7 @@ import {
   adminApprovedAdsPath,
   adminRejectedAdsPath,
   userDashboardPath,
-  // userCampaignsPath,
   userBillingPath,
-  userAnalyticsPath,
-  userProfilePath,
-  userSettingsPath,
-  faqPath,
-  helpPath,
-  contactPath,
-  privacyTermsPath,
   adminBillingPath,
   campaignsPath,
 } from "@/lib/paths";

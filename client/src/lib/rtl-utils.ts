@@ -28,15 +28,6 @@ export function getPadding(
   side: "left" | "right",
   size: string
 ): string {
-  const paddingMap: Record<string, string> = {
-    "1": "0.25rem",
-    "2": "0.5rem",
-    "3": "0.75rem",
-    "4": "1rem",
-    "6": "1.5rem",
-    "8": "2rem",
-  };
-
   if (side === "left") {
     return isRTL ? `pr-${size}` : `pl-${size}`;
   }

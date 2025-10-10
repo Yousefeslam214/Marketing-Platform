@@ -1,20 +1,12 @@
 import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import { useState } from "react";
 
 const PublicHeader = () => {
-  const { language, isRTL, t } = useLanguage();
+  const { isRTL, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -46,36 +38,36 @@ const PublicHeader = () => {
             <a
               href="/#features"
               className="text-sm font-medium hover:text-primary transition-colors">
-              {t("landing", "navigation.features" as any)}
+              {t("landing", "navigation.features")}
             </a>
             <a
               href="/#how-it-works"
               className="text-sm font-medium hover:text-primary transition-colors">
-              {t("landing", "navigation.howItWorks" as any)}
+              {t("landing", "navigation.howItWorks")}
             </a>
             <a
               href="/#pricing"
               className="text-sm font-medium hover:text-primary transition-colors">
-              {t("landing", "navigation.pricing" as any)}
+              {t("landing", "navigation.pricing")}
             </a>
             <Link href="/faq">
               <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                {t("sidebar", "faq" as any)}
+                {t("sidebar", "faq")}
               </span>
             </Link>
             <Link href="/privacy-terms">
               <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                {t("sidebar", "privacyTerms" as any)}
+                {t("sidebar", "privacyTerms")}
               </span>
             </Link>
             <Link href="/contact">
               <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                {t("sidebar", "contact" as any)}
+                {t("sidebar", "contact")}
               </span>
             </Link>
             <Link href="/feed">
               <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                {t("sidebar", "adsFeed" as any)}
+                {t("sidebar", "adsFeed")}
               </span>
             </Link>
           </div>
@@ -86,11 +78,11 @@ const PublicHeader = () => {
             <LanguageToggle />
             <Link href="/login">
               <Button variant="ghost" size="sm">
-                {t("auth", "signInTitle" as any)}
+                {t("auth", "signInTitle")}
               </Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm">{t("auth", "signUpTitle" as any)}</Button>
+              <Button size="sm">{t("auth", "signUpTitle")}</Button>
             </Link>
           </div>
 
@@ -143,39 +135,39 @@ const PublicHeader = () => {
                 href="/#features"
                 className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}>
-                {t("landing", "navigation.features" as any)}
+                {t("landing", "navigation.features")}
               </a>
               <a
                 href="/#how-it-works"
                 className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}>
-                {t("landing", "navigation.howItWorks" as any)}
+                {t("landing", "navigation.howItWorks")}
               </a>
               <a
                 href="/#pricing"
                 className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}>
-                {t("landing", "navigation.pricing" as any)}
+                {t("landing", "navigation.pricing")}
               </a>
               <Link href="/faq">
                 <span
                   className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors cursor-pointer"
                   onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("sidebar", "faq" as any)}
+                  {t("sidebar", "faq")}
                 </span>
               </Link>
               <Link href="/privacy-terms">
                 <span
                   className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors cursor-pointer"
                   onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("sidebar", "privacyTerms" as any)}
+                  {t("sidebar", "privacyTerms")}
                 </span>
               </Link>
               <Link href="/contact">
                 <span
                   className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors cursor-pointer"
                   onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("sidebar", "contact" as any)}
+                  {t("sidebar", "contact")}
                 </span>
               </Link>
             </div>
@@ -188,7 +180,7 @@ const PublicHeader = () => {
                   size="sm"
                   className="w-full justify-start"
                   onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("auth", "signInTitle" as any)}
+                  {t("auth", "signInTitle")}
                 </Button>
               </Link>
               <Link href="/signup">
@@ -196,7 +188,7 @@ const PublicHeader = () => {
                   size="sm"
                   className="w-full"
                   onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("auth", "signUpTitle" as any)}
+                  {t("auth", "signUpTitle")}
                 </Button>
               </Link>
             </div>

@@ -1,11 +1,9 @@
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TokenManager } from "@/lib/auth";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { useState } from "react";
@@ -22,8 +20,6 @@ export default function AdsIndex() {
   const {
     data: ads,
     isLoading,
-    error,
-    refetch,
   } = useApiQuery({
     key: ["/api/ads/user", page, limit],
     url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,

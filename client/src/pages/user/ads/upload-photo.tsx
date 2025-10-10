@@ -1,21 +1,19 @@
-import { useState, useRef } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import { useRoute, useLocation } from "wouter";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/layout/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useLanguage } from "@/hooks/use-language";
 
 export default function UploadPhoto() {
   const [match, params] = useRoute("/ads/:adId/upload-photo");
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
-  const queryClient = useQueryClient();
+  const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -29,13 +27,11 @@ export default function UploadPhoto() {
   }
 
   if (!match) {
-    console.error("Route does not match /ads/:adId/upload-photo pattern");
-    setLocation("/campaigns");
+ setLocation("/campaigns");
     return null;
   }
 
   if (!params?.adId) {
-    console.error("AdId parameter is missing from route params:", params);
     toast({
       title: (t as any).ads.uploadPhoto.errors.invalidAdId,
       description: (t as any).ads.uploadPhoto.errors.tryAgain,
@@ -69,7 +65,6 @@ export default function UploadPhoto() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Upload error:", response.status, errorText);
         throw new Error(`Upload failed: ${response.status} - ${errorText}`);
       }
 
@@ -108,7 +103,7 @@ export default function UploadPhoto() {
   });
 
   const handlePhotoSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -148,6 +143,11 @@ export default function UploadPhoto() {
         await uploadPhotoMutation.mutateAsync(file);
       } catch (error) {
         // Error handled in mutation onError
+        toast({
+          title: (t as any).ads.uploadPhoto.errors.uploadFailed,
+          variant: "destructive",
+          description: error instanceof Error ? error.message : "",
+        });
       } finally {
         setUploadingPhoto(false);
       }

@@ -39,20 +39,6 @@ import { TokenManager } from "../../lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { locationOptions } from "@/components/ads/targeting-form";
 
-interface ProfileData {
-  id: string;
-  username: string;
-  email: string;
-  role: string;
-  country: string;
-  verified: boolean;
-  freeViewsCredits: number;
-  createdAt: string;
-  adsCount: number;
-  totalSpend: number;
-  balance: number;
-  oauth: string;
-}
 
 interface UpdateProfileData {
   username: string;
@@ -183,7 +169,6 @@ export default function Profile() {
         throw new Error(result.message || "Update failed");
       }
     } catch (error) {
-      console.error("Update profile error:", error);
       toast({
         title: t("profile", "updateError"),
         description:
@@ -388,7 +373,7 @@ export default function Profile() {
                 <div>
                   <Label htmlFor="password">
                     New Password{" "}
-                    <span className="text-sm text-gray-500">(Optional)</span>
+                    <span className="text-sm text-gray-500">{t("profile", "optional")}</span>
                   </Label>
                   <div className="relative">
                     <Input
@@ -417,7 +402,7 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Label htmlFor="confirmPassword">{t("profile", "confirmNewPassword")}</Label>
                   <Input
                     id="confirmPassword"
                     type="password"

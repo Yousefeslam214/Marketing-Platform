@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import { AuthService, TokenManager } from "@/lib/auth";
+import { AuthService } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export default function GoogleDirectAuth() {
   // Add immediate logging to ensure this component loads
@@ -41,12 +40,7 @@ export default function GoogleDirectAuth() {
         if (token && username && role) {
           setStatusMessage("Setting up your session...");
 
-          // Handle authentication directly (no popup logic)
-          const result = await AuthService.handleGoogleDirectAuth(
-            token,
-            username,
-            role
-          );
+        
 
           setStatusMessage("Redirecting to dashboard...");
 
@@ -68,9 +62,7 @@ export default function GoogleDirectAuth() {
 
         // If we have an authorization code, check if backend already processed it
         if (code) {
-          console.log(
-            "⏳ Found authorization code, checking for backend response..."
-          );
+         
           setStatusMessage("Processing authentication...");
 
           // The backend should have already processed the code and returned data
@@ -110,10 +102,6 @@ export default function GoogleDirectAuth() {
                       })
                     );
 
-                    console.log(
-                      "✅ Auth result stored in localStorage with key:",
-                      authKey
-                    );
 
                     try {
                       if (parentOrigin && window.opener) {
@@ -128,10 +116,15 @@ export default function GoogleDirectAuth() {
                         );
                       }
                     } catch (postMessageError) {
-                      console.log(
-                        "⚠️ PostMessage failed (expected due to COOP):",
-                        postMessageError
-                      );
+                      toast({
+                        title:
+                          t("auth", "loginFailed") || "Authentication failed",
+                        description:
+                          postMessageError instanceof Error
+                            ? postMessageError.message
+                            : "Failed to communicate with parent window",
+                        variant: "destructive",
+                      });
                     }
                   }
 
@@ -170,10 +163,11 @@ export default function GoogleDirectAuth() {
                 return;
               }
             } catch (parseError) {
-              console.log(
-                "⚠️ Could not parse page content as JSON:",
-                parseError
-              );
+              toast({
+                title: t("auth", "loginFailed") || "Authentication failed",
+                description: (parseError instanceof Error ? parseError.message : "Failed to parse authentication response"),
+                variant: "destructive",
+              });
             }
 
             // If we still don't have auth data after a delay, there might be an error
@@ -199,11 +193,7 @@ export default function GoogleDirectAuth() {
               responseData.data.token
             ) {
               const { token, role, username } = responseData.data;
-              console.log("Extracted auth data:", {
-                token: token?.substring(0, 20) + "...",
-                role,
-                username,
-              });
+              
 
               // Handle direct authentication (no popup logic)
               await AuthService.handleGoogleDirectAuth(token, username, role);
@@ -225,20 +215,23 @@ export default function GoogleDirectAuth() {
               return;
             }
           } catch (jsonError) {
-            console.error("Failed to parse response JSON:", jsonError);
+         toast({
+              title: t("auth", "loginFailed") || "Authentication failed",
+              description: (jsonError instanceof Error ? jsonError.message : "Failed to parse authentication response"),
+              variant: "destructive",
+            });
           }
         }
 
         throw new Error("No authorization code or valid response found");
-      } catch (error: any) {
-        console.error("Google OAuth direct auth error:", error);
+      } catch (error) {
         setStatusMessage("Authentication failed");
         setIsProcessing(false);
 
         // Show error toast and redirect to login
         toast({
           title: t("auth", "loginFailed") || "Authentication failed",
-          description: error.message || "Google authentication failed",
+          description: (error instanceof Error ? error.message : "Google authentication failed"),
           variant: "destructive",
         });
 
@@ -261,7 +254,7 @@ export default function GoogleDirectAuth() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
             </div>
-            <CardTitle className="text-2xl">octopusad</CardTitle>
+            <CardTitle className="text-2xl">{t("auth", "loginTitle")}</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="text-center">

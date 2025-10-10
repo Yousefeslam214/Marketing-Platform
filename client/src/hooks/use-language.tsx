@@ -21,11 +21,9 @@ export function useLanguage() {
     html.setAttribute("dir", dir);
   }, [language, dir]);
 
-  const t = <T extends TranslationSection>(
-    section: T,
-    key: TranslationKey<T>
-  ): string => {
-    return getTranslation(language, section, key);
+  // Accept string keys (including dot-paths) for flexibility across the codebase.
+  const t = (section: TranslationSection, key: string): string => {
+    return getTranslation(language, section, key as any);
   };
 
   return {

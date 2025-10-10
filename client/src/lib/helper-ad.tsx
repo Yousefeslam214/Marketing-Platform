@@ -34,7 +34,6 @@ export const handleApprove = async (
     );
 
     if (res.ok) {
-      const responseData = await res.json();
 
       toast({
         title: isRTL ? "تمت الموافقة على الإعلان" : "Ad approved successfully",
@@ -42,8 +41,7 @@ export const handleApprove = async (
       refetch();
     } else {
       const errorData = await res.json().catch(() => ({}));
-      console.error("Approve failed:", res.status, errorData);
-
+  
       let errorMessage = isRTL
         ? "فشل في الموافقة على الإعلان"
         : "Failed to approve ad";
@@ -64,12 +62,14 @@ export const handleApprove = async (
       });
     }
   } catch (error) {
-    console.error("Network error during approve:", error);
     toast({
       title: isRTL ? "خطأ في الشبكة" : "Network error",
-      description: isRTL
-        ? "يرجى التحقق من الاتصال والمحاولة مرة أخرى"
-        : "Please check your connection and try again",
+      description:
+        error instanceof Error
+          ? error.message
+          : isRTL
+          ? "يرجى التحقق من الاتصال والمحاولة مرة أخرى"
+          : "Please check your connection and try again",
       variant: "destructive",
     });
   }
@@ -107,16 +107,17 @@ export const handleReject = async (
     );
 
     if (res.ok) {
-      const responseData = await res.json();
-
       toast({
         title: isRTL ? "تم رفض الإعلان" : "Ad rejected successfully",
       });
       refetch();
     } else {
       const errorData = await res.json().catch(() => ({}));
-      console.error("Reject failed:", res.status, errorData);
-
+      toast({
+        title: isRTL ? "فشل في رفض الإعلان" : "Failed to reject ad",
+        description: errorData.message || "",
+        variant: "destructive",
+      });
       let errorMessage = isRTL ? "فشل في رفض الإعلان" : "Failed to reject ad";
 
       if (res.status === 401) {
@@ -135,10 +136,12 @@ export const handleReject = async (
       });
     }
   } catch (error) {
-    console.error("Network error during reject:", error);
     toast({
       title: isRTL ? "خطأ في الشبكة" : "Network error",
-      description: isRTL
+      description:
+      error instanceof Error
+        ? error.message
+        : isRTL
         ? "يرجى التحقق من الاتصال والمحاولة مرة أخرى"
         : "Please check your connection and try again",
       variant: "destructive",

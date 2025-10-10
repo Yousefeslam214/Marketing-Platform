@@ -10,30 +10,31 @@ const translations = {
   ar: arTranslations,
 } as const;
 
-export type TranslationSection = keyof typeof translations.en;
-export type TranslationKey<T extends TranslationSection> =
-  keyof (typeof translations.en)[T];
+// Allow any string section to support dot-paths and dynamic sections used across the app.
+export type TranslationSection = string;
+// Allow string keys (including nested dot-paths) for flexibility in templates
+export type TranslationKey<T extends TranslationSection> = string;
 
 export function getTranslation<T extends TranslationSection>(
   language: Language,
   section: T,
-  key: TranslationKey<T>
+  key: string
 ): string {
   const langSection = translations[language]?.[section] as
-    | Record<string, any>
+    | Record<string, unknown>
     | undefined;
-  const enSection = translations.en[section] as Record<string, any>;
+  const enSection = translations.en[section] as Record<string, unknown>;
 
   // Handle nested objects (like faq.questions.*)
-  const keyStr = key as string;
+  const keyStr = key;
   if (keyStr.includes(".")) {
     const keys = keyStr.split(".");
-    let value: any = langSection;
-    let fallbackValue: any = enSection;
+  let value: unknown = langSection;
+  let fallbackValue: unknown = enSection;
 
     for (const k of keys) {
-      value = value?.[k];
-      fallbackValue = fallbackValue?.[k];
+      value = (value as Record<string, unknown>)?.[k];
+      fallbackValue = (fallbackValue as Record<string, unknown>)?.[k];
     }
 
     return (

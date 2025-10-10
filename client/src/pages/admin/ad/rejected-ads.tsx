@@ -1,6 +1,5 @@
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
-import { Button } from "@/components/ui/button";
 import { AdCard } from "@/components/ads/ad-card";
 import { AdData } from "@/lib/schema/schema-ads";
 import { useAdNavigation } from "@/hooks/use-path-handlers";

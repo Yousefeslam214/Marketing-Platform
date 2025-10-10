@@ -23,10 +23,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { TokenManager } from "@/lib/auth";
+import { getErrorMessage } from "@/lib/errorUtils";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
-  const { signup, loginWithGoogle, isLoading, user } = useAuth();
+  const { signup, loginWithGoogle, isLoading } = useAuth();
   const { t, isRTL } = useLanguage();
   const { toast } = useToast();
 
@@ -56,10 +57,11 @@ export default function Signup() {
         title: t("auth", "accountCreated"),
         description: t("auth", "accountCreatedSuccess"),
       });
-    } catch (error: any) {
+    } catch (error) {
+      const message = getErrorMessage(error);
       toast({
         title: t("auth", "signupFailed"),
-        description: error.message || t("auth", "signupFailedMessage"),
+        description: message || t("auth", "signupFailedMessage"),
         variant: "destructive",
       });
     }
@@ -68,10 +70,11 @@ export default function Signup() {
   const handleGoogleSignup = async () => {
     try {
       await loginWithGoogle();
-    } catch (error: any) {
+    } catch (error) {
+      const message = getErrorMessage(error);
       toast({
         title: t("auth", "signupFailed"),
-        description: error.message || "Google authentication failed",
+        description: message || "Google authentication failed",
         variant: "destructive",
       });
     }
@@ -88,7 +91,7 @@ export default function Signup() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
             </div>
-            <CardTitle className="text-2xl">octopusad</CardTitle>
+            <CardTitle className="text-2xl">{t("auth", "signupTitle")}</CardTitle>
           </div>
           <CardDescription>{t("auth", "signupDescription")}</CardDescription>
         </CardHeader>

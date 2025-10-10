@@ -1,13 +1,10 @@
-import { useState } from "react";
-import { Link } from "wouter";
+import { FormEvent, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { LanguageToggle } from "@/components/ui/language-toggle";
 import { useToast } from "@/hooks/use-toast";
 import {
   Mail,
@@ -19,11 +16,9 @@ import {
   Twitter,
   Instagram,
   Linkedin,
-  ArrowLeft,
+
 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import PublicHeader from "@/components/layout/publicHeader";
-import PublicFooter from "@/components/layout/publicFooter";
 
 interface ContactForm {
   name: string;
@@ -47,7 +42,7 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -63,7 +58,9 @@ export default function Contact() {
     } catch (error) {
       toast({
         title: t("contact", "errorTitle"),
-        description: t("contact", "errorMessage"),
+        description:
+          (error instanceof Error ? error.message : "") ||
+         t("contact", "errorMessage"),
         variant: "destructive",
       });
     } finally {

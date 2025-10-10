@@ -1,15 +1,14 @@
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
-import { useLocation } from "wouter";
+import { ReactNode } from "react";
 
 interface HeaderProps {
   title: string;
   description?: string;
-  actions?: React.ReactNode;
+  actions?: ReactNode;
 }
 
 export function Header({ title, description, actions }: HeaderProps) {
-  const { language, toggleLanguage, dir, isRTL } = useLanguage();
+  const {  isRTL } = useLanguage();
 
   return (
     <header

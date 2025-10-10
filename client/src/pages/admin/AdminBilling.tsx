@@ -76,18 +76,7 @@ export default function AdminBilling() {
   };
   const paymentItems = billingData?.items || [];
 
-  // Mock mutations for admin actions (just show toast messages)
-  const adjustBalanceMutation = {
-    mutate: ({ userId, amount }: { userId: string; amount: number }) => {
-      toast({
-        title: "Balance Adjusted",
-        description: `User ${userId}: ${amount > 0 ? "+" : ""}$${amount}`,
-        variant: "default",
-      });
-      setSelectedUser("");
-      setAdjustAmount("");
-    },
-  };
+ 
 
   const retryPaymentMutation = {
     mutate: (invoiceId: string) => {
@@ -105,8 +94,8 @@ export default function AdminBilling() {
 
       <div className="flex-1 overflow-auto">
         <Header
-          title="Admin Billing"
-          description="Manage users’ subscriptions, invoices, refunds, and errors"
+          title={t("adminBilling", "title")}
+          description={t("adminBilling", "description")}
         />
 
         <main className="p-6 space-y-6">

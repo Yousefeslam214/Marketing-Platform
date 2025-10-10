@@ -1,7 +1,6 @@
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getTranslation } from "@/lib/translations";
 
 export default function FAQ() {
   const { language, isRTL } = useLanguage();
@@ -24,15 +23,6 @@ export default function FAQ() {
 
   // Get translations for each question
   const translatedFAQs = faqQuestions.map((faq) => {
-    const questionPath = `questions.${faq.key}.question`;
-    const answerPath = `questions.${faq.key}.answer`;
-
-    // Access the nested translation directly
-    const faqSection =
-      language === "ar"
-        ? (window as any).translations?.ar?.faq?.questions?.[faq.key]
-        : (window as any).translations?.en?.faq?.questions?.[faq.key];
-
     let question = "";
     let answer = "";
 

@@ -11,8 +11,8 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const { user, isLoading } = useAuth();
-  const { language, dir, toggleLanguage, isRTL } = useLanguage();
+  const { isLoading } = useAuth();
+  const { isRTL } = useLanguage();
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -20,7 +20,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   if (isLoading) {
     return (
       <div
-        className={`min-h-screen bg-background flex items-center justify-center ${dir}`}>
+        className={`min-h-screen bg-background flex items-center justify-center ${isRTL}`}>
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
@@ -29,7 +29,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   // If user is authenticated, show sidebar + content layout
   if (TokenManager.getAccessToken()) {
     return (
-      <div className={`min-h-screen bg-background flex ${dir}`} dir={dir}>
+      <div className={`min-h-screen bg-background flex ${isRTL}`}>
         {/* Desktop sidebar - always visible */}
         {!isMobile && <Sidebar isOpen={true} onClose={() => {}} />}
 
@@ -49,9 +49,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  console.log(
-                    "Mobile menu clicked, setting sidebar open to true"
-                  );
                   setSidebarOpen(true);
                 }}
                 className="md:hidden">
@@ -64,7 +61,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </span>
             </div>
           )}
-          <div className={`px-6 ${dir}`}>{children}</div>
+          <div className={`px-6 ${isRTL}`}>{children}</div>
         </main>
       </div>
     );
@@ -72,7 +69,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   // If user is not authenticated, show content without sidebar
   return (
-    <div className={`min-h-screen bg-background ${dir}`} dir={dir}>
+    <div className={`min-h-screen bg-background ${isRTL}`}>
       {children}
     </div>
   );

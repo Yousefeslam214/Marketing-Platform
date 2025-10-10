@@ -1,6 +1,7 @@
 // Payment service for handling Stripe payments
 import { StripeService } from "@/lib/stripe";
 import { TokenManager } from "@/lib/auth";
+import { toast } from "@/hooks/use-toast";
 
 export interface PaymentData {
   amount: number;
@@ -73,7 +74,14 @@ export class PaymentService {
         );
       }
     } catch (error) {
-      console.error("Payment redirect failed:", error);
+      toast({
+        title: "Payment Error",
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred during payment.",
+        variant: "destructive",
+      });
       throw error;
     }
   }

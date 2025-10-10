@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
 const PublicFooter = () => {
-  const { isRTL, t } = useLanguage();
+  const { t } = useLanguage();
   return (
     <footer
       id="contact"
@@ -19,7 +19,8 @@ const PublicFooter = () => {
               <img src="/logo.webp" alt="Logo" className="w-[100px] h-10" />
             </div>
             <p className="text-muted-foreground">
-              {t("landing", "footer.description" as any)}
+              {/* use nested key via dot-path since TranslationKey expects simple keys; getTranslation supports dot-paths */}
+              {t("landing", "footer.description")}
             </p>
 
             <div
@@ -53,35 +54,35 @@ const PublicFooter = () => {
 
           <div>
             <h4 className="font-semibold mb-4">
-              {t("landing", "footer.product" as any)}
+              {t("landing", "footer.product")}
             </h4>
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <a
                   href="#features"
                   className="hover:text-primary transition-colors">
-                  {t("landing", "navigation.features" as any)}
+                  {t("landing", "navigation.features")}
                 </a>
               </li>
               <li>
                 <a
                   href="#pricing"
                   className="hover:text-primary transition-colors">
-                  {t("landing", "navigation.pricing" as any)}
+                  {t("landing", "navigation.pricing")}
                 </a>
               </li>
               <li>
                 <a
                   href="/login"
                   className="hover:text-primary transition-colors">
-                  {t("auth", "signInTitle" as any)}
+                  {t("auth", "signInTitle")}
                 </a>
               </li>
               <li>
                 <a
                   href="/signup"
                   className="hover:text-primary transition-colors">
-                  {t("auth", "signUpTitle" as any)}
+                  {t("auth", "signUpTitle")}
                 </a>
               </li>
             </ul>
@@ -89,35 +90,35 @@ const PublicFooter = () => {
 
           <div>
             <h4 className="font-semibold mb-4">
-              {t("landing", "footer.support" as any)}
+              {t("landing", "footer.support")}
             </h4>
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <Link
                   href="/contact"
                   className="hover:text-primary transition-colors">
-                  {t("sidebar", "contact" as any)}
+                  {t("sidebar", "contact")}
                 </Link>
               </li>
               <li>
                 <Link
                   href="/faq"
                   className="hover:text-primary transition-colors">
-                  {t("sidebar", "faq" as any)}
+                  {t("sidebar", "faq")}
                 </Link>
               </li>
               <li>
                 <Link
                   href="/privacy-terms"
                   className="hover:text-primary transition-colors">
-                  {t("sidebar", "privacyTerms" as any)}
+                  {t("sidebar", "privacyTerms")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">{t("sidebar", "contact" as any)}</h4>
+            <h4 className="font-semibold mb-4">{t("sidebar", "contact")}</h4>
             <ul className="space-y-2 text-muted-foreground">
               <li className="flex items-center">
                 <i className="fas fa-envelope mx-2"></i>
@@ -140,7 +141,7 @@ const PublicFooter = () => {
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2025 Octopus. All rights reserved.</p>
+          <p>{t("landing", "footer.copyright")}</p>
         </div>
       </div>
     </footer>

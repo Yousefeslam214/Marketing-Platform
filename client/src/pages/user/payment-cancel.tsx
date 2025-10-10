@@ -4,12 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useLanguage } from "@/hooks/use-language";
 
 export default function PaymentCancel() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     toast({

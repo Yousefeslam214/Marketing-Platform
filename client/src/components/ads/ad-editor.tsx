@@ -32,7 +32,7 @@ import { locationOptions } from "./targeting-form";
 export function AdEditor() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
+  const { t } = useLanguage();
   const queryClient = useQueryClient();
 
   const form = useForm<CreateAdData>({
@@ -67,16 +67,15 @@ export function AdEditor() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
       toast({
-        title: t("ads", "newAd.createSuccess"),
-        description: t("ads", "newAd.description"),
+        title: (t as any)("ads", "newAd.createSuccess"),
+        description: (t as any)("ads", "newAd.description"),
       });
 
       // Check if we have a valid AdId
       const adId = data.data?.AdId;
       if (!adId) {
-        console.error("No AdId in response:", data);
         toast({
-          title: t("ads", "newAd.createFailed"),
+          title: (t as any)("ads", "newAd.createFailed"),
           description: t("ads", "updateAdFailedDescription"),
           variant: "destructive",
         });
@@ -105,7 +104,7 @@ export function AdEditor() {
   return (
     <Card>
       <CardHeader>
-  <CardTitle>{t("ads", "newAd.title")}</CardTitle>
+        <CardTitle>{(t as any)("ads", "newAd.title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -122,7 +121,7 @@ export function AdEditor() {
                       <Input
                         placeholder={t("ads", "titleEnPlaceholder")}
                         data-testid="input-title-en"
-                         {...field} // field is of type { field: any }
+                        {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -141,7 +140,7 @@ export function AdEditor() {
                         placeholder={t("ads", "titleArPlaceholder")}
                         dir="rtl"
                         data-testid="input-title-ar"
-                         {...field} // field is of type { field: any }
+                        {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -163,7 +162,7 @@ export function AdEditor() {
                         placeholder={t("ads", "descriptionEnPlaceholder")}
                         className="h-24 resize-none"
                         data-testid="textarea-description-en"
-                         {...field} // field is of type { field: any }
+                        {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -183,7 +182,7 @@ export function AdEditor() {
                         dir="rtl"
                         className="h-24 resize-none"
                         data-testid="textarea-description-ar"
-                         {...field} // field is of type { field: any }
+                        {...field} // field is of type { field: any }
                       />
                     </FormControl>
                     <FormMessage />
@@ -204,7 +203,7 @@ export function AdEditor() {
                       type="url"
                       placeholder={t("ads", "websiteUrlPlaceholder")}
                       data-testid="input-target-url"
-                       {...field} // field is of type { field: any }
+                      {...field} // field is of type { field: any }
                     />
                   </FormControl>
                   <FormMessage />
@@ -212,20 +211,7 @@ export function AdEditor() {
               )}
             />
 
-            {/* Image Upload */}
-            {/* <div>
-              <FormLabel>Ad Image</FormLabel>
-              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer mt-2">
-                <i className="fas fa-cloud-upload-alt text-4xl text-muted-foreground mb-4"></i>
-                <p className="text-sm font-medium text-foreground mb-2">
-                  Drop your image here or click to browse
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Supports JPG, PNG up to 5MB
-                </p>
-                <input type="file" className="hidden" accept="image/*" />
-              </div>
-            </div> */}
+         
 
             {/* Social Media Links */}
             <div>
@@ -244,7 +230,7 @@ export function AdEditor() {
                           type="url"
                           placeholder="https://facebook.com/..."
                           data-testid="input-facebook-link"
-                           {...field} // field is of type { field: any }
+                          {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -263,7 +249,7 @@ export function AdEditor() {
                           type="url"
                           placeholder="https://instagram.com/yourprofile"
                           data-testid="input-instagram-link"
-                           {...field} // field is of type { field: any }
+                          {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -282,7 +268,7 @@ export function AdEditor() {
                           type="url"
                           placeholder="https://tiktok.com/@yourusername"
                           data-testid="input-tiktok-link"
-                           {...field} // field is of type { field: any }
+                          {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -301,7 +287,7 @@ export function AdEditor() {
                           type="url"
                           placeholder="https://youtube.com/channel/yourchannel"
                           data-testid="input-youtube-link"
-                           {...field} // field is of type { field: any }
+                          {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -320,7 +306,7 @@ export function AdEditor() {
                           type="url"
                           placeholder="https://snapchat.com/add/yourusername"
                           data-testid="input-snapchat-link"
-                           {...field} // field is of type { field: any }
+                          {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -339,7 +325,7 @@ export function AdEditor() {
                           type="url"
                           placeholder="https://ads.google.com/your-campaign"
                           data-testid="input-google-ads-link"
-                           {...field} // field is of type { field: any }
+                          {...field} // field is of type { field: any }
                         />
                       </FormControl>
                       <FormMessage />
@@ -363,22 +349,38 @@ export function AdEditor() {
                       <FormControl>
                         <SelectTrigger data-testid="select-target-audience">
                           <SelectValue
-                            placeholder={
-                              t("ads", "targetAudiencePlaceholder")
-                            }
+                            placeholder={t("ads", "targetAudiencePlaceholder")}
                           />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="general">{t("ads", "audienceGeneral")}</SelectItem>
-                        <SelectItem value="cars">{t("ads", "audienceCars")}</SelectItem>
-                        <SelectItem value="tech">{t("ads", "audienceTech") || "Tech"}</SelectItem>
-                        <SelectItem value="machines">{t("ads", "audienceMachines")}</SelectItem>
-                        <SelectItem value="students">{t("ads", "audienceStudents")}</SelectItem>
-                        <SelectItem value="animals">{t("ads", "audienceAnimals")}</SelectItem>
-                        <SelectItem value="furniture">{t("ads", "audienceFurniture")}</SelectItem>
-                        <SelectItem value="services">{t("ads", "audienceServices")}</SelectItem>
-                        <SelectItem value="jobs">{t("ads", "audienceJobs")}</SelectItem>
+                        <SelectItem value="general">
+                          {t("ads", "audienceGeneral")}
+                        </SelectItem>
+                        <SelectItem value="cars">
+                          {t("ads", "audienceCars")}
+                        </SelectItem>
+                        <SelectItem value="tech">
+                          {(t as any)("ads", "audienceTech") || "Tech"}
+                        </SelectItem>
+                        <SelectItem value="machines">
+                          {t("ads", "audienceMachines")}
+                        </SelectItem>
+                        <SelectItem value="students">
+                          {t("ads", "audienceStudents")}
+                        </SelectItem>
+                        <SelectItem value="animals">
+                          {t("ads", "audienceAnimals")}
+                        </SelectItem>
+                        <SelectItem value="furniture">
+                          {t("ads", "audienceFurniture")}
+                        </SelectItem>
+                        <SelectItem value="services">
+                          {t("ads", "audienceServices")}
+                        </SelectItem>
+                        <SelectItem value="jobs">
+                          {t("ads", "audienceJobs")}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -398,14 +400,14 @@ export function AdEditor() {
                       <FormControl>
                         <SelectTrigger data-testid="select-budget-type">
                           <SelectValue
-                            placeholder={
-                              t("ads", "budgetTypePlaceholder")
-                            }
+                            placeholder={t("ads", "budgetTypePlaceholder")}
                           />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="impressions">{t("ads", "impressions")}</SelectItem>
+                        <SelectItem value="impressions">
+                          {t("ads", "impressions")}
+                        </SelectItem>
                         {/* <SelectItem value="clicks">
                           {(t as any).ads.editor.form.budgetOptions.clicks}
                         </SelectItem> */}
@@ -476,7 +478,7 @@ export function AdEditor() {
                 variant="outline"
                 onClick={() => setLocation("/campaigns")}
                 data-testid="button-cancel">
-                {t("profile", "actions.cancel")}
+                {(t as any)("profile", "actions.cancel")}
               </Button>
               <Button
                 type="submit"

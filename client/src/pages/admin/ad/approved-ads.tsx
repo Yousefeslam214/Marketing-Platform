@@ -1,9 +1,7 @@
-import { useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { AdCard, type AdData } from "@/components/ads/ad-card";
-import { TokenManager } from "@/lib/auth";
 import { useAdNavigation } from "@/hooks/use-path-handlers";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { DataPagination } from "@/components/ui/data-pagination";
@@ -25,7 +23,6 @@ export default function ApprovedAds() {
     handlePurchase,
   } = useAdNavigation();
 
-  const token = TokenManager.getAccessToken();
   const {
     data: ads,
     isLoading,

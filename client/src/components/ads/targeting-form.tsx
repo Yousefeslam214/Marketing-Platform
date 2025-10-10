@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/hooks/use-language";
 
 const targetingSchema = z.object({
   audience: z.string().min(1, "Target audience is required"),
@@ -98,17 +98,17 @@ export function TargetingForm({
       ...defaultValues,
     },
   });
-
+const { t } = useLanguage();
   const interestOptions = [
-    { value: "technology", label: "Technology" },
-    { value: "business", label: "Business" },
-    { value: "finance", label: "Finance" },
-    { value: "health", label: "Health & Wellness" },
-    { value: "fitness", label: "Fitness" },
-    { value: "food", label: "Food & Dining" },
-    { value: "travel", label: "Travel" },
-    { value: "education", label: "Education" },
-    { value: "entertainment", label: "Entertainment" },
+    { value: "technology", label: t("form", "technology") },
+    { value: "business", label: t("form", "business") },
+    { value: "finance", label: t("form", "finance") },
+    { value: "health", label: t("form", "health") },
+    { value: "fitness", label: t("form", "fitness") },
+    { value: "food", label: t("form", "food") },
+    { value: "travel", label: t("form", "travel") },
+    { value: "education", label: t("form", "education") },
+    { value: "entertainment", label: t("form", "entertainment") },
     { value: "shopping", label: "Shopping" },
     { value: "automotive", label: "Automotive" },
     { value: "real-estate", label: "Real Estate" },
@@ -393,47 +393,7 @@ export function TargetingForm({
               )}
             />
 
-            {/* Devices */}
-            <FormField
-              control={form.control}
-              name="devices"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Device Types</FormLabel>
-                  <div className="flex items-center gap-6 mt-2">
-                    {[
-                      { value: "mobile", label: "Mobile" },
-                      { value: "tablet", label: "Tablet" },
-                      { value: "desktop", label: "Desktop" },
-                    ].map((device) => (
-                      <div
-                        key={device.value}
-                        className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`device-${device.value}`}
-                          checked={field.value?.includes(device.value)}
-                          onCheckedChange={(checked) => {
-                            const updatedValue = checked
-                              ? [...(field.value || []), device.value]
-                              : (field.value || []).filter(
-                                  (value) => value !== device.value
-                                );
-                            field.onChange(updatedValue);
-                          }}
-                          data-testid={`checkbox-device-${device.value}`}
-                        />
-                        <label
-                          htmlFor={`device-${device.value}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          {device.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          
 
             {/* Daily Budget */}
             <FormField
@@ -441,11 +401,11 @@ export function TargetingForm({
               name="dailyBudget"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Daily Budget (USD)</FormLabel>
+                  <FormLabel>{t("form", "dailyBudget")}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-                        $
+                        ر.س
                       </span>
                       <Input
                         type="number"

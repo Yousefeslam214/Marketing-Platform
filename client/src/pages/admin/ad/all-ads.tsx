@@ -9,7 +9,6 @@ import { useAdNavigation } from "@/hooks/use-path-handlers";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { DataPagination } from "@/components/ui/data-pagination";
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
@@ -40,48 +39,9 @@ export default function AllAds() {
   // Get all ads from response
   const allAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
 
-  // Function to get status badge color
-  const getStatusBadgeColor = (status: string) => {
-    switch (status) {
-      case "approved":
-        return "bg-green-100 text-green-800 border-green-300";
-      case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300";
-      case "rejected":
-        return "bg-red-100 text-red-800 border-red-300";
-      case "draft":
-        return "bg-gray-100 text-gray-800 border-gray-300";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-300";
-    }
-  };
 
-  // Function to get status text
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "approved":
-        return isRTL ? "معتمد" : "Approved";
-      case "pending":
-        return isRTL ? "معلق" : "Pending";
-      case "rejected":
-        return isRTL ? "مرفوض" : "Rejected";
-      case "draft":
-        return isRTL ? "مسودة" : "Draft";
-      default:
-        return status;
-    }
-  };
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
 
-  // if (error) {
-  //   return (
-  //     <div className="flex flex-center justify-center h-screen bg-background">
-  //
-  //     </div>
-  //   );
-  // }
+ 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">

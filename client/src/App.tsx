@@ -57,7 +57,6 @@ import UserDetails from "./pages/admin/user-details-mangement-page";
 import AnalyticsToAd from "./pages/user/analytics-to-ad";
 import AdDetail from "./pages/shared/ad/[id]";
 import LandingPage from "./pages/public/landing";
-import PublicHeader from "./components/layout/publicHeader";
 import { PublicLayout } from "./components/layout/public-layout";
 import { TokenManager } from "./lib/auth";
 import AdminImpressionRatios from "./pages/admin/AdminImpressionRatios";
@@ -187,7 +186,7 @@ function Router() {
       />
       <Route
         path={analyticsCampaignPath(":id")}
-        component={(props: { params: { id: string } }) => (
+        component={() => (
           <AppLayout>
             <AnalyticsToAd />
           </AppLayout>
@@ -219,7 +218,7 @@ function Router() {
       />
       <Route
         path={editAdPath(":adId")}
-        component={(props: { params: { adId: string } }) => (
+        component={() => (
           <AppLayout>
             <EditAd />
           </AppLayout>
@@ -227,7 +226,7 @@ function Router() {
       />
       <Route
         path="/ads/:adId/upload-photo"
-        component={(props: { params: { adId: string } }) => (
+        component={() => (
           <AppLayout>
             <UploadPhoto />
           </AppLayout>
@@ -235,7 +234,7 @@ function Router() {
       />
       <Route
         path="/ads/:adId/assign-credit"
-        component={(props: { params: { adId: string } }) => (
+        component={() => (
           <AppLayout>
             <AssignCredit />
           </AppLayout>
