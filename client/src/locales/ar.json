@@ -389,6 +389,7 @@
   },
   "uploadPhoto": {
     "Upload a Photo": "رفع صورة",
+    "Ensure your photo is less than 1MB in size": "تأكد من أن حجم الصورة أقل من 1 ميجابايت",
     "Please upload a photo for your ad": "يرجى رفع صورة لإعلانك.",
     "Upload Ad Photo": "رفع صورة الإعلان",
     "Please upload a photo for your ad.": "يرجى رفع صورة لإعلانك.",
