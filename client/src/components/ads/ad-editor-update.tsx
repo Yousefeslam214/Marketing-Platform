@@ -109,14 +109,17 @@ export function AdEditor({
         setPhotoPreview(photoUrl);
         toast({
           title: (t as any).ads.editorUpdate.photoUpload.success.title,
-          description: (t as any).ads.editorUpdate.photoUpload.success.description,
+          description: (t as any).ads.editorUpdate.photoUpload.success
+            .description,
         });
       }
     },
     onError: (error: any) => {
       toast({
         title: (t as any).ads.editorUpdate.photoUpload.error.title,
-        description: error.message || (t as any).ads.editorUpdate.photoUpload.error.description,
+        description:
+          error.message ||
+          (t as any).ads.editorUpdate.photoUpload.error.description,
         variant: "destructive",
       });
       // If upload fails, remove the preview if it was a local preview
@@ -183,13 +186,14 @@ export function AdEditor({
         title: (t as any).ads.editorUpdate.success.title,
         description: (t as any).ads.editorUpdate.success.description,
       });
-      console.log(data);
+
       setLocation(`/campaigns/${adId}`);
     },
     onError: (error: any) => {
       toast({
         title: (t as any).ads.editorUpdate.error.title,
-        description: error.message || (t as any).ads.editorUpdate.error.description,
+        description:
+          error.message || (t as any).ads.editorUpdate.error.description,
         variant: "destructive",
       });
     },
@@ -214,10 +218,14 @@ export function AdEditor({
                 name="titleEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editorUpdate.form.titleEn}</FormLabel>
+                    <FormLabel>
+                      {(t as any).ads.editorUpdate.form.titleEn}
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={(t as any).ads.editorUpdate.form.titleEnPlaceholder}
+                        placeholder={
+                          (t as any).ads.editorUpdate.form.titleEnPlaceholder
+                        }
                         data-testid="input-title-en"
                         {...field}
                       />
@@ -297,7 +305,9 @@ export function AdEditor({
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{(t as any).ads.editorUpdate.form.adPhoto}</FormLabel>
+                      <FormLabel>
+                        {(t as any).ads.editorUpdate.form.adPhoto}
+                      </FormLabel>
                       <FormControl>
                         <div className="space-y-4">
                           {/* Photo Preview */}

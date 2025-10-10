@@ -10,45 +10,44 @@ export const handleApprove = async (
   try {
     // Get fresh token on each request
     const token = TokenManager.getAccessToken();
-    
+
     if (!token) {
       toast({
         title: isRTL ? "غير مصرح لك" : "Not authorized",
-        description: isRTL ? "يرجى تسجيل الدخول مرة أخرى" : "Please login again",
+        description: isRTL
+          ? "يرجى تسجيل الدخول مرة أخرى"
+          : "Please login again",
         variant: "destructive",
       });
       return;
     }
 
-    console.log(`Approving ad ${id}...`);
-    
     const res = await fetch(
       `${VITE_API_BASE_URL}/api/advertising/${id}/approve`,
       {
         method: "PUT",
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       }
     );
 
-    console.log(`Approve response status: ${res.status}`);
-
     if (res.ok) {
       const responseData = await res.json();
-      console.log("Approve response data:", responseData);
-      
-      toast({ 
-        title: isRTL ? "تمت الموافقة على الإعلان" : "Ad approved successfully" 
+
+      toast({
+        title: isRTL ? "تمت الموافقة على الإعلان" : "Ad approved successfully",
       });
       refetch();
     } else {
       const errorData = await res.json().catch(() => ({}));
       console.error("Approve failed:", res.status, errorData);
-      
-      let errorMessage = isRTL ? "فشل في الموافقة على الإعلان" : "Failed to approve ad";
-      
+
+      let errorMessage = isRTL
+        ? "فشل في الموافقة على الإعلان"
+        : "Failed to approve ad";
+
       if (res.status === 401) {
         errorMessage = isRTL ? "غير مصرح لك" : "Unauthorized access";
       } else if (res.status === 403) {
@@ -58,7 +57,7 @@ export const handleApprove = async (
       } else if (errorData.message) {
         errorMessage = errorData.message;
       }
-      
+
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -68,7 +67,9 @@ export const handleApprove = async (
     console.error("Network error during approve:", error);
     toast({
       title: isRTL ? "خطأ في الشبكة" : "Network error",
-      description: isRTL ? "يرجى التحقق من الاتصال والمحاولة مرة أخرى" : "Please check your connection and try again",
+      description: isRTL
+        ? "يرجى التحقق من الاتصال والمحاولة مرة أخرى"
+        : "Please check your connection and try again",
       variant: "destructive",
     });
   }
@@ -82,42 +83,42 @@ export const handleReject = async (
   try {
     // Get fresh token on each request
     const token = TokenManager.getAccessToken();
-    
+
     if (!token) {
       toast({
         title: isRTL ? "غير مصرح لك" : "Not authorized",
-        description: isRTL ? "يرجى تسجيل الدخول مرة أخرى" : "Please login again",
+        description: isRTL
+          ? "يرجى تسجيل الدخول مرة أخرى"
+          : "Please login again",
         variant: "destructive",
       });
       return;
     }
 
-    console.log(`Rejecting ad ${id}...`);
-    
-    const res = await fetch(`${VITE_API_BASE_URL}/api/advertising/${id}/reject`, {
-      method: "PUT",
-      headers: { 
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-    });
-
-    console.log(`Reject response status: ${res.status}`);
+    const res = await fetch(
+      `${VITE_API_BASE_URL}/api/advertising/${id}/reject`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (res.ok) {
       const responseData = await res.json();
-      console.log("Reject response data:", responseData);
-      
-      toast({ 
-        title: isRTL ? "تم رفض الإعلان" : "Ad rejected successfully" 
+
+      toast({
+        title: isRTL ? "تم رفض الإعلان" : "Ad rejected successfully",
       });
       refetch();
     } else {
       const errorData = await res.json().catch(() => ({}));
       console.error("Reject failed:", res.status, errorData);
-      
+
       let errorMessage = isRTL ? "فشل في رفض الإعلان" : "Failed to reject ad";
-      
+
       if (res.status === 401) {
         errorMessage = isRTL ? "غير مصرح لك" : "Unauthorized access";
       } else if (res.status === 403) {
@@ -127,7 +128,7 @@ export const handleReject = async (
       } else if (errorData.message) {
         errorMessage = errorData.message;
       }
-      
+
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -137,7 +138,9 @@ export const handleReject = async (
     console.error("Network error during reject:", error);
     toast({
       title: isRTL ? "خطأ في الشبكة" : "Network error",
-      description: isRTL ? "يرجى التحقق من الاتصال والمحاولة مرة أخرى" : "Please check your connection and try again",
+      description: isRTL
+        ? "يرجى التحقق من الاتصال والمحاولة مرة أخرى"
+        : "Please check your connection and try again",
       variant: "destructive",
     });
   }

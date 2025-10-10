@@ -75,7 +75,7 @@ export default function AdsFeed() {
         throw new Error("Failed to fetch ads");
       }
       const rtn = await response.json();
-      console.log(rtn?.data);
+
       return rtn;
     },
     retry: 1,

@@ -29,7 +29,6 @@ export default function AdsIndex() {
     url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,
   });
 
-  console.log(ads);
   // Type-safe ads array
   const safeAds = (ads?.data as any[]) || [];
 
@@ -89,7 +88,8 @@ export default function AdsIndex() {
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between text-sm text-muted-foreground
+                    <div
+                      className="flex items-center justify-between text-sm text-muted-foreground
                     flex flex-col overflow-hidden
                     ">
                       <span>
@@ -109,9 +109,7 @@ export default function AdsIndex() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() =>
-                          setLocation(editAdPath(ad.id))
-                        }
+                        onClick={() => setLocation(editAdPath(ad.id))}
                         data-testid={`button-edit-${ad.id}`}>
                         {t("ads", "edit")}
                       </Button>

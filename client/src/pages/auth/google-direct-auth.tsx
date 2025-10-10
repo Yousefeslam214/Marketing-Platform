@@ -8,10 +8,10 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export default function GoogleDirectAuth() {
   // Add immediate logging to ensure this component loads
-  console.log("🚀 GoogleDirectAuth component loaded");
-  console.log("🌐 Current URL:", window.location.href);
-  console.log("🪟 Popup functionality disabled - using direct auth only");
-  console.log("📦 localStorage keys:", Object.keys(localStorage));
+  
+  
+  
+  );
 
   const [, setLocation] = useLocation();
   const { toast } = useToast();
@@ -24,12 +24,12 @@ export default function GoogleDirectAuth() {
   useEffect(() => {
     const handleDirectAuth = async () => {
       try {
-        console.log("🔄 Handling Google direct auth...", window.location.href);
+        
         setStatusMessage("Processing Google authentication...");
 
         // Check if this is running in a popup (for popup flow)
         const isPopup = false; // Disable popup functionality
-        console.log("🪟 Popup functionality disabled - using direct auth only");
+        
 
         // Get URL parameters to check what we received
         const urlParams = new URLSearchParams(window.location.search);
@@ -39,12 +39,12 @@ export default function GoogleDirectAuth() {
         const username = urlParams.get("username");
         const role = urlParams.get("role");
 
-        console.log("� URL Parameters:");
-        console.log("  - code:", code ? "Found" : "Not found");
-        console.log("  - token:", token ? "Found" : "Not found");
-        console.log("  - username:", username || "Not found");
-        console.log("  - role:", role || "Not found");
-        console.log("  - error:", error || "None");
+        
+        
+        
+        
+        
+        
 
         if (error) {
           throw new Error(`Google OAuth error: ${error}`);
@@ -52,7 +52,7 @@ export default function GoogleDirectAuth() {
 
         // If we already have token data from URL params (backend processed the auth)
         if (token && username && role) {
-          console.log("✅ Found auth data in URL parameters, processing...");
+          
           setStatusMessage("Setting up your session...");
 
           // Handle authentication directly (no popup logic)
@@ -61,7 +61,7 @@ export default function GoogleDirectAuth() {
             username,
             role
           );
-          console.log("✅ Authentication result:", result);
+          
 
           setStatusMessage("Redirecting to dashboard...");
 
@@ -94,11 +94,11 @@ export default function GoogleDirectAuth() {
             // Try to parse any JSON response from the page
             const pageText =
               document.body.innerText || document.body.textContent || "";
-            console.log("📄 Page content:", pageText);
+            
 
             try {
               const responseData = JSON.parse(pageText);
-              console.log("✅ Parsed response data:", responseData);
+              
 
               if (
                 responseData.success &&
@@ -143,7 +143,7 @@ export default function GoogleDirectAuth() {
                           },
                           parentOrigin
                         );
-                        console.log("📤 PostMessage sent as backup");
+                        
                       }
                     } catch (postMessageError) {
                       console.log(
@@ -195,7 +195,7 @@ export default function GoogleDirectAuth() {
             }
 
             // If we still don't have auth data after a delay, there might be an error
-            console.log("❌ No authentication data found after processing");
+            
             throw new Error("Authentication processing failed");
           }, 1000);
 
@@ -204,20 +204,20 @@ export default function GoogleDirectAuth() {
 
         // If no code, try to parse JSON from page content as fallback
         if (window.location.pathname === "/api/auth/google/login") {
-          console.log("Trying to parse JSON from page content...");
-          console.log("Current URL:", window.location.href);
-          console.log("Is popup?", isPopup);
+          
+          
+          
 
           setStatusMessage("Processing authentication response...");
           const pageText =
             document.body.innerText || document.body.textContent || "";
 
-          console.log("Raw page text:", pageText);
-          console.log("Page text length:", pageText.length);
+          
+          
 
           try {
             const responseData = JSON.parse(pageText);
-            console.log("Parsed response data:", responseData);
+            
 
             if (
               responseData.success &&

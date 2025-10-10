@@ -22,10 +22,6 @@ export default function UploadPhoto() {
   const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
 
   // Debug logging
-  console.log("UploadPhoto component - Route match:", match);
-  console.log("UploadPhoto component - Route params:", params);
-  console.log("UploadPhoto component - AdId:", params?.adId);
-  console.log("UploadPhoto component - Current URL:", window.location.pathname);
 
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
@@ -50,14 +46,10 @@ export default function UploadPhoto() {
   }
 
   const adId = params.adId;
-  console.log("Using adId for upload:", adId);
 
   // Photo upload mutation
   const uploadPhotoMutation = useMutation({
     mutationFn: async (file: File) => {
-      console.log("Starting upload for adId:", adId);
-      console.log("File details:", { name: file.name, size: file.size, type: file.type });
-      
       if (!adId) {
         throw new Error((t as any).ads.uploadPhoto.errors.invalidAdId);
       }
@@ -66,7 +58,6 @@ export default function UploadPhoto() {
       formData.append("photo", file);
 
       const uploadUrl = `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`;
-      console.log("Upload URL:", uploadUrl);
 
       const response = await fetch(uploadUrl, {
         method: "POST",
@@ -76,8 +67,6 @@ export default function UploadPhoto() {
         body: formData,
       });
 
-      console.log("Upload response status:", response.status);
-
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Upload error:", response.status, errorText);
@@ -85,7 +74,7 @@ export default function UploadPhoto() {
       }
 
       const result = await response.json();
-      console.log("Upload success:", result);
+
       return result;
     },
     onSuccess: (data) => {
@@ -106,7 +95,8 @@ export default function UploadPhoto() {
     onError: (error: any) => {
       toast({
         title: (t as any).ads.uploadPhoto.errors.title,
-        description: error.message || (t as any).ads.uploadPhoto.errors.uploadFailed,
+        description:
+          error.message || (t as any).ads.uploadPhoto.errors.uploadFailed,
         variant: "destructive",
       });
       // If upload fails, remove the preview
@@ -136,8 +126,14 @@ export default function UploadPhoto() {
       const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSizeInBytes) {
         toast({
-          title: (t as any).ads.uploadPhoto.errors.fileTooLarge.replace('{size}', '5MB'),
-          description: (t as any).ads.uploadPhoto.errors.currentSize.replace('{size}', `${(file.size / 1024 / 1024).toFixed(2)}MB`),
+          title: (t as any).ads.uploadPhoto.errors.fileTooLarge.replace(
+            "{size}",
+            "5MB"
+          ),
+          description: (t as any).ads.uploadPhoto.errors.currentSize.replace(
+            "{size}",
+            `${(file.size / 1024 / 1024).toFixed(2)}MB`
+          ),
           variant: "destructive",
         });
         return;
@@ -266,7 +262,9 @@ export default function UploadPhoto() {
                         ) : (
                           <>
                             <i className="fas fa-upload mr-2"></i>
-                            {photoPreview ? (t as any).ads.uploadPhoto.buttons.change : (t as any).ads.uploadPhoto.buttons.choose}
+                            {photoPreview
+                              ? (t as any).ads.uploadPhoto.buttons.change
+                              : (t as any).ads.uploadPhoto.buttons.choose}
                           </>
                         )}
                       </Button>
@@ -284,9 +282,16 @@ export default function UploadPhoto() {
                     </h4>
                     <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                       <li>• {(t as any).ads.uploadPhoto.guidelines.highRes}</li>
-                      <li>• {(t as any).ads.uploadPhoto.guidelines.goodLighting}</li>
-                      <li>• {(t as any).ads.uploadPhoto.guidelines.avoidText}</li>
-                      <li>• {(t as any).ads.uploadPhoto.guidelines.relateToAudience}</li>
+                      <li>
+                        • {(t as any).ads.uploadPhoto.guidelines.goodLighting}
+                      </li>
+                      <li>
+                        • {(t as any).ads.uploadPhoto.guidelines.avoidText}
+                      </li>
+                      <li>
+                        •{" "}
+                        {(t as any).ads.uploadPhoto.guidelines.relateToAudience}
+                      </li>
                     </ul>
                   </div>
 

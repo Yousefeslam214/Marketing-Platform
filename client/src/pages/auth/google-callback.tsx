@@ -25,7 +25,6 @@ export default function GoogleCallback() {
         }
 
         setStatusMessage("Exchanging code for access token...");
-        console.log("Exchanging authorization code:", code);
 
         // Call your backend API to exchange the code for tokens
         const response = await fetch(
@@ -46,13 +45,16 @@ export default function GoogleCallback() {
         }
 
         const data = await response.json();
-        console.log("Backend response:", data);
 
         if (data.success && data.data?.token) {
           setStatusMessage("Authentication successful! Redirecting...");
 
           // Redirect directly to dashboard with token parameter
-          window.location.href = `/dashboard?token=${data.data.token}&username=${data.data.username || data.data.name}&role=${data.data.role || "user"}`;
+          window.location.href = `/dashboard?token=${
+            data.data.token
+          }&username=${data.data.username || data.data.name}&role=${
+            data.data.role || "user"
+          }`;
         } else {
           throw new Error(
             data.message || "Invalid response format from backend"

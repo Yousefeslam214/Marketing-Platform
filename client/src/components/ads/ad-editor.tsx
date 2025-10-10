@@ -70,9 +70,7 @@ export function AdEditor() {
         title: (t as any).ads.editor.success.title,
         description: (t as any).ads.editor.success.description,
       });
-      console.log("Ad creation response:", data);
-      console.log("AdId from response:", data.data?.AdId);
-      
+
       // Check if we have a valid AdId
       const adId = data.data?.AdId;
       if (!adId) {
@@ -85,10 +83,10 @@ export function AdEditor() {
         setLocation("/ads"); // Redirect to ads list instead
         return;
       }
-      
+
       // Redirect to photo upload page
       const uploadUrl = `/ads/${adId}/upload-photo`;
-      console.log("Redirecting to:", uploadUrl);
+
       setLocation(uploadUrl);
     },
     onError: (error: any) => {
@@ -122,7 +120,9 @@ export function AdEditor() {
                     <FormLabel>{(t as any).ads.editor.form.titleEn}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={(t as any).ads.editor.form.titleEnPlaceholder}
+                        placeholder={
+                          (t as any).ads.editor.form.titleEnPlaceholder
+                        }
                         data-testid="input-title-en"
                         {...field}
                       />
@@ -140,7 +140,9 @@ export function AdEditor() {
                     <FormLabel>{(t as any).ads.editor.form.titleAr}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={(t as any).ads.editor.form.titleArPlaceholder}
+                        placeholder={
+                          (t as any).ads.editor.form.titleArPlaceholder
+                        }
                         dir="rtl"
                         data-testid="input-title-ar"
                         {...field}
@@ -159,10 +161,14 @@ export function AdEditor() {
                 name="descriptionEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editor.form.descriptionEn}</FormLabel>
+                    <FormLabel>
+                      {(t as any).ads.editor.form.descriptionEn}
+                    </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={(t as any).ads.editor.form.descriptionEnPlaceholder}
+                        placeholder={
+                          (t as any).ads.editor.form.descriptionEnPlaceholder
+                        }
                         className="h-24 resize-none"
                         data-testid="textarea-description-en"
                         {...field}
@@ -178,10 +184,14 @@ export function AdEditor() {
                 name="descriptionAr"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editor.form.descriptionAr}</FormLabel>
+                    <FormLabel>
+                      {(t as any).ads.editor.form.descriptionAr}
+                    </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={(t as any).ads.editor.form.descriptionArPlaceholder}
+                        placeholder={
+                          (t as any).ads.editor.form.descriptionArPlaceholder
+                        }
                         dir="rtl"
                         className="h-24 resize-none"
                         data-testid="textarea-description-ar"
@@ -204,7 +214,9 @@ export function AdEditor() {
                   <FormControl>
                     <Input
                       type="url"
-                      placeholder={(t as any).ads.editor.form.websiteUrlPlaceholder}
+                      placeholder={
+                        (t as any).ads.editor.form.websiteUrlPlaceholder
+                      }
                       data-testid="input-target-url"
                       {...field}
                     />
@@ -240,11 +252,15 @@ export function AdEditor() {
                   name="facebookLink"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{(t as any).ads.editor.form.facebookLink}</FormLabel>
+                      <FormLabel>
+                        {(t as any).ads.editor.form.facebookLink}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="url"
-                          placeholder={(t as any).ads.editor.form.facebookPlaceholder}
+                          placeholder={
+                            (t as any).ads.editor.form.facebookPlaceholder
+                          }
                           data-testid="input-facebook-link"
                           {...field}
                         />
@@ -358,24 +374,34 @@ export function AdEditor() {
                 name="targetAudience"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editor.form.targetAudience}</FormLabel>
+                    <FormLabel>
+                      {(t as any).ads.editor.form.targetAudience}
+                    </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger data-testid="select-target-audience">
-                          <SelectValue placeholder={(t as any).ads.editor.form.selectAudience} />
+                          <SelectValue
+                            placeholder={
+                              (t as any).ads.editor.form.selectAudience
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="general">
                           {(t as any).ads.editor.form.audienceOptions.general}
                         </SelectItem>
-                        <SelectItem value="tech">{(t as any).ads.editor.form.audienceOptions.tech}</SelectItem>
+                        <SelectItem value="tech">
+                          {(t as any).ads.editor.form.audienceOptions.tech}
+                        </SelectItem>
                         <SelectItem value="business">
                           {(t as any).ads.editor.form.audienceOptions.business}
                         </SelectItem>
-                        <SelectItem value="students">{(t as any).ads.editor.form.audienceOptions.students}</SelectItem>
+                        <SelectItem value="students">
+                          {(t as any).ads.editor.form.audienceOptions.students}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -388,20 +414,28 @@ export function AdEditor() {
                 name="budgetType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editor.form.budgetType}</FormLabel>
+                    <FormLabel>
+                      {(t as any).ads.editor.form.budgetType}
+                    </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger data-testid="select-budget-type">
-                          <SelectValue placeholder={(t as any).ads.editor.form.selectBudgetType} />
+                          <SelectValue
+                            placeholder={
+                              (t as any).ads.editor.form.selectBudgetType
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="impressions">
                           {(t as any).ads.editor.form.budgetOptions.impressions}
                         </SelectItem>
-                        <SelectItem value="clicks">{(t as any).ads.editor.form.budgetOptions.clicks}</SelectItem>
+                        <SelectItem value="clicks">
+                          {(t as any).ads.editor.form.budgetOptions.clicks}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -417,7 +451,9 @@ export function AdEditor() {
                 name="targetCities"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{(t as any).ads.editor.form.targetCities}</FormLabel>
+                    <FormLabel>
+                      {(t as any).ads.editor.form.targetCities}
+                    </FormLabel>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {locationOptions.map((city) => (

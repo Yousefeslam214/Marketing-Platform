@@ -66,8 +66,8 @@ function Router() {
   const role = TokenManager.getRole();
   let auth = false;
   if (TokenManager.getAccessToken()) auth = true;
-  console.log("Auth status in Router:", auth);
-  console.log("Access Token:", TokenManager.getAccessToken());
+  
+  );
   return (
     <Switch>
       {/* Public pages */}

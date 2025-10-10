@@ -38,7 +38,7 @@ export default function ApprovedAds() {
 
   // Filter approved ads and type safely
   const approvedAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
-  console.log(approvedAds);
+
   if (isLoading) {
     <Loading />;
   }

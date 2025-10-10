@@ -14,7 +14,6 @@ async function updateUserRole(
       .where(eq(users.email, email))
       .returning();
 
-    console.log("User updated:", updatedUser);
     process.exit(0);
   } catch (error) {
     console.error("Error updating user:", error);

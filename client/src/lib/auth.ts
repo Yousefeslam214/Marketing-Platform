@@ -18,7 +18,7 @@ export class AuthService {
     );
 
     const result = await response.json();
-    console.log("Login response:", result);
+
     const rtnData = result?.data;
     if (rtnData?.token) {
       TokenManager.setTokens(rtnData.token, rtnData.username, rtnData.role);
@@ -39,7 +39,7 @@ export class AuthService {
     );
 
     const result = await response.json();
-    console.log("Signup response:", result);
+
     const rtnData = result?.data;
 
     if (rtnData?.token) {
@@ -80,7 +80,6 @@ export class AuthService {
       `${BACKEND_URL}/api/auth/google/generateAuthUrl`
     );
     const result = await response.json();
-    console.log("Google auth URL response:", result);
 
     // Handle different possible response structures
     const authUrl =

@@ -24,7 +24,7 @@ export default function Dashboard() {
   //   queryKey: ["/api/dashboard/user"],
   //   enabled: !!access_token,
   // });
-  // console.log(dashboardData?.data);
+  //
   const {
     data: dashboardData,
     isLoading: metricsLoading,
@@ -39,61 +39,48 @@ export default function Dashboard() {
   useEffect(() => {
     // Only run token detection logic if we're on the dashboard page
     const currentPath = window.location.pathname;
-    if (!currentPath.includes('/dashboard')) {
-      console.log("Not on dashboard page, skipping token detection");
+    if (!currentPath.includes("/dashboard")) {
       return;
     }
 
     // Handle both correct (?token=...) and incorrect (&token=...) URL formats
     let tokenFromUrl = null;
-    
+
     // First, try standard URL parameters (after ?)
     const urlParams = new URLSearchParams(window.location.search);
     tokenFromUrl = urlParams.get("token");
     const roleFromUrl = urlParams.get("role");
     const usernameFromUrl = urlParams.get("username");
-    console.log("Token from URL:", tokenFromUrl);
-    console.log("Role from URL:", roleFromUrl);
-    console.log("Username from URL:", usernameFromUrl);
-    console.log("Full URL:", window.location.href);
-    console.log("urlParams", urlParams);
-    
+
     // If no token found and URL contains &token=, handle the incorrect format
     if (!tokenFromUrl && window.location.href.includes("&token=")) {
-      console.log("🔧 Detected incorrect URL format with &token= instead of ?token=");
-      
       // Extract token from the malformed URL
       const urlParts = window.location.href.split("&token=");
       if (urlParts.length > 1) {
         // Get the token part and remove any additional parameters
         tokenFromUrl = urlParts[1].split("&")[0];
-        console.log("🔧 Extracted token from malformed URL:", tokenFromUrl);
-        
+
         // Fix the URL format and redirect to correct format
         const baseUrl = urlParts[0];
         const correctUrl = `${baseUrl}?token=${tokenFromUrl}`;
-        console.log("🔧 Redirecting to correct URL format:", correctUrl);
+
         window.location.href = correctUrl;
         return; // Exit early as we're redirecting
       }
     }
-    
-    console.log("Token from URL:", tokenFromUrl);
-    
+
     if (tokenFromUrl) {
       // Set the token in localStorage for authentication
       TokenManager.setTokens(
-        tokenFromUrl, 
-        usernameFromUrl || "", 
+        tokenFromUrl,
+        usernameFromUrl || "",
         roleFromUrl || ""
       );
-      
+
       // Remove token from URL for security and clean URL
       const newUrl = window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
-      
-      console.log("Token from URL detected and set:", tokenFromUrl);
-      
+
       // Trigger refetch of dashboard data with new token
       setTimeout(() => {
         refetch();
@@ -102,14 +89,12 @@ export default function Dashboard() {
       // No token in URL, check if user is authenticated
       const currentToken = TokenManager.getAccessToken();
       if (!currentToken) {
-        console.log("No token in URL and not authenticated, redirecting to login");
         setLocation("/login");
         return;
       }
     }
   }, [refetch, setLocation]);
 
-  console.log(dashboardData?.data);
   // const dashboardData2 = Array.isArray(dashboardData?.data) ? (dashboardData?.data as AdData[]) : [];
 
   // Type-safe metrics with defaults from the new API structure
@@ -128,7 +113,6 @@ export default function Dashboard() {
     creditsRemaining: stats.remainingBalance || 0,
     balanceGrowth: stats.balanceGrowth || 0,
   };
-  console.log(safeMetrics);
 
   const handleCreateAd = () => {
     setLocation("/campaigns/new");

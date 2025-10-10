@@ -31,7 +31,7 @@ export default function AllAds() {
     key: ["/ads/all", page, limit],
     url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,
   });
-console.log(ads);
+
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
     return null;
@@ -113,8 +113,8 @@ console.log(ads);
               />
             </div>
           ) : allAds.length > 0 ? (
-              <div className="min-h-[74vh]">
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="min-h-[74vh]">
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                 {allAds.map((ad: AdData) => (
                   <div key={ad.id} className="relative">
                     <AdCard

@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // const loginWithGoogle = async () => {
   //   try {
   //     const authUrl = await AuthService.getGoogleAuthUrl();
-  //     console.log("Redirecting to Google auth URL:", authUrl);
+  //
 
   //     if (!authUrl || authUrl === "undefined") {
   //       throw new Error("Invalid Google authentication URL received");
@@ -118,7 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   //       window.location.origin
   //     }/api/auth/google/login?redirect_uri=${encodeURIComponent(redirectUri)}`;
 
-  //     console.log("Redirecting to Google auth URL:", authUrl);
+  //
 
   //     if (!authUrl || authUrl === "undefined") {
   //       throw new Error("Invalid Google authentication URL received");
@@ -145,18 +145,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           key.startsWith("google_auth_") &&
           (key.endsWith("_pending") || !key.includes("_pending"))
       );
-      console.log("Cleaning up old auth keys:", oldKeys);
+
       oldKeys.forEach((key) => localStorage.removeItem(key));
 
       // Get the Google auth URL from your backend
       const authUrl = await AuthService.getGoogleAuthUrl();
-      console.log("🔗 Received Google auth URL:", authUrl);
 
       if (!authUrl || authUrl === "undefined") {
         throw new Error("Invalid Google authentication URL received");
       }
-
-      console.log("🪟 Opening Google auth popup:", authUrl);
 
       // Since COOP is blocking popup communication, let's try a different approach
       // Open popup but rely solely on localStorage polling for communication
@@ -165,9 +162,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // After successful authentication, the backend should redirect back to your app's callback route
       // Handle the callback in your frontend to complete the login process
       return;
-
-     
-     
 
       // Pure localStorage-based communication (no postMessage due to COOP)
       return new Promise<void>((resolve, reject) => {
@@ -179,7 +173,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const authKey = `google_auth_${Date.now()}_${Math.random()
           .toString(36)
           .substr(2, 9)}`;
-        console.log("🔑 Generated auth key:", authKey);
 
         // Store the auth key so popup can find it
         localStorage.setItem(`${authKey}_pending`, window.location.origin);
@@ -201,20 +194,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log(
             `🔍 [${new Date().toLocaleTimeString()}] Polling for auth result with key: ${authKey}`
           );
-          console.log(`🗂️ All google_auth keys in localStorage:`, allKeys);
-          console.log(`📄 Auth result:`, authResult ? "Found!" : "Not found");
 
           if (authResult) {
             try {
               const result = JSON.parse(authResult);
-              console.log("✅ Auth result from localStorage:", result);
 
               localStorage.removeItem(authKey); // Clean up
               localStorage.removeItem(`${authKey}_pending`); // Clean up pending
 
               if (result.success && result.token) {
                 authCompleted = true;
-                console.log("Authentication successful, processing token...");
 
                 AuthService.handleGoogleDirectAuth(
                   result.token,
@@ -234,7 +223,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 });
               } else if (result.error) {
                 authCompleted = true;
-                console.log("Authentication failed:", result.error);
+
                 cleanup();
                 reject(new Error(result.error));
               }

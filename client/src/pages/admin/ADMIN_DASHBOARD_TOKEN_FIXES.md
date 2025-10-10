@@ -7,10 +7,12 @@ I have successfully updated the Admin Dashboard with the same token handling imp
 ## ✅ **Fixes Applied to Admin Dashboard:**
 
 ### 1. **Path Checking**
+
 - Added check to only run token detection logic when on dashboard pages
 - Prevents token detection from running on login page or other routes
 
 ### 2. **Improved URL Parameter Extraction**
+
 ```javascript
 // Before: Only extracted token
 tokenFromUrl = urlParams.get("token");
@@ -22,38 +24,42 @@ const usernameFromUrl = urlParams.get("username");
 ```
 
 ### 3. **Enhanced Token Storage**
+
 ```javascript
 // Before: Empty username and role
 TokenManager.setTokens(tokenFromUrl, "", "");
 
 // After: Use extracted parameters with admin default
 TokenManager.setTokens(
-  tokenFromUrl, 
-  usernameFromUrl || "", 
+  tokenFromUrl,
+  usernameFromUrl || "",
   roleFromUrl || "admin"
 );
 ```
 
 ### 4. **Consolidated Authentication Logic**
+
 - Moved authentication check into the useEffect
 - Removed separate `if (!access_token)` check
 - Authentication now happens after token processing
 
 ### 5. **Enhanced Logging**
+
 Added comprehensive debug logging with "Admin Dashboard" prefix:
+
 ```javascript
-console.log("Admin Dashboard Token from URL:", tokenFromUrl);
-console.log("Admin Dashboard Role from URL:", roleFromUrl);
-console.log("Admin Dashboard Username from URL:", usernameFromUrl);
+
 ```
 
 ## 🎯 **How It Works Now:**
 
 ### **URL Formats Supported:**
+
 - ✅ Standard: `/admin/dashboard?token=abc123&role=admin&username=john`
 - ✅ Malformed: `/admin/dashboard&token=abc123&role=admin&username=john`
 
 ### **Processing Flow:**
+
 1. **Path Check**: Verify we're on a dashboard page
 2. **Parameter Extraction**: Extract token, role, and username from URL
 3. **Malformed URL Handling**: Detect and fix `&token=` format
@@ -63,6 +69,7 @@ console.log("Admin Dashboard Username from URL:", usernameFromUrl);
 7. **Data Refresh**: Trigger dashboard data refetch
 
 ### **Console Output Example:**
+
 ```
 Admin Dashboard: Not on dashboard page, skipping token detection
 // OR
@@ -73,6 +80,7 @@ Admin Dashboard: Token from URL detected and set: eyJhbGciOiJIUzI1NiIs...
 ```
 
 ## 🔧 **Malformed URL Handling:**
+
 ```
 Input:  /admin/dashboard&token=abc123&role=admin
         ↓ Auto-detection
@@ -83,6 +91,7 @@ Input:  /admin/dashboard&token=abc123&role=admin
 ```
 
 ## 🛡️ **Security Features:**
+
 - **Token Removal**: Tokens are immediately removed from URL after processing
 - **Path Validation**: Only runs on valid dashboard paths
 - **Secure Storage**: Uses TokenManager for localStorage operations

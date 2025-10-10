@@ -157,7 +157,7 @@ export default function AdDetail({ params }: AdDetailProps) {
   };
 
   const ad = data?.data;
-  console.log(ad);
+
   // Filter approved ads and type safely
 
   if (isLoading) {
@@ -732,7 +732,7 @@ export default function AdDetail({ params }: AdDetailProps) {
               {ad.imageUrl && (
                 <Card className="lg:col-span-2">
                   <CardHeader>
-                    <CardTitle>{t("adDetail","adPreview")}</CardTitle>
+                    <CardTitle>{t("adDetail", "adPreview")}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="max-w-md mx-auto">

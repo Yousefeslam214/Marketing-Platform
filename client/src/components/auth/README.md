@@ -40,10 +40,9 @@ function Dashboard() {
 ### With Custom Callback
 
 ```tsx
-<TokenAuth 
+<TokenAuth
   onRefetch={refetch}
   onTokenDetected={(token) => {
-    console.log("Custom handling for token:", token);
     // Perform additional actions when token is detected
   }}
 />
@@ -51,10 +50,10 @@ function Dashboard() {
 
 ## Props
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `onRefetch` | `() => void` | No | Function to call when token is detected to refresh data |
-| `onTokenDetected` | `(token: string) => void` | No | Custom callback when token is detected |
+| Prop              | Type                      | Required | Description                                             |
+| ----------------- | ------------------------- | -------- | ------------------------------------------------------- |
+| `onRefetch`       | `() => void`              | No       | Function to call when token is detected to refresh data |
+| `onTokenDetected` | `(token: string) => void` | No       | Custom callback when token is detected                  |
 
 ## How It Works
 
@@ -74,6 +73,7 @@ function Dashboard() {
 ### URL Format
 
 Users can access dashboards directly with:
+
 ```
 /dashboard?token=eyJhbGciOiJIUzI1NiIs...
 /admin/dashboard?token=eyJhbGciOiJIUzI1NiIs...
@@ -100,7 +100,8 @@ Users can access dashboards directly with:
 ### Console Logging
 
 The component includes comprehensive logging:
-- "TokenAuth - URL Parameters: ..." 
+
+- "TokenAuth - URL Parameters: ..."
 - "TokenAuth - Token detected from URL: ..."
 - "TokenAuth - Token saved and URL cleaned"
 - "TokenAuth - Triggering data refetch"
@@ -114,6 +115,7 @@ The component includes comprehensive logging:
 ### Testing
 
 Test URLs for development:
+
 ```
 http://localhost:3000/dashboard?token=YOUR_TEST_TOKEN
 http://localhost:3000/admin/dashboard?token=YOUR_ADMIN_TOKEN

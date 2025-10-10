@@ -60,7 +60,6 @@ export default function Login() {
 
   const handleGoogleLogin = async () => {
     try {
-      console.log("Starting Google authentication...");
       await loginWithGoogle();
     } catch (error: any) {
       console.error("Google login error:", error);

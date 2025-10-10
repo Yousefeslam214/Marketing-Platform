@@ -74,7 +74,7 @@ export default function AdminUsers() {
   });
 
   // const mockUsers = usersData;
-  console.log("Fetched users:", usersData?.data);
+
   const mockUsers = usersData?.data;
   // Check admin access
   // if (!isAuthenticated || user?.role !== "admin") {

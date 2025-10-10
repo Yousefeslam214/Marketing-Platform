@@ -36,17 +36,15 @@ export default function PendingAds() {
 
   const pendingAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
 
-  console.log(pendingAds);
-
   const token = TokenManager.getAccessToken();
 
   // Enhanced approve handler with loading state
   const handleApproveWithLoading = async (adId: string) => {
-    setLoadingActions(prev => new Set(prev).add(`approve-${adId}`));
+    setLoadingActions((prev) => new Set(prev).add(`approve-${adId}`));
     try {
       await handleApprove(adId, isRTL, refetch);
     } finally {
-      setLoadingActions(prev => {
+      setLoadingActions((prev) => {
         const newSet = new Set(prev);
         newSet.delete(`approve-${adId}`);
         return newSet;
@@ -56,11 +54,11 @@ export default function PendingAds() {
 
   // Enhanced reject handler with loading state
   const handleRejectWithLoading = async (adId: string) => {
-    setLoadingActions(prev => new Set(prev).add(`reject-${adId}`));
+    setLoadingActions((prev) => new Set(prev).add(`reject-${adId}`));
     try {
       await handleReject(adId, isRTL, refetch);
     } finally {
-      setLoadingActions(prev => {
+      setLoadingActions((prev) => {
         const newSet = new Set(prev);
         newSet.delete(`reject-${adId}`);
         return newSet;
@@ -68,9 +66,6 @@ export default function PendingAds() {
     }
   };
 
-
-
-  
   if (isLoading) {
     <Loading />;
   }
@@ -120,7 +115,10 @@ export default function PendingAds() {
                     onView={handleViewAd}
                     onApprove={() => handleApproveWithLoading(ad.id)}
                     onReject={() => handleRejectWithLoading(ad.id)}
-                    isLoading={loadingActions.has(`approve-${ad.id}`) || loadingActions.has(`reject-${ad.id}`)}
+                    isLoading={
+                      loadingActions.has(`approve-${ad.id}`) ||
+                      loadingActions.has(`reject-${ad.id}`)
+                    }
                   />
                 ))}
               </div>

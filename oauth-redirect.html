@@ -3,10 +3,6 @@
   <head>
     <title>OAuth Redirect</title>
     <script>
-      console.log("OAuth redirect page loaded");
-      console.log("Current URL:", window.location.href);
-      console.log("Is popup?", window.opener && window.opener !== window);
-
       // Check if we're in a popup and on the production domain
       if (
         window.opener &&
@@ -18,7 +14,6 @@
 
         // Redirect to local development server with the same path and query params
         const localUrl = `http://localhost:3000${window.location.pathname}${window.location.search}`;
-        console.log("Redirecting to:", localUrl);
 
         window.location.href = localUrl;
       }

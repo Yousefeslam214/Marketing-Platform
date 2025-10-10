@@ -48,11 +48,6 @@ export default function AdminDashboard() {
     tokenFromUrl = urlParams.get("token");
     const roleFromUrl = urlParams.get("role");
     const usernameFromUrl = urlParams.get("username");
-    console.log("Admin Dashboard Token from URL:", tokenFromUrl);
-    console.log("Admin Dashboard Role from URL:", roleFromUrl);
-    console.log("Admin Dashboard Username from URL:", usernameFromUrl);
-    console.log("Admin Dashboard Full URL:", window.location.href);
-    console.log("Admin Dashboard urlParams", urlParams);
 
     // If no token found and URL contains &token=, handle the incorrect format
     if (!tokenFromUrl && window.location.href.includes("&token=")) {
@@ -81,8 +76,6 @@ export default function AdminDashboard() {
         return; // Exit early as we're redirecting
       }
     }
-
-    console.log("Admin Dashboard Token from URL:", tokenFromUrl);
 
     if (tokenFromUrl) {
       // Set the token in localStorage for authentication
@@ -118,7 +111,6 @@ export default function AdminDashboard() {
     }
   }, [refetch, setLocation]);
 
-  console.log(adminData);
   // Extract data from the new API structure
   const stats = (adminData as any)?.data?.stats || {};
   const chartData = (adminData as any)?.data?.chartData || [];
