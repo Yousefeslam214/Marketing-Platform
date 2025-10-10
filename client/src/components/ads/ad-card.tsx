@@ -16,8 +16,9 @@ interface AdCardProps {
   onAnalytics?: (id: string) => void;
   onPurchase?: (id: string) => void;
   showActions?: boolean;
-  onApprove?: (id: string) => void; // ✅ new
-  onReject?: (id: string) => void; // ✅ new
+  onApprove?: (id: string) => void;
+  onReject?: (id: string) => void;
+  isLoading?: boolean;
 }
 
 export function AdCard({
@@ -30,6 +31,7 @@ export function AdCard({
   showActions = true,
   onApprove,
   onReject,
+  isLoading = false,
 }: AdCardProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -190,8 +192,13 @@ console.log("Normalized status:", normalizedStatus);
                 size="sm"
                 onClick={() => onApprove(ad.id)}
                 className="flex-1"
+                disabled={isLoading}
                 data-testid={`button-approve-ad-${ad.id}`}>
-                <i className="fas fa-check mr-1"></i>
+                {isLoading ? (
+                  <i className="fas fa-spinner fa-spin mr-1"></i>
+                ) : (
+                  <i className="fas fa-check mr-1"></i>
+                )}
                 {language === "ar" ? "موافقة" : "Approve"}
               </Button>
             )}
@@ -201,8 +208,13 @@ console.log("Normalized status:", normalizedStatus);
                 size="sm"
                 onClick={() => onReject(ad.id)}
                 className="flex-1"
+                disabled={isLoading}
                 data-testid={`button-reject-ad-${ad.id}`}>
-                <i className="fas fa-times mr-1"></i>
+                {isLoading ? (
+                  <i className="fas fa-spinner fa-spin mr-1"></i>
+                ) : (
+                  <i className="fas fa-times mr-1"></i>
+                )}
                 {language === "ar" ? "رفض" : "Reject"}
               </Button>
             )}

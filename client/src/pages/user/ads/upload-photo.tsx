@@ -19,32 +19,62 @@ export default function UploadPhoto() {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
 
+  // Debug logging
+  console.log("UploadPhoto component - Route match:", match);
+  console.log("UploadPhoto component - Route params:", params);
+  console.log("UploadPhoto component - AdId:", params?.adId);
+  console.log("UploadPhoto component - Current URL:", window.location.pathname);
+
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
     return null;
   }
 
-  if (!match || !params?.adId) {
-    setLocation("/ads");
+  if (!match) {
+    console.error("Route does not match /ads/:adId/upload-photo pattern");
+    setLocation("/campaigns");
     return null;
   }
+
+  if (!params?.adId) {
+    console.error("AdId parameter is missing from route params:", params);
+    toast({
+      title: "Invalid Ad ID",
+      description: "Unable to find the ad ID. Please try again.",
+      variant: "destructive",
+    });
+    setLocation("/campaigns");
+    return null;
+  }
+
+  const adId = params.adId;
+  console.log("Using adId for upload:", adId);
 
   // Photo upload mutation
   const uploadPhotoMutation = useMutation({
     mutationFn: async (file: File) => {
+      console.log("Starting upload for adId:", adId);
+      console.log("File details:", { name: file.name, size: file.size, type: file.type });
+      
+      if (!adId) {
+        throw new Error("Ad ID is required for photo upload");
+      }
+
       const formData = new FormData();
       formData.append("photo", file);
 
-      const response = await fetch(
-        `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${params.adId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${TokenManager.getAccessToken()}`,
-          },
-          body: formData,
-        }
-      );
+      const uploadUrl = `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`;
+      console.log("Upload URL:", uploadUrl);
+
+      const response = await fetch(uploadUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
+        },
+        body: formData,
+      });
+
+      console.log("Upload response status:", response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -52,7 +82,9 @@ export default function UploadPhoto() {
         throw new Error(`Upload failed: ${response.status} - ${errorText}`);
       }
 
-      return response.json();
+      const result = await response.json();
+      console.log("Upload success:", result);
+      return result;
     },
     onSuccess: (data) => {
       const photoUrl = data.data?.photo;
@@ -98,11 +130,12 @@ export default function UploadPhoto() {
         return;
       }
 
-      // Validate file size (1MB limit)
-      if (file.size > 1 * 1020 * 1020) {
+      // Validate file size (5MB limit)
+      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSizeInBytes) {
         toast({
           title: "File too large",
-          description: "Please select an image smaller than 1MB",
+          description: `Please select an image smaller than 5MB. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB`,
           variant: "destructive",
         });
         return;

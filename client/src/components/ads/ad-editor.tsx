@@ -68,9 +68,26 @@ export function AdEditor() {
         title: "Ad created successfully",
         description: "Your ad has been created and saved as draft",
       });
-      console.log(data);
-      // Redirect to photo upload page first
-      setLocation(`/ads/${data.data?.AdId}/upload-photo`);
+      console.log("Ad creation response:", data);
+      console.log("AdId from response:", data.data?.AdId);
+      
+      // Check if we have a valid AdId
+      const adId = data.data?.AdId;
+      if (!adId) {
+        console.error("No AdId in response:", data);
+        toast({
+          title: "Warning",
+          description: "Ad created but unable to upload photo. Please try uploading later.",
+          variant: "destructive",
+        });
+        setLocation("/ads"); // Redirect to ads list instead
+        return;
+      }
+      
+      // Redirect to photo upload page
+      const uploadUrl = `/ads/${adId}/upload-photo`;
+      console.log("Redirecting to:", uploadUrl);
+      setLocation(uploadUrl);
     },
     onError: (error: any) => {
       toast({

@@ -203,6 +203,14 @@ function Router() {
         )}
       />
       <Route
+        path="/ads"
+        component={() => (
+          <AppLayout>
+            <AdsIndex />
+          </AppLayout>
+        )}
+      />
+      <Route
         path={newCampaignsPath()}
         component={() => (
           <AppLayout>

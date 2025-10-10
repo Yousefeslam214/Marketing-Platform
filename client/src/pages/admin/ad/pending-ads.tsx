@@ -20,6 +20,7 @@ export default function PendingAds() {
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
+  const [loadingActions, setLoadingActions] = useState<Set<string>>(new Set());
 
   const { handleViewAd } = useAdNavigation();
 
@@ -37,8 +38,35 @@ export default function PendingAds() {
 
   console.log(pendingAds);
 
-
   const token = TokenManager.getAccessToken();
+
+  // Enhanced approve handler with loading state
+  const handleApproveWithLoading = async (adId: string) => {
+    setLoadingActions(prev => new Set(prev).add(`approve-${adId}`));
+    try {
+      await handleApprove(adId, isRTL, refetch);
+    } finally {
+      setLoadingActions(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(`approve-${adId}`);
+        return newSet;
+      });
+    }
+  };
+
+  // Enhanced reject handler with loading state
+  const handleRejectWithLoading = async (adId: string) => {
+    setLoadingActions(prev => new Set(prev).add(`reject-${adId}`));
+    try {
+      await handleReject(adId, isRTL, refetch);
+    } finally {
+      setLoadingActions(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(`reject-${adId}`);
+        return newSet;
+      });
+    }
+  };
 
 
 
@@ -85,16 +113,15 @@ export default function PendingAds() {
             <div className="min-h-[74vh]">
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                 {pendingAds.map((ad: AdData) => (
-                  <>
-                    <AdCard
-                      key={ad.id}
-                      ad={ad}
-                      language={isRTL ? "ar" : "en"}
-                      onView={handleViewAd}
-                      onApprove={() => handleApprove(ad.id, isRTL, refetch)}
-                      onReject={() => handleReject(ad.id, isRTL, refetch)}
-                    />
-                  </>
+                  <AdCard
+                    key={ad.id}
+                    ad={ad}
+                    language={isRTL ? "ar" : "en"}
+                    onView={handleViewAd}
+                    onApprove={() => handleApproveWithLoading(ad.id)}
+                    onReject={() => handleRejectWithLoading(ad.id)}
+                    isLoading={loadingActions.has(`approve-${ad.id}`) || loadingActions.has(`reject-${ad.id}`)}
+                  />
                 ))}
               </div>
             </div>

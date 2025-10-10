@@ -25,7 +25,7 @@ export default function UpdateAd() {
     }
 
     if (!hasValidRoute) {
-      setLocation("/ads");
+      setLocation("/campaigns");
       return;
     }
   }, [isAuthenticated, hasValidRoute, setLocation]);
