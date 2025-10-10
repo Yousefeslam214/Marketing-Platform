@@ -13,8 +13,15 @@ export default function PaymentSuccess() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
+  interface PaymentDetails {
+    amount: number;
+    impressions?: number;
+    paymentId: string;
+    // Add any other properties you expect here
+  }
+
   const [isVerifying, setIsVerifying] = useState(true);
-  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -70,8 +77,6 @@ export default function PaymentSuccess() {
       setIsVerifying(false);
     }
   };
-
-
 
   if (isVerifying) {
     return (
@@ -133,7 +138,7 @@ export default function PaymentSuccess() {
                     {t("billing", "paymentAmount") || "Amount"}:
                   </span>
                   <span className="font-semibold text-lg">
-                    ${(paymentDetails.amount / 100).toFixed(2)}
+                    ${(paymentDetails?.amount / 100).toFixed(2)}
                   </span>
                 </div>
 

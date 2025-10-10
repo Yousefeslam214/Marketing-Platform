@@ -51,7 +51,9 @@ export default function Login() {
       toast({
         title: t("auth", "loginFailed") || "Login failed",
         description:
-          message || t("auth", "invalidCredentials") || "Invalid email or password",
+          message ||
+          t("auth", "invalidCredentials") ||
+          "Invalid email or password",
         variant: "destructive",
       });
     }

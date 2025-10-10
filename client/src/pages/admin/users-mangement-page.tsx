@@ -1,4 +1,3 @@
-
 import { useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
@@ -44,7 +43,6 @@ export default function AdminUsers() {
     setLimit("200"); // Reset limit to default when filtering
   };
 
-  
   const {
     data: usersData,
     isLoading,

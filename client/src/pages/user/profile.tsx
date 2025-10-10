@@ -39,7 +39,6 @@ import { TokenManager } from "../../lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { locationOptions } from "@/components/ads/targeting-form";
 
-
 interface UpdateProfileData {
   username: string;
   password?: string;
@@ -64,23 +63,28 @@ export default function Profile() {
   // Countries list (you can expand this)
 
   // Fetch profile data
+  // Define Profile interface
+  // (Removed duplicate Profile interface definition)
+
   const {
     data: profileData,
     isLoading,
     error,
     refetch,
-  } = useApiQuery({
+  } = useApiQuery<{ data: Profile }>({
     key: ["/profile"],
     url: `${VITE_API_BASE_URL}/api/users/profile`,
   });
+
   // Update form data when profile loads
   useEffect(() => {
-    if (profileData?.data) {
+    const data = profileData?.data as Profile | undefined;
+    if (data) {
       setFormData({
-        username: profileData.data.username || "",
+        username: data.username || "",
         password: "",
         confirmPassword: "",
-        country: profileData.data.country || "",
+        country: data.country || "",
       });
     }
   }, [profileData]);
@@ -183,10 +187,10 @@ export default function Profile() {
   const handleCancel = () => {
     if (profileData?.data) {
       setFormData({
-        username: profileData.data.username || "",
+        username: profileData?.data.username || "",
         password: "",
         confirmPassword: "",
-        country: profileData.data.country || "",
+        country: profileData?.data.country || "",
       });
     }
     setIsEditing(false);
@@ -241,6 +245,20 @@ export default function Profile() {
         </Alert>
       </div>
     );
+  }
+
+  interface Profile {
+    username: string;
+    email: string;
+    verified: boolean;
+    country?: string;
+    role: string;
+    oauth: string;
+    createdAt: string;
+    adsCount: number;
+    totalSpend: number;
+    balance: number;
+    freeViewsCredits: number;
   }
 
   const profile = profileData.data;
@@ -308,7 +326,7 @@ export default function Profile() {
                     placeholder="Enter your username (3+ characters)"
                   />
                 ) : (
-                  <p className="text-lg font-medium">{profile.username}</p>
+                  <p className="text-lg font-medium">{profile?.username}</p>
                 )}
               </div>
 
@@ -316,8 +334,8 @@ export default function Profile() {
                 <Label>{t("profile", "email")}</Label>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-gray-500" />
-                  <span>{profile.email}</span>
-                  {profile.verified && (
+                  <span>{profile?.email}</span>
+                  {profile?.verified && (
                     <Badge variant="secondary" className="text-green-600">
                       {t("profile", "verified")}
                     </Badge>
@@ -347,7 +365,7 @@ export default function Profile() {
                 ) : (
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-gray-500" />
-                    <span>{profile.country || "Not specified"}</span>
+                    <span>{profile?.country || "Not specified"}</span>
                   </div>
                 )}
               </div>
@@ -373,7 +391,9 @@ export default function Profile() {
                 <div>
                   <Label htmlFor="password">
                     New Password{" "}
-                    <span className="text-sm text-gray-500">{t("profile", "optional")}</span>
+                    <span className="text-sm text-gray-500">
+                      {t("profile", "optional")}
+                    </span>
                   </Label>
                   <div className="relative">
                     <Input
@@ -402,7 +422,9 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <Label htmlFor="confirmPassword">{t("profile", "confirmNewPassword")}</Label>
+                  <Label htmlFor="confirmPassword">
+                    {t("profile", "confirmNewPassword")}
+                  </Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -430,8 +452,8 @@ export default function Profile() {
               <div className="flex justify-between">
                 <span className="text-gray-600">{t("profile", "role")}:</span>
                 <Badge
-                  variant={profile.role === "admin" ? "default" : "secondary"}>
-                  {profile.role === "admin"
+                  variant={profile?.role === "admin" ? "default" : "secondary"}>
+                  {profile?.role === "admin"
                     ? t("profile", "admin")
                     : t("profile", "user")}
                 </Badge>
@@ -454,7 +476,7 @@ export default function Profile() {
                 </span>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-gray-500" />
-                  <span>{formatDate(profile.createdAt)}</span>
+                  <span>{formatDate(profile?.createdAt)}</span>
                 </div>
               </div>
 

@@ -67,15 +67,15 @@ export function AdEditor() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
       toast({
-        title: (t as any)("ads", "newAd.createSuccess"),
-        description: (t as any)("ads", "newAd.description"),
+        title: t("ads", "newAd.createSuccess"),
+        description: t("ads", "newAd.description"),
       });
 
       // Check if we have a valid AdId
       const adId = data.data?.AdId;
       if (!adId) {
         toast({
-          title: (t as any)("ads", "newAd.createFailed"),
+          title: t("ads", "newAd.createFailed"),
           description: t("ads", "updateAdFailedDescription"),
           variant: "destructive",
         });
@@ -104,7 +104,7 @@ export function AdEditor() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{(t as any)("ads", "newAd.title")}</CardTitle>
+        <CardTitle>{t("ads", "newAd.title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -361,7 +361,7 @@ export function AdEditor() {
                           {t("ads", "audienceCars")}
                         </SelectItem>
                         <SelectItem value="tech">
-                          {(t as any)("ads", "audienceTech") || "Tech"}
+                          {t("ads", "audienceTech") || "Tech"}
                         </SelectItem>
                         <SelectItem value="machines">
                           {t("ads", "audienceMachines")}
@@ -478,7 +478,7 @@ export function AdEditor() {
                 variant="outline"
                 onClick={() => setLocation("/campaigns")}
                 data-testid="button-cancel">
-                {(t as any)("profile", "actions.cancel")}
+                {t("profile", "actions.cancel")}
               </Button>
               <Button
                 type="submit"

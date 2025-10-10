@@ -11,7 +11,6 @@ import Loading from "@/components/Loading";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { useState } from "react";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
-import { analyticsCampaignPath } from "@/lib/paths";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -186,13 +185,13 @@ export default function AdDetail({ params }: AdDetailProps) {
           actions={
             <div className="flex items-center gap-2 flex-wrap">
               <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
-              <Button
+              {/* <Button
                 variant="outline"
                 onClick={() => setLocation(analyticsCampaignPath(id))}
                 data-testid="button-view-analytics">
                 <i className="fas fa-chart-bar mr-2"></i>
                 {t("adDetail", "viewAnalytics")}
-              </Button>
+              </Button> */}
               {ad.status === "approved" && (
                 <>
                   <Button

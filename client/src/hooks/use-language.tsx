@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  getTranslation,
-  type Language,
-  type TranslationSection,
-  type TranslationKey,
-} from "@/lib/i18n";
+import { getTranslation, type Language } from "@/lib/i18n";
 
 export function useLanguage() {
   const [language, setLanguage] = useState<Language>(() => {
@@ -29,10 +24,7 @@ export function useLanguage() {
     window.location.reload();
   };
 
-  const t = <T extends TranslationSection>(
-    section: T,
-    key: TranslationKey<T>
-  ): string => {
+  const t = (section: string, key: string): string => {
     return getTranslation(language, section, key);
   };
 

@@ -69,8 +69,6 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   // If user is not authenticated, show content without sidebar
   return (
-    <div className={`min-h-screen bg-background ${isRTL}`}>
-      {children}
-    </div>
+    <div className={`min-h-screen bg-background ${isRTL}`}>{children}</div>
   );
 }

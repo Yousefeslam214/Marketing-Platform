@@ -109,15 +109,15 @@ export function TargetingForm({
     { value: "travel", label: t("form", "travel") },
     { value: "education", label: t("form", "education") },
     { value: "entertainment", label: t("form", "entertainment") },
-    { value: "shopping", label: "Shopping" },
-    { value: "automotive", label: "Automotive" },
-    { value: "real-estate", label: "Real Estate" },
+    { value: "shopping", label: t("form", "shopping") },
+    { value: "automotive", label: t("form", "automotive") },
+    { value: "real-estate", label: t("form", "realEstate") },
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Targeting & Budget</CardTitle>
+        <CardTitle>{t("form", "title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -129,31 +129,39 @@ export function TargetingForm({
                 name="audience"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Primary Audience</FormLabel>
+                    <FormLabel>{t("form", "primaryAudience")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger data-testid="select-audience">
-                          <SelectValue placeholder="Select primary audience" />
+                          <SelectValue
+                            placeholder={t("form", "selectPrimaryAudience")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="general">
-                          General Audience
+                          {t("form", "audienceOptions.general")}
                         </SelectItem>
                         <SelectItem value="young-adults">
-                          Young Adults (18-30)
+                          {t("form", "audienceOptions.youngAdults")}
                         </SelectItem>
                         <SelectItem value="professionals">
-                          Working Professionals
+                          {t("form", "audienceOptions.professionals")}
                         </SelectItem>
                         <SelectItem value="business-owners">
-                          Business Owners
+                          {t("form", "audienceOptions.businessOwners")}
                         </SelectItem>
-                        <SelectItem value="students">Students</SelectItem>
-                        <SelectItem value="parents">Parents</SelectItem>
-                        <SelectItem value="seniors">Seniors (50+)</SelectItem>
+                        <SelectItem value="students">
+                          {t("form", "audienceOptions.students")}
+                        </SelectItem>
+                        <SelectItem value="parents">
+                          {t("form", "audienceOptions.parents")}
+                        </SelectItem>
+                        <SelectItem value="seniors">
+                          {t("form", "audienceOptions.seniors")}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -166,20 +174,24 @@ export function TargetingForm({
                 name="budgetType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Budget Type</FormLabel>
+                    <FormLabel>{t("form", "budgetType")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger data-testid="select-budget-type">
-                          <SelectValue placeholder="Select budget type" />
+                          <SelectValue
+                            placeholder={t("form", "selectBudgetType")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="impressions">
-                          Pay per 1000 impressions
+                          {t("form", "budgetOptions.impressions")}
                         </SelectItem>
-                        <SelectItem value="clicks">Pay per click</SelectItem>
+                        <SelectItem value="clicks">
+                          {t("form", "budgetOptions.clicks")}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -190,7 +202,7 @@ export function TargetingForm({
 
             {/* Age Range */}
             <div>
-              <FormLabel>Age Range</FormLabel>
+              <FormLabel>{t("form", "ageRange")}</FormLabel>
               <div className="grid grid-cols-2 gap-4 mt-2">
                 <FormField
                   control={form.control}
@@ -200,7 +212,7 @@ export function TargetingForm({
                       <FormControl>
                         <Input
                           type="number"
-                          placeholder="Min age"
+                          placeholder={t("form", "minAgePlaceholder")}
                           min="18"
                           max="65"
                           data-testid="input-min-age"
@@ -222,7 +234,7 @@ export function TargetingForm({
                       <FormControl>
                         <Input
                           type="number"
-                          placeholder="Max age"
+                          placeholder={t("form", "maxAgePlaceholder")}
                           min="18"
                           max="65"
                           data-testid="input-max-age"
@@ -245,7 +257,7 @@ export function TargetingForm({
               name="genders"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
+                  <FormLabel>{t("form", "gender")}</FormLabel>
                   <div className="flex items-center gap-6 mt-2">
                     {["male", "female", "all"].map((gender) => (
                       <div key={gender} className="flex items-center space-x-2">
@@ -265,7 +277,7 @@ export function TargetingForm({
                         <label
                           htmlFor={`gender-${gender}`}
                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize">
-                          {gender}
+                          {t("form", `genders.${gender}`) || gender}
                         </label>
                       </div>
                     ))}
@@ -281,12 +293,15 @@ export function TargetingForm({
               name="languages"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Languages</FormLabel>
+                  <FormLabel>{t("form", "languages")}</FormLabel>
                   <div className="flex items-center gap-6 mt-2">
                     {[
-                      { value: "en", label: "English" },
-                      { value: "ar", label: "Arabic" },
-                      { value: "both", label: "Both" },
+                      { value: "en", label: t("form", "languageOptions.en") },
+                      { value: "ar", label: t("form", "languageOptions.ar") },
+                      {
+                        value: "both",
+                        label: t("form", "languageOptions.both"),
+                      },
                     ].map((lang) => (
                       <div
                         key={lang.value}
@@ -323,7 +338,7 @@ export function TargetingForm({
               name="interests"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Interests</FormLabel>
+                  <FormLabel>{t("form", "interests")}</FormLabel>
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                     {interestOptions.map((interest) => (
                       <div
@@ -361,7 +376,7 @@ export function TargetingForm({
               name="locations"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Locations</FormLabel>
+                  <FormLabel>{t("form", "locations")}</FormLabel>
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                     {locationOptions.map((location) => (
                       <div
@@ -421,10 +436,11 @@ export function TargetingForm({
                   </FormControl>
                   <p className="text-xs text-muted-foreground mt-1">
                     {form.watch("budgetType") === "impressions"
-                      ? `Approximately ${Math.floor(
-                          (field.value || 0) * 1000
-                        )} impressions per day`
-                      : `Based on estimated cost per click`}
+                      ? t("form", "approxImpressions").replace(
+                          "{count}",
+                          `${Math.floor((field.value || 0) * 1000)}`
+                        )
+                      : t("form", "basedOnCPC")}
                   </p>
                   <FormMessage />
                 </FormItem>
@@ -440,12 +456,12 @@ export function TargetingForm({
                 {isLoading ? (
                   <>
                     <i className="fas fa-spinner fa-spin mr-2"></i>
-                    Saving...
+                    {t("form", "saving")}
                   </>
                 ) : (
                   <>
                     <i className="fas fa-save mr-2"></i>
-                    Save Targeting
+                    {t("form", "saveTargeting")}
                   </>
                 )}
               </Button>

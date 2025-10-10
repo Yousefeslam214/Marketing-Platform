@@ -10,22 +10,26 @@ const translations = {
   ar: arTranslations,
 } as const;
 
-export type TranslationSection = keyof typeof translations.en;
-export type TranslationKey<T extends TranslationSection> =
-  keyof (typeof translations.en)[T];
+// Allow dynamic section/key strings to reduce friction when migrating strings
+export type TranslationSection = string;
+export type TranslationKey<T extends string> = string;
 
-export function getTranslation<T extends TranslationSection>(
+export function getTranslation(
   language: Language,
-  section: T,
-  key: TranslationKey<T>
+  section: string,
+  key: string
 ): string {
-  const langSection = translations[language]?.[section] as
+  // Use any internally to allow flexible nested lookups
+  const langSection = (translations as any)[language]?.[section] as
     | Record<string, any>
     | undefined;
-  const enSection = translations.en[section] as Record<string, any>;
+  const enSection = (translations as any).en?.[section] as
+    | Record<string, any>
+    | undefined;
 
-  // Handle nested objects (like faq.questions.*)
   const keyStr = key as string;
+
+  // Support dot-notation nested keys (e.g. "pricing.features.support")
   if (keyStr.includes(".")) {
     const keys = keyStr.split(".");
     let value: any = langSection;
@@ -36,17 +40,8 @@ export function getTranslation<T extends TranslationSection>(
       fallbackValue = fallbackValue?.[k];
     }
 
-    return (
-      (value as unknown as string) ??
-      (fallbackValue as unknown as string) ??
-      keyStr
-    );
+    return (value ?? fallbackValue ?? keyStr) as string;
   }
 
-  // Handle simple keys
-  return (
-    (langSection?.[keyStr] as string) ??
-    (enSection?.[keyStr] as string) ??
-    keyStr
-  );
+  return (langSection?.[keyStr] ?? enSection?.[keyStr] ?? keyStr) as string;
 }

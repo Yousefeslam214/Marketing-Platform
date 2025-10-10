@@ -452,7 +452,7 @@ export function AdEditor({
                       <SelectItem value="cars">
                         {t("ads", "audienceCars")}
                       </SelectItem>
-                      <SelectItem value="tech">{(t as any)("ads", "audienceTech") || "Tech"}</SelectItem>
+                      <SelectItem value="tech">{t("ads", "audienceTech") || "Tech"}</SelectItem>
                       <SelectItem value="machines">
                         {t("ads", "audienceMachines")}
                       </SelectItem>

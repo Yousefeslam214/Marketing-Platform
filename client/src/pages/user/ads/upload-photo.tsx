@@ -19,22 +19,20 @@ export default function UploadPhoto() {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
 
-  // Debug logging
-
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
     return null;
   }
 
   if (!match) {
- setLocation("/campaigns");
+    setLocation("/campaigns");
     return null;
   }
 
   if (!params?.adId) {
     toast({
-      title: (t as any).ads.uploadPhoto.errors.invalidAdId,
-      description: (t as any).ads.uploadPhoto.errors.tryAgain,
+      title: "Invalid Ad",
+      description: "No Ad ID provided in the URL",
       variant: "destructive",
     });
     setLocation("/campaigns");
@@ -47,7 +45,7 @@ export default function UploadPhoto() {
   const uploadPhotoMutation = useMutation({
     mutationFn: async (file: File) => {
       if (!adId) {
-        throw new Error((t as any).ads.uploadPhoto.errors.invalidAdId);
+        throw new Error("Ad ID is missing");
       }
 
       const formData = new FormData();
@@ -82,16 +80,16 @@ export default function UploadPhoto() {
         }
         setPhotoPreview(photoUrl);
         toast({
-          title: (t as any).ads.uploadPhoto.success.title,
-          description: (t as any).ads.uploadPhoto.success.description,
+          title: "Upload Successful",
+          description: "Your photo has been uploaded successfully.",
         });
       }
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast({
-        title: (t as any).ads.uploadPhoto.errors.title,
+        title: "Upload Failed",
         description:
-          error.message || (t as any).ads.uploadPhoto.errors.uploadFailed,
+          error.message || "An error occurred while uploading your photo.",
         variant: "destructive",
       });
       // If upload fails, remove the preview
@@ -102,16 +100,14 @@ export default function UploadPhoto() {
     },
   });
 
-  const handlePhotoSelect = async (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handlePhotoSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       // Validate file type
       if (!file.type.startsWith("image/")) {
         toast({
-          title: (t as any).ads.uploadPhoto.errors.invalidFileType,
-          description: (t as any).ads.uploadPhoto.errors.selectImage,
+          title: "Invalid File Type",
+          description: "Please select an image file.",
           variant: "destructive",
         });
         return;
@@ -121,14 +117,8 @@ export default function UploadPhoto() {
       const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSizeInBytes) {
         toast({
-          title: (t as any).ads.uploadPhoto.errors.fileTooLarge.replace(
-            "{size}",
-            "5MB"
-          ),
-          description: (t as any).ads.uploadPhoto.errors.currentSize.replace(
-            "{size}",
-            `${(file.size / 1024 / 1024).toFixed(2)}MB`
-          ),
+          title: "File Too Large",
+          description: "Please select a file smaller than 5MB.",
           variant: "destructive",
         });
         return;
@@ -137,6 +127,27 @@ export default function UploadPhoto() {
       // Show local preview immediately
       const localPreview = URL.createObjectURL(file);
       setPhotoPreview(localPreview);
+      toast({
+        title: "File Selected",
+        description: `Current file size: ${(file.size / 1024 / 1024).toFixed(
+          2
+        )}MB`,
+      });
+      setUploadingPhoto(true);
+      try {
+        await uploadPhotoMutation.mutateAsync(file);
+      } catch (error) {
+
+        toast({
+          title: "Upload Failed",
+          variant: "destructive",
+          description: error instanceof Error ? error.message : "",
+        });
+      }
+
+      // Show local preview immediately
+      const localPreview1 = URL.createObjectURL(file);
+      setPhotoPreview(localPreview1);
 
       setUploadingPhoto(true);
       try {
@@ -144,7 +155,7 @@ export default function UploadPhoto() {
       } catch (error) {
         // Error handled in mutation onError
         toast({
-          title: (t as any).ads.uploadPhoto.errors.uploadFailed,
+          title: "Upload Failed",
           variant: "destructive",
           description: error instanceof Error ? error.message : "",
         });
@@ -159,8 +170,8 @@ export default function UploadPhoto() {
       setLocation(`/ads/${params.adId}/assign-credit`);
     } else {
       toast({
-        title: (t as any).ads.uploadPhoto.errors.photoRequired,
-        description: (t as any).ads.uploadPhoto.errors.uploadBeforeContinue,
+        title: "Photo Required",
+        description: "Please upload a photo before continuing.",
         variant: "destructive",
       });
     }
@@ -174,8 +185,8 @@ export default function UploadPhoto() {
     <div className="flex h-screen bg-background">
       <div className="flex-1 overflow-auto">
         <Header
-          title={(t as any).ads.uploadPhoto.header.title}
-          description={(t as any).ads.uploadPhoto.header.description}
+          title={t("ads.uploadPhoto.header.title", "Upload Ad Photo")}
+          description={t("ads.uploadPhoto.header.description", "Please upload a photo for your ad.")}
         />
 
         <main className="p-6">
@@ -184,10 +195,10 @@ export default function UploadPhoto() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <i className="fas fa-camera text-blue-600"></i>
-                  {(t as any).ads.uploadPhoto.card.title}
+                  {t("ads.uploadPhoto.card.title", "Upload Photo")}
                 </CardTitle>
                 <p className="text-muted-foreground">
-                  {(t as any).ads.uploadPhoto.card.description}
+                  {t("ads.uploadPhoto.card.description", "Please upload a photo for your ad.")}
                 </p>
               </CardHeader>
               <CardContent>
@@ -197,7 +208,7 @@ export default function UploadPhoto() {
                     <div className="relative">
                       <img
                         src={photoPreview}
-                        alt={(t as any).ads.uploadPhoto.preview.alt}
+                        alt={t("ads.uploadPhoto.preview.alt", "Photo Preview")}
                         className="w-full max-w-md mx-auto h-64 object-cover rounded-lg border shadow-sm"
                       />
                       <Button
@@ -216,7 +227,7 @@ export default function UploadPhoto() {
                           setUploadedPhotoUrl(null);
                         }}>
                         <i className="fas fa-trash mr-2"></i>
-                        {(t as any).ads.uploadPhoto.buttons.remove}
+                        {t("ads.uploadPhoto.buttons.remove", "Remove Photo")}
                       </Button>
                     </div>
                   )}
@@ -236,10 +247,10 @@ export default function UploadPhoto() {
                         <i className="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
                         <div>
                           <h3 className="text-lg font-medium">
-                            {(t as any).ads.uploadPhoto.uploadArea.title}
+                            {t("ads.uploadPhoto.uploadArea.title", "Upload a Photo")}
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            {(t as any).ads.uploadPhoto.uploadArea.description}
+                            {t("ads.uploadPhoto.uploadArea.description", "Please upload a photo for your ad.")}
                           </p>
                         </div>
                       </div>
@@ -257,20 +268,20 @@ export default function UploadPhoto() {
                         {uploadingPhoto || uploadPhotoMutation.isPending ? (
                           <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
-                            {(t as any).ads.uploadPhoto.buttons.uploading}
+                            {t("ads.uploadPhoto.buttons.uploading", "Uploading...")}
                           </>
                         ) : (
                           <>
                             <i className="fas fa-upload mr-2"></i>
                             {photoPreview
-                              ? (t as any).ads.uploadPhoto.buttons.change
-                              : (t as any).ads.uploadPhoto.buttons.choose}
+                              ? t("ads.uploadPhoto.buttons.change", "Change Photo")
+                              : t("ads.uploadPhoto.buttons.choose", "Choose Photo")}
                           </>
                         )}
                       </Button>
 
                       <p className="text-xs text-muted-foreground">
-                        {(t as any).ads.uploadPhoto.uploadArea.fileSupport}
+                        {t("ads.uploadPhoto.uploadArea.fileSupport", "Supports: JPG, PNG, GIF")}
                       </p>
                     </div>
                   </div>
@@ -278,19 +289,19 @@ export default function UploadPhoto() {
                   {/* Guidelines */}
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
                     <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">
-                      {(t as any).ads.uploadPhoto.guidelines.title}
+                     {t("ads.uploadPhoto.guidelines.title", "Photo Guidelines")}
                     </h4>
                     <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                      <li>• {(t as any).ads.uploadPhoto.guidelines.highRes}</li>
+                      <li>• {t("ads.uploadPhoto.guidelines.highRes", "High Resolution")}</li>
                       <li>
-                        • {(t as any).ads.uploadPhoto.guidelines.goodLighting}
+                        • {t("ads.uploadPhoto.guidelines.goodLighting", "Good Lighting")}
                       </li>
                       <li>
-                        • {(t as any).ads.uploadPhoto.guidelines.avoidText}
+                        • {t("ads.uploadPhoto.guidelines.avoidText", "Avoid Text")}
                       </li>
                       <li>
                         •{" "}
-                        {(t as any).ads.uploadPhoto.guidelines.relateToAudience}
+                        {t("ads.uploadPhoto.guidelines.relateToAudience", "Relate to Your Audience")}
                       </li>
                     </ul>
                   </div>
@@ -306,7 +317,7 @@ export default function UploadPhoto() {
                       }
                       className="flex-1">
                       <i className="fas fa-arrow-right mr-2"></i>
-                      {(t as any).ads.uploadPhoto.buttons.continue}
+                      {t("ads.uploadPhoto.buttons.continue", "Continue")}
                     </Button>
                     <Button
                       type="button"
@@ -315,7 +326,7 @@ export default function UploadPhoto() {
                       disabled={
                         uploadingPhoto || uploadPhotoMutation.isPending
                       }>
-                      {(t as any).ads.uploadPhoto.buttons.skip}
+                      {t("ads.uploadPhoto.buttons.skip", "Skip")}
                     </Button>
                   </div>
                 </div>

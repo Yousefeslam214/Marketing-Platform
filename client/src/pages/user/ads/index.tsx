@@ -7,26 +7,23 @@ import { Badge } from "@/components/ui/badge";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { useState } from "react";
-import { analyticsCampaignPath, editAdPath } from "@/lib/paths";
+import { editAdPath } from "@/lib/paths";
 import DataPagination from "@/components/ui/data-pagination";
 
 export default function AdsIndex() {
-  const [, setLocation] = useLocation();
+  const [,setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
 
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
 
-  const {
-    data: ads,
-    isLoading,
-  } = useApiQuery({
+  const { data: ads, isLoading } = useApiQuery({
     key: ["/api/ads/user", page, limit],
     url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}`,
   });
-
   // Type-safe ads array
   const safeAds = (ads?.data as any[]) || [];
+  console.log(safeAds);
 
   const handleCreateAd = () => {
     setLocation("/campaigns/new");
@@ -59,39 +56,58 @@ export default function AdsIndex() {
                   className="cursor-pointer hover:shadow-lg transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <h3
                           className="font-semibold text-foreground truncate"
                           data-testid={`ad-title-${ad.id}`}>
-                          {ad.titleEn}
+                          {ad.titleEn || ad.titleAr || t("ads", "title")}
                         </h3>
                         <p className="text-sm text-muted-foreground truncate">
-                          {ad.descriptionEn}
+                          {ad.descriptionEn || ad.descriptionAr || "-"}
                         </p>
                       </div>
-                      <Badge className={getStatusColor(ad.status)}>
-                        {ad.status}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge className={getStatusColor(ad.status)}>
+                          {ad.status}
+                        </Badge>
+                      </div>
                     </div>
 
-                    {ad.imageUrl && (
-                      <div className="w-full h-32 bg-muted rounded-lg mb-4 overflow-hidden">
+                    {ad.imageUrl ? (
+                      <div className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden">
                         <img
                           src={ad.imageUrl}
-                          alt={ad.titleEn}
+                          alt={ad.titleEn || ad.titleAr}
                           className="w-full h-full object-cover"
+                          data-testid={`ad-image-${ad.id}`}
                         />
+                      </div>
+                    ) : (
+                      <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
+                        <div className="text-center text-muted-foreground">
+                          <i className="fas fa-image text-2xl mb-2 block"></i>
+                          <div className="text-sm">{t("ads", "noImage") || "No image"}</div>
+                        </div>
                       </div>
                     )}
 
-                    <div
-                      className="flex items-center justify-between text-sm text-muted-foreground
-                    flex flex-col overflow-hidden
-                    ">
-                      <span>
-                        {t("ads", "target")}: {ad.targetAudience}
-                      </span>
-                      <span>{new Date(ad.createdAt).toLocaleDateString()}</span>
+                    <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+                      <div>
+                        <div className="text-xs">{t("ads", "impressions") || "Impressions"}</div>
+                        <div className="font-medium">{ad.impressionsCredit?.toLocaleString?.() ?? ad.totalImpressions ?? 0}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs">{t("ads", "spent") || "Spent"}</div>
+                        <div className="font-medium">${ad.spended?.toLocaleString?.() ?? 0}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs">{t("ads", "likes") || "Likes"}</div>
+                        <div className="font-medium">{ad.likesCount ?? 0}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs">{t("ads", "targetCities") || "Cities"}</div>
+                        <div className="font-medium">{Array.isArray(ad.targetCities) ? ad.targetCities.join(", ") : ad.targetCities || "-"}</div>
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-2 mt-4">
@@ -108,15 +124,6 @@ export default function AdsIndex() {
                         onClick={() => setLocation(editAdPath(ad.id))}
                         data-testid={`button-edit-${ad.id}`}>
                         {t("ads", "edit")}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                          setLocation(analyticsCampaignPath(ad.id))
-                        }
-                        data-testid={`button-analytics-${ad.id}`}>
-                        {t("ads", "analytics")}
                       </Button>
                     </div>
                   </CardContent>

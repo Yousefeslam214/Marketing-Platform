@@ -36,13 +36,13 @@ export function ErrorState({
               <Button onClick={onRetry} data-testid="button-retry">
                 {language === "ar" ? (
                   <>
-                    {(t as any)("error", "retry") || "Retry"}
+                    {t("error", "retry") || "Retry"}
                     <i className="fas fa-redo mr-2"></i>
                   </>
                 ) : (
                   <>
                     <i className="fas fa-redo mr-2"></i>
-                    {(t as any)("error", "retry") || "Retry"}
+                    {t("error", "retry") || "Retry"}
                   </>
                 )}
               </Button>
@@ -54,13 +54,13 @@ export function ErrorState({
                 data-testid="button-home">
                 {language === "ar" ? (
                   <>
-                    {(t as any)("error", "home") || "Home"}
+                    {t("error", "home") || "Home"}
                     <i className="fas fa-home ml-2"></i>
                   </>
                 ) : (
                   <>
                     <i className="fas fa-home mr-2"></i>
-                    {(t as any)("error", "home") || "Home"}
+                    {t("error", "home") || "Home"}
                   </>
                 )}
               </Button>

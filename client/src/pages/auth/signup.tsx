@@ -91,7 +91,9 @@ export default function Signup() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
             </div>
-            <CardTitle className="text-2xl">{t("auth", "signupTitle")}</CardTitle>
+            <CardTitle className="text-2xl">
+              {t("auth", "signupTitle")}
+            </CardTitle>
           </div>
           <CardDescription>{t("auth", "signupDescription")}</CardDescription>
         </CardHeader>

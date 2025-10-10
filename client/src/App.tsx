@@ -42,7 +42,6 @@ import {
   adminBillingPath,
   adminPendingAdsPath,
   adminRejectedAdsPath,
-  analyticsCampaignPath,
   campaignsPath,
   detailedCampaignsPath,
   editAdPath,
@@ -54,7 +53,6 @@ import PendingAds from "./pages/admin/ad/pending-ads";
 import AllAds from "./pages/admin/ad/all-ads";
 import AdminUsers from "./pages/admin/users-mangement-page";
 import UserDetails from "./pages/admin/user-details-mangement-page";
-import AnalyticsToAd from "./pages/user/analytics-to-ad";
 import AdDetail from "./pages/shared/ad/[id]";
 import LandingPage from "./pages/public/landing";
 import { PublicLayout } from "./components/layout/public-layout";
@@ -184,14 +182,7 @@ function Router() {
           </AppLayout>
         )}
       />
-      <Route
-        path={analyticsCampaignPath(":id")}
-        component={() => (
-          <AppLayout>
-            <AnalyticsToAd />
-          </AppLayout>
-        )}
-      />
+     
       <Route
         path={campaignsPath()}
         component={() => (

@@ -52,7 +52,6 @@ export function AdCard({
     }
   };
 
-
   const title = language === "ar" ? ad.titleAr : ad.titleEn;
   const description = language === "ar" ? ad.descriptionAr : ad.descriptionEn;
 
@@ -129,7 +128,7 @@ export function AdCard({
                   className="flex-1"
                   data-testid={`button-view-ad-${ad.id}`}>
                   <i className="fas fa-eye mr-1"></i>
-                  {(t as any)("ads", "view") || "View"}
+                  {t("ads", "view") || "View"}
                 </Button>
 
                 {onEdit && (
@@ -140,7 +139,7 @@ export function AdCard({
                     className="flex-1"
                     data-testid={`button-edit-ad-${ad.id}`}>
                     <i className="fas fa-edit mr-1"></i>
-                    {(t as any)("ads", "edit") || "Edit"}
+                    {t("ads", "edit") || "Edit"}
                   </Button>
                 )}
 
@@ -152,7 +151,7 @@ export function AdCard({
                     className="flex-1"
                     data-testid={`button-analytics-ad-${ad.id}`}>
                     <i className="fas fa-chart-bar mr-1"></i>
-                    {(t as any)("ads", "analytics") || "Analytics"}
+                    {t("ads", "analytics") || "Analytics"}
                   </Button>
                 )}
               </div>
@@ -165,7 +164,7 @@ export function AdCard({
                   className="w-full mt-3"
                   data-testid={`button-purchase-ad-${ad.id}`}>
                   <i className="fas fa-credit-card mr-1"></i>
-                  {(t as any)("adDetail", "purchaseImpressions") ||
+                  {t("adDetail", "purchaseImpressions") ||
                     "Purchase Impressions"}
                 </Button>
               )}
@@ -179,7 +178,7 @@ export function AdCard({
                       className="text-xs text-primary hover:underline flex items-center gap-1"
                       data-testid={`link-public-ad-${ad.id}`}>
                       <i className="fas fa-external-link-alt"></i>
-                      {(t as any)("ads", "viewPublicAd") || "View Public Ad"}
+                      {t("ads", "viewPublicAd") || "View Public Ad"}
                     </a>
                   </Link>
                 </div>
@@ -201,7 +200,7 @@ export function AdCard({
                   ) : (
                     <i className="fas fa-check mr-1"></i>
                   )}
-                  {(t as any)("ads", "approve") || "Approve"}
+                  {t("ads", "approve") || "Approve"}
                 </Button>
               )}
               {onReject && (
@@ -217,7 +216,7 @@ export function AdCard({
                   ) : (
                     <i className="fas fa-times mr-1"></i>
                   )}
-                  {(t as any)("ads", "reject") || "Reject"}
+                  {t("ads", "reject") || "Reject"}
                 </Button>
               )}
             </div>
@@ -228,9 +227,7 @@ export function AdCard({
                 className="text-xs text-destructive"
                 data-testid={`ad-rejection-reason-${ad.id}`}>
                 <strong>
-                  {(t as any)("ads", "card.rejectionReason") ||
-                    "Rejection Reason"}
-                  :
+                  {t("ads", "card.rejectionReason") || "Rejection Reason"}:
                 </strong>{" "}
                 {ad.rejectionReason}
               </p>

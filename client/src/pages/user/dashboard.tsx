@@ -17,12 +17,48 @@ export default function Dashboard() {
   const { isRTL, t, language } = useLanguage();
 
 
+  // Define types for dashboard data
+  type DashboardStats = {
+    totalImpressions?: number;
+    impressionGrowth?: number;
+    totalClicks?: number;
+    clickGrowth?: number;
+    clickThroughRate?: number;
+    ctrGrowth?: number;
+    remainingBalance?: number;
+    balanceGrowth?: number;
+  };
+
+  type TopAd = {
+    id: string;
+    imageUrl?: string;
+    titleAr?: string;
+    titleEn?: string;
+    impressions: number;
+    clicks: number;
+    ctr: number;
+  };
+
+  type ActivityItem = {
+    id: string;
+    type: string;
+    adTitle: string;
+    createdAt: string;
+  };
+
+  type DashboardData = {
+    stats?: DashboardStats;
+    topAds?: TopAd[];
+    chartData?: [];
+    activity?: ActivityItem[];
+  };
+
   const {
     data: dashboardData,
     isLoading: metricsLoading,
    
     refetch,
-  } = useApiQuery({
+  } = useApiQuery<{ data?: DashboardData }>({
     key: ["/api/dashboard/user"],
     url: `${VITE_API_BASE_URL}/api/dashboard/user`,
   });

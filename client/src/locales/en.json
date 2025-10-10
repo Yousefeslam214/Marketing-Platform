@@ -850,7 +850,7 @@
     "email": "Email",
     "phone": "Phone",
     "address": "Address",
-  "addressValue": "saudia",
+    "addressValue": "saudia",
     "hours": "Business Hours",
     "hoursValue": "Monday - Friday: 9:00 AM - 6:00 PM (EST)",
     "followUs": "Follow Us",
@@ -1279,6 +1279,62 @@
         "title": "Failed to update ad",
         "description": "Please try again"
       }
+    },
+    "form": {
+      "title": "Targeting & Budget",
+      "primaryAudience": "Primary Audience",
+      "selectPrimaryAudience": "Select primary audience",
+      "audienceOptions": {
+        "general": "General Audience",
+        "youngAdults": "Young Adults (18-30)",
+        "professionals": "Working Professionals",
+        "businessOwners": "Business Owners",
+        "students": "Students",
+        "parents": "Parents",
+        "seniors": "Seniors (50+)"
+      },
+      "budgetType": "Budget Type",
+      "selectBudgetType": "Select budget type",
+      "budgetOptions": {
+        "impressions": "Pay per 1000 impressions",
+        "clicks": "Pay per click"
+      },
+      "ageRange": "Age Range",
+      "minAgePlaceholder": "Min age",
+      "maxAgePlaceholder": "Max age",
+      "gender": "Gender",
+      "genders": {
+        "male": "Male",
+        "female": "Female",
+        "all": "All"
+      },
+      "languages": "Languages",
+      "languageOptions": {
+        "en": "English",
+        "ar": "Arabic",
+        "both": "Both"
+      },
+      "interests": "Interests",
+      "technology": "Technology",
+      "business": "Business",
+      "finance": "Finance",
+      "health": "Health",
+      "fitness": "Fitness",
+      "food": "Food",
+      "travel": "Travel",
+      "education": "Education",
+      "entertainment": "Entertainment",
+      "shopping": "Shopping",
+      "automotive": "Automotive",
+      "realEstate": "Real Estate",
+      "locations": "Locations",
+      "dailyBudget": "Daily Budget",
+      "approxImpressions": "Approximately {count} impressions per day",
+      "basedOnCPC": "Based on estimated cost per click",
+      "saving": "Saving...",
+      "saveTargeting": "Save Targeting",
+      "save": "Save",
+      "selectPlaceholder": "Select..."
     },
     "card": {
       "buttons": {
