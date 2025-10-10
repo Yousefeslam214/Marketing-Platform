@@ -95,17 +95,16 @@ export default function ApprovedAds() {
               <div className="text-center py-12">
                 <i className="fas fa-check-circle text-6xl text-blue-500 mb-6"></i>
                 <h3 className="text-xl font-semibold text-foreground mb-2">
-                  No approved ads yet
+                  {t("approvedAds", "emptyTitle")}
                 </h3>
                 <p className="text-muted-foreground mb-6">
-                  Your approved ads will appear here. They are ready for
-                  publishing and impression purchases.
+                  {t("approvedAds", "emptyDescription")}
                 </p>
                 <Button
                   onClick={handleCreateAd}
                   data-testid="button-create-first-ad">
                   <i className="fas fa-plus mr-2"></i>
-                  Create Your First Ad
+                  {t("ads", "createFirstAd")}
                 </Button>
               </div>
             </div>

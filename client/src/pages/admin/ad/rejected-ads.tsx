@@ -79,11 +79,10 @@ export default function RejectedAds() {
               <div className="text-center py-12">
                 <i className="fas fa-times-circle text-6xl text-red-500 mb-6"></i>
                 <h3 className="text-xl font-semibold text-foreground mb-2">
-                  No rejected ads yet
+                  {t("rejectedAds", "emptyTitle")}
                 </h3>
                 <p className="text-muted-foreground mb-6">
-                  If your ads are rejected, they will appear here with rejection
-                  reasons.
+                  {t("rejectedAds", "emptyDescription")}
                 </p>
               </div>
             </div>

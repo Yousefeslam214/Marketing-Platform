@@ -23,27 +23,29 @@ const PublicFooter = () => {
             </p>
 
             <div
-              className={`flex ${
-                isRTL ? "flex-row-reverse" : "flex-row"
-              } space-x-4 rtl:space-x-reverse mt-2`}>
+              className={`flex   mt-2
+              
+              `}>
               <a
                 href="#"
-                className="text-muted-foreground hover:text-primary transition-colors">
+                className="text-muted-foreground hover:text-primary transition-colors
+                mx-2
+                ">
                 <i className="fab fa-twitter"></i>
               </a>
               <a
                 href="#"
-                className="text-muted-foreground hover:text-primary transition-colors">
+                className=" mx-2 text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-facebook"></i>
               </a>
               <a
                 href="#"
-                className="text-muted-foreground hover:text-primary transition-colors">
+                className="  mx-2 text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-linkedin"></i>
               </a>
               <a
                 href="#"
-                className="text-muted-foreground hover:text-primary transition-colors">
+                className="mx-2 text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-instagram"></i>
               </a>
             </div>
@@ -115,14 +117,14 @@ const PublicFooter = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Contact Us</h4>
+            <h4 className="font-semibold mb-4">{t("sidebar", "contact" as any)}</h4>
             <ul className="space-y-2 text-muted-foreground">
               <li className="flex items-center">
-                <i className="fas fa-envelope mr-2"></i>
+                <i className="fas fa-envelope mx-2"></i>
                 info@octopusad.com
               </li>
               <li className="flex items-center">
-                <i className="fas fa-phone mr-2"></i>
+                <i className="fas fa-phone mx-2"></i>
                 0502274696
               </li>
 

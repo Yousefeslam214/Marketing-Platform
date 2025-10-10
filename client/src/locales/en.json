@@ -381,15 +381,21 @@
   },
   "pendingAds": {
     "title": "Pending Ads",
-    "description": "Your ads waiting for review before approval or rejection"
+    "description": "Your ads waiting for review before approval or rejection",
+    "emptyTitle": "No pending ads yet",
+    "emptyDescription": "Ads you submit for review will appear here until they are approved or rejected."
   },
   "rejectedAds": {
     "title": "Rejected Ads",
-    "description": "Ads that were rejected during the review process"
+    "description": "Ads that were rejected during the review process",
+    "emptyTitle": "No rejected ads yet",
+    "emptyDescription": "If your ads are rejected, they will appear here with rejection reasons."
   },
   "approvedAds": {
     "title": "Approved Ads",
-    "description": "Your approved ads ready to run campaigns"
+    "description": "Your approved ads ready to run campaigns",
+    "emptyTitle": "No approved ads yet",
+    "emptyDescription": "Your approved ads will appear here. They are ready for publishing and impression purchases."
   },
   "allAds": {
     "title": "All Ads",

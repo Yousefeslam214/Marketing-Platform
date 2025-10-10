@@ -128,12 +128,10 @@ export default function PendingAds() {
               <div className="text-center py-12">
                 <i className="fas fa-hourglass-half text-6xl text-yellow-500 mb-6"></i>
                 <h3 className="text-xl font-semibold text-foreground mb-2">
-                  {isRTL ? "لا توجد إعلانات معلقة بعد" : "No pending ads yet"}
+                  {t("pendingAds", "emptyTitle")}
                 </h3>
                 <p className="text-muted-foreground mb-6">
-                  {isRTL
-                    ? "ستظهر الإعلانات التي ترسلها للمراجعة هنا حتى يتم الموافقة عليها أو رفضها."
-                    : "Ads you submit for review will appear here until they are approved or rejected."}
+                  {t("pendingAds", "emptyDescription")}
                 </p>
               </div>
             </div>

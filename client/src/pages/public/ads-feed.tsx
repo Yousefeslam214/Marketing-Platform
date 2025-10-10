@@ -195,7 +195,9 @@ console.log(rtn, "ads response");
       </header>
 
       {/* Main Content */}
-      <main className="p-6 min-h-[78vh]">
+      <main className="p-6 min-h-[78vh]
+      flex flex-col items-center w-full
+      ">
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
             {[...Array(3)].map((_, i) => (
@@ -211,7 +213,9 @@ console.log(rtn, "ads response");
         ) : (
           <div className="w-full flex flex-col items-center space-y-8">
             {/* Ads List */}
-            <div className="min-h-[80vh] w-full">
+            <div className="min-h-[80vh] w-full
+            flex flex-col items-center
+            ">
               <div
                 className="w-full max-w-5xl grid  gap-6
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 

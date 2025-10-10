@@ -180,9 +180,9 @@ export default function FAQ() {
 
   return (
     <div
-      className={` h-screen bg-background ${
-        isRTL ? "rtl" : "ltr"
-      }`}>
+      className={` h-screen bg-background
+        flex flex-col items-center
+        ${isRTL ? "rtl" : "ltr"}`}>
       <Header title={title} description={description} />
       <main className="p-6 space-y-6 h-full">
         {translatedFAQs.map((faq, index) => (

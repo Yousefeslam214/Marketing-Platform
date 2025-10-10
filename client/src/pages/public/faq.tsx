@@ -3,8 +3,6 @@ import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { LanguageToggle } from "@/components/ui/language-toggle";
 import {
   Accordion,
   AccordionContent,
@@ -21,8 +19,6 @@ import {
   Target,
   Zap,
 } from "lucide-react";
-import PublicHeader from "@/components/layout/publicHeader";
-import PublicFooter from "@/components/layout/publicFooter";
 
 export default function FAQ() {
   const { t, isRTL } = useLanguage();
@@ -68,10 +64,18 @@ export default function FAQ() {
 
   return (
     <div
-      className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}
+      className={`min-h-screen bg-background
+         flex flex-col items-center w-full 
+         justify-center
+        ${isRTL ? "rtl" : "ltr"}
+      `}
       dir={isRTL ? "rtl" : "ltr"}>
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section
+        className="relative py-20 overflow-hidden
+      w-full
+      flex flex-col items-center
+      ">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
         <div className="container relative">
           <div className="text-center space-y-4 mb-16">
@@ -90,7 +94,8 @@ export default function FAQ() {
       </section>
 
       {/* FAQ Content */}
-      <section className="py-20">
+      <section className="py-20 w-full
+      flex flex-col items-center ">
         <div className="container">
           <div className="max-w-4xl mx-auto">
             <div className="grid gap-8">
@@ -158,7 +163,11 @@ export default function FAQ() {
       </section>
 
       {/* Quick Stats */}
-      <section className="py-16 bg-muted/50">
+      <section className="py-16 bg-muted/50
+      
+      w-full
+      flex flex-col items-center
+      ">
         <div className="container">
           <div
             className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto ${

@@ -3,11 +3,8 @@ import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { LanguageToggle } from "@/components/ui/language-toggle";
 import {
   Shield,
-  ArrowLeft,
   FileText,
   Lock,
   Eye,
@@ -15,8 +12,6 @@ import {
   UserCheck,
   Scale,
 } from "lucide-react";
-import PublicHeader from "@/components/layout/publicHeader";
-import PublicFooter from "@/components/layout/publicFooter";
 
 export default function PrivacyTerms() {
   const { t, isRTL } = useLanguage();
@@ -86,6 +81,8 @@ export default function PrivacyTerms() {
     <div
       className={`min-h-screen bg-background 
         flex flex-col align-center
+        w-full items-center 
+        justify-center
         ${isRTL ? "rtl" : "ltr"}`}
       dir={isRTL ? "rtl" : "ltr"}>
       {/* Hero Section */}
