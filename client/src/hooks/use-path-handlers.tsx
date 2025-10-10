@@ -7,7 +7,7 @@ export function useAdNavigation() {
 
   const handleViewAd = (id: string) => setLocation(`/campaigns/${id}`);
 
-  const handleEditAd = (id: string) => setLocation(`/campaigns/${id}/edit`);
+  const handleEditAd = (id: string) => setLocation(`/ads/${id}/edit`);
 
   const handleAnalytics = (id: string) => setLocation(`/campaigns/${id}/analytics`);
 

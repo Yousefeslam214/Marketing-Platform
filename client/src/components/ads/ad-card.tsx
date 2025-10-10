@@ -57,7 +57,9 @@ export function AdCard({
 
   return (
     <Card
-      className="cursor-pointer hover:shadow-lg transition-shadow min-w-[350px]"
+      className="cursor-pointer hover:shadow-lg transition-shadow min-w-[350px]
+      h-full flex flex-col justify-between
+      "
       data-testid={`ad-card-${ad.id}`}>
       <CardContent className="p-6 flex flex-col justify-between h-full">
         <div className="flex items-start justify-between mb-4">
@@ -125,24 +127,25 @@ export function AdCard({
                   variant="outline"
                   size="sm"
                   onClick={() => onView?.(ad.id)}
+                  // onClick={() => onView?.(ad.id)}
                   className="flex-1"
                   data-testid={`button-view-ad-${ad.id}`}>
                   <i className="fas fa-eye mr-1"></i>
                   {t("ads", "view") || "View"}
                 </Button>
-
-                {onEdit && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onEdit(ad.id)}
-                    className="flex-1"
-                    data-testid={`button-edit-ad-${ad.id}`}>
-                    <i className="fas fa-edit mr-1"></i>
-                    {t("ads", "edit") || "Edit"}
-                  </Button>
-                )}
-
+                <Link href={`/ads/${ad.id}/edit`} className="w-[50%]">
+                  {onEdit && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      // onClick={() => onEdit?.(ad.id)}
+                      className="w-full"
+                      data-testid={`button-edit-ad-${ad.id}`}>
+                      <i className="fas fa-edit mr-1"></i>
+                      {t("ads", "edit") || "Edit"}
+                    </Button>
+                  )}
+                </Link>
                 {onAnalytics && (
                   <Button
                     variant="outline"
