@@ -16,7 +16,6 @@ async function updateUserRole(
 
     process.exit(0);
   } catch (error) {
-    console.error("Error updating user:", error);
     process.exit(1);
   }
 }

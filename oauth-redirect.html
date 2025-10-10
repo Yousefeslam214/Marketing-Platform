@@ -8,10 +8,6 @@
         window.opener &&
         window.location.hostname === "marketing-platform-six.vercel.app"
       ) {
-        console.log(
-          "Detected popup on production domain, redirecting to local..."
-        );
-
         // Redirect to local development server with the same path and query params
         const localUrl = `http://localhost:3000${window.location.pathname}${window.location.search}`;
 

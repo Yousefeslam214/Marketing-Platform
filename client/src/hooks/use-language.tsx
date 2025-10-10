@@ -1,29 +1,39 @@
-import { useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   getTranslation,
+  type Language,
   type TranslationSection,
   type TranslationKey,
 } from "@/lib/i18n";
-import { LanguageContext } from "@/contexts/language-context";
 
 export function useLanguage() {
-  const ctx = useContext(LanguageContext);
-
-  if (!ctx) {
-    throw new Error("useLanguage must be used inside LanguageProvider");
-  }
-
-  const { language, setLanguage, toggleLanguage, dir, isRTL } = ctx;
+  const [language, setLanguage] = useState<Language>(() => {
+    const stored = localStorage.getItem("language");
+    return stored === "ar" || stored === "en" ? stored : "en";
+  });
 
   useEffect(() => {
     const html = document.documentElement;
     html.setAttribute("lang", language);
-    html.setAttribute("dir", dir);
-  }, [language, dir]);
+    html.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
+    localStorage.setItem("language", language);
 
-  // Accept string keys (including dot-paths) for flexibility across the codebase.
-  const t = (section: TranslationSection, key: string): string => {
-    return getTranslation(language, section, key as any);
+    // Dispatch custom event for other components to listen
+    window.dispatchEvent(
+      new CustomEvent("languageChange", { detail: language })
+    );
+  }, [language]);
+
+  const toggleLanguage = () => {
+    setLanguage((prev) => (prev === "en" ? "ar" : "en"));
+    window.location.reload();
+  };
+
+  const t = <T extends TranslationSection>(
+    section: T,
+    key: TranslationKey<T>
+  ): string => {
+    return getTranslation(language, section, key);
   };
 
   return {
@@ -31,7 +41,7 @@ export function useLanguage() {
     setLanguage,
     toggleLanguage,
     t,
-    dir,
-    isRTL,
+    dir: language === "ar" ? "rtl" : "ltr",
+    isRTL: language === "ar",
   };
 }

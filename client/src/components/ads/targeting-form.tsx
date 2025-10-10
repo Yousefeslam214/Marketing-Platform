@@ -98,7 +98,7 @@ export function TargetingForm({
       ...defaultValues,
     },
   });
-const { t } = useLanguage();
+  const { t } = useLanguage();
   const interestOptions = [
     { value: "technology", label: t("form", "technology") },
     { value: "business", label: t("form", "business") },
@@ -392,8 +392,6 @@ const { t } = useLanguage();
                 </FormItem>
               )}
             />
-
-          
 
             {/* Daily Budget */}
             <FormField
