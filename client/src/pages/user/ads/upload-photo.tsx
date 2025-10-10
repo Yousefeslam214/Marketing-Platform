@@ -8,11 +8,13 @@ import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLanguage } from "@/hooks/use-language";
 
 export default function UploadPhoto() {
   const [match, params] = useRoute("/ads/:adId/upload-photo");
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -39,8 +41,8 @@ export default function UploadPhoto() {
   if (!params?.adId) {
     console.error("AdId parameter is missing from route params:", params);
     toast({
-      title: "Invalid Ad ID",
-      description: "Unable to find the ad ID. Please try again.",
+      title: (t as any).ads.uploadPhoto.errors.invalidAdId,
+      description: (t as any).ads.uploadPhoto.errors.tryAgain,
       variant: "destructive",
     });
     setLocation("/campaigns");
@@ -57,7 +59,7 @@ export default function UploadPhoto() {
       console.log("File details:", { name: file.name, size: file.size, type: file.type });
       
       if (!adId) {
-        throw new Error("Ad ID is required for photo upload");
+        throw new Error((t as any).ads.uploadPhoto.errors.invalidAdId);
       }
 
       const formData = new FormData();
@@ -96,15 +98,15 @@ export default function UploadPhoto() {
         }
         setPhotoPreview(photoUrl);
         toast({
-          title: "Photo uploaded successfully",
-          description: "Your ad photo has been uploaded",
+          title: (t as any).ads.uploadPhoto.success.title,
+          description: (t as any).ads.uploadPhoto.success.description,
         });
       }
     },
     onError: (error: any) => {
       toast({
-        title: "Failed to upload photo",
-        description: error.message || "Please try again",
+        title: (t as any).ads.uploadPhoto.errors.title,
+        description: error.message || (t as any).ads.uploadPhoto.errors.uploadFailed,
         variant: "destructive",
       });
       // If upload fails, remove the preview
@@ -123,8 +125,8 @@ export default function UploadPhoto() {
       // Validate file type
       if (!file.type.startsWith("image/")) {
         toast({
-          title: "Invalid file type",
-          description: "Please select an image file",
+          title: (t as any).ads.uploadPhoto.errors.invalidFileType,
+          description: (t as any).ads.uploadPhoto.errors.selectImage,
           variant: "destructive",
         });
         return;
@@ -134,8 +136,8 @@ export default function UploadPhoto() {
       const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSizeInBytes) {
         toast({
-          title: "File too large",
-          description: `Please select an image smaller than 5MB. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB`,
+          title: (t as any).ads.uploadPhoto.errors.fileTooLarge.replace('{size}', '5MB'),
+          description: (t as any).ads.uploadPhoto.errors.currentSize.replace('{size}', `${(file.size / 1024 / 1024).toFixed(2)}MB`),
           variant: "destructive",
         });
         return;
@@ -161,8 +163,8 @@ export default function UploadPhoto() {
       setLocation(`/ads/${params.adId}/assign-credit`);
     } else {
       toast({
-        title: "Photo required",
-        description: "Please upload a photo before continuing",
+        title: (t as any).ads.uploadPhoto.errors.photoRequired,
+        description: (t as any).ads.uploadPhoto.errors.uploadBeforeContinue,
         variant: "destructive",
       });
     }
@@ -176,8 +178,8 @@ export default function UploadPhoto() {
     <div className="flex h-screen bg-background">
       <div className="flex-1 overflow-auto">
         <Header
-          title="Upload Ad Photo"
-          description="Add an eye-catching photo to your advertisement"
+          title={(t as any).ads.uploadPhoto.header.title}
+          description={(t as any).ads.uploadPhoto.header.description}
         />
 
         <main className="p-6">
@@ -186,11 +188,10 @@ export default function UploadPhoto() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <i className="fas fa-camera text-blue-600"></i>
-                  Upload Your Ad Photo
+                  {(t as any).ads.uploadPhoto.card.title}
                 </CardTitle>
                 <p className="text-muted-foreground">
-                  Add a compelling image to make your ad more attractive and
-                  engaging.
+                  {(t as any).ads.uploadPhoto.card.description}
                 </p>
               </CardHeader>
               <CardContent>
@@ -200,7 +201,7 @@ export default function UploadPhoto() {
                     <div className="relative">
                       <img
                         src={photoPreview}
-                        alt="Ad preview"
+                        alt={(t as any).ads.uploadPhoto.preview.alt}
                         className="w-full max-w-md mx-auto h-64 object-cover rounded-lg border shadow-sm"
                       />
                       <Button
@@ -219,7 +220,7 @@ export default function UploadPhoto() {
                           setUploadedPhotoUrl(null);
                         }}>
                         <i className="fas fa-trash mr-2"></i>
-                        Remove
+                        {(t as any).ads.uploadPhoto.buttons.remove}
                       </Button>
                     </div>
                   )}
@@ -239,10 +240,10 @@ export default function UploadPhoto() {
                         <i className="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
                         <div>
                           <h3 className="text-lg font-medium">
-                            Upload your ad photo
+                            {(t as any).ads.uploadPhoto.uploadArea.title}
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Choose a high-quality image that represents your ad
+                            {(t as any).ads.uploadPhoto.uploadArea.description}
                           </p>
                         </div>
                       </div>
@@ -260,18 +261,18 @@ export default function UploadPhoto() {
                         {uploadingPhoto || uploadPhotoMutation.isPending ? (
                           <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
-                            Uploading...
+                            {(t as any).ads.uploadPhoto.buttons.uploading}
                           </>
                         ) : (
                           <>
                             <i className="fas fa-upload mr-2"></i>
-                            {photoPreview ? "Change Photo" : "Choose Photo"}
+                            {photoPreview ? (t as any).ads.uploadPhoto.buttons.change : (t as any).ads.uploadPhoto.buttons.choose}
                           </>
                         )}
                       </Button>
 
                       <p className="text-xs text-muted-foreground">
-                        Supports JPG, PNG up to 1MB
+                        {(t as any).ads.uploadPhoto.uploadArea.fileSupport}
                       </p>
                     </div>
                   </div>
@@ -279,13 +280,13 @@ export default function UploadPhoto() {
                   {/* Guidelines */}
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
                     <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">
-                      Photo Guidelines:
+                      {(t as any).ads.uploadPhoto.guidelines.title}
                     </h4>
                     <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                      <li>• Use high-resolution images (minimum 800x600px)</li>
-                      <li>• Ensure good lighting and clear visibility</li>
-                      <li>• Avoid text-heavy images</li>
-                      <li>• Use images that relate to your target audience</li>
+                      <li>• {(t as any).ads.uploadPhoto.guidelines.highRes}</li>
+                      <li>• {(t as any).ads.uploadPhoto.guidelines.goodLighting}</li>
+                      <li>• {(t as any).ads.uploadPhoto.guidelines.avoidText}</li>
+                      <li>• {(t as any).ads.uploadPhoto.guidelines.relateToAudience}</li>
                     </ul>
                   </div>
 
@@ -300,7 +301,7 @@ export default function UploadPhoto() {
                       }
                       className="flex-1">
                       <i className="fas fa-arrow-right mr-2"></i>
-                      Continue to Credit Assignment
+                      {(t as any).ads.uploadPhoto.buttons.continue}
                     </Button>
                     <Button
                       type="button"
@@ -309,7 +310,7 @@ export default function UploadPhoto() {
                       disabled={
                         uploadingPhoto || uploadPhotoMutation.isPending
                       }>
-                      Skip Photo
+                      {(t as any).ads.uploadPhoto.buttons.skip}
                     </Button>
                   </div>
                 </div>

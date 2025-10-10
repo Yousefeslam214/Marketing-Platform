@@ -8,10 +8,12 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
 import { AdEditor } from "@/components/ads/ad-editor-update";
+import { useLanguage } from "@/hooks/use-language";
 
 export default function UpdateAd() {
   const [, setLocation] = useLocation();
   const [match, params] = useRoute("/ads/:adId/edit");
+  const { t, isRTL } = useLanguage();
 
   // Check auth and route validity
   const isAuthenticated = !!TokenManager.getAccessToken();
@@ -55,15 +57,18 @@ export default function UpdateAd() {
 
   if (error || !adData?.success) {
     return (
-      <div className="flex h-screen bg-background">
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
         <div className="flex-1 overflow-auto">
           <Header
-            title="Update Ad"
-            description="Edit and update your advertising campaign"
+            title={t("ads", "updateAd.title" as any)}
+            description={t("ads", "updateAd.description" as any)}
           />
           <main className="p-6">
             <div className="max-w-4xl mx-auto">
-              <ErrorState title="Failed to load ad" />
+              <ErrorState 
+                title={t("ads", "updateAd.failedToLoad" as any)} 
+                message={t("ads", "updateAd.failedToLoad" as any)}
+              />
             </div>
           </main>
         </div>
@@ -72,11 +77,11 @@ export default function UpdateAd() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
         <Header
-          title="Update Ad"
-          description="Edit and update your advertising campaign"
+          title={t("ads", "updateAd.title" as any)}
+          description={t("ads", "updateAd.description" as any)}
         />
 
         <main className="p-6">

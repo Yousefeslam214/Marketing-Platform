@@ -166,14 +166,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Handle the callback in your frontend to complete the login process
       return;
 
-      if (!popup) {
-        throw new Error(
-          "Popup was blocked by the browser. Please allow popups for this site."
-        );
-      }
-
-      // Focus the popup
-      popup.focus();
+     
+     
 
       // Pure localStorage-based communication (no postMessage due to COOP)
       return new Promise<void>((resolve, reject) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,8 +14,6 @@ import {
 import { Heart, Share2, MessageCircle, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
-import { TokenManager } from "@/lib/auth";
-// import PublicFooter from "@/components/layout/publicFooter";
 import { DataPagination } from "@/components/ui/data-pagination";
 import { locationOptions } from "@/components/ads/targeting-form";
 

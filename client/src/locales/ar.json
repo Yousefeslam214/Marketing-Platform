@@ -269,6 +269,7 @@
     "budget": "الميزانية",
     "impressions": "الانطباعات",
     "clicks": "النقرات",
+    "spent": "المُنفق",
     "conversions": "التحويلات",
     "ctr": "معدل النقر",
     "cpc": "تكلفة النقرة",
@@ -288,7 +289,53 @@
     "adDescription": "الوصف",
     "callToAction": "دعوة للعمل",
     "imageUrl": "رابط الصورة",
-    "landingPage": "الصفحة المقصودة"
+    "landingPage": "الصفحة المقصودة",
+    "expired": "منتهي الصلاحية",
+    "updateAd": {
+      "title": "تحديث الإعلان",
+      "description": "تعديل وتحديث حملتك الإعلانية",
+      "failedToLoad": "فشل في تحميل الإعلان",
+      "loading": "جاري تحميل تفاصيل الإعلان...",
+      "updateSuccess": "تم تحديث الإعلان بنجاح",
+      "updateFailed": "فشل في تحديث الإعلان"
+    },
+    "newAd": {
+      "title": "إنشاء إعلان جديد",
+      "description": "تصميم وإعداد حملتك الإعلانية",
+      "createSuccess": "تم إنشاء الإعلان بنجاح",
+      "createFailed": "فشل في إنشاء الإعلان"
+    },
+    "uploadPhoto": {
+      "title": "رفع صورة الإعلان",
+      "description": "أضف صورة جذابة لإعلانك",
+      "uploadTitle": "رفع صورة إعلانك",
+      "uploadDescription": "أضف صورة مقنعة لجعل إعلانك أكثر جاذبية وإشراكاً.",
+      "choosePhoto": "اختر صورة",
+      "changePhoto": "تغيير الصورة",
+      "uploading": "جاري الرفع...",
+      "remove": "إزالة",
+      "uploadGuidelines": "إرشادات الصورة:",
+      "guidelines": {
+        "resolution": "استخدم صوراً عالية الدقة (800x600 بكسل كحد أدنى)",
+        "lighting": "تأكد من الإضاءة الجيدة والوضوح",
+        "textHeavy": "تجنب الصور التي تحتوي على نصوص كثيرة",
+        "relevance": "استخدم صوراً تتعلق بجمهورك المستهدف"
+      },
+      "invalidFileType": "نوع ملف غير صحيح",
+      "selectImageFile": "يرجى اختيار ملف صورة",
+      "fileTooLarge": "الملف كبير جداً",
+      "fileSizeLimit": "يرجى اختيار صورة أصغر من 5 ميجابايت. الحجم الحالي: {size} ميجابايت",
+      "photoRequired": "الصورة مطلوبة",
+      "uploadPhotoToContinue": "يرجى رفع صورة قبل المتابعة",
+      "continueToCredit": "متابعة إلى تخصيص الرصيد",
+      "skipPhoto": "تخطي الصورة",
+      "photoUploaded": "تم رفع الصورة بنجاح",
+      "photoUploadDescription": "تم رفع صورة إعلانك",
+      "uploadFailed": "فشل في رفع الصورة",
+      "supportedFormats": "يدعم JPG، PNG حتى 5 ميجابايت",
+      "dragAndDrop": "رفع صورة إعلانك",
+      "chooseHighQuality": "اختر صورة عالية الجودة تمثل إعلانك"
+    }
   },
   "pendingAds": {
     "title": "الإعلانات المعلقة",
@@ -1060,7 +1107,159 @@
     "failedToActivateAd": "فشل في تفعيل الإعلان",
     "insufficientCreditsMessage": "لا يمكن تفعيل الإعلان: أرصدة انطباع غير كافية",
     "invalidCreditAmount": "مبلغ رصيد غير صحيح",
-    "enterValidCredit": "يرجى إدخال مبلغ رصيد صحيح"
+    "enterValidCredit": "يرجى إدخال مبلغ رصيد صحيح",
+    "uploadPhoto": {
+      "header": {
+        "title": "تحميل صورة الإعلان",
+        "description": "أضف صورة جذابة لإعلانك"
+      },
+      "card": {
+        "title": "تحميل صورة إعلانك",
+        "description": "أضف صورة مقنعة لجعل إعلانك أكثر جاذبية وتفاعلاً."
+      },
+      "preview": {
+        "alt": "معاينة الإعلان"
+      },
+      "uploadArea": {
+        "title": "ارفع صورة إعلانك",
+        "description": "اختر صورة عالية الجودة تمثل إعلانك",
+        "fileSupport": "يدعم JPG، PNG حتى 5 ميجابايت"
+      },
+      "guidelines": {
+        "title": "إرشادات الصورة:",
+        "highRes": "استخدم صور عالية الدقة (الحد الأدنى 800x600 بكسل)",
+        "goodLighting": "تأكد من الإضاءة الجيدة والوضوح",
+        "avoidText": "تجنب الصور المليئة بالنصوص",
+        "relateToAudience": "استخدم صور تتعلق بجمهورك المستهدف"
+      },
+      "buttons": {
+        "remove": "إزالة",
+        "uploading": "جارٍ الرفع...",
+        "choose": "اختر صورة",
+        "change": "تغيير الصورة",
+        "continue": "المتابعة إلى تخصيص الرصيد",
+        "skip": "تخطي الصورة"
+      },
+      "success": {
+        "title": "تم تحميل الصورة بنجاح",
+        "description": "تم تحميل صورة إعلانك"
+      },
+      "errors": {
+        "title": "فشل في التحميل",
+        "invalidAdId": "معرف إعلان غير صحيح",
+        "tryAgain": "غير قادر على العثور على معرف الإعلان. يرجى المحاولة مرة أخرى.",
+        "uploadFailed": "فشل في تحميل الصورة",
+        "invalidFileType": "نوع ملف غير صحيح",
+        "selectImage": "يرجى اختيار ملف صورة",
+        "fileTooLarge": "يجب أن يكون حجم الملف أقل من {size}",
+        "currentSize": "الحجم الحالي: {size}",
+        "photoRequired": "الصورة مطلوبة",
+        "uploadBeforeContinue": "يرجى تحميل صورة قبل المتابعة"
+      }
+    },
+    "editor": {
+      "card": {
+        "title": "معلومات الإعلان"
+      },
+      "form": {
+        "titleEn": "عنوان الإعلان (بالإنجليزية)",
+        "titleEnPlaceholder": "أدخل عنوان الإعلان...",
+        "titleAr": "عنوان الإعلان (بالعربية)",
+        "titleArPlaceholder": "أدخل عنوان الإعلان...",
+        "descriptionEn": "الوصف (بالإنجليزية)",
+        "descriptionEnPlaceholder": "أدخل وصف الإعلان...",
+        "descriptionAr": "الوصف (بالعربية)",
+        "descriptionArPlaceholder": "أدخل وصف الإعلان...",
+        "websiteUrl": "رابط الموقع الإلكتروني",
+        "websiteUrlPlaceholder": "https://example.com",
+        "socialMediaLinks": "روابط وسائل التواصل الاجتماعي (اختيارية)",
+        "facebookLink": "رابط فيسبوك",
+        "facebookPlaceholder": "https://facebook.com/yourpage",
+        "targetAudience": "الجمهور المستهدف",
+        "selectAudience": "اختر الجمهور",
+        "audienceOptions": {
+          "general": "الجمهور العام",
+          "tech": "المختصون في التكنولوجيا",
+          "business": "أصحاب الأعمال",
+          "students": "الطلاب"
+        },
+        "budgetType": "نوع الميزانية",
+        "selectBudgetType": "اختر نوع الميزانية",
+        "budgetOptions": {
+          "impressions": "الدفع مقابل 1000 ظهور",
+          "clicks": "الدفع مقابل النقرة"
+        },
+        "targetCities": "المدن المستهدفة"
+      },
+      "buttons": {
+        "cancel": "إلغاء",
+        "saving": "جارٍ الحفظ...",
+        "saveDraft": "حفظ كمسودة"
+      },
+      "success": {
+        "title": "تم إنشاء الإعلان بنجاح",
+        "description": "تم إنشاء إعلانك وحفظه كمسودة"
+      },
+      "warning": {
+        "title": "تحذير",
+        "description": "تم إنشاء الإعلان ولكن لا يمكن تحميل الصورة. يرجى المحاولة لاحقاً."
+      },
+      "error": {
+        "title": "فشل في إنشاء الإعلان",
+        "description": "يرجى المحاولة مرة أخرى"
+      }
+    },
+    "editorUpdate": {
+      "card": {
+        "title": "تحديث معلومات الإعلان"
+      },
+      "form": {
+        "titleEn": "عنوان الإعلان (بالإنجليزية)",
+        "titleEnPlaceholder": "أدخل عنوان الإعلان...",
+        "adPhoto": "صورة الإعلان"
+      },
+      "buttons": {
+        "remove": "إزالة",
+        "updating": "جارٍ التحديث...",
+        "updateAd": "تحديث الإعلان"
+      },
+      "photoUpload": {
+        "success": {
+          "title": "تم تحميل الصورة بنجاح",
+          "description": "تم تحميل صورة إعلانك"
+        },
+        "error": {
+          "title": "فشل في تحميل الصورة",
+          "description": "يرجى المحاولة مرة أخرى"
+        }
+      },
+      "validation": {
+        "invalidFileType": "نوع ملف غير صحيح",
+        "selectImage": "يرجى اختيار ملف صورة",
+        "fileTooLarge": "الملف كبير جداً",
+        "fileSizeLimit": "يرجى اختيار صورة أصغر من 5 ميجابايت"
+      },
+      "success": {
+        "title": "تم تحديث الإعلان بنجاح",
+        "description": "تم تحديث إعلانك"
+      },
+      "error": {
+        "title": "فشل في تحديث الإعلان",
+        "description": "يرجى المحاولة مرة أخرى"
+      }
+    },
+    "card": {
+      "buttons": {
+        "view": "عرض",
+        "edit": "تعديل",
+        "analytics": "إحصائيات",
+        "purchaseImpressions": "شراء انطباعات",
+        "viewPublicAd": "عرض الإعلان العام",
+        "approve": "موافقة",
+        "reject": "رفض"
+      },
+      "rejectionReason": "سبب الرفض:"
+    }
   },
   "common": {
     "dashboard": "لوحة التحكم",

@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
 import { locationOptions } from "./targeting-form";
+import { useLanguage } from "@/hooks/use-language";
 
 interface AdEditorUpdateProps {
   adId: string;
@@ -43,6 +44,7 @@ export function AdEditor({
 }: AdEditorUpdateProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -106,15 +108,15 @@ export function AdEditor({
         }
         setPhotoPreview(photoUrl);
         toast({
-          title: "Photo uploaded successfully",
-          description: "Your ad photo has been uploaded",
+          title: (t as any).ads.editorUpdate.photoUpload.success.title,
+          description: (t as any).ads.editorUpdate.photoUpload.success.description,
         });
       }
     },
     onError: (error: any) => {
       toast({
-        title: "Failed to upload photo",
-        description: error.message || "Please try again",
+        title: (t as any).ads.editorUpdate.photoUpload.error.title,
+        description: error.message || (t as any).ads.editorUpdate.photoUpload.error.description,
         variant: "destructive",
       });
       // If upload fails, remove the preview if it was a local preview
@@ -133,8 +135,8 @@ export function AdEditor({
       // Validate file type
       if (!file.type.startsWith("image/")) {
         toast({
-          title: "Invalid file type",
-          description: "Please select an image file",
+          title: (t as any).ads.editorUpdate.validation.invalidFileType,
+          description: (t as any).ads.editorUpdate.validation.selectImage,
           variant: "destructive",
         });
         return;
@@ -143,8 +145,8 @@ export function AdEditor({
       // Validate file size (5MB limit)
       if (file.size > 5 * 1024 * 1024) {
         toast({
-          title: "File too large",
-          description: "Please select an image smaller than 5MB",
+          title: (t as any).ads.editorUpdate.validation.fileTooLarge,
+          description: (t as any).ads.editorUpdate.validation.fileSizeLimit,
           variant: "destructive",
         });
         return;
@@ -178,16 +180,16 @@ export function AdEditor({
       queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
       queryClient.invalidateQueries({ queryKey: [`/api/advertising/${adId}`] });
       toast({
-        title: "Ad updated successfully",
-        description: "Your ad has been updated",
+        title: (t as any).ads.editorUpdate.success.title,
+        description: (t as any).ads.editorUpdate.success.description,
       });
       console.log(data);
       setLocation(`/campaigns/${adId}`);
     },
     onError: (error: any) => {
       toast({
-        title: "Failed to update ad",
-        description: error.message || "Please try again",
+        title: (t as any).ads.editorUpdate.error.title,
+        description: error.message || (t as any).ads.editorUpdate.error.description,
         variant: "destructive",
       });
     },
@@ -200,7 +202,7 @@ export function AdEditor({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Update Ad Information</CardTitle>
+        <CardTitle>{(t as any).ads.editorUpdate.card.title}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -212,10 +214,10 @@ export function AdEditor({
                 name="titleEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Ad Title (English)</FormLabel>
+                    <FormLabel>{(t as any).ads.editorUpdate.form.titleEn}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter ad title..."
+                        placeholder={(t as any).ads.editorUpdate.form.titleEnPlaceholder}
                         data-testid="input-title-en"
                         {...field}
                       />
@@ -295,7 +297,7 @@ export function AdEditor({
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Ad Photo</FormLabel>
+                      <FormLabel>{(t as any).ads.editorUpdate.form.adPhoto}</FormLabel>
                       <FormControl>
                         <div className="space-y-4">
                           {/* Photo Preview */}
@@ -322,7 +324,7 @@ export function AdEditor({
                                   form.setValue("imageUrl", "");
                                 }}>
                                 <i className="fas fa-trash mr-2"></i>
-                                Remove
+                                {(t as any).ads.editorUpdate.buttons.remove}
                               </Button>
                             </div>
                           )}
@@ -613,12 +615,12 @@ export function AdEditor({
               {updateAdMutation.isPending ? (
                 <>
                   <i className="fas fa-spinner fa-spin mr-2"></i>
-                  Updating Ad...
+                  {(t as any).ads.editorUpdate.buttons.updating}
                 </>
               ) : (
                 <>
                   <i className="fas fa-save mr-2"></i>
-                  Update Ad
+                  {(t as any).ads.editorUpdate.buttons.updateAd}
                 </>
               )}
             </Button>

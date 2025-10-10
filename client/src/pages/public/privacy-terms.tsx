@@ -154,8 +154,7 @@ export default function PrivacyTerms() {
                 </p>
                 <div className="bg-muted/50 p-4 rounded-lg">
                   <p className="font-medium">Email: info@octopusad.com</p>
-                  <p className="font-medium">Address: San Francisco, CA</p>
-                </div>
+                 </div>
               </CardContent>
             </Card>
 
@@ -201,8 +200,7 @@ export default function PrivacyTerms() {
                 </p>
                 <div className="bg-muted/50 p-4 rounded-lg">
                   <p className="font-medium">Email: info@octopusad.com</p>
-                  <p className="font-medium">Address: San Francisco, CA</p>
-                </div>
+                 </div>
               </CardContent>
             </Card>
 

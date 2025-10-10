@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AdData } from "@/lib/schema/schema-ads";
 import { getStatusColor } from "@/lib/utils";
+import { useLanguage } from "@/hooks/use-language";
 
 export type { AdData };
 
@@ -33,6 +34,7 @@ export function AdCard({
   onReject,
   isLoading = false,
 }: AdCardProps) {
+  const { t } = useLanguage();
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "published":
@@ -128,7 +130,7 @@ console.log("Normalized status:", normalizedStatus);
                 className="flex-1"
                 data-testid={`button-view-ad-${ad.id}`}>
                 <i className="fas fa-eye mr-1"></i>
-                {language === "ar" ? "عرض" : "View"}
+                {(t as any).ads.card.buttons.view}
               </Button>
 
               {onEdit && (
@@ -139,7 +141,7 @@ console.log("Normalized status:", normalizedStatus);
                   className="flex-1"
                   data-testid={`button-edit-ad-${ad.id}`}>
                   <i className="fas fa-edit mr-1"></i>
-                  {language === "ar" ? "تعديل" : "Edit"}
+                  {(t as any).ads.card.buttons.edit}
                 </Button>
               )}
 
@@ -151,7 +153,7 @@ console.log("Normalized status:", normalizedStatus);
                   className="flex-1"
                   data-testid={`button-analytics-ad-${ad.id}`}>
                   <i className="fas fa-chart-bar mr-1"></i>
-                  {language === "ar" ? "إحصائيات" : "Analytics"}
+                  {(t as any).ads.card.buttons.analytics}
                 </Button>
               )}
             </div>
@@ -164,7 +166,7 @@ console.log("Normalized status:", normalizedStatus);
                 className="w-full mt-3"
                 data-testid={`button-purchase-ad-${ad.id}`}>
                 <i className="fas fa-credit-card mr-1"></i>
-                {language === "ar" ? "شراء انطباعات" : "Purchase Impressions"}
+                {(t as any).ads.card.buttons.purchaseImpressions}
               </Button>
             )}
 
@@ -177,7 +179,7 @@ console.log("Normalized status:", normalizedStatus);
                     className="text-xs text-primary hover:underline flex items-center gap-1"
                     data-testid={`link-public-ad-${ad.id}`}>
                     <i className="fas fa-external-link-alt"></i>
-                    {language === "ar" ? "عرض الإعلان العام" : "View Public Ad"}
+                    {(t as any).ads.card.buttons.viewPublicAd}
                   </a>
                 </Link>
               </div>
@@ -199,7 +201,7 @@ console.log("Normalized status:", normalizedStatus);
                 ) : (
                   <i className="fas fa-check mr-1"></i>
                 )}
-                {language === "ar" ? "موافقة" : "Approve"}
+                {(t as any).ads.card.buttons.approve}
               </Button>
             )}
             {onReject && (
@@ -215,7 +217,7 @@ console.log("Normalized status:", normalizedStatus);
                 ) : (
                   <i className="fas fa-times mr-1"></i>
                 )}
-                {language === "ar" ? "رفض" : "Reject"}
+                {(t as any).ads.card.buttons.reject}
               </Button>
             )}
           </div>
@@ -226,7 +228,7 @@ console.log("Normalized status:", normalizedStatus);
               className="text-xs text-destructive"
               data-testid={`ad-rejection-reason-${ad.id}`}>
               <strong>
-                {language === "ar" ? "سبب الرفض:" : "Rejection Reason:"}
+                {(t as any).ads.card.rejectionReason}
               </strong>{" "}
               {ad.rejectionReason}
             </p>

@@ -282,7 +282,52 @@
     "callToAction": "Call to Action",
     "imageUrl": "Image URL",
     "landingPage": "Landing Page",
-    "expired": "Expired"
+    "expired": "Expired",
+    "updateAd": {
+      "title": "Update Ad",
+      "description": "Edit and update your advertising campaign",
+      "failedToLoad": "Failed to load ad",
+      "loading": "Loading ad details...",
+      "updateSuccess": "Ad updated successfully",
+      "updateFailed": "Failed to update ad"
+    },
+    "newAd": {
+      "title": "Create New Ad",
+      "description": "Design and configure your advertising campaign",
+      "createSuccess": "Ad created successfully",
+      "createFailed": "Failed to create ad"
+    },
+    "uploadPhoto": {
+      "title": "Upload Ad Photo",
+      "description": "Add an eye-catching photo to your advertisement",
+      "uploadTitle": "Upload Your Ad Photo",
+      "uploadDescription": "Add a compelling image to make your ad more attractive and engaging.",
+      "choosePhoto": "Choose Photo",
+      "changePhoto": "Change Photo",
+      "uploading": "Uploading...",
+      "remove": "Remove",
+      "uploadGuidelines": "Photo Guidelines:",
+      "guidelines": {
+        "resolution": "Use high-resolution images (minimum 800x600px)",
+        "lighting": "Ensure good lighting and clear visibility",
+        "textHeavy": "Avoid text-heavy images",
+        "relevance": "Use images that relate to your target audience"
+      },
+      "invalidFileType": "Invalid file type",
+      "selectImageFile": "Please select an image file",
+      "fileTooLarge": "File too large",
+      "fileSizeLimit": "Please select an image smaller than 5MB. Current size: {size}MB",
+      "photoRequired": "Photo required",
+      "uploadPhotoToContinue": "Please upload a photo before continuing",
+      "continueToCredit": "Continue to Credit Assignment",
+      "skipPhoto": "Skip Photo",
+      "photoUploaded": "Photo uploaded successfully",
+      "photoUploadDescription": "Your ad photo has been uploaded",
+      "uploadFailed": "Failed to upload photo",
+      "supportedFormats": "Supports JPG, PNG up to 5MB",
+      "dragAndDrop": "Upload your ad photo",
+      "chooseHighQuality": "Choose a high-quality image that represents your ad"
+    }
   },
   "pendingAds": {
     "title": "Pending Ads",
@@ -1022,7 +1067,159 @@
     "failedToActivateAd": "Failed to Activate Ad",
     "insufficientCreditsMessage": "Cannot activate ad: insufficient impression credits",
     "invalidCreditAmount": "Invalid Credit Amount",
-    "enterValidCredit": "Please enter a valid credit amount"
+    "enterValidCredit": "Please enter a valid credit amount",
+    "uploadPhoto": {
+      "header": {
+        "title": "Upload Ad Photo",
+        "description": "Add an eye-catching photo to your advertisement"
+      },
+      "card": {
+        "title": "Upload Your Ad Photo",
+        "description": "Add a compelling image to make your ad more attractive and engaging."
+      },
+      "preview": {
+        "alt": "Ad preview"
+      },
+      "uploadArea": {
+        "title": "Upload your ad photo",
+        "description": "Choose a high-quality image that represents your ad",
+        "fileSupport": "Supports JPG, PNG up to 5MB"
+      },
+      "guidelines": {
+        "title": "Photo Guidelines:",
+        "highRes": "Use high-resolution images (minimum 800x600px)",
+        "goodLighting": "Ensure good lighting and clear visibility",
+        "avoidText": "Avoid text-heavy images",
+        "relateToAudience": "Use images that relate to your target audience"
+      },
+      "buttons": {
+        "remove": "Remove",
+        "uploading": "Uploading...",
+        "choose": "Choose Photo",
+        "change": "Change Photo",
+        "continue": "Continue to Credit Assignment",
+        "skip": "Skip Photo"
+      },
+      "success": {
+        "title": "Photo uploaded successfully",
+        "description": "Your ad photo has been uploaded"
+      },
+      "errors": {
+        "title": "Upload Failed",
+        "invalidAdId": "Invalid Ad ID",
+        "tryAgain": "Unable to find the ad ID. Please try again.",
+        "uploadFailed": "Failed to upload photo",
+        "invalidFileType": "Invalid file type",
+        "selectImage": "Please select an image file",
+        "fileTooLarge": "File size must be less than {size}",
+        "currentSize": "Current size: {size}",
+        "photoRequired": "Photo required",
+        "uploadBeforeContinue": "Please upload a photo before continuing"
+      }
+    },
+    "editor": {
+      "card": {
+        "title": "Ad Information"
+      },
+      "form": {
+        "titleEn": "Ad Title (English)",
+        "titleEnPlaceholder": "Enter ad title...",
+        "titleAr": "Ad Title (Arabic)",
+        "titleArPlaceholder": "أدخل عنوان الإعلان...",
+        "descriptionEn": "Description (English)",
+        "descriptionEnPlaceholder": "Enter ad description...",
+        "descriptionAr": "Description (Arabic)",
+        "descriptionArPlaceholder": "أدخل وصف الإعلان...",
+        "websiteUrl": "Website URL",
+        "websiteUrlPlaceholder": "https://example.com",
+        "socialMediaLinks": "Social Media Links (Optional)",
+        "facebookLink": "Facebook Link",
+        "facebookPlaceholder": "https://facebook.com/yourpage",
+        "targetAudience": "Target Audience",
+        "selectAudience": "Select audience",
+        "audienceOptions": {
+          "general": "General Audience",
+          "tech": "Tech Professionals",
+          "business": "Business Owners",
+          "students": "Students"
+        },
+        "budgetType": "Budget Type",
+        "selectBudgetType": "Select budget type",
+        "budgetOptions": {
+          "impressions": "Pay per 1000 impressions",
+          "clicks": "Pay per click"
+        },
+        "targetCities": "Target Cities"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "saving": "Saving...",
+        "saveDraft": "Save Draft"
+      },
+      "success": {
+        "title": "Ad created successfully",
+        "description": "Your ad has been created and saved as draft"
+      },
+      "warning": {
+        "title": "Warning",
+        "description": "Ad created but unable to upload photo. Please try uploading later."
+      },
+      "error": {
+        "title": "Failed to create ad",
+        "description": "Please try again"
+      }
+    },
+    "editorUpdate": {
+      "card": {
+        "title": "Update Ad Information"
+      },
+      "form": {
+        "titleEn": "Ad Title (English)",
+        "titleEnPlaceholder": "Enter ad title...",
+        "adPhoto": "Ad Photo"
+      },
+      "buttons": {
+        "remove": "Remove",
+        "updating": "Updating Ad...",
+        "updateAd": "Update Ad"
+      },
+      "photoUpload": {
+        "success": {
+          "title": "Photo uploaded successfully",
+          "description": "Your ad photo has been uploaded"
+        },
+        "error": {
+          "title": "Failed to upload photo",
+          "description": "Please try again"
+        }
+      },
+      "validation": {
+        "invalidFileType": "Invalid file type",
+        "selectImage": "Please select an image file",
+        "fileTooLarge": "File too large",
+        "fileSizeLimit": "Please select an image smaller than 5MB"
+      },
+      "success": {
+        "title": "Ad updated successfully",
+        "description": "Your ad has been updated"
+      },
+      "error": {
+        "title": "Failed to update ad",
+        "description": "Please try again"
+      }
+    },
+    "card": {
+      "buttons": {
+        "view": "View",
+        "edit": "Edit",
+        "analytics": "Analytics",
+        "purchaseImpressions": "Purchase Impressions",
+        "viewPublicAd": "View Public Ad",
+        "approve": "Approve",
+        "reject": "Reject"
+      },
+      "rejectionReason": "Rejection Reason:"
+    }
   },
   "common": {
     "dashboard": "Dashboard",

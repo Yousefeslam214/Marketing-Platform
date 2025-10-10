@@ -27,27 +27,37 @@ import PublicFooter from "@/components/layout/publicFooter";
 export default function FAQ() {
   const { t, isRTL } = useLanguage();
 
+  // Define the FAQ item type
+  type FAQItem = {
+    question: string;
+    answer: string;
+  };
+
   // Get FAQ categories from translations
-  const faqCategories = [
+  const faqCategories: {
+    icon: JSX.Element;
+    title: string;
+    items: FAQItem[];
+  }[] = [
     {
       icon: <MessageCircle className="w-5 h-5" />,
       title: t("faq", "categories.general.title"),
-      items: t("faq", "categories.general.questions") || [],
+      items: (t("faq", "categories.general.questions") as FAQItem[]) || [],
     },
     {
       icon: <CreditCard className="w-5 h-5" />,
       title: t("faq", "categories.billing.title"),
-      items: t("faq", "categories.billing.questions") || [],
+      items: (t("faq", "categories.billing.questions") as FAQItem[]) || [],
     },
     {
       icon: <Target className="w-5 h-5" />,
       title: t("faq", "categories.adManagement.title"),
-      items: t("faq", "categories.adManagement.questions") || [],
+      items: (t("faq", "categories.adManagement.questions") as FAQItem[]) || [],
     },
     {
       icon: <Shield className="w-5 h-5" />,
       title: t("faq", "categories.security.title"),
-      items: t("faq", "categories.security.questions") || [],
+      items: (t("faq", "categories.security.questions") as FAQItem[]) || [],
     },
   ];
 
@@ -92,15 +102,15 @@ export default function FAQ() {
                   </CardHeader>
                   <CardContent>
                     <Accordion type="single" collapsible className="w-full">
-                      {category.items.map((item, index) => (
+                      {(Array.isArray(category.items) ? category.items : []).map((item, index) => (
                         <AccordionItem
                           key={index}
                           value={`item-${categoryIndex}-${index}`}>
                           <AccordionTrigger className="text-left">
-                            {item.question}
+                            {item?.question}
                           </AccordionTrigger>
                           <AccordionContent className="text-muted-foreground">
-                            {item.answer}
+                            {item?.answer}
                           </AccordionContent>
                         </AccordionItem>
                       ))}

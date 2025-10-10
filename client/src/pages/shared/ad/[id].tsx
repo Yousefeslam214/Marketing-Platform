@@ -732,7 +732,7 @@ export default function AdDetail({ params }: AdDetailProps) {
               {ad.imageUrl && (
                 <Card className="lg:col-span-2">
                   <CardHeader>
-                    <CardTitle>Ad Preview</CardTitle>
+                    <CardTitle>{t("adDetail","adPreview")}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="max-w-md mx-auto">
