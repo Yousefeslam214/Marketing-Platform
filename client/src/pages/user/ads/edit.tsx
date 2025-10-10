@@ -65,8 +65,8 @@ export default function UpdateAd() {
           />
           <main className="p-6">
             <div className="max-w-4xl mx-auto">
-              <ErrorState 
-                title={t("ads", "updateAd.failedToLoad" as any)} 
+              <ErrorState
+                title={t("ads", "updateAd.failedToLoad" as any)}
                 message={t("ads", "updateAd.failedToLoad" as any)}
               />
             </div>

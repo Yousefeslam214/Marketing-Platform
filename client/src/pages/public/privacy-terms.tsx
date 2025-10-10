@@ -88,8 +88,6 @@ export default function PrivacyTerms() {
         flex flex-col align-center
         ${isRTL ? "rtl" : "ltr"}`}
       dir={isRTL ? "rtl" : "ltr"}>
-  
-
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
@@ -108,7 +106,7 @@ export default function PrivacyTerms() {
           </div>
         </div>
       </section>
-      
+
       {/* Privacy Policy */}
       <section className="py-20">
         <div className="container">
@@ -154,7 +152,7 @@ export default function PrivacyTerms() {
                 </p>
                 <div className="bg-muted/50 p-4 rounded-lg">
                   <p className="font-medium">Email: info@octopusad.com</p>
-                 </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -200,7 +198,7 @@ export default function PrivacyTerms() {
                 </p>
                 <div className="bg-muted/50 p-4 rounded-lg">
                   <p className="font-medium">Email: info@octopusad.com</p>
-                 </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -234,7 +232,6 @@ export default function PrivacyTerms() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }

@@ -41,23 +41,23 @@ export default function FAQ() {
   }[] = [
     {
       icon: <MessageCircle className="w-5 h-5" />,
-      title: t("faq", "categories.general.title"),
-      items: (t("faq", "categories.general.questions") as FAQItem[]) || [],
+      title: (t as any)("faq", "categories.general.title"),
+      items: ((t as any)("faq", "categories.general.questions") as FAQItem[]) || [],
     },
     {
       icon: <CreditCard className="w-5 h-5" />,
-      title: t("faq", "categories.billing.title"),
-      items: (t("faq", "categories.billing.questions") as FAQItem[]) || [],
+      title: (t as any)("faq", "categories.billing.title"),
+      items: ((t as any)("faq", "categories.billing.questions") as FAQItem[]) || [],
     },
     {
       icon: <Target className="w-5 h-5" />,
-      title: t("faq", "categories.adManagement.title"),
-      items: (t("faq", "categories.adManagement.questions") as FAQItem[]) || [],
+      title: (t as any)("faq", "categories.adManagement.title"),
+      items: ((t as any)("faq", "categories.adManagement.questions") as FAQItem[]) || [],
     },
     {
       icon: <Shield className="w-5 h-5" />,
-      title: t("faq", "categories.security.title"),
-      items: (t("faq", "categories.security.questions") as FAQItem[]) || [],
+      title: (t as any)("faq", "categories.security.title"),
+      items: ((t as any)("faq", "categories.security.questions") as FAQItem[]) || [],
     },
   ];
 

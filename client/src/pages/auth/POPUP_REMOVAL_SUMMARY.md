@@ -7,6 +7,7 @@ I have successfully removed all popup browser functionality from the Google auth
 ## Modified Files
 
 ### 1. `/client/src/pages/auth/google-direct-auth.tsx`
+
 - **Removed**: All popup detection logic (`window.opener` checks)
 - **Removed**: Production domain redirect logic for popups
 - **Removed**: localStorage communication for popup windows
@@ -15,6 +16,7 @@ I have successfully removed all popup browser functionality from the Google auth
 - **Simplified**: All authentication now redirects directly to dashboard
 
 ### 2. `/client/src/pages/auth/google-callback.tsx`
+
 - **Removed**: Popup window requirement check
 - **Removed**: PostMessage communication to parent window
 - **Removed**: Window closing logic
@@ -23,6 +25,7 @@ I have successfully removed all popup browser functionality from the Google auth
 ## How It Works Now
 
 ### Before (Popup Flow):
+
 1. User clicks Google login
 2. Opens popup window
 3. Popup handles OAuth flow
@@ -31,6 +34,7 @@ I have successfully removed all popup browser functionality from the Google auth
 6. Parent window processes authentication
 
 ### After (Direct Flow):
+
 1. User clicks Google login
 2. Main window redirects to Google OAuth
 3. Google redirects back to callback URL
@@ -50,6 +54,7 @@ I have successfully removed all popup browser functionality from the Google auth
 ## Technical Details
 
 ### Authentication Flow:
+
 1. **Google OAuth**: User authenticates with Google
 2. **Backend Processing**: Server exchanges code for tokens
 3. **Token Redirect**: User redirected to `/dashboard?token=...`
@@ -57,12 +62,14 @@ I have successfully removed all popup browser functionality from the Google auth
 5. **Clean Redirect**: Token removed from URL, user logged in
 
 ### URL Examples:
+
 ```
 Before: Multiple popup windows and complex communication
 After: /dashboard?token=eyJhbGciOiJIUzI1NiIs...&username=john&role=user
 ```
 
 ### Security Maintained:
+
 - Token still removed from URL immediately
 - Same TokenManager security
 - Same authentication validation

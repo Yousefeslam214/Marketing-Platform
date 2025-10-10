@@ -125,7 +125,7 @@ const PublicFooter = () => {
                 <i className="fas fa-phone mr-2"></i>
                 0502274696
               </li>
-           
+
               <li className="mt-4">
                 <Link href="/contact">
                   <Button variant="outline" size="sm">

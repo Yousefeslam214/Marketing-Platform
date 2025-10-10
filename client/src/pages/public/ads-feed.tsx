@@ -294,7 +294,7 @@ export default function AdsFeed() {
                           }}
                           className="gap-2">
                           <ExternalLink className="h-4 w-4" />
-                          {t("publicFeed", "website")}
+                          {(t as any)("publicFeed", "website")}
                         </Button>
                       </div>
                     </CardContent>

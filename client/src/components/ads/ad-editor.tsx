@@ -1,11 +1,6 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "wouter";
-import { createAdSchema, type CreateAdData } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -15,8 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -24,10 +17,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import { VITE_API_BASE_URL } from "@/lib/utils";
-import { locationOptions } from "./targeting-form";
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/hooks/use-language";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { VITE_API_BASE_URL } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createAdSchema, type CreateAdData } from "@shared/schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { useLocation } from "wouter";
+import { locationOptions } from "./targeting-form";
 
 export function AdEditor() {
   const [, setLocation] = useLocation();
@@ -462,15 +462,15 @@ export function AdEditor() {
                           className="flex items-center space-x-2">
                           <Checkbox
                             id={city.value}
-                            checked={field.value?.includes(city.value)}
+                            checked={(field.value as string[])?.includes(city.value)}
                             onCheckedChange={(checked) => {
-                              const currentCities = field.value || [];
+                              const currentCities = (field.value as string[]) || [];
 
                               if (checked) {
                                 field.onChange([...currentCities, city.value]); // ✅ store only the value, not the full object
                               } else {
                                 field.onChange(
-                                  currentCities.filter((c) => c !== city.value)
+                                  currentCities.filter((c: string) => c !== city.value)
                                 ); // ✅ remove correctly
                               }
                             }}

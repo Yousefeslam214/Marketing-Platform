@@ -446,15 +446,15 @@ export function AdEditor({
                         className="flex items-center space-x-2">
                         <Checkbox
                           id={city.value}
-                          checked={field.value?.includes(city.value)}
+                          checked={(field.value as string[])?.includes(city.value)}
                           onCheckedChange={(checked) => {
-                            const currentCities = field.value || [];
+                            const currentCities = (field.value as string[]) || [];
 
                             if (checked) {
                               field.onChange([...currentCities, city.value]); // ✅ store only the value, not the full object
                             } else {
                               field.onChange(
-                                currentCities.filter((c) => c !== city.value)
+                                currentCities.filter((c: string) => c !== city.value)
                               ); // ✅ remove correctly
                             }
                           }}

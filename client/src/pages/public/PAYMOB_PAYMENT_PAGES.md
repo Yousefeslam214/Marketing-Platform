@@ -5,6 +5,7 @@ This document describes the implementation of payment result pages for Paymob in
 ## Created Pages
 
 ### 1. Payment Success Page (`/payment-success`)
+
 - **Location**: `client/src/pages/public/payment-success.tsx`
 - **Purpose**: Displays successful payment confirmation and transaction details
 - **Features**:
@@ -15,6 +16,7 @@ This document describes the implementation of payment result pages for Paymob in
   - Clean, professional UI with success animations
 
 ### 2. Payment Failed Page (`/payment-failed`)
+
 - **Location**: `client/src/pages/public/payment-failed.tsx`
 - **Purpose**: Handles failed payments with error details and recovery options
 - **Features**:
@@ -29,6 +31,7 @@ This document describes the implementation of payment result pages for Paymob in
 Both pages extract and process the following Paymob parameters:
 
 ### Common Parameters
+
 - `txn_response_code` or `id`: Transaction ID
 - `order`: Order ID
 - `merchant_order_id`: Merchant's internal order ID
@@ -36,10 +39,12 @@ Both pages extract and process the following Paymob parameters:
 - `currency`: Currency code (defaults to EGP)
 
 ### Success Page Specific
+
 - `success`: Boolean success flag
 - `pending`: Boolean pending status flag
 
 ### Failed Page Specific
+
 - `error_code`: Error classification code
 - `error_message` or `message`: Detailed error message
 - `reason`: Additional error context
@@ -58,7 +63,9 @@ The failed page includes intelligent error code mapping:
 ## Integration
 
 ### Routing
+
 Both pages are configured as public routes with `PublicLayout`:
+
 ```tsx
 <Route path="/payment-success" component={() => (
   <PublicLayout><PaymentSuccessPage /></PublicLayout>
@@ -69,17 +76,20 @@ Both pages are configured as public routes with `PublicLayout`:
 ```
 
 ### Navigation Handlers
+
 - **Success Page**: Navigate to dashboard, home, or download receipt
 - **Failed Page**: Retry payment (redirect to billing), contact support, go home
 
 ## Usage Examples
 
 ### Paymob Success Redirect
+
 ```
 https://yoursite.com/payment-success?txn_response_code=123456&amount_cents=5000&currency=EGP&order=ORD789&success=true
 ```
 
 ### Paymob Failed Redirect
+
 ```
 https://yoursite.com/payment-failed?error_code=DECLINED&error_message=Payment%20declined&txn_response_code=123456&amount_cents=5000&currency=EGP&order=ORD789
 ```

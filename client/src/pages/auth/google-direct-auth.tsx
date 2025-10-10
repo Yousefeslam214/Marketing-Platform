@@ -8,10 +8,6 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 
 export default function GoogleDirectAuth() {
   // Add immediate logging to ensure this component loads
-  
-  
-  
-  );
 
   const [, setLocation] = useLocation();
   const { toast } = useToast();
@@ -24,12 +20,10 @@ export default function GoogleDirectAuth() {
   useEffect(() => {
     const handleDirectAuth = async () => {
       try {
-        
         setStatusMessage("Processing Google authentication...");
 
         // Check if this is running in a popup (for popup flow)
         const isPopup = false; // Disable popup functionality
-        
 
         // Get URL parameters to check what we received
         const urlParams = new URLSearchParams(window.location.search);
@@ -39,20 +33,12 @@ export default function GoogleDirectAuth() {
         const username = urlParams.get("username");
         const role = urlParams.get("role");
 
-        
-        
-        
-        
-        
-        
-
         if (error) {
           throw new Error(`Google OAuth error: ${error}`);
         }
 
         // If we already have token data from URL params (backend processed the auth)
         if (token && username && role) {
-          
           setStatusMessage("Setting up your session...");
 
           // Handle authentication directly (no popup logic)
@@ -61,7 +47,6 @@ export default function GoogleDirectAuth() {
             username,
             role
           );
-          
 
           setStatusMessage("Redirecting to dashboard...");
 
@@ -94,11 +79,9 @@ export default function GoogleDirectAuth() {
             // Try to parse any JSON response from the page
             const pageText =
               document.body.innerText || document.body.textContent || "";
-            
 
             try {
               const responseData = JSON.parse(pageText);
-              
 
               if (
                 responseData.success &&
@@ -143,7 +126,6 @@ export default function GoogleDirectAuth() {
                           },
                           parentOrigin
                         );
-                        
                       }
                     } catch (postMessageError) {
                       console.log(
@@ -195,7 +177,7 @@ export default function GoogleDirectAuth() {
             }
 
             // If we still don't have auth data after a delay, there might be an error
-            
+
             throw new Error("Authentication processing failed");
           }, 1000);
 
@@ -204,20 +186,12 @@ export default function GoogleDirectAuth() {
 
         // If no code, try to parse JSON from page content as fallback
         if (window.location.pathname === "/api/auth/google/login") {
-          
-          
-          
-
           setStatusMessage("Processing authentication response...");
           const pageText =
             document.body.innerText || document.body.textContent || "";
 
-          
-          
-
           try {
             const responseData = JSON.parse(pageText);
-            
 
             if (
               responseData.success &&

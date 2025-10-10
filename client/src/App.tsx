@@ -67,7 +67,7 @@ function Router() {
   let auth = false;
   if (TokenManager.getAccessToken()) auth = true;
   
-  );
+  
   return (
     <Switch>
       {/* Public pages */}
