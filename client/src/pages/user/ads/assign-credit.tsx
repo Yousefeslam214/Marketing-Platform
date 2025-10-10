@@ -196,7 +196,7 @@ export default function AssignCredit() {
                       <div className="flex items-center justify-between">
                         <span>{t("userAds", "availableBalance")}:</span>
                         <span className="text-xl font-bold text-blue-600">
-                          {userBalance.toLocaleString()} Credits
+                          {userBalance.toLocaleString()} {t("userAds", "credits")}
                         </span>
                       </div>
                     </AlertDescription>
@@ -211,7 +211,9 @@ export default function AssignCredit() {
                         name="credit"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{t("userAds", "creditAmount")}</FormLabel>
+                            <FormLabel>
+                              {t("userAds", "creditAmount")}
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
