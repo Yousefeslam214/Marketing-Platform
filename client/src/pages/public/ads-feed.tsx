@@ -71,12 +71,14 @@ export default function AdsFeed() {
           targetCitiesParam
         )}`
       );
+      console.log(adsResponse?.data || "No ads data");
       if (!response.ok) {
         throw new Error("Failed to fetch ads");
       }
       const rtn = await response.json();
-
+console.log(rtn, "ads response");
       return rtn;
+
     },
     retry: 1,
   });
@@ -174,13 +176,13 @@ export default function AdsFeed() {
           </div>
           <div className="flex items-center gap-4">
             <Select
-              value={locationOptions[0].value}
+              value={targetCities[0] || ""}
               onValueChange={handleCityChange}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="Select city" />
               </SelectTrigger>
               <SelectContent>
-                {locationOptions.map((option) => (
+                {locationOptions.map((option: { value: string; label: string }) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
