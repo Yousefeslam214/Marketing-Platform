@@ -630,7 +630,8 @@
     "accountCreated": "Account created",
     "accountCreatedSuccess": "Welcome to octopusad! Your account has been created successfully.",
     "signupFailed": "Signup failed",
-    "signupFailedMessage": "Failed to create account"
+    "signupFailedMessage": "Failed to create account",
+    "dashboard": "Dashboard"
   },
   "pending": {
     "title": "Pending",
@@ -1126,6 +1127,15 @@
       "subtitle": "Join thousands of businesses already growing with our platform.",
       "getStarted": "Start Free Trial",
       "contact": "Talk to Sales"
+    },
+    "whyChoose": {
+      "title": "Why Choose Oktopoot Ads?",
+      "points": [
+        "Create and share your ads for free",
+        "Our team promotes your ad professionally",
+        "Social media advertising",
+        "A strong and expanding ad network"
+      ]
     },
     "footer": {
       "description": "The most powerful marketing platform to grow your business with intelligent advertising solutions.",

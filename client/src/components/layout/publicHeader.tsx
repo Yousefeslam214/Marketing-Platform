@@ -3,12 +3,21 @@ import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TokenManager } from "@/lib/auth";
 
 const PublicHeader = () => {
   const { isRTL, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [authorizeUser, setAuthorizeUser] = useState(false);
 
+  useEffect(() => {
+    if (TokenManager.getAccessToken()) {
+      setAuthorizeUser(true);
+    }
+  }, []);
+
+  // Function to toggle mobile menu
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -73,20 +82,31 @@ const PublicHeader = () => {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-2">
-            <ThemeToggle />
-            <LanguageToggle />
-            <Link href="/login">
-              <Button variant="ghost" size="sm">
-                {t("auth", "signInTitle")}
+          {authorizeUser ? (
+            <div className="hidden md:flex items-center space-x-2">
+              <Button  size="sm">
+                {t("auth", "dashboard")}
               </Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">{t("auth", "signUpTitle")}</Button>
-            </Link>
-          </div>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center space-x-2">
+              <ThemeToggle />
+              <LanguageToggle />
+              <Link href="/login">
+                <Button variant="ghost" size="sm">
+                  {t("auth", "signInTitle")}
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="sm">{t("auth", "signUpTitle")}</Button>
+              </Link>
+            </div>
+          )}
 
           {/* Mobile Actions - Theme/Language toggles + Menu button */}
+        
+        
+        
           <div className="flex md:hidden items-center space-x-2">
             <ThemeToggle />
             <LanguageToggle />
@@ -172,7 +192,22 @@ const PublicHeader = () => {
               </Link>
             </div>
 
+
+
             {/* Mobile Auth Buttons */}
+
+ {authorizeUser ? (
+            // <div className="hidden md:flex items-center space-x-2">
+            <Link href="/signup">
+                <Button
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setIsMobileMenuOpen(false)}>
+                  {t("auth", "dashboard")}
+                </Button>
+              </Link>
+            // </div>
+          ) : (
             <div className="px-4 pt-4 border-t space-y-3">
               <Link href="/login">
                 <Button
@@ -191,7 +226,7 @@ const PublicHeader = () => {
                   {t("auth", "signUpTitle")}
                 </Button>
               </Link>
-            </div>
+            </div>)}
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { Check, AlertCircle, RefreshCw } from "lucide-react";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import WhyChooseSection from "@/components/landing/WhyChooseSection";
 
 export default function LandingPage() {
   const { isRTL, t } = useLanguage();
@@ -271,6 +272,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Why Choose Section */}
+      <WhyChooseSection />
+
       {/* How It Works Section */}
       <section id="how-it-works" className="py-12 sm:py-16 md:py-20">
         <div className="container px-4 sm:px-6 lg:px-8">
@@ -385,7 +389,9 @@ export default function LandingPage() {
                 {/* Single Pricing Plan */}
                 <Card className="border-2 border-primary shadow-xl relative">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="px-3 py-1">{t("landing", "pricing.bestValue")}</Badge>
+                    <Badge className="px-3 py-1">
+                      {t("landing", "pricing.bestValue")}
+                    </Badge>
                   </div>
                   <CardHeader className="text-center pb-6 pt-8">
                     <CardTitle className="text-2xl mb-4">
