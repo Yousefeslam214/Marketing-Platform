@@ -83,11 +83,11 @@ const PublicHeader = () => {
 
           {/* Desktop Actions */}
           {authorizeUser ? (
-            <div className="hidden md:flex items-center space-x-2">
-              <Button  size="sm">
-                {t("auth", "dashboard")}
-              </Button>
-            </div>
+            <Link href="/dashboard">
+              <div className="hidden md:flex items-center space-x-2">
+                <Button size="sm">{t("auth", "dashboard")}</Button>
+              </div>
+            </Link>
           ) : (
             <div className="hidden md:flex items-center space-x-2">
               <ThemeToggle />
@@ -104,9 +104,7 @@ const PublicHeader = () => {
           )}
 
           {/* Mobile Actions - Theme/Language toggles + Menu button */}
-        
-        
-        
+
           <div className="flex md:hidden items-center space-x-2">
             <ThemeToggle />
             <LanguageToggle />
@@ -192,13 +190,11 @@ const PublicHeader = () => {
               </Link>
             </div>
 
-
-
             {/* Mobile Auth Buttons */}
 
- {authorizeUser ? (
-            // <div className="hidden md:flex items-center space-x-2">
-            <Link href="/signup">
+            {authorizeUser ? (
+              // <div className="hidden md:flex items-center space-x-2">
+              <Link href="/dashboard">
                 <Button
                   size="sm"
                   className="w-full"
@@ -206,27 +202,28 @@ const PublicHeader = () => {
                   {t("auth", "dashboard")}
                 </Button>
               </Link>
-            // </div>
-          ) : (
-            <div className="px-4 pt-4 border-t space-y-3">
-              <Link href="/login">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-full justify-start"
-                  onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("auth", "signInTitle")}
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button
-                  size="sm"
-                  className="w-full"
-                  onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("auth", "signUpTitle")}
-                </Button>
-              </Link>
-            </div>)}
+            ) : (
+              // </div>
+              <div className="px-4 pt-4 border-t space-y-3">
+                <Link href="/login">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start"
+                    onClick={() => setIsMobileMenuOpen(false)}>
+                    {t("auth", "signInTitle")}
+                  </Button>
+                </Link>
+                <Link href="/signup">
+                  <Button
+                    size="sm"
+                    className="w-full"
+                    onClick={() => setIsMobileMenuOpen(false)}>
+                    {t("auth", "signUpTitle")}
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
