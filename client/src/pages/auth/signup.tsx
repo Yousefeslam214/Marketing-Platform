@@ -86,7 +86,7 @@ export default function Signup() {
         isRTL ? "rtl" : "ltr"
       }`}>
       <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
+        {/* <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <i className="fas fa-bolt text-primary-foreground text-lg"></i>
@@ -96,6 +96,17 @@ export default function Signup() {
             </CardTitle>
           </div>
           <CardDescription>{t("auth", "signupDescription")}</CardDescription>
+        </CardHeader> */}
+        <CardHeader className="text-center">
+                  <div className="flex items-center justify-between flex-col mb-4">
+                    <div className="flex items-center gap-2">
+                      <img src="/logo.webp" alt="Logo" className="h-11" />
+                      {/* <CardTitle className="text-2xl">
+                      </CardTitle> */}
+                    </div>
+                    {/* <LanguageToggle /> */}
+                  </div>
+                    <CardDescription>{t("auth", "signupDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
