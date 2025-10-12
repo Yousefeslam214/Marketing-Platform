@@ -35,7 +35,7 @@ import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import NotFound from "@/pages/shared/not-found";
 import { LanguageProvider } from "./contexts/language-context";
-import FAQ from "./pages/user/faq";
+// import FAQ from "./pages/user/faq";
 import {
   adminAllAdsPath,
   adminApprovedAdsPath,
@@ -263,7 +263,7 @@ function Router() {
         path="/user-faq"
         component={() => (
           <AppLayout>
-            <FAQ />
+            <PublicFAQ />
           </AppLayout>
         )}
       />

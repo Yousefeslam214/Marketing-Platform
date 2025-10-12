@@ -5,7 +5,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { createAdSchema, type CreateAdData } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -31,12 +30,25 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
 import { locationOptions } from "./targeting-form";
 import { useLanguage } from "@/hooks/use-language";
+import { apiRequest } from "@/lib/queryClient";
 
 interface AdEditorUpdateProps {
   adId: string;
   existingData: Partial<CreateAdData> | any;
   isUpdate?: boolean;
 }
+
+// Function to clear all ad-related cache
+export const clearAdCache = () => {
+  queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
+  queryClient.invalidateQueries({ queryKey: [`/api/advertising/${adId}`] });
+  queryClient.invalidateQueries({ queryKey: ["/ads/approved"] });
+  queryClient.invalidateQueries({ queryKey: ["/ads/pending"] });
+  queryClient.invalidateQueries({ queryKey: ["/ads/rejected"] });
+  queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+  queryClient.removeQueries({ queryKey: ["/api/advertising"] });
+  queryClient.removeQueries({ queryKey: [`/api/advertising/${adId}`] });
+};
 
 export function AdEditor({
   adId,
@@ -52,6 +64,7 @@ export function AdEditor({
   const [photoPreview, setPhotoPreview] = useState<string | null>(
     existingData?.imageUrl || null
   );
+
   const form = useForm<CreateAdData>({
     resolver: zodResolver(createAdSchema),
     defaultValues: {
@@ -62,7 +75,7 @@ export function AdEditor({
       websiteUrl: existingData?.websiteUrl || "",
       imageUrl: existingData?.imageUrl || "",
       targetAudience: existingData?.targetAudience || "",
-      targetCities: (existingData as any)?.targetCities || ["riyadh"],
+      targetCities: (existingData as any)?.targetCities || [],
       budgetType: existingData?.budgetType || "impressions",
       facebookLink: existingData?.facebookLink || "",
       instagramLink: existingData?.instagramLink || "",
@@ -85,7 +98,7 @@ export function AdEditor({
         websiteUrl: existingData.websiteUrl || "",
         imageUrl: existingData.imageUrl || "",
         targetAudience: existingData.targetAudience || "",
-        targetCities: existingData.targetCities || ["riyadh"],
+        targetCities: existingData.targetCities || [],
         budgetType: existingData.budgetType || "impressions",
         facebookLink: existingData.facebookLink || "",
         instagramLink: existingData.instagramLink || "",
@@ -132,16 +145,25 @@ export function AdEditor({
           URL.revokeObjectURL(photoPreview);
         }
         setPhotoPreview(photoUrl);
+
+        // Clear photo-related cache
+        queryClient.invalidateQueries({
+          queryKey: [`/api/advertising/${adId}`],
+        });
+        queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
+
         toast({
-          title: t("ads", "photoUploaded"),
-          description: t("ads", "photoUploadDescription"),
+          title: t("ads", "photoUploaded") || "Photo uploaded successfully",
+          description:
+            t("ads", "photoUploadDescription") || "Photo uploaded successfully",
         });
       }
     },
     onError: (error: any) => {
       toast({
-        title: t("ads", "uploadFailed"),
-        description: error.message || t("ads", "uploadFailed"),
+        title: t("ads", "uploadFailed") || "Upload failed",
+        description:
+          error.message || t("ads", "uploadFailed") || "Upload failed",
         variant: "destructive",
       });
       // If upload fails, remove the preview if it was a local preview
@@ -160,8 +182,9 @@ export function AdEditor({
       // Validate file type
       if (!file.type.startsWith("image/")) {
         toast({
-          title: t("ads", "invalidFileType"),
-          description: t("ads", "selectImageFile"),
+          title: t("ads", "invalidFileType") || "Invalid file type",
+          description:
+            t("ads", "selectImageFile") || "Please select an image file",
           variant: "destructive",
         });
         return;
@@ -170,8 +193,9 @@ export function AdEditor({
       // Validate file size (5MB limit)
       if (file.size > 5 * 1024 * 1024) {
         toast({
-          title: t("ads", "fileTooLarge"),
-          description: t("ads", "fileSizeLimit"),
+          title: t("ads", "fileTooLarge") || "File too large",
+          description:
+            t("ads", "fileSizeLimit") || "File size must be less than 5MB",
           variant: "destructive",
         });
         return;
@@ -193,17 +217,21 @@ export function AdEditor({
   };
 
   const updateAdMutation = useMutation({
-    mutationFn: async (data: CreateAdData) => {
+    mutationFn: async (data) => {
       const response = await apiRequest(
         "PUT",
         `${VITE_API_BASE_URL}/api/advertising/${adId}`,
         data
       );
+      if (response.status === 500) {
+        throw new Error("Internal Server Error (500)");
+      }
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
-      queryClient.invalidateQueries({ queryKey: [`/api/advertising/${adId}`] });
+      // Clear all advertising-related cache
+      clearAdCache();
+
       toast({
         title: t("ads", "adUpdatedSuccess"),
         description: t("ads", "adUpdatedDescription"),
@@ -220,7 +248,8 @@ export function AdEditor({
     },
   });
 
-  const onSubmit = async (data: CreateAdData) => {
+  const onSubmit = async (data) => {
+    console.log("data:", data);
     await updateAdMutation.mutateAsync(data);
   };
 
@@ -242,7 +271,7 @@ export function AdEditor({
                     <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
                     <FormControl>
                       <Input
-                          placeholder={t("ads", "titleArPlaceholder")}
+                        placeholder={t("ads", "titleArPlaceholder")}
                         data-testid="input-title-en"
                         {...field}
                       />
@@ -285,7 +314,7 @@ export function AdEditor({
                     <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
                     <FormControl>
                       <Textarea
-                          placeholder={t("ads", "descriptionEnPlaceholder")}
+                        placeholder={t("ads", "descriptionEnPlaceholder")}
                         className="h-24 resize-none"
                         data-testid="textarea-description-en"
                         {...field}
@@ -304,7 +333,7 @@ export function AdEditor({
                     <FormLabel>{t("ads", "descriptionArLabel")}</FormLabel>
                     <FormControl>
                       <Textarea
-                          placeholder={t("ads", "descriptionArPlaceholder")}
+                        placeholder={t("ads", "descriptionArPlaceholder")}
                         dir="rtl"
                         className="h-24 resize-none"
                         data-testid="textarea-description-ar"
@@ -351,7 +380,7 @@ export function AdEditor({
                                   setPhotoPreview(null);
                                   form.setValue("imageUrl", "");
                                 }}>
-                                <i className="fas fa-trash mr-2"></i>
+                                <i className="fas fa-trash mx-2"></i>
                                 {t("ads", "removePhoto")}
                               </Button>
                             </div>
@@ -373,15 +402,18 @@ export function AdEditor({
                               disabled={
                                 uploadingPhoto || uploadPhotoMutation.isPending
                               }>
-                              {uploadingPhoto || uploadPhotoMutation.isPending ? (
+                              {uploadingPhoto ||
+                              uploadPhotoMutation.isPending ? (
                                 <>
-                                  <i className="fas fa-spinner fa-spin mr-2"></i>
+                                  <i className="fas fa-spinner fa-spin mx-2"></i>
                                   {t("ads", "uploading")}
                                 </>
                               ) : (
                                 <>
-                                  <i className="fas fa-upload mr-2"></i>
-                                  {photoPreview ? t("ads", "changePhoto") : t("ads", "uploadPhoto")}
+                                  <i className="fas fa-upload mx-2"></i>
+                                  {photoPreview
+                                    ? t("ads", "changePhoto")
+                                    : t("ads", "uploadPhoto")}
                                 </>
                               )}
                             </Button>
@@ -452,7 +484,9 @@ export function AdEditor({
                       <SelectItem value="cars">
                         {t("ads", "audienceCars")}
                       </SelectItem>
-                      <SelectItem value="tech">{t("ads", "audienceTech") || "Tech"}</SelectItem>
+                      <SelectItem value="tech">
+                        {t("ads", "audienceTech") || "Tech"}
+                      </SelectItem>
                       <SelectItem value="machines">
                         {t("ads", "audienceMachines")}
                       </SelectItem>
@@ -482,48 +516,86 @@ export function AdEditor({
             <FormField
               control={form.control}
               name="targetCities"
-              render={({ field }: { field: any }) => (
-                <FormItem>
-                  <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {locationOptions.map((city) => (
-                      <div
-                        key={city.value}
-                        className="flex items-center space-x-2">
-                        <Checkbox
-                          id={city.value}
-                          checked={(field.value as string[])?.includes(
-                            city.value
-                          )}
-                          onCheckedChange={(checked: boolean) => {
-                            const currentCities =
-                              (field.value as string[]) || [];
+              render={({ field }: { field: any }) => {
+                const allCityValues = locationOptions.map((city) => city.value);
+                const selectedCities = (field.value as string[]) || [];
+                const isAllCitiesSelected = allCityValues.every((cityValue) =>
+                  selectedCities.includes(cityValue)
+                );
 
+                return (
+                  <FormItem>
+                    <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
+                    <div className="space-y-4">
+                      {/* All Cities Option */}
+                      <div className="flex items-center space-x-2 p-3 border rounded-lg bg-muted/50">
+                        <Checkbox
+                          id="all-cities"
+                          checked={isAllCitiesSelected}
+                          onCheckedChange={(checked: boolean) => {
                             if (checked) {
-                              field.onChange([...currentCities, city.value]); // ✅ store only the value, not the full object
+                              // Select all individual cities
+                              const allCityValues = locationOptions.map(
+                                (city) => city.value
+                              );
+                              field.onChange(allCityValues);
                             } else {
-                              field.onChange(
-                                currentCities.filter(
-                                  (c: string) => c !== city.value
-                                )
-                              ); // ✅ remove correctly
+                              // Deselect all cities
+                              field.onChange([]);
                             }
                           }}
                         />
-                        <div className="mx-2">
-                          <label
-                            htmlFor={city.value}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize
-                                           mx-2">
-                            {city.label} {/* ✅ show readable label */}
-                          </label>
-                        </div>
+                        <label
+                          htmlFor="all-cities"
+                          className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1">
+                          <i className="fas fa-globe mx-2 text-primary"></i>
+                          {t("ads", "allCities")}
+                        </label>
                       </div>
-                    ))}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
+
+                      {/* Individual Cities */}
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {locationOptions.map((city) => (
+                          <div
+                            key={city.value}
+                            className="flex items-center p-2 border rounded-md transition-colors hover:bg-muted/50">
+                            <Checkbox
+                              id={city.value}
+                              checked={selectedCities.includes(city.value)}
+                              onCheckedChange={(checked: boolean) => {
+                                const currentCities = selectedCities.filter(
+                                  (c) => c !== "all"
+                                ); // Remove any "all" flag
+
+                                if (checked) {
+                                  const newCities = [
+                                    ...currentCities,
+                                    city.value,
+                                  ];
+                                  field.onChange(newCities);
+                                } else {
+                                  const newCities = currentCities.filter(
+                                    (c: string) => c !== city.value
+                                  );
+                                  field.onChange(newCities);
+                                }
+                              }}
+                            />
+                            <label
+                              htmlFor={city.value}
+                              className="text-sm mx-2  font-medium leading-none 
+                              peer-disabled:cursor-not-allowed peer-disabled:opacity-70
+                               cursor-pointer flex-1">
+                              {city.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             {/* Budget Type */}
@@ -539,12 +611,16 @@ export function AdEditor({
                     data-testid="select-budget-type">
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("ads", "budgetTypePlaceholder")} />
+                        <SelectValue
+                          placeholder={t("ads", "budgetTypePlaceholder")}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="impressions">{t("ads", "impressions")}</SelectItem>
-                       </SelectContent>
+                      <SelectItem value="impressions">
+                        {t("ads", "impressions")}
+                      </SelectItem>
+                    </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
@@ -674,12 +750,12 @@ export function AdEditor({
               data-testid="button-update-ad">
               {updateAdMutation.isPending ? (
                 <>
-                  <i className="fas fa-spinner fa-spin mr-2"></i>
+                  <i className="fas fa-spinner fa-spin mx-2"></i>
                   {t("ads", "updatingAd")}
                 </>
               ) : (
                 <>
-                  <i className="fas fa-save mr-2"></i>
+                  <i className="fas fa-save mx-2"></i>
                   {t("ads", "updateAdButton")}
                 </>
               )}

@@ -81,11 +81,7 @@ export default function Login() {
         <CardHeader className="text-center">
           <div className="flex items-center justify-between flex-col mb-4">
             <div className="flex items-center gap-2">
-              <img
-                src="/logo.webp"
-                alt="Logo"
-                className="h-11"
-              />
+              <img src="/logo.webp" alt="Logo" className="h-11" />
               {/* <CardTitle className="text-2xl">
               </CardTitle> */}
             </div>

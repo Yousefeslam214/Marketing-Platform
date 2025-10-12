@@ -359,6 +359,7 @@
     "targetAudienceLabel": "Target Audience",
     "targetAudiencePlaceholder": "Select target audience",
     "targetCitiesLabel": "Target Cities",
+    "allCities": "All Cities",
     "budgetTypeLabel": "Budget Type",
     "budgetTypePlaceholder": "Select budget type",
     "socialMediaLinksLabel": "Social Media Links (Optional)",
@@ -718,6 +719,14 @@
         "icon": "MessageCircle",
         "questions": [
           {
+            "question": "What is the Oktopoot Advertising Platform?",
+            "answer": "Oktopoot is an integrated digital marketing platform that simplifies advertising for your business. Instead of managing multiple ad platforms individually, our team of experts distributes your ad content across a wide network of digital channels to reach the largest possible audience of your potential customers."
+          },
+          {
+            "question": "Where will my ad appear?",
+            "answer": "Sponsored campaigns or social media distribution such as:\n- Snapchat\n- X (Twitter)\n- Google Ads\n- TikTok\n- Facebook & Instagram\n- SEO (Search Engine Optimization)\n- Groups\n- Forums\n- Classified Ads"
+          },
+          {
             "question": "How quickly will I receive a response?",
             "answer": "We typically respond to all inquiries within 24 hours during business days."
           },
@@ -890,6 +899,11 @@
     "hours": "Business Hours",
     "hoursValue": "Monday - Friday: 9:00 AM - 6:00 PM (EST)",
     "followUs": "Follow Us",
+    "whatsappTitle": "Contact via WhatsApp",
+    "whatsappContact": "Chat with us on WhatsApp",
+    "whatsappDescription": "Get instant support and answers to your questions through WhatsApp",
+    "openWhatsapp": "Open WhatsApp",
+    "phoneNumber": "Phone Number",
     "formTitle": "Send us a Message",
     "formDescription": "Fill out the form below and we'll get back to you as soon as possible.",
     "name": "Full Name",

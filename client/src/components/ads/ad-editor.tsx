@@ -44,7 +44,7 @@ export function AdEditor() {
       descriptionAr: "",
       websiteUrl: "",
       targetAudience: "",
-      targetCities: ["riyadh"],
+      targetCities: [],
       budgetType: "impressions",
       facebookLink: "",
       instagramLink: "",
@@ -210,8 +210,6 @@ export function AdEditor() {
                 </FormItem>
               )}
             />
-
-         
 
             {/* Social Media Links */}
             <div>
@@ -424,50 +422,92 @@ export function AdEditor() {
               <FormField
                 control={form.control}
                 name="targetCities"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
+                render={({ field }) => {
+                  const isAllCitiesSelected = (
+                    field.value as string[]
+                  )?.includes("all");
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {locationOptions.map((city) => (
-                        <div
-                          key={city.value}
-                          className="flex items-center space-x-2">
+                  return (
+                    <FormItem>
+                      <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
+                      <div className="space-y-4">
+                        {/* All Cities Option */}
+                        <div className="flex items-center space-x-2 p-3 border rounded-lg bg-muted/50">
                           <Checkbox
-                            id={city.value}
-                            checked={(field.value as string[])?.includes(
-                              city.value
-                            )}
-                            onCheckedChange={(checked) => {
-                              const currentCities =
-                                (field.value as string[]) || [];
-
+                            id="all-cities"
+                            checked={isAllCitiesSelected}
+                            onCheckedChange={(checked: boolean) => {
                               if (checked) {
-                                field.onChange([...currentCities, city.value]); // ✅ store only the value, not the full object
+                                // Select all cities
+                                field.onChange(["all"]);
                               } else {
-                                field.onChange(
-                                  currentCities.filter(
-                                    (c: string) => c !== city.value
-                                  )
-                                ); // ✅ remove correctly
+                                // Deselect all cities
+                                field.onChange([]);
                               }
                             }}
                           />
-                          <div className="mx-2">
-                            <label
-                              htmlFor={city.value}
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize
-                            mx-2">
-                              {city.label} {/* ✅ show readable label */}
-                            </label>
-                          </div>
+                          <label
+                            htmlFor="all-cities"
+                            className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1">
+                            <i className="fas fa-globe mr-2 text-primary"></i>
+                            {t("ads", "allCities")}
+                          </label>
                         </div>
-                      ))}
-                    </div>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
+                        {/* Individual Cities */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {locationOptions.map((city) => (
+                            <div
+                              key={city.value}
+                              className={`flex items-center space-x-2 p-2 border rounded-md transition-colors ${
+                                isAllCitiesSelected
+                                  ? "opacity-50 pointer-events-none bg-muted/30"
+                                  : "hover:bg-muted/50"
+                              }`}>
+                              <Checkbox
+                                id={city.value}
+                                checked={
+                                  isAllCitiesSelected ||
+                                  (field.value as string[])?.includes(
+                                    city.value
+                                  )
+                                }
+                                disabled={isAllCitiesSelected}
+                                onCheckedChange={(checked: boolean) => {
+                                  const currentCities =
+                                    (field.value as string[]) || [];
+                                  // Remove "all" if it exists when selecting individual cities
+                                  const filteredCities = currentCities.filter(
+                                    (c) => c !== "all"
+                                  );
+
+                                  if (checked) {
+                                    field.onChange([
+                                      ...filteredCities,
+                                      city.value,
+                                    ]);
+                                  } else {
+                                    field.onChange(
+                                      filteredCities.filter(
+                                        (c: string) => c !== city.value
+                                      )
+                                    );
+                                  }
+                                }}
+                              />
+                              <label
+                                htmlFor={city.value}
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1">
+                                {city.label}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
             </div>
 

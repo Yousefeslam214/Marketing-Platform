@@ -39,7 +39,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       setLanguage("en");
       localStorage.setItem("language", "en");
     }
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
