@@ -458,9 +458,9 @@
     "maximumAvailableCredits:": "الحد الأقصى للأرصدة المتاحة",
 
     "maximumAvailable": "الحد الأقصى للأرصدة المتاحة ",
-"assignCreditDescription": "حدد عدد الأرصدة التي ترغب في تخصيصها لحملتك الإعلانية. يمكنك تعديل هذا لاحقًا.",
+    "assignCreditDescription": "حدد عدد الأرصدة التي ترغب في تخصيصها لحملتك الإعلانية. يمكنك تعديل هذا لاحقًا.",
     "useAllAvailableCredits": "استخدام جميع الأرصدة المتاحة",
-"skipForNow": "تخطي الآن",
+    "skipForNow": "تخطي الآن",
     "all": "الكل",
     "credits": "الرصيد",
     "creditsAssigned": "تم تخصيص الأرصدة",
@@ -1214,7 +1214,8 @@
       "support": "الدعم",
       "contact": "اتصل بنا",
       "privacy": "سياسة الخصوصية",
-      "terms": "شروط الخدمة"
+      "terms": "شروط الخدمة",
+      "copyright": "© ٢٠٢٥ OctopusAd. جميع الحقوق محفوظة."
     }
   },
   "adDetail": {

@@ -82,7 +82,7 @@ export default function Login() {
           <div className="flex items-center justify-between flex-col mb-4">
             <div className="flex items-center gap-2">
               <img
-                src="../../../public/logo.webp"
+                src="/logo.webp"
                 alt="Logo"
                 className="h-11"
               />
