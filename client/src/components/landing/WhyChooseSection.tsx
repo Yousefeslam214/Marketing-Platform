@@ -38,10 +38,12 @@ export default function WhyChooseSection() {
               whyChoosePoints.map((point, index) => (
                 <Card
                   key={index}
-                  className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur-sm">
+                  className="
+                  h-full
+                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur-sm">
                   <CardContent className="p-6 sm:p-8">
                     <div
-                      className={`flex items-start gap-4 ${
+                      className={`flex items-center gap-4 ${
                         isRTL ? "flex-row-reverse" : ""
                       }`}>
                       {/* Icon Container */}
