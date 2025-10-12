@@ -478,20 +478,14 @@ export function AdEditor({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="general">
-                        {t("ads", "audienceGeneral")}
-                      </SelectItem>
                       <SelectItem value="cars">
                         {t("ads", "audienceCars")}
                       </SelectItem>
-                      <SelectItem value="tech">
-                        {t("ads", "audienceTech") || "Tech"}
+                      <SelectItem value="realestate">
+                        {t("ads", "audienceRealestate")}
                       </SelectItem>
-                      <SelectItem value="machines">
-                        {t("ads", "audienceMachines")}
-                      </SelectItem>
-                      <SelectItem value="students">
-                        {t("ads", "audienceStudents")}
+                      <SelectItem value="devices">
+                        {t("ads", "audienceDevices")}
                       </SelectItem>
                       <SelectItem value="animals">
                         {t("ads", "audienceAnimals")}
@@ -499,11 +493,53 @@ export function AdEditor({
                       <SelectItem value="furniture">
                         {t("ads", "audienceFurniture")}
                       </SelectItem>
+                      <SelectItem value="jobs">
+                        {t("ads", "audienceJobs")}
+                      </SelectItem>
                       <SelectItem value="services">
                         {t("ads", "audienceServices")}
                       </SelectItem>
-                      <SelectItem value="jobs">
-                        {t("ads", "audienceJobs")}
+                      <SelectItem value="fashion">
+                        {t("ads", "audienceFashion")}
+                      </SelectItem>
+                      <SelectItem value="games">
+                        {t("ads", "audienceGames")}
+                      </SelectItem>
+                      <SelectItem value="rarities">
+                        {t("ads", "audienceRarities")}
+                      </SelectItem>
+                      <SelectItem value="art">
+                        {t("ads", "audienceArt")}
+                      </SelectItem>
+                      <SelectItem value="trips">
+                        {t("ads", "audienceTrips")}
+                      </SelectItem>
+                      <SelectItem value="food">
+                        {t("ads", "audienceFood")}
+                      </SelectItem>
+                      <SelectItem value="gardens">
+                        {t("ads", "audienceGardens")}
+                      </SelectItem>
+                      <SelectItem value="occasions">
+                        {t("ads", "audienceOccasions")}
+                      </SelectItem>
+                      <SelectItem value="tourism">
+                        {t("ads", "audienceTourism")}
+                      </SelectItem>
+                      <SelectItem value="lost">
+                        {t("ads", "audienceLost")}
+                      </SelectItem>
+                      <SelectItem value="coach">
+                        {t("ads", "audienceCoach")}
+                      </SelectItem>
+                      <SelectItem value="code">
+                        {t("ads", "audienceCode")}
+                      </SelectItem>
+                      <SelectItem value="fund">
+                        {t("ads", "audienceFund")}
+                      </SelectItem>
+                      <SelectItem value="more">
+                        {t("ads", "audienceMore")}
                       </SelectItem>
                     </SelectContent>
                   </Select>
