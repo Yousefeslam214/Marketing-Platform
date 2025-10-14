@@ -77,7 +77,9 @@ export default function UpdateAd() {
   }
 
   return (
-    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+    <div
+      className={`
+    flex  bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto min-h-0">
         <Header
           title={t("ads", "updateAd.title")}
@@ -85,13 +87,11 @@ export default function UpdateAd() {
         />
 
         <main className="p-6">
-          <div className="max-w-4xl mx-auto">
-            <AdEditor
-              adId={params?.adId || ""}
-              existingData={adData.data}
-              isUpdate={true}
-            />
-          </div>
+          <AdEditor
+            adId={params?.adId || ""}
+            existingData={adData.data}
+            isUpdate={true}
+          />
         </main>
       </div>
     </div>

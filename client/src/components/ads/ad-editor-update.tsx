@@ -298,7 +298,7 @@ export function AdEditor({
   };
 
   return (
-    <Card>
+    <Card >
       <CardHeader>
         <CardTitle>{t("ads", "updateAdTitle")}</CardTitle>
       </CardHeader>
