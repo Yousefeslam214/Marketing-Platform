@@ -100,6 +100,46 @@ export default function UploadPhoto() {
     },
   });
 
+  // Photo delete mutation
+  const deletePhotoMutation = useMutation({
+    mutationFn: async () => {
+      if (!adId) throw new Error("Ad ID missing");
+      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}`;
+      const res = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(`Delete failed: ${res.status} - ${txt}`);
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      // Clear server photo and preview
+      if (photoPreview && photoPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(photoPreview);
+      }
+      setPhotoPreview(null);
+      setUploadedPhotoUrl(null);
+      toast({
+        title: t("uploadPhoto", "uploadSuccess"),
+        description: t("uploadPhoto", "uploadSuccessDesc"),
+      });
+    },
+    onError: (err) => {
+      toast({
+        title: t("uploadPhoto", "uploadFailed"),
+        description:
+          (err as Error).message || t("uploadPhoto", "uploadFailedDesc"),
+        variant: "destructive",
+      });
+    },
+  });
+
   const handlePhotoSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -107,10 +147,7 @@ export default function UploadPhoto() {
       if (!file.type.startsWith("image/")) {
         toast({
           title: t("uploadPhoto", "Invalid file type"),
-          description: t(
-            "uploadPhoto",
-            "Please select an image file"
-          ),
+          description: t("uploadPhoto", "Please select an image file"),
           variant: "destructive",
         });
         return;
@@ -136,10 +173,7 @@ export default function UploadPhoto() {
       const localPreview = URL.createObjectURL(file);
       setPhotoPreview(localPreview);
       const sizeStr = (file.size / 1024 / 1024).toFixed(2);
-      const currentRaw = t(
-        "uploadPhoto",
-        "Current file size: {size}MB"
-      );
+      const currentRaw = t("uploadPhoto", "Current file size: {size}MB");
       toast({
         title: t("uploadPhoto", "File Selected"),
         description: currentRaw.replace("{size}", sizeStr),
@@ -213,6 +247,12 @@ export default function UploadPhoto() {
                         size="sm"
                         className="absolute top-2 right-2"
                         onClick={() => {
+                          if (uploadedPhotoUrl) {
+                            // call API to delete server photo
+                            deletePhotoMutation.mutate();
+                            return;
+                          }
+
                           if (
                             photoPreview &&
                             photoPreview.startsWith("blob:")
@@ -266,10 +306,7 @@ export default function UploadPhoto() {
                         {uploadingPhoto || uploadPhotoMutation.isPending ? (
                           <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
-                            {t(
-                              "uploadPhoto",
-                              "Uploading..."
-                            )}
+                            {t("uploadPhoto", "Uploading...")}
                           </>
                         ) : (
                           <>
@@ -290,17 +327,20 @@ export default function UploadPhoto() {
                   {/* Guidelines */}
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
                     <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">
-                      {t(
-                        "uploadPhoto",
-                        "Photo Guidelines"
-                      )}
+                      {t("uploadPhoto", "Photo Guidelines")}
                     </h4>
                     <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                       <li>• {t("uploadPhoto", "High Resolution")}</li>
                       <li>• {t("uploadPhoto", "Good Lighting")}</li>
                       <li>• {t("uploadPhoto", "Avoid Text")}</li>
                       <li>• {t("uploadPhoto", "Relate to Your Audience")}</li>
-                        <li>• {t("uploadPhoto", "Ensure your photo is less than 1MB in size")}</li>
+                      <li>
+                        •{" "}
+                        {t(
+                          "uploadPhoto",
+                          "Ensure your photo is less than 1MB in size"
+                        )}
+                      </li>
                     </ul>
                   </div>
 
@@ -316,23 +356,14 @@ export default function UploadPhoto() {
                       {uploadingPhoto || uploadPhotoMutation.isPending ? (
                         <>
                           <i className="fas fa-spinner fa-spin mr-2"></i>
-                          {t(
-                            "uploadPhoto",
-                            "Uploading..."
-                          )}
+                          {t("uploadPhoto", "Uploading...")}
                         </>
                       ) : (
                         <>
                           <i className="fas fa-upload mr-2"></i>
                           {photoPreview
-                            ? t(
-                                "uploadPhoto",
-                                "Change Photo"
-                              )
-                            : t(
-                                "uploadPhoto",
-                                "Choose Photo"
-                              )}
+                            ? t("uploadPhoto", "Change Photo")
+                            : t("uploadPhoto", "Choose Photo")}
                         </>
                       )}
                     </Button>

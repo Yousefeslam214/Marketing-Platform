@@ -30,7 +30,7 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
 import { locationOptions } from "./targeting-form";
 import { useLanguage } from "@/hooks/use-language";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface AdEditorUpdateProps {
   adId: string;
@@ -39,7 +39,7 @@ interface AdEditorUpdateProps {
 }
 
 // Function to clear all ad-related cache
-export const clearAdCache = () => {
+export const clearAdCache = (adId: string) => {
   queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
   queryClient.invalidateQueries({ queryKey: [`/api/advertising/${adId}`] });
   queryClient.invalidateQueries({ queryKey: ["/ads/approved"] });
@@ -174,6 +174,50 @@ export function AdEditor({
     },
   });
 
+  // Photo delete mutation
+  const deletePhotoMutation = useMutation({
+    mutationFn: async () => {
+      if (!adId) throw new Error("Ad ID missing");
+      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}`;
+      const res = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
+        },
+      });
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(`Delete failed: ${res.status} - ${txt}`);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      // Clear preview and form value
+      if (photoPreview && photoPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(photoPreview);
+      }
+      setPhotoPreview(null);
+      form.setValue("imageUrl", "");
+
+      // Invalidate caches
+      queryClient.invalidateQueries({ queryKey: [`/api/advertising/${adId}`] });
+      queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
+
+      toast({
+        title: t("ads", "photoUploaded") || "Photo removed",
+        description: t("ads", "photoUploadDescription") || "Photo removed",
+      });
+    },
+    onError: (err: any) => {
+      toast({
+        title: t("ads", "uploadFailed") || "Delete failed",
+        description:
+          err?.message || t("ads", "uploadFailed") || "Delete failed",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handlePhotoSelect = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -230,7 +274,7 @@ export function AdEditor({
     },
     onSuccess: () => {
       // Clear all advertising-related cache
-      clearAdCache();
+      clearAdCache(adId);
 
       toast({
         title: t("ads", "adUpdatedSuccess"),
@@ -363,7 +407,7 @@ export function AdEditor({
                               <img
                                 src={photoPreview}
                                 alt="Ad preview"
-                                className="w-full max-w-md h-48 object-cover rounded-lg border"
+                                className="w-full   object-cover rounded-lg border"
                               />
                               <Button
                                 type="button"
@@ -371,6 +415,16 @@ export function AdEditor({
                                 size="sm"
                                 className="absolute top-2 right-2"
                                 onClick={() => {
+                                  // If the preview looks like a server URL (not a local blob), call API to delete
+                                  if (
+                                    photoPreview &&
+                                    !photoPreview.startsWith("blob:")
+                                  ) {
+                                    deletePhotoMutation.mutate();
+                                    return;
+                                  }
+
+                                  // Otherwise, it was a local preview — just revoke and clear
                                   if (
                                     photoPreview &&
                                     photoPreview.startsWith("blob:")
@@ -379,7 +433,8 @@ export function AdEditor({
                                   }
                                   setPhotoPreview(null);
                                   form.setValue("imageUrl", "");
-                                }}>
+                                }}
+                                disabled={deletePhotoMutation.isPending}>
                                 <i className="fas fa-trash mx-2"></i>
                                 {t("ads", "removePhoto")}
                               </Button>
