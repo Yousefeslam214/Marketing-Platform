@@ -21,7 +21,7 @@ import { useState, useMemo } from "react";
 function SkeletonList() {
   const items = useMemo(() => [0, 1, 2], []);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 w-full">
       {items.map((i) => (
         <Card key={i} className="animate-pulse">
           <CardContent className="p-6">
@@ -187,7 +187,15 @@ export default function AdsFeed() {
   };
 
   const handleCityChange = (city: string) => {
-    setTargetCities([city]);
+    if (city === "all") {
+      // Expand 'all' to the list of available location values (exclude the 'all' token itself)
+      const allLocations = locationOptions
+        .map((o) => o.value)
+        .filter((v) => v && v !== "all");
+      setTargetCities(allLocations);
+    } else {
+      setTargetCities([city]);
+    }
     setPage(1); // Reset to first page when changing city
   };
 
@@ -212,9 +220,6 @@ export default function AdsFeed() {
       <header className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <i className="fas fa-bolt text-primary-foreground text-lg"></i>
-            </div>
             <h1 className="text-xl font-bold text-foreground">
               {" "}
               {t("sidebar", "appName")}
