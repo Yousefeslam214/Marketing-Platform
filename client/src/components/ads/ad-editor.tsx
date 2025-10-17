@@ -57,6 +57,7 @@ export function AdEditor() {
 
   const createAdMutation = useMutation({
     mutationFn: async (data: CreateAdData) => {
+      console.log(data);
       const response = await apiRequest(
         "POST",
         `${VITE_API_BASE_URL}/api/advertising`,
@@ -474,8 +475,11 @@ export function AdEditor() {
                             checked={isAllCitiesSelected}
                             onCheckedChange={(checked: boolean) => {
                               if (checked) {
-                                // Select all cities
-                                field.onChange(["all"]);
+                                // Select all cities: expand to actual location values
+                                const allLocations = locationOptions
+                                  .map((o) => o.value)
+                                  .filter((v) => v && v !== "all");
+                                field.onChange(allLocations);
                               } else {
                                 // Deselect all cities
                                 field.onChange([]);
