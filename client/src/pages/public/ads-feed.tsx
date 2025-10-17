@@ -15,7 +15,25 @@ import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Heart, MessageCircle, Share2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+
+// Memoized skeleton list component to avoid recreating placeholders on each render
+function SkeletonList() {
+  const items = useMemo(() => [0, 1, 2], []);
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+      {items.map((i) => (
+        <Card key={i} className="animate-pulse">
+          <CardContent className="p-6">
+            <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
+            <div className="h-48 bg-muted rounded mb-4"></div>
+            <div className="h-3 bg-muted rounded w-1/2"></div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
 
 interface Ad {
   id: string;
@@ -230,17 +248,7 @@ export default function AdsFeed() {
       flex flex-col items-center w-full
       ">
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
-            {[...Array(3)].map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <CardContent className="p-6">
-                  <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
-                  <div className="h-48 bg-muted rounded mb-4"></div>
-                  <div className="h-3 bg-muted rounded w-1/2"></div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <SkeletonList />
         ) : (
           <div className="w-full flex flex-col items-center space-y-8">
             {/* Ads List */}
@@ -255,7 +263,7 @@ export default function AdsFeed() {
                 {adsResponse?.data.map((ad) => (
                   <Card
                     key={ad.id}
-                    className="overflow-hidden hover:shadow-md transition-shadow duration-300">
+                    className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit">
                     <CardContent className="p-0">
                       {/* Header */}
                       <div className="p-4 border-b">
