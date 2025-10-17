@@ -71,12 +71,11 @@ export default function AdsFeed() {
           targetCitiesParam
         )}`
       );
-    if (!response.ok) {
+      if (!response.ok) {
         throw new Error("Failed to fetch ads");
       }
       const rtn = await response.json();
-   return rtn;
-
+      return rtn;
     },
     retry: 1,
   });
@@ -104,7 +103,7 @@ export default function AdsFeed() {
         });
       }
     } catch (error) {
-   toast({
+      toast({
         title: t("publicFeed", "error"),
         description:
           (error instanceof Error ? error.message : "") ||
@@ -132,6 +131,31 @@ export default function AdsFeed() {
         title: t("publicFeed", "copiedToClipboard"),
         description: t("publicFeed", "adContentCopied"),
       });
+    }
+  };
+
+  const handleWebsiteClick = async (ad: Ad) => {
+    // Open the website immediately for best UX, then fire-and-forget the click API
+    if (ad.websiteUrl) {
+      // open in new tab
+      window.open(ad.websiteUrl, "_blank", "noopener,noreferrer");
+    }
+
+    try {
+      // Fire the click endpoint with forWebsite=true
+      await fetch(
+        `${VITE_API_BASE_URL}/api/users/ad/${ad.id}/click?forWebsite=true`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // Optionally update local liked state or analytics if needed
+    } catch (err) {
+      // swallow errors but optionally show toast
+      // console.debug("website click tracking failed", err);
     }
   };
 
@@ -186,11 +210,13 @@ export default function AdsFeed() {
                 <SelectValue placeholder="Select city" />
               </SelectTrigger>
               <SelectContent>
-                {locationOptions.map((option: { value: string; label: string }) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
+                {locationOptions.map(
+                  (option: { value: string; label: string }) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  )
+                )}
               </SelectContent>
             </Select>
             <Badge variant="secondary">{t("publicFeed", "title")}</Badge>
@@ -199,7 +225,8 @@ export default function AdsFeed() {
       </header>
 
       {/* Main Content */}
-      <main className="p-6 min-h-[78vh]
+      <main
+        className="p-6 min-h-[78vh]
       flex flex-col items-center w-full
       ">
         {isLoading ? (
@@ -217,7 +244,8 @@ export default function AdsFeed() {
         ) : (
           <div className="w-full flex flex-col items-center space-y-8">
             {/* Ads List */}
-            <div className="min-h-[80vh] w-full
+            <div
+              className="min-h-[80vh] w-full
             flex flex-col items-center
             ">
               <div
@@ -284,24 +312,11 @@ export default function AdsFeed() {
                             <Share2 className="h-4 w-4" />
                             {t("publicFeed", "share")}
                           </Button>
-
-                          <Button variant="ghost" size="sm" className="gap-2">
-                            <MessageCircle className="h-4 w-4" />
-                            {t("publicFeed", "comment")}
-                          </Button>
                         </div>
 
                         <Button
                           variant="outline"
-                          onClick={() => {
-                            if (ad.websiteUrl) {
-                              window.open(
-                                ad.websiteUrl,
-                                "_blank",
-                                "noopener,noreferrer"
-                              );
-                            }
-                          }}
+                          onClick={() => handleWebsiteClick(ad)}
                           className="gap-2">
                           <ExternalLink className="h-4 w-4" />
                           {t("publicFeed", "website")}

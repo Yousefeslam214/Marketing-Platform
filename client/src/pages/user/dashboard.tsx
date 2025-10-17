@@ -63,6 +63,7 @@ export default function Dashboard() {
     url: `${VITE_API_BASE_URL}/api/dashboard/user`,
   });
 
+  console.log("Dashboard Data:", dashboardData);
   // Check for token in URL parameters and auto-authenticate
   useEffect(() => {
     // Only run token detection logic if we're on the dashboard page

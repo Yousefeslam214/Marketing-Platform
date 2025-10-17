@@ -32,165 +32,16 @@ export default function Contact() {
       flex flex-col items-center
       `}
       dir={isRTL ? "rtl" : "ltr"}>
-      
       {isUserContact ? (
-        <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-          <div className="flex-1 overflow-auto">
+        <div
+          className={`flex w-full  bg-background ${isRTL ? "rtl" : "ltr"}
+        
+        `}>
+          <div className="flex-1 overflow-auto mb-6">
             <Header
               title={t("contact", "title")}
               description={t("contact", "subtitle")}
             />
-            {/* Contact Content for User Route */}
-            <section className="py-6">
-              <div className="container">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                  {/* Contact Information */}
-                  <div className="space-y-8">
-                    <div>
-                      <h2 className="text-2xl font-bold mb-6">
-                        {t("contact", "infoTitle")}
-                      </h2>
-                      <div className="grid gap-6">
-                        {/* Email */}
-                        <Card className="border-0 shadow-lg">
-                          <CardContent className="p-6">
-                            <div
-                              className={`flex items-center space-x-4 ${
-                                isRTL ? "space-x-reverse" : ""
-                              }`}>
-                              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                                <Mail className="h-6 w-6 text-primary" />
-                              </div>
-                              <div>
-                                <h3 className="font-semibold">
-                                  {t("contact", "email")}
-                                </h3>
-                                <p className="text-muted-foreground">
-                                  info@octopusad.com
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-
-                        {/* Phone */}
-                        <Card className="border-0 shadow-lg">
-                          <CardContent className="p-6">
-                            <div
-                              className={`flex items-center space-x-4 ${
-                                isRTL ? "space-x-reverse" : ""
-                              }`}>
-                              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                                <SiWhatsapp className="h-6 w-6 text-primary" />
-                              </div>
-                              <div>
-                                <h3 className="font-semibold">
-                                  {t("contact", "phone")}
-                                </h3>
-                                <p className="text-muted-foreground">0502274696</p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-
-                        {/* Working Hours */}
-                        <Card className="border-0 shadow-lg">
-                          <CardContent className="p-6">
-                            <div
-                              className={`flex items-center space-x-4 ${
-                                isRTL ? "space-x-reverse" : ""
-                              }`}>
-                              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                                <Clock className="h-6 w-6 text-primary" />
-                              </div>
-                              <div>
-                                <h3 className="font-semibold">
-                                  {t("contact", "hours")}
-                                </h3>
-                                <p className="text-muted-foreground">
-                                  {t("contact", "hoursValue")}
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
-
-                      {/* Social Media */}
-                      <div className="mt-8 flex flex-col">
-                        <h3 className="text-xl font-bold mb-4">
-                          {t("contact", "followUs")}
-                        </h3>
-                        <div
-                          className={`flex space-x-4 ${
-                            isRTL ? "space-x-reverse" : ""
-                          }`}>
-                          <a
-                            href="#"
-                            className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                            <Facebook className="h-5 w-5" />
-                          </a>
-                          {/* <a
-                            href="#"
-                            className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                            <Twitter className="h-5 w-5" />
-                          </a> */}
-                          <a
-                            href="#"
-                            className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                            <Instagram className="h-5 w-5" />
-                          </a>
-                          <a
-                            href="#"
-                            className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                            <Linkedin className="h-5 w-5" />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* WhatsApp Contact */}
-                  <div>
-                    <Card className="border-0 shadow-lg">
-                      <CardHeader>
-                        <CardTitle className="text-2xl text-center">
-                          {t("contact", "whatsappTitle")}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex flex-col items-center justify-center py-12 space-y-6">
-                        <div className="w-32 h-32 bg-green-500/10 rounded-full flex items-center justify-center">
-                          <SiWhatsapp className="h-16 w-16 text-green-500" />
-                        </div>
-                        <div className="text-center space-y-2">
-                          <h3 className="text-xl font-semibold">
-                            {t("contact", "whatsappContact")}
-                          </h3>
-                          <p className="text-muted-foreground">
-                            {t("contact", "whatsappDescription")}
-                          </p>
-                        </div>
-                        <Button
-                          size="lg"
-                          className="bg-green-500 hover:bg-green-600 text-white px-8 py-3"
-                          onClick={() => {
-                            window.open(`https://wa.me/966502274696`, '_blank');
-                          }}
-                        >
-                          <SiWhatsapp className={`h-5 w-5 ${isRTL ? "ml-2" : "mr-2"}`} />
-                          {t("contact", "openWhatsapp")}
-                        </Button>
-                        <div className="text-center">
-                          <p className="text-sm text-muted-foreground">
-                            {t("contact", "phoneNumber")}: +966 50 227 4696
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              </div>
-            </section>
           </div>
         </div>
       ) : (
@@ -213,34 +64,34 @@ export default function Contact() {
               </div>
             </div>
           </section>
-</>
+        </>
       )}
-          {/* Contact Content for Public Route */}
-          <section className="py-20">
-            <div className="container">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+      <section className="px-4 sm:px-6 lg:px-8 py-6 mt-5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {/* Contact Information */}
-            <div className="space-y-8">
+            <div className="space-y-8 w-full">
               <div>
                 <h2 className="text-2xl font-bold mb-6">
                   {t("contact", "infoTitle")}
                 </h2>
                 <div className="grid gap-6">
                   {/* Email */}
-                  <Card className="border-0 shadow-lg">
+                  <Card className="w-full border-0 shadow-lg">
                     <CardContent className="p-6">
                       <div
-                        className={`flex items-center space-x-4 ${
-                          isRTL ? "space-x-reverse" : ""
+                        className={`flex items-center ${
+                          isRTL ? "space-x-reverse" : "space-x-4"
                         }`}>
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Mail className="h-6 w-6 text-primary" />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <h3 className="font-semibold">
                             {t("contact", "email")}
                           </h3>
-                          <p className="text-muted-foreground">
+                          <p className="text-muted-foreground truncate">
                             info@octopusad.com
                           </p>
                         </div>
@@ -249,16 +100,16 @@ export default function Contact() {
                   </Card>
 
                   {/* Phone */}
-                  <Card className="border-0 shadow-lg">
+                  <Card className="w-full border-0 shadow-lg">
                     <CardContent className="p-6">
                       <div
-                        className={`flex items-center space-x-4 ${
-                          isRTL ? "space-x-reverse" : ""
+                        className={`flex items-center ${
+                          isRTL ? "space-x-reverse" : "space-x-4"
                         }`}>
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <SiWhatsapp className="h-6 w-6 text-primary" />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <h3 className="font-semibold">
                             {t("contact", "phone")}
                           </h3>
@@ -268,39 +119,17 @@ export default function Contact() {
                     </CardContent>
                   </Card>
 
-                  {/* Address */}
-                  {/* <Card className="border-0 shadow-lg">
-                    <CardContent className="p-6">
-                      <div
-                        className={`flex items-center space-x-4 ${
-                          isRTL ? "space-x-reverse" : ""
-                        }`}>
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <MapPin className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold">
-                            {t("contact", "address")}
-                          </h3>
-                          <p className="text-muted-foreground">
-                            {t("contact", "addressValue")}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card> */}
-
                   {/* Working Hours */}
-                  <Card className="border-0 shadow-lg">
+                  <Card className="w-full border-0 shadow-lg">
                     <CardContent className="p-6">
                       <div
-                        className={`flex items-center space-x-4 ${
-                          isRTL ? "space-x-reverse" : ""
+                        className={`flex items-center ${
+                          isRTL ? "space-x-reverse" : "space-x-4"
                         }`}>
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Clock className="h-6 w-6 text-primary" />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <h3 className="font-semibold">
                             {t("contact", "hours")}
                           </h3>
@@ -314,24 +143,19 @@ export default function Contact() {
                 </div>
 
                 {/* Social Media */}
-                <div className="mt-8 flex flex-col">
+                <div className="mt-8">
                   <h3 className="text-xl font-bold mb-4">
                     {t("contact", "followUs")}
                   </h3>
                   <div
-                    className={`flex space-x-4 ${
-                      isRTL ? "space-x-reverse" : ""
+                    className={`flex flex-wrap items-center gap-3 ${
+                      isRTL ? "rtl" : "ltr"
                     }`}>
                     <a
                       href="#"
                       className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Facebook className="h-5 w-5" />
                     </a>
-                    {/* <a
-                      href="#"
-                      className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                      <Twitter className="h-5 w-5" />
-                    </a> */}
                     <a
                       href="#"
                       className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
@@ -348,18 +172,18 @@ export default function Contact() {
             </div>
 
             {/* WhatsApp Contact */}
-            <div>
-              <Card className="border-0 shadow-lg">
+            <div className="w-full">
+              <Card className="w-full border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-2xl text-center">
                     {t("contact", "whatsappTitle")}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex flex-col items-center justify-center py-12 space-y-6">
-                  <div className="w-32 h-32 bg-green-500/10 rounded-full flex items-center justify-center">
-                    <SiWhatsapp className="h-16 w-16 text-green-500" />
+                <CardContent className="flex flex-col items-center justify-center py-8 space-y-6">
+                  <div className="w-24 h-24 md:w-32 md:h-32 bg-green-500/10 rounded-full flex items-center justify-center">
+                    <SiWhatsapp className="h-12 w-12 md:h-16 md:w-16 text-green-500" />
                   </div>
-                  <div className="text-center space-y-2">
+                  <div className="text-center space-y-2 px-4">
                     <h3 className="text-xl font-semibold">
                       {t("contact", "whatsappContact")}
                     </h3>
@@ -369,19 +193,15 @@ export default function Contact() {
                   </div>
                   <Button
                     size="lg"
-                    className="bg-green-500 hover:bg-green-600 text-white px-8 py-3"
+                    className="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-8 py-3"
                     onClick={() => {
-                      window.open(`https://wa.me/966502274696`, '_blank');
-                    }}
-                  >
-                    <SiWhatsapp className={`h-5 w-5 ${isRTL ? "ml-2" : "mr-2"}`} />
+                      window.open(`https://wa.me/966502274696`, "_blank");
+                    }}>
+                    <SiWhatsapp
+                      className={`h-5 w-5 ${isRTL ? "ml-2" : "mr-2"}`}
+                    />
                     {t("contact", "openWhatsapp")}
                   </Button>
-                  <div className="text-center">
-                    <p className="text-sm text-muted-foreground">
-                      {t("contact", "phoneNumber")}: +966 50 227 4696
-                    </p>
-                  </div>
                 </CardContent>
               </Card>
             </div>
