@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/theme-context";
+import { useLanguage } from "@/hooks/use-language";
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <Button
@@ -14,7 +16,7 @@ export function ThemeToggle() {
     >
       <i className={theme === "dark" ? "fas fa-sun" : "fas fa-moon"}></i>
       <span className="text-xs">
-        {theme === "dark" ? "Light" : "Dark"}
+        {theme === "dark" ? t("themeToggle", "light") : t("themeToggle", "dark")}
       </span>
     </Button>
   );

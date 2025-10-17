@@ -261,6 +261,7 @@
     "impressions": "Impressions",
     "clicks": "Clicks",
     "spent": "Spent",
+    "riyal": "riyal",
     "conversions": "Conversions",
     "ctr": "CTR",
     "cpc": "CPC",
@@ -276,6 +277,7 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "adContent": "Ad Content",
+    "websiteClicks": "Website Clicks",
     "headline": "Headline",
     "adDescription": "Description",
     "callToAction": "Call to Action",
@@ -392,7 +394,6 @@
     "audienceMore": "More",
     "uploading": "Uploading...",
     "changePhoto": "Change Photo",
-    "uploadPhoto": "Upload Photo",
     "supportedFormatsNote": "JPG, PNG up to 5MB"
   },
   "uploadPhoto": {
@@ -1028,6 +1029,10 @@
     "unableToLoad": "Unable to load ads feed",
     "noAdsAvailable": "No ads available",
     "checkBackLater": "Check back later for new content"
+  },
+  "themeToggle": {
+    "light": "Light",
+    "dark": "Dark"
   },
   "landing": {
     "navigation": {

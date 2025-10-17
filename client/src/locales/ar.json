@@ -270,6 +270,7 @@
     "impressions": "المشاهدات",
     "clicks": "النقرات",
     "spent": "المُنفق",
+    "riyal": "ريال",
     "conversions": "التحويلات",
     "ctr": "معدل النقر",
     "cpc": "تكلفة النقرة",
@@ -285,6 +286,7 @@
     "startDate": "تاريخ البداية",
     "endDate": "تاريخ النهاية",
     "adContent": "محتوى الإعلان",
+    "websiteClicks": "نقرات الموقع",
     "headline": "العنوان الرئيسي",
     "adDescription": "الوصف",
     "callToAction": "دعوة للعمل",
@@ -1123,6 +1125,10 @@
     "unableToLoad": "لا يمكن تحميل تغذية الإعلانات",
     "noAdsAvailable": "لا توجد إعلانات متاحة",
     "checkBackLater": "تحقق لاحقًا للحصول على محتوى جديد"
+  },
+  "themeToggle": {
+    "light": "فاتح",
+    "dark": "داكن"
   },
   "landing": {
     "navigation": {
