@@ -14,17 +14,16 @@ export default function NewAd() {
   }
 
   return (
-    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      {/* <Sidebar /> */}
-
-      <div className="flex-1 overflow-auto">
+    <div className={`min-h-screen flex bg-background ${isRTL ? "rtl" : "ltr"}`}>
+      {/* content column */}
+      <div className="flex-1 flex flex-col">
         <Header
           title={t("ads", "newAd.title")}
           description={t("ads", "newAd.description")}
         />
 
-        <main className="p-6">
-          <div className="max-w-4xl mx-auto">
+        <main className="flex-1 overflow-auto p-6">
+          <div className="max-w-4xl mx-auto h-full">
             <AdEditor />
           </div>
         </main>

@@ -63,6 +63,8 @@ export function AdEditor() {
         `${VITE_API_BASE_URL}/api/advertising`,
         data
       );
+      queryClient.clear();
+
       return response.json();
     },
     onSuccess: (data) => {
@@ -103,7 +105,7 @@ export function AdEditor() {
   };
 
   return (
-    <Card>
+    <Card className="h-full overflow-auto">
       <CardHeader>
         <CardTitle>{t("ads", "newAd.title")}</CardTitle>
       </CardHeader>
@@ -460,9 +462,16 @@ export function AdEditor() {
                 control={form.control}
                 name="targetCities"
                 render={({ field }) => {
-                  const isAllCitiesSelected = (
-                    field.value as string[]
-                  )?.includes("all");
+                  const currentCities = (field.value as string[]) || [];
+                  const allLocationValues = locationOptions
+                    .map((o) => o.value)
+                    .filter((v) => v && v !== "all");
+                  const isAllCitiesSelected =
+                    currentCities.includes("all") ||
+                    (allLocationValues.length > 0 &&
+                      allLocationValues.every((v) =>
+                        currentCities.includes(v)
+                      ));
 
                   return (
                     <FormItem>
@@ -499,11 +508,7 @@ export function AdEditor() {
                           {locationOptions.map((city) => (
                             <div
                               key={city.value}
-                              className={`flex items-center space-x-2 p-2 border rounded-md transition-colors ${
-                                isAllCitiesSelected
-                                  ? "opacity-50 pointer-events-none bg-muted/30"
-                                  : "hover:bg-muted/50"
-                              }`}>
+                              className={`flex items-center space-x-2 p-2 border rounded-md transition-colors `}>
                               <Checkbox
                                 id={city.value}
                                 checked={
@@ -512,7 +517,7 @@ export function AdEditor() {
                                     city.value
                                   )
                                 }
-                                disabled={isAllCitiesSelected}
+                                // disabled={isAllCitiesSelected}
                                 onCheckedChange={(checked: boolean) => {
                                   const currentCities =
                                     (field.value as string[]) || [];
