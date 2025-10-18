@@ -117,7 +117,6 @@ export function AdEditor({
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append("photo", file);
-      console.log(formData);
       const response = await fetch(
         `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`,
         {
@@ -128,13 +127,28 @@ export function AdEditor({
           body: formData,
         }
       );
-      queryClient.clear();
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Upload failed: ${response.status} - ${errorText}`);
+
+      // Attempt to parse JSON; if parsing fails, throw with text
+      const body = await response.json().catch(async () => {
+        const txt = await response.text();
+        throw new Error(`Upload failed: ${response.status} - ${txt}`);
+      });
+
+      // If server signalled failure or response not OK, throw
+      if (!response.ok || body?.success === false) {
+        const msg = body?.message || `Upload failed: ${response.status}`;
+        throw new Error(msg);
       }
 
-      return response.json();
+      const photoUrl = body?.data?.photo;
+      if (!photoUrl) {
+        throw new Error("Upload succeeded but no photo URL returned");
+      }
+
+      // Clear cache after successful upload
+      queryClient.clear();
+
+      return body;
     },
     onSuccess: (data) => {
       const photoUrl = data?.data?.photo;
@@ -235,12 +249,13 @@ export function AdEditor({
         return;
       }
 
-      // Validate file size (5MB limit)
-      if (file.size > 5 * 1024 * 1024) {
+      // Validate file size (1MB limit)
+      const ONE_MB = 1 * 1024 * 1024;
+      if (file.size > ONE_MB) {
         toast({
           title: t("ads", "fileTooLarge") || "File too large",
           description:
-            t("ads", "fileSizeLimit") || "File size must be less than 5MB",
+            t("ads", "fileSizeLimit1MB") || "File size must be less than 1MB",
           variant: "destructive",
         });
         return;
@@ -811,25 +826,27 @@ export function AdEditor({
                         </FormItem>
                       )}
                     />
-
-                    <FormField
-                      control={form.control}
-                      name="snapchatLink"
-                      render={({ field }: { field: any }) => (
-                        <FormItem>
-                          <FormLabel>{t("ads", "snapchatLinkLabel")}</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="url"
-                              placeholder="https://snapchat.com/..."
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
+                    <div className="mb-5">
+                      <FormField
+                        control={form.control}
+                        name="snapchatLink"
+                        render={({ field }: { field: any }) => (
+                          <FormItem>
+                            <FormLabel>
+                              {t("ads", "snapchatLinkLabel")}
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="url"
+                                placeholder="https://snapchat.com/..."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                     {/* <FormField
                   control={form.control}
                   name="googleAdsLink"

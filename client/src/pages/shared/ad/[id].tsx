@@ -57,23 +57,7 @@ export default function AdDetail({ params }: AdDetailProps) {
       return response.json();
     },
     onSuccess: (data) => {
-      // Clear billing cache for user and admin
-      queryClient.invalidateQueries({ queryKey: ["/api/payment/history"] });
-      queryClient.invalidateQueries({
-        queryKey: ["/api/payment/getPurchaseHistoryForAdmin"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["/api/payment/history/user"],
-      });
-
-      // // Clear any other related billing/payment queries
-      // queryClient.invalidateQueries({ queryKey: ["/api/payment"] });
-      // queryClient.invalidateQueries({ queryKey: ["/api/billing"] });
-
-      // // Clear advertising queries
-      // queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
-      // queryClient.invalidateQueries({ queryKey: [`/api/advertising/${id}`] });
-
+      queryClient.clear();
       toast({
         title: t("adDetail", "creditAssignedSuccess"),
         description: `${data.data.credit} ${t(
@@ -105,6 +89,7 @@ export default function AdDetail({ params }: AdDetailProps) {
         const msg = body?.message || t("adDetail", "failedToActivateAd");
         throw new Error(msg);
       }
+      queryClient.clear();
       return body;
     },
 
@@ -134,6 +119,7 @@ export default function AdDetail({ params }: AdDetailProps) {
         "PUT",
         `${VITE_API_BASE_URL}/api/advertising/${id}/deactivate`
       );
+      queryClient.clear();
       return response.json();
     },
     onSuccess: (res: any) => {
@@ -649,8 +635,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                 ad.instagramLink ||
                 ad.tiktokLink ||
                 ad.youtubeLink ||
-                ad.snapchatLink ||
-                ad.googleAdsLink) && (
+                ad.snapchatLink) && (
                 <Card className="lg:col-span-2">
                   <CardHeader>
                     <CardTitle>{t("analytics", "socialMediaLinks")}</CardTitle>
@@ -741,7 +726,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                         </a>
                       )}
 
-                      {ad.googleAdsLink && (
+                      {/* {ad.googleAdsLink && (
                         <a
                           href={ad.googleAdsLink}
                           target="_blank"
@@ -753,7 +738,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                             Google Ads
                           </div>
                         </a>
-                      )}
+                      )} */}
                     </div>
                   </CardContent>
                 </Card>

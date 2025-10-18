@@ -268,9 +268,15 @@ export default function AdsFeed() {
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
             ">
                 {adsResponse?.data.map((ad) => (
+                  <div
+                  className="min-h-[80vh]"
+                  >
                   <Card
                     key={ad.id}
-                    className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit">
+                    className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit *:
+                    
+                    
+                    ">
                     <CardContent className="p-0">
                       {/* Header */}
                       <div className="p-4 border-b">
@@ -339,6 +345,7 @@ export default function AdsFeed() {
                       </div>
                     </CardContent>
                   </Card>
+                  </div>
                 ))}
               </div>
             </div>
