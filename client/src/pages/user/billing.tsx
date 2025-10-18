@@ -243,8 +243,23 @@ export default function Billing() {
                               className="text-3xl font-bold text-foreground"
                               data-testid={`package-price-${pkg.id}`}>
                               {isRTL ? `${pkg.amount} ` : `${pkg.amount}`}
-                              <span className="ml-2 text-lg font-semibold">
-                                ر.س
+                              <span className="ml-2 text-lg font-semibold flex items-center gap-1">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="20"
+                                  height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                            <path d="m20 19.5-5.5 1.2" />
+                            <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                            <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                            <path d="M20 10 4 13.5" />
+                          </svg>
                               </span>
                             </p>
                             <p
@@ -301,22 +316,25 @@ export default function Billing() {
                           ?.nameKey as any
                       )}
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      {isRTL ? (
-                        `${
-                          impressionPackages.find(
-                            (p) => p.id === selectedPackage
-                          )?.amount || 0
-                        } ر.س`
-                      ) : (
-                        <>
-                          `ر.س$
-                          {impressionPackages.find(
-                            (p) => p.id === selectedPackage
-                          )?.amount || 0}
-                          `
-                        </>
-                      )}{" "}
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                        <path d="m20 19.5-5.5 1.2" />
+                        <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                        <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                        <path d="M20 10 4 13.5" />
+                      </svg>
+                      {impressionPackages.find((p) => p.id === selectedPackage)
+                        ?.amount || 0}{" "}
                       -{" "}
                       {impressionPackages
                         .find((p) => p.id === selectedPackage)
@@ -359,7 +377,22 @@ export default function Billing() {
                         className={`absolute top-1/2 transform -translate-y-1/2 text-muted-foreground ${
                           isRTL ? "right-3" : "left-3"
                         }`}>
-                        ر.س
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                          <path d="m20 19.5-5.5 1.2" />
+                          <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                          <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                          <path d="M20 10 4 13.5" />
+                        </svg>
                       </span>
                       <Input
                         type="number"
@@ -430,11 +463,25 @@ export default function Billing() {
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <p
-                            className="font-medium text-foreground"
+                            className="font-medium text-foreground flex items-center gap-1"
                             data-testid={`purchase-amount-${payment.id}`}>
-                            {isRTL
-                              ? `${parseFloat(payment.amount).toFixed(2)} ر.س`
-                              : `ر.س${parseFloat(payment.amount).toFixed(2)}`}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                              <path d="m20 19.5-5.5 1.2" />
+                              <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                              <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                              <path d="M20 10 4 13.5" />
+                            </svg>
+                            {parseFloat(payment.amount).toFixed(2)}
                           </p>
                           <Badge className={getStatusColor(payment.status)}>
                             {getStatusText(payment.status)}

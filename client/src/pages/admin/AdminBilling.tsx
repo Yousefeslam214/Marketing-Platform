@@ -136,16 +136,52 @@ export default function AdminBilling() {
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <p className="text-2xl font-bold">
-                      ${metrics.totalRevenue.toLocaleString()}
+                    <p className="text-2xl
+                    font-bold flex items-center gap-1 
+                    ">
+                      
+                         <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                            <path d="m20 19.5-5.5 1.2" />
+                            <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                            <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                            <path d="M20 10 4 13.5" />
+                          </svg>
+                      {metrics.totalRevenue.toLocaleString()}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {t("adminBilling", "totalRevenueYear")}
                     </p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">
-                      ${metrics.totalLastMonth.toLocaleString()}
+                    <p className="text-2xl font-bold flex items-center gap-1 ">
+                    
+                           <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                            <path d="m20 19.5-5.5 1.2" />
+                            <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                            <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                            <path d="M20 10 4 13.5" />
+                          </svg>
+                      {metrics.totalLastMonth.toLocaleString()}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {t("adminBilling", "totalRevenueMonth")}
@@ -253,9 +289,27 @@ export default function AdminBilling() {
                       key={payment.id}
                       className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
-                        <p className="font-medium">
-                          {payment.id.substring(0, 8)}... - $
+                        <p className="font-medium flex items-center gap-1">
+                          {payment.id.substring(0, 8)}... -   
+                          
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                            <path d="m20 19.5-5.5 1.2" />
+                            <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                            <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                            <path d="M20 10 4 13.5" />
+                          </svg>
                           {parseFloat(payment.amount).toFixed(2)}
+                   
                         </p>
                         <p className="text-sm text-muted-foreground">
                           User: {payment.userId.substring(0, 8)}... -{" "}

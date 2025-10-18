@@ -162,38 +162,8 @@ export default function UserDetails() {
       ? "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400"
       : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400";
   };
+const user = userData?.data as UserDetailsInterface;
 
-  if (isLoading) {
-    return (
-      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
-          <div className="text-center py-12">
-            <p className="text-destructive">
-              {t("userDetails", "errorLoadingUser")}
-            </p>
-            <Button onClick={() => refetch()} className="mt-4">
-              {t("userDetails", "retry")}
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const user = userData?.data as UserDetailsInterface;
-  if (!user) return null;
 
   const addCreditMutation = useMutation({
     mutationFn: async (credit: number) => {
@@ -232,7 +202,37 @@ export default function UserDetails() {
       });
     },
   });
+  if (isLoading) {
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
+  if (error) {
+    return (
+      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
+        <div className="flex-1 overflow-auto">
+          <div className="text-center py-12">
+            <p className="text-destructive">
+              {t("userDetails", "errorLoadingUser")}
+            </p>
+            <Button onClick={() => refetch()} className="mt-4">
+              {t("userDetails", "retry")}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  
+  if (!user) return null;
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">

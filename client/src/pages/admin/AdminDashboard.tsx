@@ -27,7 +27,6 @@ export default function AdminDashboard() {
     url: `${VITE_API_BASE_URL}/api/dashboard/admin`,
   });
 
- 
   // Check for token in URL parameters and auto-authenticate
   useEffect(() => {
     // Only run token detection logic if we're on the dashboard page
@@ -105,9 +104,7 @@ export default function AdminDashboard() {
     impressionGrowth: stats.impressionGrowth || 0,
   };
 
-
-
-   // Show loading UI while fetching
+  // Show loading UI while fetching
   if (isLoading) {
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
@@ -241,7 +238,24 @@ export default function AdminDashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 bg-chart-3/10 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-sar-sign text-chart-3"></i>
+                    <div className="text-chart-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                        <path d="m20 19.5-5.5 1.2" />
+                        <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                        <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                        <path d="M20 10 4 13.5" />
+                      </svg>
+                    </div>
                   </div>
                   <Badge
                     variant="secondary"
