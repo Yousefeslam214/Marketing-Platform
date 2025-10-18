@@ -6,10 +6,10 @@
       // Check if we're in a popup and on the production domain
       if (
         window.opener &&
-        window.location.hostname === "marketing-platform-six.vercel.app"
+        window.location.hostname === 'http://75.119.136.7:3000'
       ) {
         // Redirect to local development server with the same path and query params
-        const localUrl = `http://localhost:3000${window.location.pathname}${window.location.search}`;
+        const localUrl = `http://75.119.136.7:3000${window.location.pathname}${window.location.search}`;
 
         window.location.href = localUrl;
       }

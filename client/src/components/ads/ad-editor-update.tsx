@@ -108,7 +108,7 @@ export function AdEditor({
         googleAdsLink: existingData.googleAdsLink || "",
       });
       // ensure photo preview reflects server image
-      setPhotoPreview(existingData.imageUrl || null);
+      setPhotoPreview(existingData?.imageUrl || null);
     }
   }, [existingData]);
 
@@ -117,7 +117,7 @@ export function AdEditor({
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append("photo", file);
-
+      console.log(formData);
       const response = await fetch(
         `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`,
         {
@@ -128,7 +128,7 @@ export function AdEditor({
           body: formData,
         }
       );
-
+      queryClient.clear();
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Upload failed: ${response.status} - ${errorText}`);
@@ -137,7 +137,7 @@ export function AdEditor({
       return response.json();
     },
     onSuccess: (data) => {
-      const photoUrl = data.data?.photo;
+      const photoUrl = data?.data?.photo;
       if (photoUrl) {
         form.setValue("imageUrl", photoUrl);
         // Replace local preview with server URL
@@ -185,6 +185,7 @@ export function AdEditor({
           Authorization: `Bearer ${TokenManager.getAccessToken()}`,
         },
       });
+      queryClient.clear();
       if (!res.ok) {
         const txt = await res.text();
         throw new Error(`Delete failed: ${res.status} - ${txt}`);
@@ -260,13 +261,14 @@ export function AdEditor({
     }
   };
 
-  const updateAdMutation = useMutation({
-    mutationFn: async (data) => {
+  const updateAdMutation = useMutation<any, any, CreateAdData>({
+    mutationFn: async (data: CreateAdData) => {
       const response = await apiRequest(
         "PUT",
         `${VITE_API_BASE_URL}/api/advertising/${adId}`,
         data
       );
+      queryClient.clear();
       if (response.status === 500) {
         throw new Error("Internal Server Error (500)");
       }
@@ -292,529 +294,543 @@ export function AdEditor({
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: CreateAdData) => {
     console.log("data:", data);
     await updateAdMutation.mutateAsync(data);
   };
 
   return (
-    <Card >
-      <CardHeader>
-        <CardTitle>{t("ads", "updateAdTitle")}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Title Fields */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="titleEn"
-                render={({ field }: { field: any }) => (
-                  <FormItem>
-                    <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t("ads", "titleArPlaceholder")}
-                        data-testid="input-title-en"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <div className="flex flex-col w-full">
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>{t("ads", "updateAdTitle")}</CardTitle>
+        </CardHeader>
+        <CardContent className="overflow-auto">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6
+           
+            ">
+              <div>
+                {/* Title Fields */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="titleEn"
+                    render={({ field }: { field: any }) => (
+                      <FormItem>
+                        <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t("ads", "titleArPlaceholder")}
+                            data-testid="input-title-en"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="titleAr"
-                render={({ field }: { field: any }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("ads", "titleArLabel")}
-                      {/* {t("ads", "titleArPlaceholder")} */}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="أدخل عنوان الإعلان..."
-                        dir="rtl"
-                        data-testid="input-title-ar"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                  <FormField
+                    control={form.control}
+                    name="titleAr"
+                    render={({ field }: { field: any }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("ads", "titleArLabel")}
+                          {/* {t("ads", "titleArPlaceholder")} */}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="أدخل عنوان الإعلان..."
+                            dir="rtl"
+                            data-testid="input-title-ar"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-            {/* Description Fields */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="descriptionEn"
-                render={({ field }: { field: any }) => (
-                  <FormItem>
-                    <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t("ads", "descriptionEnPlaceholder")}
-                        className="h-24 resize-none"
-                        data-testid="textarea-description-en"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                {/* Description Fields */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="descriptionEn"
+                    render={({ field }: { field: any }) => (
+                      <FormItem>
+                        <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder={t("ads", "descriptionEnPlaceholder")}
+                            className="h-24 resize-none"
+                            data-testid="textarea-description-en"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="descriptionAr"
-                render={({ field }: { field: any }) => (
-                  <FormItem>
-                    <FormLabel>{t("ads", "descriptionArLabel")}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t("ads", "descriptionArPlaceholder")}
-                        dir="rtl"
-                        className="h-24 resize-none"
-                        data-testid="textarea-description-ar"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                  <FormField
+                    control={form.control}
+                    name="descriptionAr"
+                    render={({ field }: { field: any }) => (
+                      <FormItem>
+                        <FormLabel>{t("ads", "descriptionArLabel")}</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder={t("ads", "descriptionArPlaceholder")}
+                            dir="rtl"
+                            className="h-24 resize-none"
+                            data-testid="textarea-description-ar"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-            {/* Photo Upload Section */}
-            {isUpdate && (
-              <div className="space-y-4">
+                {/* Photo Upload Section */}
+                {isUpdate && (
+                  <div className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="imageUrl"
+                      render={({ field }: { field: any }) => (
+                        <FormItem>
+                          <FormLabel>{t("ads", "adPhotoLabel")}</FormLabel>
+                          <FormControl>
+                            <div className="space-y-4">
+                              {/* Photo Preview */}
+                              {photoPreview && (
+                                <div className="relative">
+                                  <img
+                                    src={photoPreview}
+                                    alt="Ad preview"
+                                    className="w-full   object-cover rounded-lg border"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="sm"
+                                    className="absolute top-2 right-2"
+                                    onClick={() => {
+                                      // If the preview looks like a server URL (not a local blob), call API to delete
+                                      if (
+                                        photoPreview &&
+                                        !photoPreview.startsWith("blob:")
+                                      ) {
+                                        deletePhotoMutation.mutate();
+                                        return;
+                                      }
+
+                                      // Otherwise, it was a local preview — just revoke and clear
+                                      if (
+                                        photoPreview &&
+                                        photoPreview.startsWith("blob:")
+                                      ) {
+                                        URL.revokeObjectURL(photoPreview);
+                                      }
+                                      setPhotoPreview(null);
+                                      form.setValue("imageUrl", "");
+                                    }}
+                                    disabled={deletePhotoMutation.isPending}>
+                                    <i className="fas fa-trash mx-2"></i>
+                                    {t("ads", "removePhoto")}
+                                  </Button>
+                                </div>
+                              )}
+
+                              {/* Upload Button */}
+                              <div className="flex items-center gap-4">
+                                <input
+                                  ref={fileInputRef}
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={handlePhotoSelect}
+                                  className="hidden"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  onClick={() => fileInputRef.current?.click()}
+                                  disabled={
+                                    uploadingPhoto ||
+                                    uploadPhotoMutation.isPending
+                                  }>
+                                  {uploadingPhoto ||
+                                  uploadPhotoMutation.isPending ? (
+                                    <>
+                                      <i className="fas fa-spinner fa-spin mx-2"></i>
+                                      {t("ads", "uploading")}
+                                    </>
+                                  ) : (
+                                    <>
+                                      <i className="fas fa-upload mx-2"></i>
+                                      {photoPreview
+                                        ? t("ads", "changePhoto")
+                                        : t("ads", "choosePhoto")}
+                                    </>
+                                  )}
+                                </Button>
+                                {!photoPreview && (
+                                  <span className="text-sm text-muted-foreground">
+                                    {t("ads", "supportedFormatsNote")}
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Hidden input for form validation */}
+                              <Input
+                                type="hidden"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+
+                {/* Website URL */}
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="websiteUrl"
                   render={({ field }: { field: any }) => (
                     <FormItem>
-                      <FormLabel>{t("ads", "adPhotoLabel")}</FormLabel>
+                      <FormLabel>{t("ads", "websiteUrlLabel")}</FormLabel>
                       <FormControl>
-                        <div className="space-y-4">
-                          {/* Photo Preview */}
-                          {photoPreview && (
-                            <div className="relative">
-                              <img
-                                src={photoPreview}
-                                alt="Ad preview"
-                                className="w-full   object-cover rounded-lg border"
-                              />
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                size="sm"
-                                className="absolute top-2 right-2"
-                                onClick={() => {
-                                  // If the preview looks like a server URL (not a local blob), call API to delete
-                                  if (
-                                    photoPreview &&
-                                    !photoPreview.startsWith("blob:")
-                                  ) {
-                                    deletePhotoMutation.mutate();
-                                    return;
-                                  }
-
-                                  // Otherwise, it was a local preview — just revoke and clear
-                                  if (
-                                    photoPreview &&
-                                    photoPreview.startsWith("blob:")
-                                  ) {
-                                    URL.revokeObjectURL(photoPreview);
-                                  }
-                                  setPhotoPreview(null);
-                                  form.setValue("imageUrl", "");
-                                }}
-                                disabled={deletePhotoMutation.isPending}>
-                                <i className="fas fa-trash mx-2"></i>
-                                {t("ads", "removePhoto")}
-                              </Button>
-                            </div>
-                          )}
-
-                          {/* Upload Button */}
-                          <div className="flex items-center gap-4">
-                            <input
-                              ref={fileInputRef}
-                              type="file"
-                              accept="image/*"
-                              onChange={handlePhotoSelect}
-                              className="hidden"
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => fileInputRef.current?.click()}
-                              disabled={
-                                uploadingPhoto || uploadPhotoMutation.isPending
-                              }>
-                              {uploadingPhoto ||
-                              uploadPhotoMutation.isPending ? (
-                                <>
-                                  <i className="fas fa-spinner fa-spin mx-2"></i>
-                                  {t("ads", "uploading")}
-                                </>
-                              ) : (
-                                <>
-                                  <i className="fas fa-upload mx-2"></i>
-                                  {photoPreview
-                                    ? t("ads", "changePhoto")
-                                    : t("ads", "uploadPhoto")}
-                                </>
-                              )}
-                            </Button>
-                            {!photoPreview && (
-                              <span className="text-sm text-muted-foreground">
-                                {t("ads", "supportedFormatsNote")}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Hidden input for form validation */}
-                          <Input
-                            type="hidden"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </div>
+                        <Input
+                          type="url"
+                          placeholder={t("ads", "websiteUrlPlaceholder")}
+                          data-testid="input-target-url"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-            )}
 
-            {/* Website URL */}
-            <FormField
-              control={form.control}
-              name="websiteUrl"
-              render={({ field }: { field: any }) => (
-                <FormItem>
-                  <FormLabel>{t("ads", "websiteUrlLabel")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="url"
-                      placeholder={t("ads", "websiteUrlPlaceholder")}
-                      data-testid="input-target-url"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                {/* Target Audience */}
+                <FormField
+                  control={form.control}
+                  name="targetAudience"
+                  render={({ field }: { field: any }) => (
+                    <FormItem>
+                      <FormLabel>{t("ads", "targetAudienceLabel")}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        data-testid="select-target-audience">
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={t(
+                                "ads",
+                                "targetAudiencePlaceholder"
+                              )}
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="cars">
+                            {t("ads", "audienceCars")}
+                          </SelectItem>
+                          <SelectItem value="realestate">
+                            {t("ads", "audienceRealestate")}
+                          </SelectItem>
+                          <SelectItem value="devices">
+                            {t("ads", "audienceDevices")}
+                          </SelectItem>
+                          <SelectItem value="animals">
+                            {t("ads", "audienceAnimals")}
+                          </SelectItem>
+                          <SelectItem value="furniture">
+                            {t("ads", "audienceFurniture")}
+                          </SelectItem>
+                          <SelectItem value="jobs">
+                            {t("ads", "audienceJobs")}
+                          </SelectItem>
+                          <SelectItem value="services">
+                            {t("ads", "audienceServices")}
+                          </SelectItem>
+                          <SelectItem value="fashion">
+                            {t("ads", "audienceFashion")}
+                          </SelectItem>
+                          <SelectItem value="games">
+                            {t("ads", "audienceGames")}
+                          </SelectItem>
+                          <SelectItem value="rarities">
+                            {t("ads", "audienceRarities")}
+                          </SelectItem>
+                          <SelectItem value="art">
+                            {t("ads", "audienceArt")}
+                          </SelectItem>
+                          <SelectItem value="trips">
+                            {t("ads", "audienceTrips")}
+                          </SelectItem>
+                          <SelectItem value="food">
+                            {t("ads", "audienceFood")}
+                          </SelectItem>
+                          <SelectItem value="gardens">
+                            {t("ads", "audienceGardens")}
+                          </SelectItem>
+                          <SelectItem value="occasions">
+                            {t("ads", "audienceOccasions")}
+                          </SelectItem>
+                          <SelectItem value="tourism">
+                            {t("ads", "audienceTourism")}
+                          </SelectItem>
+                          <SelectItem value="lost">
+                            {t("ads", "audienceLost")}
+                          </SelectItem>
+                          <SelectItem value="coach">
+                            {t("ads", "audienceCoach")}
+                          </SelectItem>
+                          <SelectItem value="code">
+                            {t("ads", "audienceCode")}
+                          </SelectItem>
+                          <SelectItem value="fund">
+                            {t("ads", "audienceFund")}
+                          </SelectItem>
+                          <SelectItem value="more">
+                            {t("ads", "audienceMore")}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Target Audience */}
-            <FormField
-              control={form.control}
-              name="targetAudience"
-              render={({ field }: { field: any }) => (
-                <FormItem>
-                  <FormLabel>{t("ads", "targetAudienceLabel")}</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    data-testid="select-target-audience">
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={t("ads", "targetAudiencePlaceholder")}
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="cars">
-                        {t("ads", "audienceCars")}
-                      </SelectItem>
-                      <SelectItem value="realestate">
-                        {t("ads", "audienceRealestate")}
-                      </SelectItem>
-                      <SelectItem value="devices">
-                        {t("ads", "audienceDevices")}
-                      </SelectItem>
-                      <SelectItem value="animals">
-                        {t("ads", "audienceAnimals")}
-                      </SelectItem>
-                      <SelectItem value="furniture">
-                        {t("ads", "audienceFurniture")}
-                      </SelectItem>
-                      <SelectItem value="jobs">
-                        {t("ads", "audienceJobs")}
-                      </SelectItem>
-                      <SelectItem value="services">
-                        {t("ads", "audienceServices")}
-                      </SelectItem>
-                      <SelectItem value="fashion">
-                        {t("ads", "audienceFashion")}
-                      </SelectItem>
-                      <SelectItem value="games">
-                        {t("ads", "audienceGames")}
-                      </SelectItem>
-                      <SelectItem value="rarities">
-                        {t("ads", "audienceRarities")}
-                      </SelectItem>
-                      <SelectItem value="art">
-                        {t("ads", "audienceArt")}
-                      </SelectItem>
-                      <SelectItem value="trips">
-                        {t("ads", "audienceTrips")}
-                      </SelectItem>
-                      <SelectItem value="food">
-                        {t("ads", "audienceFood")}
-                      </SelectItem>
-                      <SelectItem value="gardens">
-                        {t("ads", "audienceGardens")}
-                      </SelectItem>
-                      <SelectItem value="occasions">
-                        {t("ads", "audienceOccasions")}
-                      </SelectItem>
-                      <SelectItem value="tourism">
-                        {t("ads", "audienceTourism")}
-                      </SelectItem>
-                      <SelectItem value="lost">
-                        {t("ads", "audienceLost")}
-                      </SelectItem>
-                      <SelectItem value="coach">
-                        {t("ads", "audienceCoach")}
-                      </SelectItem>
-                      <SelectItem value="code">
-                        {t("ads", "audienceCode")}
-                      </SelectItem>
-                      <SelectItem value="fund">
-                        {t("ads", "audienceFund")}
-                      </SelectItem>
-                      <SelectItem value="more">
-                        {t("ads", "audienceMore")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                {/* Target Cities */}
+                <FormField
+                  control={form.control}
+                  name="targetCities"
+                  render={({ field }: { field: any }) => {
+                    const allCityValues = locationOptions.map(
+                      (city) => city.value
+                    );
+                    const selectedCities = (field.value as string[]) || [];
+                    const isAllCitiesSelected = allCityValues.every(
+                      (cityValue) => selectedCities.includes(cityValue)
+                    );
 
-            {/* Target Cities */}
-            <FormField
-              control={form.control}
-              name="targetCities"
-              render={({ field }: { field: any }) => {
-                const allCityValues = locationOptions.map((city) => city.value);
-                const selectedCities = (field.value as string[]) || [];
-                const isAllCitiesSelected = allCityValues.every((cityValue) =>
-                  selectedCities.includes(cityValue)
-                );
-
-                return (
-                  <FormItem>
-                    <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
-                    <div className="space-y-4">
-                      {/* All Cities Option */}
-                      <div className="flex items-center space-x-2 p-3 border rounded-lg bg-muted/50">
-                        <Checkbox
-                          id="all-cities"
-                          checked={isAllCitiesSelected}
-                          onCheckedChange={(checked: boolean) => {
-                            if (checked) {
-                              // Select all individual cities
-                              const allCityValues = locationOptions.map(
-                                (city) => city.value
-                              );
-                              field.onChange(allCityValues);
-                            } else {
-                              // Deselect all cities
-                              field.onChange([]);
-                            }
-                          }}
-                        />
-                        <label
-                          htmlFor="all-cities"
-                          className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1">
-                          <i className="fas fa-globe mx-2 text-primary"></i>
-                          {t("ads", "allCities")}
-                        </label>
-                      </div>
-
-                      {/* Individual Cities */}
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {locationOptions.map((city) => (
-                          <div
-                            key={city.value}
-                            className="flex items-center p-2 border rounded-md transition-colors hover:bg-muted/50">
+                    return (
+                      <FormItem>
+                        <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
+                        <div className="space-y-4">
+                          {/* All Cities Option */}
+                          <div className="flex items-center space-x-2 p-3 border rounded-lg bg-muted/50">
                             <Checkbox
-                              id={city.value}
-                              checked={selectedCities.includes(city.value)}
+                              id="all-cities"
+                              checked={isAllCitiesSelected}
                               onCheckedChange={(checked: boolean) => {
-                                const currentCities = selectedCities.filter(
-                                  (c) => c !== "all"
-                                ); // Remove any "all" flag
-
                                 if (checked) {
-                                  const newCities = [
-                                    ...currentCities,
-                                    city.value,
-                                  ];
-                                  field.onChange(newCities);
-                                } else {
-                                  const newCities = currentCities.filter(
-                                    (c: string) => c !== city.value
+                                  // Select all individual cities
+                                  const allCityValues = locationOptions.map(
+                                    (city) => city.value
                                   );
-                                  field.onChange(newCities);
+                                  field.onChange(allCityValues);
+                                } else {
+                                  // Deselect all cities
+                                  field.onChange([]);
                                 }
                               }}
                             />
                             <label
-                              htmlFor={city.value}
-                              className="text-sm mx-2  font-medium leading-none 
-                              peer-disabled:cursor-not-allowed peer-disabled:opacity-70
-                               cursor-pointer flex-1">
-                              {city.label}
+                              htmlFor="all-cities"
+                              className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1">
+                              <i className="fas fa-globe mx-2 text-primary"></i>
+                              {t("ads", "allCities")}
                             </label>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
 
-            {/* Budget Type */}
-            <FormField
-              control={form.control}
-              name="budgetType"
-              render={({ field }: { field: any }) => (
-                <FormItem>
-                  <FormLabel>{t("ads", "budgetTypeLabel")}</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    data-testid="select-budget-type">
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={t("ads", "budgetTypePlaceholder")}
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="impressions">
-                        {t("ads", "impressions")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                          {/* Individual Cities */}
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {locationOptions.map((city) => (
+                              <div
+                                key={city.value}
+                                className="flex items-center p-2 border rounded-md transition-colors hover:bg-muted/50">
+                                <Checkbox
+                                  id={city.value}
+                                  checked={selectedCities.includes(city.value)}
+                                  onCheckedChange={(checked: boolean) => {
+                                    const currentCities = selectedCities.filter(
+                                      (c) => c !== "all"
+                                    ); // Remove any "all" flag
 
-            {/* Social Media Links */}
-            <div>
-              <FormLabel className="text-base font-semibold">
-                {t("ads", "socialMediaLinksLabel")}
-              </FormLabel>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                                    if (checked) {
+                                      const newCities = [
+                                        ...currentCities,
+                                        city.value,
+                                      ];
+                                      field.onChange(newCities);
+                                    } else {
+                                      const newCities = currentCities.filter(
+                                        (c: string) => c !== city.value
+                                      );
+                                      field.onChange(newCities);
+                                    }
+                                  }}
+                                />
+                                <label
+                                  htmlFor={city.value}
+                                  className="text-sm mx-2  font-medium leading-none 
+                              peer-disabled:cursor-not-allowed peer-disabled:opacity-70
+                               cursor-pointer flex-1">
+                                  {city.label}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+
+                {/* Budget Type */}
                 <FormField
                   control={form.control}
-                  name="facebookLink"
+                  name="budgetType"
                   render={({ field }: { field: any }) => (
                     <FormItem>
-                      <FormLabel>{t("ads", "facebookLinkLabel")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://facebook.com/..."
-                          {...field}
-                        />
-                      </FormControl>
+                      <FormLabel>{t("ads", "budgetTypeLabel")}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        data-testid="select-budget-type">
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={t("ads", "budgetTypePlaceholder")}
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="impressions">
+                            {t("ads", "impressions")}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="instagramLink"
-                  render={({ field }: { field: any }) => (
-                    <FormItem>
-                      <FormLabel>{t("ads", "instagramLinkLabel")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://instagram.com/..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Social Media Links */}
+                <div>
+                  <FormLabel className="text-base font-semibold">
+                    {t("ads", "socialMediaLinksLabel")}
+                  </FormLabel>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                    <FormField
+                      control={form.control}
+                      name="facebookLink"
+                      render={({ field }: { field: any }) => (
+                        <FormItem>
+                          <FormLabel>{t("ads", "facebookLinkLabel")}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="url"
+                              placeholder="https://facebook.com/..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="tiktokLink"
-                  render={({ field }: { field: any }) => (
-                    <FormItem>
-                      <FormLabel>{t("ads", "tiktokLinkLabel")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://tiktok.com/..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="instagramLink"
+                      render={({ field }: { field: any }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("ads", "instagramLinkLabel")}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="url"
+                              placeholder="https://instagram.com/..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="youtubeLink"
-                  render={({ field }: { field: any }) => (
-                    <FormItem>
-                      <FormLabel>{t("ads", "youtubeLinkLabel")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://youtube.com/..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="tiktokLink"
+                      render={({ field }: { field: any }) => (
+                        <FormItem>
+                          <FormLabel>{t("ads", "tiktokLinkLabel")}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="url"
+                              placeholder="https://tiktok.com/..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="snapchatLink"
-                  render={({ field }: { field: any }) => (
-                    <FormItem>
-                      <FormLabel>{t("ads", "snapchatLinkLabel")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://snapchat.com/..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="youtubeLink"
+                      render={({ field }: { field: any }) => (
+                        <FormItem>
+                          <FormLabel>{t("ads", "youtubeLinkLabel")}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="url"
+                              placeholder="https://youtube.com/..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                {/* <FormField
+                    <FormField
+                      control={form.control}
+                      name="snapchatLink"
+                      render={({ field }: { field: any }) => (
+                        <FormItem>
+                          <FormLabel>{t("ads", "snapchatLinkLabel")}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="url"
+                              placeholder="https://snapchat.com/..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* <FormField
                   control={form.control}
                   name="googleAdsLink"
                   render={({ field }: { field: any }) => (
@@ -831,29 +847,31 @@ export function AdEditor({
                     </FormItem>
                   )}
                 /> */}
-              </div>
-            </div>
+                  </div>
+                </div>
 
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={updateAdMutation.isPending}
-              data-testid="button-update-ad">
-              {updateAdMutation.isPending ? (
-                <>
-                  <i className="fas fa-spinner fa-spin mx-2"></i>
-                  {t("ads", "updatingAd")}
-                </>
-              ) : (
-                <>
-                  <i className="fas fa-save mx-2"></i>
-                  {t("ads", "updateAdButton")}
-                </>
-              )}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={updateAdMutation.isPending}
+                  data-testid="button-update-ad">
+                  {updateAdMutation.isPending ? (
+                    <>
+                      <i className="fas fa-spinner fa-spin mx-2"></i>
+                      {t("ads", "updatingAd")}
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-save mx-2"></i>
+                      {t("ads", "updateAdButton")}
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

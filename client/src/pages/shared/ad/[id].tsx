@@ -9,11 +9,12 @@ import { Label } from "@/components/ui/label";
 import { ErrorState } from "@/components/Error";
 import Loading from "@/components/Loading";
 import { useApiQuery } from "@/hooks/useApiQuery";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { TokenManager } from "@/lib/auth";
 
 interface AdDetailProps {
   params: { id: string };
@@ -25,7 +26,8 @@ export default function AdDetail({ params }: AdDetailProps) {
   const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
   const { id } = params;
-
+  const userRole = TokenManager.getRole();
+  const [adActivationStatus, setAdActivationStatus] = useState(false);
 
   const [creditAmount, setCreditAmount] = useState<number>(1);
 
@@ -33,6 +35,16 @@ export default function AdDetail({ params }: AdDetailProps) {
     key: [`/ads/${id}`],
     url: `${VITE_API_BASE_URL}/api/advertising/${id}`,
   });
+  useEffect(() => {
+    // Initialize adActivationStatus from API response when available
+    if (!data?.data) return;
+    const payload = data.data as any;
+    if (userRole === "user") {
+      setAdActivationStatus(Boolean(payload.userActivation));
+    } else if (userRole === "admin") {
+      setAdActivationStatus(Boolean(payload.active));
+    }
+  }, [data, userRole]);
 
   // Assign credit mutation
   const assignCreditMutation = useMutation({
@@ -87,10 +99,19 @@ export default function AdDetail({ params }: AdDetailProps) {
         "PUT",
         `${VITE_API_BASE_URL}/api/advertising/${id}/avctivate`
       );
-      refetch(); // Refresh ad data
-      return response.json();
+      const body = await response.json();
+      // If server returned non-2xx or explicit success:false, treat as error
+      if (!response.ok || (body && body.success === false)) {
+        const msg = body?.message || t("adDetail", "failedToActivateAd");
+        throw new Error(msg);
+      }
+      return body;
     },
-    onSuccess: () => {
+
+    onSuccess: (res: any) => {
+      // Update UI state and cache after successful activation
+      setAdActivationStatus(true);
+      queryClient.invalidateQueries({ queryKey: [`/ads/${id}`] });
       toast({
         title: t("adDetail", "adActivatedSuccess"),
         description: t("adDetail", "campaignActiveMessage"),
@@ -113,13 +134,17 @@ export default function AdDetail({ params }: AdDetailProps) {
         "PUT",
         `${VITE_API_BASE_URL}/api/advertising/${id}/deactivate`
       );
-      refetch(); // Refresh ad data
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (res: any) => {
+      // Update UI state and invalidate cache after successful deactivation
+      setAdActivationStatus(false);
+      queryClient.invalidateQueries({ queryKey: [`/ads/${id}`] });
       toast({
-        title: "Ad Activated Successfully",
-        description: "Your ad campaign is now active and running",
+        title: t("adDetail", "adDeactivatedSuccess") || "Ad Deactivated",
+        description:
+          t("adDetail", "campaignDeactivatedMessage") ||
+          "Your ad campaign has been paused",
       });
       refetch(); // Refresh ad data
     },
@@ -178,38 +203,51 @@ export default function AdDetail({ params }: AdDetailProps) {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
-        <Header
-          title={ad.titleEn}
-          description={t("adDetail", "description")}
-          actions={
-            <div className="flex items-center gap-2 flex-wrap">
-              <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
-              {/* <Button
+      <div className="flex-1 overflow-auto flex flex-col">
+        <div className="sticky top-0 z-10 bg-card">
+          <Header
+            title={
+              isRTL
+                ? ad?.titleAr || t("adDetail", "title")
+                : ad?.titleEn || t("adDetail", "title")
+            }
+            description={t("adDetail", "description")}
+            actions={
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
+                {/* <Button
                 variant="outline"
                 onClick={() => setLocation(analyticsCampaignPath(id))}
                 data-testid="button-view-analytics">
                 <i className="fas fa-chart-bar mr-2"></i>
                 {t("adDetail", "viewAnalytics")}
               </Button> */}
-              {ad.status === "approved" && (
-                <>
-                  <Button
-                    onClick={() => setLocation(`/ads/${id}/purchase`)}
-                    data-testid="button-purchase-impressions">
-                    <i className="fas fa-credit-card mr-2"></i>
-                    {t("adDetail", "purchaseImpressions")}
-                  </Button>
-                </>
-              )}
-            </div>
-          }
-        />
+                {ad.status === "approved" && (
+                  <>
+                    <Button
+                      onClick={() => setLocation(`/ads/${id}/purchase`)}
+                      data-testid="button-purchase-impressions">
+                      <i className="fas fa-credit-card mr-2"></i>
+                      {t("adDetail", "purchaseImpressions")}
+                    </Button>
+                  </>
+                )}
+              </div>
+            }
+          />
+        </div>
         {isLoading ? (
           <Loading />
         ) : ad ? (
-          <main className="p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <main
+            className="p-6 
+            
+        
+          ">
+            <div
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6
+         
+            ">
               {/* Performance Overview */}
               <Card className="lg:col-span-2">
                 <CardHeader>
@@ -228,12 +266,33 @@ export default function AdDetail({ params }: AdDetailProps) {
                     </div>
 
                     <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20 rounded-lg">
-                      <i className="fas fa-sar-sign text-green-600 text-2xl mb-2"></i>
+                      {/* Render SAR currency symbol instead of unavailable icon component */}
+                      <span
+                        className="inline-block text-2xl mb-2 font-bold text-green-600"
+                        aria-hidden>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                          <path d="m20 19.5-5.5 1.2" />
+                          <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                          <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                          <path d="M20 10 4 13.5" />
+                        </svg>
+                      </span>
+
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
                         {t("adDetail", "amountSpent")}
                       </h4>
                       <p className="text-2xl font-bold text-green-600">
-                         SAR {ad.spended?.toLocaleString() || 0}
+                        {ad.spended?.toLocaleString() || 0}
                       </p>
                     </div>
 
@@ -250,7 +309,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
                       <i
                         className={`fas ${
-                          ad.active
+                          adActivationStatus
                             ? "fa-play text-green-600"
                             : "fa-pause text-gray-600"
                         } text-2xl mb-2`}></i>
@@ -259,9 +318,11 @@ export default function AdDetail({ params }: AdDetailProps) {
                       </h4>
                       <p
                         className={`text-lg font-bold ${
-                          ad.active ? "text-green-600" : "text-gray-600"
+                          ad.adActivationStatus
+                            ? "text-green-600"
+                            : "text-gray-600"
                         }`}>
-                        {ad.active
+                        {adActivationStatus
                           ? t("adDetail", "active")
                           : t("adDetail", "inactive")}
                       </p>
@@ -368,63 +429,73 @@ export default function AdDetail({ params }: AdDetailProps) {
                   <CardTitle>{t("adDetail", "adContent")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      {t("adDetail", "englishTitle")}
-                    </h4>
-                    <p className="text-foreground" data-testid="ad-title-en">
-                      {ad.titleEn}
-                    </p>
-                  </div>
+                  {ad.titleEn && (
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                        {t("adDetail", "englishTitle")}
+                      </h4>
+                      <p className="text-foreground" data-testid="ad-title-en">
+                        {ad.titleEn}
+                      </p>
+                    </div>
+                  )}
 
                   <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      {t("adDetail", "arabicTitle")}
-                    </h4>
-                    <p
-                      className="text-foreground"
-                      dir="rtl"
-                      data-testid="ad-title-ar">
-                      {ad.titleAr}
-                    </p>
+                    {ad.titleAr && (
+                      <>
+                        <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                          {t("adDetail", "arabicTitle")}
+                        </h4>
+                        <p
+                          className="text-foreground"
+                          dir="rtl"
+                          data-testid="ad-title-ar">
+                          {ad.titleAr}
+                        </p>
+                      </>
+                    )}
                   </div>
+                  {ad.descriptionEn && (
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                        {t("adDetail", "englishDescription")}
+                      </h4>
+                      <p
+                        className="text-foreground"
+                        data-testid="ad-description-en">
+                        {ad.descriptionEn}
+                      </p>
+                    </div>
+                  )}
+                  {ad.descriptionAr && (
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                        {t("adDetail", "arabicDescription")}
+                      </h4>
+                      <p
+                        className="text-foreground"
+                        dir="rtl"
+                        data-testid="ad-description-ar">
+                        {ad.descriptionAr}
+                      </p>
+                    </div>
+                  )}
 
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      {t("adDetail", "englishDescription")}
-                    </h4>
-                    <p
-                      className="text-foreground"
-                      data-testid="ad-description-en">
-                      {ad.descriptionEn}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      {t("adDetail", "arabicDescription")}
-                    </h4>
-                    <p
-                      className="text-foreground"
-                      dir="rtl"
-                      data-testid="ad-description-ar">
-                      {ad.descriptionAr}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      {t("adDetail", "websiteUrl")}
-                    </h4>
-                    <a
-                      href={ad.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                      data-testid="ad-target-url">
-                      {ad.websiteUrl}
-                    </a>
-                  </div>
+                  {ad.websiteUrl && (
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                        {t("adDetail", "websiteUrl")}
+                      </h4>
+                      <a
+                        href={ad.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                        data-testid="ad-target-url">
+                        {ad.websiteUrl}
+                      </a>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
@@ -442,7 +513,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                       <Badge className={getStatusColor(ad.status)}>
                         {ad.status}
                       </Badge>
-                      {ad.active && (
+                      {adActivationStatus && (
                         <Badge
                           variant="outline"
                           className="text-green-600 border-green-600">
@@ -487,35 +558,6 @@ export default function AdDetail({ params }: AdDetailProps) {
                       {ad.budgetType}
                     </p>
                   </div>
-
-                  {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
-                    <div className="text-center">
-                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Impressions Credit
-                      </h4>
-                      <p className="text-2xl font-bold text-foreground" data-testid="ad-impressions-credit">
-                        {ad.impressionsCredit?.toLocaleString() || 0}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Amount Spent
-                      </h4>
-                      <p className="text-2xl font-bold text-foreground" data-testid="ad-spent">
-                        ${ad.spended?.toLocaleString() || 0}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Likes Count
-                      </h4>
-                      <p className="text-2xl font-bold text-foreground" data-testid="ad-likes-count">
-                        {ad.likesCount?.toLocaleString() || 0}
-                      </p>
-                    </div>
-                  </div> */}
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
@@ -587,28 +629,6 @@ export default function AdDetail({ params }: AdDetailProps) {
                     </div>
                   )}
 
-                  {/* <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      User ID
-                    </h4>
-                    <p
-                      className="text-foreground font-mono text-sm"
-                      data-testid="ad-user-id">
-                      {ad.userId}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Ad ID
-                    </h4>
-                    <p
-                      className="text-foreground font-mono text-sm"
-                      data-testid="ad-id">
-                      {ad.id}
-                    </p>
-                  </div> */}
-
                   {ad.rejectionReason && (
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
@@ -623,9 +643,9 @@ export default function AdDetail({ params }: AdDetailProps) {
                   )}
                 </CardContent>
               </Card>
-
               {/* Social Media Links */}
-              {(ad.facebookLink ||
+              {(ad.websiteUrl ||
+                ad.facebookLink ||
                 ad.instagramLink ||
                 ad.tiktokLink ||
                 ad.youtubeLink ||
@@ -637,88 +657,102 @@ export default function AdDetail({ params }: AdDetailProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {ad.websiteUrl && (
+                        <a
+                          href={ad.websiteUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-800 dark:text-gray-200 hover:underline text-sm truncate"
+                          data-testid="ad-website-link">
+                          <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg">
+                            <i className="fab fa-website text-gray-800 dark:text-gray-200 text-lg"></i>
+                            Website
+                          </div>
+                        </a>
+                      )}
+
                       {ad.facebookLink && (
-                        <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
-                          <i className="fab fa-facebook text-blue-600 text-lg"></i>
-                          <a
-                            href={ad.facebookLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline text-sm truncate"
-                            data-testid="ad-facebook-link">
+                        <a
+                          href={ad.facebookLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline text-sm truncate"
+                          data-testid="ad-facebook-link">
+                          <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                            <i className="fab fa-facebook text-blue-600 text-lg"></i>
                             Facebook
-                          </a>
-                        </div>
+                          </div>
+                        </a>
                       )}
 
                       {ad.instagramLink && (
-                        <div className="flex items-center gap-2 p-3 bg-pink-50 dark:bg-pink-950/20 rounded-lg">
-                          <i className="fab fa-instagram text-pink-600 text-lg"></i>
-                          <a
-                            href={ad.instagramLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-pink-600 hover:underline text-sm truncate"
-                            data-testid="ad-instagram-link">
+                        <a
+                          href={ad.instagramLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-pink-600 hover:underline text-sm truncate"
+                          data-testid="ad-instagram-link">
+                          <div className="flex items-center gap-2 p-3 bg-pink-50 dark:bg-pink-950/20 rounded-lg">
+                            <i className="fab fa-instagram text-pink-600 text-lg"></i>
                             Instagram
-                          </a>
-                        </div>
+                          </div>
+                        </a>
                       )}
 
                       {ad.tiktokLink && (
-                        <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg">
-                          <i className="fab fa-tiktok text-gray-800 dark:text-gray-200 text-lg"></i>
-                          <a
-                            href={ad.tiktokLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-800 dark:text-gray-200 hover:underline text-sm truncate"
-                            data-testid="ad-tiktok-link">
+                        <a
+                          href={ad.tiktokLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-800 dark:text-gray-200 hover:underline text-sm truncate"
+                          data-testid="ad-tiktok-link">
+                          <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg">
+                            <i className="fab fa-tiktok text-gray-800 dark:text-gray-200 text-lg"></i>
                             TikTok
-                          </a>
-                        </div>
+                          </div>
+                        </a>
                       )}
 
                       {ad.youtubeLink && (
-                        <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg">
-                          <i className="fab fa-youtube text-red-600 text-lg"></i>
-                          <a
-                            href={ad.youtubeLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-red-600 hover:underline text-sm truncate"
-                            data-testid="ad-youtube-link">
+                        <a
+                          href={ad.youtubeLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-red-600 hover:underline text-sm truncate"
+                          data-testid="ad-youtube-link">
+                          <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg">
+                            <i className="fab fa-youtube text-red-600 text-lg"></i>
                             YouTube
-                          </a>
-                        </div>
+                          </div>
+                        </a>
                       )}
 
                       {ad.snapchatLink && (
-                        <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg">
-                          <i className="fab fa-snapchat text-yellow-500 text-lg"></i>
-                          <a
-                            href={ad.snapchatLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-yellow-600 hover:underline text-sm truncate"
-                            data-testid="ad-snapchat-link">
+                        <a
+                          href={ad.snapchatLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-yellow-600 hover:underline text-sm truncate"
+                          data-testid="ad-snapchat-link">
+                          <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg">
+                            <i className="fab fa-snapchat text-yellow-500 text-lg"></i>
                             Snapchat
-                          </a>
-                        </div>
+                          </div>
+                        </a>
                       )}
 
                       {ad.googleAdsLink && (
-                        <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
-                          <i className="fab fa-google text-green-600 text-lg"></i>
-                          <a
-                            href={ad.googleAdsLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-green-600 hover:underline text-sm truncate"
-                            data-testid="ad-google-ads-link">
+                        <a
+                          href={ad.googleAdsLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-green-600 hover:underline text-sm truncate"
+                          data-testid="ad-google-ads-link">
+                          <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
+                            <i className="fab fa-google text-green-600 text-lg"></i>
                             Google Ads
-                          </a>
-                        </div>
+                          </div>
+                        </a>
                       )}
                     </div>
                   </CardContent>
@@ -734,8 +768,8 @@ export default function AdDetail({ params }: AdDetailProps) {
                   <CardContent>
                     <div className="max-w-md mx-auto">
                       <img
-                        src={ad.imageUrl}
-                        alt={ad.titleEn}
+                        src={ad?.imageUrl}
+                        alt={ad?.titleEn}
                         className="w-full rounded-lg"
                         data-testid="ad-image-preview"
                       />

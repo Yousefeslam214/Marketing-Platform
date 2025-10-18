@@ -145,14 +145,14 @@ export default function Billing() {
           description={t("billing", "description")}
         />
 
-        <main className="p-6 space-y-6">
+        <main className="p-4 sm:p-6 space-y-6">
           {/* Current Balance */}
           <Card>
             <CardHeader>
               <CardTitle>{t("billing", "currentBalance")}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <p
                     className="text-3xl font-bold text-foreground"
@@ -193,11 +193,11 @@ export default function Billing() {
             </CardHeader>
             <CardContent>
               {isLoadingRatios ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
                   {[1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="p-6 rounded-lg border-2 animate-pulse">
+                      className="p-4 sm:p-6 rounded-lg border-2 animate-pulse">
                       <div className="h-6 bg-muted rounded mb-4"></div>
                       <div className="h-8 bg-muted rounded mb-2"></div>
                       <div className="h-4 bg-muted rounded mb-4"></div>
@@ -207,12 +207,12 @@ export default function Billing() {
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
                   {impressionPackages.map((pkg) => {
                     return (
                       <div
                         key={pkg.id}
-                        className={`flex flex-col justify-between p-6 rounded-lg border-2 transition-colors ${
+                        className={`flex min-w-20  flex-col justify-between p-4 sm:p-6 rounded-lg border-2 transition-colors ${
                           selectedPackage === pkg.id
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
@@ -221,16 +221,13 @@ export default function Billing() {
                           <div
                             className={`w-full ${
                               isRTL ? "text-right " : "text-left "
-                            } flex flex-start  items-center mb-1`}>
-                            <Badge
-                              className="
-                            flex flex-col items-center justify-center pb--2 pt-1
-                            mb-3 bg-primary text-primary-foreground max-w-20">
+                            } flex items-center mb-1`}>
+                            <Badge className="py-1 px-2 bg-primary text-primary-foreground">
                               {t("billing", "mostPopular")}
                             </Badge>
                           </div>
                         )}
-                        <div>
+                        <div className="">
                           <h3
                             className={`text-lg font-semibold text-foreground mb-2 ${
                               isRTL ? "text-right" : "text-left"
@@ -245,7 +242,10 @@ export default function Billing() {
                             <p
                               className="text-3xl font-bold text-foreground"
                               data-testid={`package-price-${pkg.id}`}>
-                              {isRTL ? `${pkg.amount} ر.س` : `ر.س${pkg.amount}`}
+                              {isRTL ? `${pkg.amount} ` : `${pkg.amount}`}
+                              <span className="ml-2 text-lg font-semibold">
+                                ر.س
+                              </span>
                             </p>
                             <p
                               className="text-sm text-muted-foreground"
@@ -289,7 +289,7 @@ export default function Billing() {
               {/* Purchase Selected Package */}
               {selectedPackage && (
                 <div
-                  className={`flex items-center justify-between p-4 bg-muted/50 rounded-lg mb-6 ${
+                  className={`flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-muted/50 rounded-lg mb-6 ${
                     isRTL ? "flex-row-reverse" : ""
                   }`}>
                   <div className={isRTL ? "text-right" : "text-left"}>
@@ -302,17 +302,21 @@ export default function Billing() {
                       )}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {isRTL
-                        ? `${
-                            impressionPackages.find(
-                              (p) => p.id === selectedPackage
-                            )?.amount || 0
-                          } ر.س`
-                        : `ر.س${
-                            impressionPackages.find(
-                              (p) => p.id === selectedPackage
-                            )?.amount || 0
-                          }`}{" "}
+                      {isRTL ? (
+                        `${
+                          impressionPackages.find(
+                            (p) => p.id === selectedPackage
+                          )?.amount || 0
+                        } ر.س`
+                      ) : (
+                        <>
+                          `ر.س$
+                          {impressionPackages.find(
+                            (p) => p.id === selectedPackage
+                          )?.amount || 0}
+                          `
+                        </>
+                      )}{" "}
                       -{" "}
                       {impressionPackages
                         .find((p) => p.id === selectedPackage)
@@ -323,7 +327,7 @@ export default function Billing() {
                   <Button
                     onClick={() => handlePurchase(selectedPackage)}
                     disabled={purchaseMutation.isPending}
-                    className="min-w-[120px]"
+                    className="w-full sm:w-auto mt-3 sm:mt-0 min-w-[120px]"
                     data-testid="button-purchase-selected">
                     {purchaseMutation.isPending ? (
                       <>
@@ -422,7 +426,7 @@ export default function Billing() {
                   {paymentHistory.map((payment: any) => (
                     <div
                       key={payment.id}
-                      className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                      className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-muted/50 rounded-lg gap-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <p
@@ -449,7 +453,10 @@ export default function Billing() {
                           {payment.method.toUpperCase()}
                         </p>
                       </div>
-                      <div className={`${isRTL ? "text-left" : "text-right"}`}>
+                      <div
+                        className={`${
+                          isRTL ? "text-left" : "text-right"
+                        } flex flex-col items-end sm:items-end gap-2`}>
                         <p
                           className="text-sm text-muted-foreground"
                           data-testid={`purchase-date-${payment.id}`}>

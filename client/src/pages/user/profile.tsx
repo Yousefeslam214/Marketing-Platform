@@ -529,15 +529,6 @@ export default function Profile() {
                   </span>
                 </div>
               </div>
-
-              <div className="flex justify-between">
-                <span className="text-gray-600">
-                  {t("profile", "freeViewCredits")}:
-                </span>
-                <span className="font-semibold">
-                  {profile.freeViewsCredits.toLocaleString()}
-                </span>
-              </div>
             </CardContent>
           </Card>
         </div>

@@ -28,20 +28,19 @@ export default function Contact() {
 
   return (
     <div
-      className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}
-      flex flex-col items-center
-      `}
+      className={`min-h-screen bg-background ${
+        isRTL ? "rtl" : "ltr"
+      } flex flex-col`}
       dir={isRTL ? "rtl" : "ltr"}>
       {isUserContact ? (
-        <div
-          className={`flex w-full  bg-background ${isRTL ? "rtl" : "ltr"}
-        
-        `}>
-          <div className="flex-1 overflow-auto mb-6">
-            <Header
-              title={t("contact", "title")}
-              description={t("contact", "subtitle")}
-            />
+        <div className="w-full bg-background">
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex-1 overflow-auto mb-6">
+              <Header
+                title={t("contact", "title")}
+                description={t("contact", "subtitle")}
+              />
+            </div>
           </div>
         </div>
       ) : (
@@ -49,7 +48,7 @@ export default function Contact() {
           {/* Hero Section for Public Route */}
           <section className="relative py-20 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
-            <div className="container relative">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
               <div className="text-center space-y-4 mb-16">
                 <Badge variant="secondary" className="w-fit mx-auto">
                   <Mail className="w-4 h-4 mr-2" />
@@ -67,9 +66,9 @@ export default function Contact() {
         </>
       )}
 
-      <section className="px-4 sm:px-6 lg:px-8 py-6 mt-5">
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 mt-5">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-stretch">
             {/* Contact Information */}
             <div className="space-y-8 w-full">
               <div>
@@ -78,14 +77,14 @@ export default function Contact() {
                 </h2>
                 <div className="grid gap-6">
                   {/* Email */}
-                  <Card className="w-full border-0 shadow-lg">
-                    <CardContent className="p-6">
+                  <Card className="w-full border-0 shadow-lg h-full">
+                    <CardContent className="p-4 sm:p-6">
                       <div
                         className={`flex items-center ${
                           isRTL ? "space-x-reverse" : "space-x-4"
                         }`}>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Mail className="h-6 w-6 text-primary" />
+                          <Mail className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                         </div>
                         <div className="min-w-0">
                           <h3 className="font-semibold">
@@ -100,14 +99,14 @@ export default function Contact() {
                   </Card>
 
                   {/* Phone */}
-                  <Card className="w-full border-0 shadow-lg">
-                    <CardContent className="p-6">
+                  <Card className="w-full border-0 shadow-lg h-full">
+                    <CardContent className="p-4 sm:p-6">
                       <div
                         className={`flex items-center ${
                           isRTL ? "space-x-reverse" : "space-x-4"
                         }`}>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <SiWhatsapp className="h-6 w-6 text-primary" />
+                          <SiWhatsapp className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                         </div>
                         <div className="min-w-0">
                           <h3 className="font-semibold">
@@ -120,14 +119,14 @@ export default function Contact() {
                   </Card>
 
                   {/* Working Hours */}
-                  <Card className="w-full border-0 shadow-lg">
-                    <CardContent className="p-6">
+                  <Card className="w-full border-0 shadow-lg h-full">
+                    <CardContent className="p-4 sm:p-6">
                       <div
                         className={`flex items-center ${
                           isRTL ? "space-x-reverse" : "space-x-4"
                         }`}>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Clock className="h-6 w-6 text-primary" />
+                          <Clock className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                         </div>
                         <div className="min-w-0">
                           <h3 className="font-semibold">
@@ -153,18 +152,21 @@ export default function Contact() {
                     }`}>
                     <a
                       href="#"
+                      aria-label="Facebook"
                       className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                      <Facebook className="h-5 w-5" />
+                      <Facebook className="h-5 w-5 md:h-6 md:w-6" />
                     </a>
                     <a
                       href="#"
+                      aria-label="Instagram"
                       className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                      <Instagram className="h-5 w-5" />
+                      <Instagram className="h-5 w-5 md:h-6 md:w-6" />
                     </a>
                     <a
                       href="#"
+                      aria-label="LinkedIn"
                       className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                      <Linkedin className="h-5 w-5" />
+                      <Linkedin className="h-5 w-5 md:h-6 md:w-6" />
                     </a>
                   </div>
                 </div>
@@ -173,15 +175,15 @@ export default function Contact() {
 
             {/* WhatsApp Contact */}
             <div className="w-full">
-              <Card className="w-full border-0 shadow-lg">
+              <Card className="w-full border-0 shadow-lg h-full">
                 <CardHeader>
                   <CardTitle className="text-2xl text-center">
                     {t("contact", "whatsappTitle")}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex flex-col items-center justify-center py-8 space-y-6">
-                  <div className="w-24 h-24 md:w-32 md:h-32 bg-green-500/10 rounded-full flex items-center justify-center">
-                    <SiWhatsapp className="h-12 w-12 md:h-16 md:w-16 text-green-500" />
+                <CardContent className="flex flex-col items-center justify-center py-6 sm:py-8 space-y-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-green-500/10 rounded-full flex items-center justify-center">
+                    <SiWhatsapp className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 text-green-500" />
                   </div>
                   <div className="text-center space-y-2 px-4">
                     <h3 className="text-xl font-semibold">

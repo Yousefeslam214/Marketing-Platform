@@ -221,9 +221,10 @@ export default function AdsFeed() {
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-foreground">
-              {" "}
-              {t("sidebar", "appName")}
+              {/* {" "} */}
+              {/* {t("sidebar", "appName")} */}
             </h1>
+            {/* <img src="/logo.webp" alt="Logo" className="w-20 h-8" /> */}
           </div>
           <div className="flex items-center gap-4">
             <Select
@@ -249,7 +250,7 @@ export default function AdsFeed() {
 
       {/* Main Content */}
       <main
-        className="p-6 min-h-[78vh]
+        className="p-6 min-h-[78vh] 
       flex flex-col items-center w-full
       ">
         {isLoading ? (
@@ -258,11 +259,12 @@ export default function AdsFeed() {
           <div className="w-full flex flex-col items-center space-y-8">
             {/* Ads List */}
             <div
-              className="min-h-[80vh] w-full
+              className=" w-full
             flex flex-col items-center
             ">
               <div
                 className="w-full max-w-5xl grid  gap-6
+              h-[80vh] 
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
             ">
                 {adsResponse?.data.map((ad) => (

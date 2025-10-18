@@ -22,6 +22,7 @@ import { TokenManager } from "@/lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
 
 interface SocialMediaPage {
   pageId: string;
@@ -52,6 +53,10 @@ export default function UserDetails() {
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPromoting, setIsPromoting] = useState(false);
+  const [manualCredit, setManualCredit] = useState<string>("");
+  const parsedCredit = Number(manualCredit);
+  const isCreditValid =
+    manualCredit !== "" && !isNaN(parsedCredit) && parsedCredit >= 1;
 
   const safeId = id ?? "";
 
@@ -190,6 +195,44 @@ export default function UserDetails() {
   const user = userData?.data as UserDetailsInterface;
   if (!user) return null;
 
+  const addCreditMutation = useMutation({
+    mutationFn: async (credit: number) => {
+      const token = TokenManager.getAccessToken();
+      const res = await fetch(
+        `${VITE_API_BASE_URL}/api/users/addCredit/${safeId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ credit }),
+        }
+      );
+      const body = await res.json();
+      if (!res.ok || (body && body.success === false)) {
+        throw new Error(body?.message || "Failed to add credit");
+      }
+      return body;
+    },
+    onSuccess: (res: any) => {
+      toast({
+        title: t("userDetails", "creditAddedSuccess"),
+        description: res?.message || t("userDetails", "creditAddedDesc"),
+      });
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ["/api/users"] });
+      setManualCredit("");
+    },
+    onError: (err: any) => {
+      toast({
+        title: t("userDetails", "creditAddFailed"),
+        description: err.message || t("userDetails", "pleaseRetryLater"),
+        variant: "destructive",
+      });
+    },
+  });
+
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
@@ -297,35 +340,35 @@ export default function UserDetails() {
           </Card>
 
           {/* User Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-eye text-blue-600"></i>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  {t("userDetails", "freeViewsCredits")}
-                </p>
-                <p className="text-2xl font-bold text-foreground">
-                  {user.freeViewsCredits.toLocaleString()}
-                </p>
-              </CardContent>
-            </Card>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                     <i className="fas fa-sar-sign text-green-600"></i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                      <path d="m20 19.5-5.5 1.2" />
+                      <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                      <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                      <path d="M20 10 4 13.5" />
+                    </svg>
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">
                   {t("userDetails", "balance")}
                 </p>
                 <p className="text-2xl font-bold text-foreground">
-                  ${user.balance.toLocaleString()}
+                  {user.balance.toLocaleString()}
                 </p>
               </CardContent>
             </Card>
@@ -401,13 +444,99 @@ export default function UserDetails() {
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("userDetails", "addCredit")}</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <div>
+                {/* Admin manual credit top-up */}
+
+                <div className="md:col-span-2">
+                  <h4 className="text-sm text-muted-foreground mb-2">
+                    {t("userDetails", "manualCredit")}
+                  </h4>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                    <label htmlFor="manual-credit" className="sr-only">
+                      {t("userDetails", "enterCredit")}
+                    </label>
+                    <Input
+                      id="manual-credit"
+                      type="number"
+                      min={1}
+                      placeholder={t("userDetails", "enterCredit")}
+                      value={manualCredit}
+                      onChange={(e) => setManualCredit(e.target.value)}
+                      className="w-full sm:w-48"
+                      disabled={addCreditMutation.isPending}
+                      aria-label={t("userDetails", "enterCredit")}
+                    />
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          disabled={
+                            addCreditMutation.isPending || !isCreditValid
+                          }
+                          className="whitespace-nowrap">
+                          {addCreditMutation.isPending
+                            ? t("userDetails", "processing")
+                            : t("userDetails", "addCredit")}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            {t("userDetails", "confirmCreditTitle")}
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t("userDetails", "confirmCreditDescription")}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>
+                            {t("userDetails", "cancel")}
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() =>
+                              addCreditMutation.mutate(parsedCredit)
+                            }
+                            disabled={!isCreditValid}
+                            className="bg-primary text-primary-foreground hover:bg-primary/90">
+                            {t("userDetails", "confirmAddCredit")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+
+                  {/* Helper & validation */}
+                  <div className="mt-3">
+                    {manualCredit && Number(manualCredit) < 1 && (
+                      <p className="text-sm text-destructive">
+                        {t("userDetails", "creditMustBePositive")}
+                      </p>
+                    )}
+                    {manualCredit && Number(manualCredit) >= 1 && (
+                      <p className="text-sm text-muted-foreground">
+                        {t("userDetails", "willAddCredits")?.replace(
+                          "{amount}",
+                          `${manualCredit}`
+                        )}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Social Media Pages */}
           {user.socialMediaPages && user.socialMediaPages.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle>{t("userDetails", "socialMediaPages")}</CardTitle>
-              </CardHeader>
+              </CardHeader>{" "}
               <CardContent>
                 <div className="space-y-4">
                   {user.socialMediaPages.map((page) => (
@@ -427,6 +556,7 @@ export default function UserDetails() {
                           </p>
                         </div>
                       </div>
+
                       <Badge
                         className={
                           page.isActive

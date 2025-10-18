@@ -315,7 +315,7 @@ export default function AdminDashboard() {
                   {t("AdminDashboard", "recentActivity")}
                 </h3>
                 {recentActivity.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-3 max-h-[300px] overflow-y-auto">
                     {recentActivity.slice(0, 5).map((activity: any) => {
                       const getActivityIcon = (type: string) => {
                         switch (type) {

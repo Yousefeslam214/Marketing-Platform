@@ -83,11 +83,20 @@ const PublicHeader = () => {
 
           {/* Desktop Actions */}
           {authorizeUser ? (
-            <Link href="/dashboard">
-              <div className="hidden md:flex items-center space-x-2">
-                <Button size="sm">{t("auth", "dashboard")}</Button>
+            <div className="hidden md:flex items-center space-x-2">
+
+              <Link href="/dashboard" className="mx-2">
+                <div className="hidden md:flex items-center space-x-2">
+                  <Button size="sm">{t("auth", "dashboard")}</Button>
+                </div>
+              </Link>
+              <div className="mx-2">
+                <ThemeToggle />
               </div>
-            </Link>
+              <div className="mx-2">
+                <LanguageToggle />
+              </div>
+            </div>
           ) : (
             <div className="hidden md:flex items-center space-x-2">
               <ThemeToggle />
@@ -106,8 +115,8 @@ const PublicHeader = () => {
           {/* Mobile Actions - Theme/Language toggles + Menu button */}
 
           <div className="flex md:hidden items-center space-x-2">
-            <ThemeToggle />
-            <LanguageToggle />
+            {/* <ThemeToggle />
+            <LanguageToggle /> */}
             <Button
               variant="ghost"
               size="sm"
@@ -193,7 +202,6 @@ const PublicHeader = () => {
             {/* Mobile Auth Buttons */}
 
             {authorizeUser ? (
-              // <div className="hidden md:flex items-center space-x-2">
               <Link href="/dashboard">
                 <Button
                   size="sm"

@@ -23,6 +23,7 @@ export default function AdsIndex() {
   });
   // Type-safe ads array
   const safeAds = (ads?.data as any[]) || [];
+
   console.log(safeAds);
 
   const handleCreateAd = () => {
@@ -32,6 +33,7 @@ export default function AdsIndex() {
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
+      
         <Header
           title={t("ads", "title")}
           description={t("ads", "description")}
@@ -42,7 +44,6 @@ export default function AdsIndex() {
             </Button>
           }
         />
-
         <main className="p-6 min-h-[78vh]">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
@@ -109,7 +110,8 @@ export default function AdsIndex() {
                           {t("ads", "spent") || "Spent"}
                         </div>
                         <div className="font-medium">
-                          ${ad.spended?.toLocaleString?.() ?? 0}
+                          {t("ads", "riyal") || "riyal"}{" "}
+                          {ad.spended?.toLocaleString?.() ?? 0}
                         </div>
                       </div>
                       <div>
@@ -120,12 +122,12 @@ export default function AdsIndex() {
                       </div>
                       <div>
                         <div className="text-xs">
-                          {t("ads", "targetCities") || "Cities"}
+                          {t("ads", "websiteClicks") || "Website Clicks"}
                         </div>
                         <div className="font-medium">
-                          {Array.isArray(ad.targetCities)
-                            ? ad.targetCities.join(", ")
-                            : ad.targetCities || "-"}
+                          {Array.isArray(ad.websiteClicks)
+                            ? ad.websiteClicks.join(", ")
+                            : ad.websiteClicks || "0"}
                         </div>
                       </div>
                     </div>

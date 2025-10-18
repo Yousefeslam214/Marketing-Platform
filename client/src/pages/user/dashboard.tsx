@@ -16,7 +16,6 @@ export default function Dashboard() {
   const [, setLocation] = useLocation();
   const { isRTL, t, language } = useLanguage();
 
-
   // Define types for dashboard data
   type DashboardStats = {
     totalImpressions?: number;
@@ -56,7 +55,7 @@ export default function Dashboard() {
   const {
     data: dashboardData,
     isLoading: metricsLoading,
-   
+
     refetch,
   } = useApiQuery<{ data?: DashboardData }>({
     key: ["/api/dashboard/user"],
@@ -492,8 +491,8 @@ export default function Dashboard() {
             </Card>
 
             {/* Billing Overview */}
-            <Card>
-              <CardContent className="p-6">
+            <Card className="h-fit">
+              <CardContent className="p-6 ">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
                   {t("dashboard", "billingOverview")}
                 </h3>
@@ -518,7 +517,7 @@ export default function Dashboard() {
                       </p>
                     </div>
                   </div>
-
+                  {/* 
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm font-medium text-foreground">
@@ -537,7 +536,7 @@ export default function Dashboard() {
                       </p>
                       <p className="text-xs text-muted-foreground">{t("dashboard", "of10000")}</p>
                     </div>
-                  </div>
+                  </div> */}
 
                   <Button
                     className="w-full"
