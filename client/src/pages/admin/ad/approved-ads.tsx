@@ -36,9 +36,6 @@ export default function ApprovedAds() {
   // Filter approved ads and type safely
   const approvedAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
 
-  if (isLoading) {
-    <Loading />;
-  }
   if (error) {
     return (
       <div className="flex flex-center justify-center h-screen bg-background">

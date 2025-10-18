@@ -264,7 +264,7 @@ export default function AdsFeed() {
             ">
               <div
                 className="w-full max-w-5xl grid  gap-6
-              h-[80vh] 
+           
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
             ">
                 {adsResponse?.data.map((ad) => (

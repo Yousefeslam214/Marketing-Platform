@@ -60,9 +60,7 @@ export default function PendingAds() {
     }
   };
 
-  if (isLoading) {
-    <Loading />;
-  }
+ 
   if (error) {
     return (
       <div className="flex flex-center justify-center h-screen bg-background">

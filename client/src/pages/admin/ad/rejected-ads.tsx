@@ -27,9 +27,7 @@ export default function RejectedAds() {
     url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}&status=rejected`,
   });
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  
   if (error) {
     return (
       <div className="flex flex-center justify-center h-screen bg-background">
