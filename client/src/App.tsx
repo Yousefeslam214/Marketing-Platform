@@ -1,4 +1,5 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
+import { useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -64,6 +65,20 @@ function Router() {
   const role = TokenManager.getRole();
   let auth = false;
   if (TokenManager.getAccessToken()) auth = true;
+
+  function DashboardRoute() {
+    const [, setLocation] = useLocation();
+    useEffect(() => {
+      const r = TokenManager.getRole();
+      if (r === "admin") setLocation("/admin/dashboard");
+    }, [setLocation]);
+
+    return (
+      <AppLayout>
+        <Dashboard />
+      </AppLayout>
+    );
+  }
 
   return (
     <Switch>
@@ -325,25 +340,7 @@ function Router() {
         )}
       />
 
-      {role !== "admin" ? (
-        <Route
-          path="/dashboard"
-          component={() => (
-            <AppLayout>
-              <Dashboard />
-            </AppLayout>
-          )}
-        />
-      ) : (
-        <Route
-          path="/dashboard"
-          component={() => (
-            <AppLayout>
-              <AdminDashboard />
-            </AppLayout>
-          )}
-        />
-      )}
+      <Route path="/dashboard" component={DashboardRoute} />
       <Route
         path="/admin/dashboard"
         component={() => (
