@@ -182,7 +182,7 @@ export default function UserDetails() {
       if (!res.ok || (body && body.success === false)) {
         throw new Error(body?.message || "Failed to add credit");
       }
-      queryClient.clear();
+      // queryClient.clear();
       return body;
     },
     onSuccess: (res: any) => {
