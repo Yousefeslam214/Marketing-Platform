@@ -162,8 +162,7 @@ export default function UserDetails() {
       ? "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400"
       : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400";
   };
-const user = userData?.data as UserDetailsInterface;
-
+  const user = userData?.data as UserDetailsInterface;
 
   const addCreditMutation = useMutation({
     mutationFn: async (credit: number) => {
@@ -183,6 +182,7 @@ const user = userData?.data as UserDetailsInterface;
       if (!res.ok || (body && body.success === false)) {
         throw new Error(body?.message || "Failed to add credit");
       }
+      queryClient.clear();
       return body;
     },
     onSuccess: (res: any) => {
@@ -231,7 +231,6 @@ const user = userData?.data as UserDetailsInterface;
     );
   }
 
-  
   if (!user) return null;
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
