@@ -107,3 +107,7 @@
 .direction-ltr {
   direction: ltr;
 }
+/* header div {
+  display: flex;
+  flex-direction: column;
+} */

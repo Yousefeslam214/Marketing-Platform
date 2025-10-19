@@ -157,21 +157,12 @@ export default function Dashboard() {
           title={t("dashboard", "title")}
           description={t("dashboard", "description")}
           actions={
-            <div className="flex items-center gap-4">
+            <div className="items-center gap-4 flex">
               <LanguageToggle />
               <Button onClick={handleCreateAd} data-testid="button-create-ad">
                 <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
                 {t("dashboard", "createNewAd")}
               </Button>
-              {/* <div className="relative">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  data-testid="button-notifications">
-                   <i className="fas fa-bell text-lg"></i>
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full"></span>
-                </Button>
-              </div> */}
             </div>
           }
         />

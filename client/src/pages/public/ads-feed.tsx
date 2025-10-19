@@ -268,7 +268,7 @@ export default function AdsFeed() {
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
             ">
                 {adsResponse?.data.map((ad) => (
-                  <div className="min-h-[80vh]">
+                  <div className="lg:min-h-[80vh]">
                     <Card
                       key={ad.id}
                       className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit *:
