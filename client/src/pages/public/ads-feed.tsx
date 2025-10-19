@@ -268,83 +268,82 @@ export default function AdsFeed() {
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
             ">
                 {adsResponse?.data.map((ad) => (
-                  <div
-                  className="min-h-[80vh]"
-                  >
-                  <Card
-                    key={ad.id}
-                    className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit *:
+                  <div className="min-h-[80vh]">
+                    <Card
+                      key={ad.id}
+                      className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit *:
                     
                     
                     ">
-                    <CardContent className="p-0">
-                      {/* Header */}
-                      <div className="p-4 border-b">
-                        <h2 className="text-lg font-semibold text-foreground">
-                          {language === "en" ? ad.titleEn : ad.titleAr}
-                        </h2>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {t("publicFeed", "sponsored")}
-                        </p>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-4 space-y-4">
-                        <p className="text-foreground leading-relaxed">
-                          {language === "en"
-                            ? ad.descriptionEn
-                            : ad.descriptionAr}
-                        </p>
-
-                        {ad.imageUrl && (
-                          <img
-                            src={ad.imageUrl}
-                            alt={language === "en" ? ad.titleEn : ad.titleAr}
-                            className="w-full h-64 object-cover rounded-lg"
-                            loading="lazy"
-                          />
-                        )}
-                      </div>
-
-                      {/* Actions */}
-                      <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between">
-                        <div className="flex items-center gap-1">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleLike(ad.id)}
-                            disabled={likedAds.has(ad.id)}
-                            className={`gap-2 ${
-                              likedAds.has(ad.id) ? "text-red-500" : ""
-                            }`}>
-                            <Heart
-                              className={`h-4 w-4 ${
-                                likedAds.has(ad.id) ? "fill-current" : ""
-                              }`}
-                            />
-                            {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
-                          </Button>
-
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleShare(ad)}
-                            className="gap-2">
-                            <Share2 className="h-4 w-4" />
-                            {t("publicFeed", "share")}
-                          </Button>
+                      <CardContent className="p-0">
+                        {/* Header */}
+                        <div className="p-4 border-b">
+                          <h2 className="text-lg font-semibold text-foreground">
+                            {language === "en" ? ad.titleEn : ad.titleAr}
+                          </h2>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {t("publicFeed", "sponsored")}
+                          </p>
                         </div>
 
-                        <Button
-                          variant="outline"
-                          onClick={() => handleWebsiteClick(ad)}
-                          className="gap-2">
-                          <ExternalLink className="h-4 w-4" />
-                          {t("publicFeed", "website")}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                        {/* Content */}
+                        <div className="p-4 space-y-4">
+                          <p className="text-foreground leading-relaxed">
+                            {language === "en"
+                              ? ad.descriptionEn
+                              : ad.descriptionAr}
+                          </p>
+
+                          {ad.imageUrl && (
+                            <img
+                              src={ad.imageUrl}
+                              alt={language === "en" ? ad.titleEn : ad.titleAr}
+                              className="w-full h-64 object-cover rounded-lg"
+                              loading="lazy"
+                            />
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleLike(ad.id)}
+                              disabled={likedAds.has(ad.id)}
+                              className={`gap-2 ${
+                                likedAds.has(ad.id) ? "text-red-500" : ""
+                              }`}>
+                              <Heart
+                                className={`h-4 w-4 ${
+                                  likedAds.has(ad.id) ? "fill-current" : ""
+                                }`}
+                              />
+                              {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
+                            </Button>
+
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleShare(ad)}
+                              className="gap-2">
+                              <Share2 className="h-4 w-4" />
+                              {t("publicFeed", "share")}
+                            </Button>
+                          </div>
+                          {ad.websiteUrl && (
+                            <Button
+                              variant="outline"
+                              onClick={() => handleWebsiteClick(ad)}
+                              className="gap-2">
+                              <ExternalLink className="h-4 w-4" />
+                              {t("publicFeed", "website")}
+                            </Button>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 ))}
               </div>

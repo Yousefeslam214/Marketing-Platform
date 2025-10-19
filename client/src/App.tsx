@@ -198,7 +198,7 @@ function Router() {
           </AppLayout>
         )}
       />
-     
+
       <Route
         path={campaignsPath()}
         component={() => (
