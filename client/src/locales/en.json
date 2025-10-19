@@ -660,6 +660,13 @@
     "signupFailed": "Signup failed",
     "signupFailedMessage": "Failed to create account",
     "dashboard": "Dashboard"
+    ,
+    "googleFailureTitle": "Google Sign-in Failed",
+    "googleFailureDescription": "We couldn't complete Google sign-in. You can try again or contact support.",
+    "retryWithGoogle": "Retry with Google",
+    "contactSupport": "Contact Support",
+    "googleFailureNote": "If the problem persists, try another sign-in method or contact support.",
+    "error": "Error"
   },
   "pending": {
     "title": "Pending",

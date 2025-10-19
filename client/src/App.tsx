@@ -11,6 +11,7 @@ import Login from "@/pages/auth/login";
 import Signup from "@/pages/auth/signup";
 import GoogleCallback from "@/pages/auth/google-callback";
 import GoogleDirectAuth from "@/pages/auth/google-direct-auth";
+import GoogleFailure from "@/pages/auth/google-failure";
 import Dashboard from "@/pages/user/dashboard";
 import AdsIndex from "@/pages/user/ads/index";
 import NewAd from "@/pages/user/ads/new";
@@ -136,8 +137,9 @@ function Router() {
       />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route path="/auth/google/callback" component={GoogleCallback} />
-      <Route path="/google/callback" component={GoogleCallback} />
+  <Route path="/auth/google/callback" component={GoogleCallback} />
+  <Route path="/google/callback" component={GoogleCallback} />
+  <Route path="/google/failure" component={() => <GoogleFailure />} />
       <Route path="/api/auth/google/login" component={GoogleDirectAuth} />
 
       {/* Payment result pages */}

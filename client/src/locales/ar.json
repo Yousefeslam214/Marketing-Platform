@@ -734,6 +734,13 @@
     "signupFailed": "فشل إنشاء الحساب",
     "signupFailedMessage": "فشل في إنشاء الحساب",
     "dashboard": "لوحة التحكم"
+    ,
+    "googleFailureTitle": "فشل تسجيل الدخول عبر Google",
+    "googleFailureDescription": "لم نتمكن من إتمام تسجيل الدخول عبر Google. حاول مرة أخرى أو تواصل مع الدعم.",
+    "retryWithGoogle": "المحاولة عبر Google مرة أخرى",
+    "contactSupport": "تواصل مع الدعم",
+    "googleFailureNote": "إذا استمرت المشكلة، حاول طريقة تسجيل دخول أخرى أو تواصل مع الدعم.",
+    "error": "خطأ"
   },
   "pending": {
     "title": "قيد الانتظار",
