@@ -472,8 +472,7 @@
     "availableBalance": "الرصيد المتاح",
     "creditAmount": "مبلغ الأرصدة",
     "creditsDetermineImpressions": "الأرصدة تحدد عدد المشاهدات التي سيحصل عليها إعلانك.",
-    "maximumAvailableCredits": "الحد الأقصى للأرصدة المتاحة",
-    "maximumAvailableCredits:": "الحد الأقصى للأرصدة المتاحة",
+  "maximumAvailableCredits": "الحد الأقصى للأرصدة المتاحة",
 
     "maximumAvailable": "الحد الأقصى للأرصدة المتاحة ",
     "assignCreditDescription": "حدد عدد الأرصدة التي ترغب في تخصيصها لحملتك الإعلانية. يمكنك تعديل هذا لاحقًا.",
@@ -494,7 +493,13 @@
     "createAnotherAd": "إنشاء إعلان آخر",
     "adCreationFailed": "فشل في إنشاء الإعلان",
     "adCreationFailedDescription": "حدث خطأ أثناء إنشاء إعلانك. يرجى المحاولة مرة أخرى.",
-    "tryAgain": "حاول مرة أخرى"
+    "tryAgain": "حاول مرة أخرى",
+
+    "100Credits": "100 أرصدة",
+    "250Credits": "250 أرصدة",
+    "smallTestCampaign": "مناسبة لحملة اختبار صغيرة",
+    "mediumCampaign": "حملة متوسطة",
+    "largeCampaign": "حملة كبيرة"
   },
   "pendingAds": {
     "title": "الإعلانات المعلقة",
