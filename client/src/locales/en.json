@@ -708,8 +708,7 @@
     "accountCreatedSuccess": "Welcome to octopusad! Your account has been created successfully.",
     "signupFailed": "Signup failed",
     "signupFailedMessage": "Failed to create account",
-    "dashboard": "Dashboard"
-    ,
+    "dashboard": "Dashboard",
     "googleFailureTitle": "Google Sign-in Failed",
     "googleFailureDescription": "We couldn't complete Google sign-in. You can try again or contact support.",
     "retryWithGoogle": "Retry with Google",

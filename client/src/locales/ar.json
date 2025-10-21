@@ -472,7 +472,7 @@
     "availableBalance": "الرصيد المتاح",
     "creditAmount": "مبلغ الأرصدة",
     "creditsDetermineImpressions": "الأرصدة تحدد عدد المشاهدات التي سيحصل عليها إعلانك.",
-  "maximumAvailableCredits": "الحد الأقصى للأرصدة المتاحة",
+    "maximumAvailableCredits": "الحد الأقصى للأرصدة المتاحة",
 
     "maximumAvailable": "الحد الأقصى للأرصدة المتاحة ",
     "assignCreditDescription": "حدد عدد الأرصدة التي ترغب في تخصيصها لحملتك الإعلانية. يمكنك تعديل هذا لاحقًا.",
@@ -738,8 +738,7 @@
     "accountCreatedSuccess": "مرحبًا بك في octopusad! تم إنشاء حسابك بنجاح.",
     "signupFailed": "فشل إنشاء الحساب",
     "signupFailedMessage": "فشل في إنشاء الحساب",
-    "dashboard": "لوحة التحكم"
-    ,
+    "dashboard": "لوحة التحكم",
     "googleFailureTitle": "فشل تسجيل الدخول عبر Google",
     "googleFailureDescription": "لم نتمكن من إتمام تسجيل الدخول عبر Google. حاول مرة أخرى أو تواصل مع الدعم.",
     "retryWithGoogle": "المحاولة عبر Google مرة أخرى",

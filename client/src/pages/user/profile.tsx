@@ -71,14 +71,14 @@ export default function Profile() {
     isLoading,
     error,
     refetch,
-  } = useApiQuery<{ data: Profile }>({
+  } = useApiQuery<Profile>({
     key: ["/profile"],
     url: `${VITE_API_BASE_URL}/api/users/profile`,
   });
 
   // Update form data when profile loads
   useEffect(() => {
-    const data = profileData?.data as Profile | undefined;
+    const data = profileData?.data;
     if (data) {
       setFormData({
         username: data.username || "",
@@ -150,16 +150,62 @@ export default function Profile() {
         updateData.password = formData.password;
       }
 
-      const response = await fetch("/api/users/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
-        },
-        body: JSON.stringify(updateData),
-      });
+      const url = `${VITE_API_BASE_URL}/api/users/profile`;
 
-      const result = await response.json();
+      const methods: Array<RequestInit["method"]> = ["PUT", "PUT", "POST"];
+      let lastResponse: Response | null = null;
+      let result: any = null;
+      console.log(updateData);
+      for (const method of methods) {
+        const res = await fetch(url, {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${TokenManager.getAccessToken()}`,
+          },
+          body: JSON.stringify(updateData),
+        });
+
+        lastResponse = res;
+
+        // Accept any 2xx response as success
+        if (res.ok) {
+          const contentType = res.headers.get("content-type") || "";
+          if (contentType.includes("application/json")) {
+            result = await res.json();
+            break;
+          } else {
+            // Server returned non-JSON (likely HTML error page). Read a small
+            // snippet and throw so the UI shows a helpful message instead of
+            // 'Unexpected token < in JSON'.
+            const text = await res.text().catch(() => "");
+            const snippet = text.slice(0, 400);
+            throw new Error(`Expected JSON response but got ${contentType}: ${snippet}`);
+          }
+        }
+
+        // If server responds 405, try next method. For other errors, stop and throw.
+        if (res.status !== 405) {
+          const contentType = res.headers.get("content-type") || "";
+          const text = await res.text().catch(() => "");
+          const snippet = text.slice(0, 400);
+          throw new Error(`Update failed (${res.status}, ${contentType}): ${snippet}`);
+        }
+      }
+
+      if (!result && lastResponse) {
+        // All methods tried; attempt to parse JSON from the last response or throw
+        const contentType = lastResponse.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+          result = await lastResponse.json();
+        } else {
+          const text = await lastResponse.text().catch(() => "");
+          const snippet = text.slice(0, 400);
+          throw new Error(
+            `Update failed with status ${lastResponse.status} and non-JSON response: ${snippet}`
+          );
+        }
+      }
 
       if (result.success) {
         toast({
@@ -284,7 +330,7 @@ export default function Profile() {
               <div className="space-x-2">
                 <Button
                   onClick={handleSave}
-                  disabled={isUpdating}
+                  // disabled={isUpdating}
                   className="flex items-center gap-2">
                   <Save className="w-4 h-4" />
                   {isUpdating
