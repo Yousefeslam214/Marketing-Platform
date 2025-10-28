@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import { useEffect, useState } from "react";
 import { TokenManager } from "@/lib/auth";
+import MetaPixel from "@/components/analytics/MetaPixel";
 
 const PublicHeader = () => {
   const { isRTL, t } = useLanguage();
@@ -24,6 +25,7 @@ const PublicHeader = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <MetaPixel />
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -235,6 +237,7 @@ const PublicHeader = () => {
           </div>
         </div>
       </div>
+      
     </nav>
   );
 };

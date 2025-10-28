@@ -1,5 +1,6 @@
 import { useLanguage } from "@/hooks/use-language";
 import { ReactNode } from "react";
+import MetaPixel from "@/components/analytics/MetaPixel";
 
 interface HeaderProps {
   title: string;
@@ -11,7 +12,9 @@ export function Header({ title, description, actions }: HeaderProps) {
   const {  isRTL } = useLanguage();
 
   return (
-    <header
+    <>
+      <MetaPixel />
+      <header
       className="bg-card border-b border-border px-6 py-4
       h-[97px]
       
@@ -46,5 +49,6 @@ export function Header({ title, description, actions }: HeaderProps) {
         )}
       </div>
     </header>
+    </>
   );
 }
