@@ -115,8 +115,8 @@ const PublicHeader = () => {
           {/* Mobile Actions - Theme/Language toggles + Menu button */}
 
           <div className="flex md:hidden items-center space-x-2">
-            {/* <ThemeToggle />
-            <LanguageToggle /> */}
+            <ThemeToggle />
+            <LanguageToggle />
             <Button
               variant="ghost"
               size="sm"
