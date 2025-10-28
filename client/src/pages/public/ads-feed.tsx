@@ -14,7 +14,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Heart, MessageCircle, Share2 } from "lucide-react";
+import { ExternalLink, Heart, MessageCircle, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useMemo } from "react";
 
 // Memoized skeleton list component to avoid recreating placeholders on each render
@@ -37,13 +37,20 @@ function SkeletonList() {
 
 interface Ad {
   id: string;
-  imageUrl: string | null;
+  // imageUrl can be a single string, an array of strings, or null
+  imageUrl: string | string[] | null;
   titleEn: string;
   titleAr: string;
   descriptionEn: string;
   descriptionAr: string;
   likesCount: number;
   websiteUrl?: string | null;
+  // optional social links
+  tiktokLink?: string | null;
+  youtubeLink?: string | null;
+  instagramLink?: string | null;
+  facebookLink?: string | null;
+  snapchatLink?: string | null;
 }
 
 interface AdsFeedResponse {
@@ -177,6 +184,149 @@ export default function AdsFeed() {
     }
   };
 
+  // Small inline carousel component for ad images. Supports touch swipe and prev/next.
+  function ImageCarousel({ images }: { images: string[] }) {
+    const [index, setIndex] = useState(0);
+    const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+    const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+    const next = () => setIndex((i) => (i + 1) % images.length);
+
+    const onTouchStart = (e: any) => {
+      setTouchStartX(e.touches[0].clientX);
+    };
+
+    const onTouchEnd = (e: any) => {
+      if (touchStartX == null) return;
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      const threshold = 40; // px
+      if (diff > threshold) next();
+      else if (diff < -threshold) prev();
+      setTouchStartX(null);
+    };
+
+    return (
+      <div className="relative w-full">
+        <div
+          className="w-full overflow-hidden rounded-lg"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          <img
+            src={images[index]}
+            alt={`ad image ${index + 1}`}
+            className="w-full object-cover h-48 sm:h-56 md:h-64 lg:h-48 xl:h-64"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Prev / Next buttons */}
+        {images.length > 1 && (
+          <>
+            <button
+              aria-label="Previous image"
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              aria-label="Next image"
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            {/* Dots */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIndex(i)}
+                  aria-label={`Go to image ${i + 1}`}
+                  className={`w-2 h-2 rounded-full ${i === index ? "bg-foreground" : "bg-muted"}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Social icons rendered only when the corresponding link exists on the ad
+  function SocialLinks({ ad }: { ad: Ad }) {
+    const items: { href?: string | null; label: string; svg: JSX.Element }[] = [
+      {
+        href: ad.youtubeLink,
+        label: "YouTube",
+        svg: (
+          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+            <path d="M10 15l5-3-5-3v6z" />
+            <path d="M21 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C15.7 4.8 12 4.8 12 4.8s-3.7 0-6.1.3c-.4.1-1.3.1-2.1.9C3.2 6.6 3 8 3 8S2.8 9.6 3 11.1c.2 1.5.8 2.9.8 2.9s.2 1.4.8 2c.8.8 1.8.8 2.3.9 1.7.2 7 .3 7 .3s3.7 0 6.1-.3c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.5 0-3c-.2-1.5-.8-2.9-.8-2.9z" />
+          </svg>
+        ),
+      },
+      {
+        href: ad.tiktokLink,
+        label: "TikTok",
+        svg: (
+          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+            <path d="M12 2v10.5A3.5 3.5 0 1 0 15.5 16V7h3.5V4h-6z" />
+          </svg>
+        ),
+      },
+      {
+        href: ad.instagramLink,
+        label: "Instagram",
+        svg: (
+          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zM12 7.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm5.5-2a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" />
+          </svg>
+        ),
+      },
+      {
+        href: ad.facebookLink,
+        label: "Facebook",
+        svg: (
+          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+            <path d="M13 3h2v3h-2c-1.1 0-1 1-1 1v2h3l-.5 3H12v7h-3v-7H6v-3h3V7a4 4 0 0 1 4-4z" />
+          </svg>
+        ),
+      },
+      {
+        href: ad.snapchatLink,
+        label: "Snapchat",
+        svg: (
+          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+            <path d="M12 2a5 5 0 0 0-5 5 7 7 0 0 0-2 5v2a2 2 0 0 0 2 2c1 0 1 1 1 1s1 .5 3 .5 3-.5 3-.5 0-1 1-1a2 2 0 0 0 2-2v-2a7 7 0 0 0-2-5 5 5 0 0 0-5-5z" />
+          </svg>
+        ),
+      },
+    ];
+
+    return (
+      <div className="flex items-center gap-2">
+        {items.map((it) =>
+          it.href ? (
+            <a
+              key={it.label}
+              href={it.href || undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={it.label}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              {it.svg}
+            </a>
+          ) : null
+        )}
+      </div>
+    );
+  }
+
   const handlePageChange = (newPage: string) => {
     setPage(parseInt(newPage));
   };
@@ -269,8 +419,7 @@ export default function AdsFeed() {
             ">
                 {adsResponse?.data.map((ad) => (
                   <div key={ad.id} className="w-full">
-                    <Card
-                      className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit">
+                    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit">
                       <CardContent className="p-0">
                         {/* Header */}
                         <div className="p-4 border-b">
@@ -290,14 +439,16 @@ export default function AdsFeed() {
                               : ad.descriptionAr}
                           </p>
 
-                          {ad.imageUrl && (
+                          {Array.isArray(ad.imageUrl) && ad.imageUrl.length > 0 ? (
+                            <ImageCarousel images={ad.imageUrl} />
+                          ) : ad.imageUrl ? (
                             <img
-                              src={ad.imageUrl}
+                              src={ad.imageUrl as string}
                               alt={language === "en" ? ad.titleEn : ad.titleAr}
                               className="w-full object-cover rounded-lg h-48 sm:h-56 md:h-64 lg:h-48 xl:h-64"
                               loading="lazy"
                             />
-                          )}
+                          ) : null}
                         </div>
 
                         {/* Actions */}
