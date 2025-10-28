@@ -433,7 +433,7 @@ export default function AdsFeed() {
 
                         {/* Content */}
                         <div className="p-4 space-y-4">
-                          <p className="text-foreground leading-relaxed">
+                          <p className="text-foreground leading-relaxed whitespace-pre-wrap">
                             {language === "en"
                               ? ad.descriptionEn
                               : ad.descriptionAr}
@@ -453,31 +453,36 @@ export default function AdsFeed() {
 
                         {/* Actions */}
                         <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between">
-                          <div className="flex items-center gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleLike(ad.id)}
-                              disabled={likedAds.has(ad.id)}
-                              className={`gap-2 ${
-                                likedAds.has(ad.id) ? "text-red-500" : ""
-                              }`}>
-                              <Heart
-                                className={`h-4 w-4 ${
-                                  likedAds.has(ad.id) ? "fill-current" : ""
-                                }`}
-                              />
-                              {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
-                            </Button>
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleLike(ad.id)}
+                                disabled={likedAds.has(ad.id)}
+                                className={`gap-2 ${
+                                  likedAds.has(ad.id) ? "text-red-500" : ""
+                                }`}>
+                                <Heart
+                                  className={`h-4 w-4 ${
+                                    likedAds.has(ad.id) ? "fill-current" : ""
+                                  }`}
+                                />
+                                {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
+                              </Button>
 
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleShare(ad)}
-                              className="gap-2">
-                              <Share2 className="h-4 w-4" />
-                              {t("publicFeed", "share")}
-                            </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleShare(ad)}
+                                className="gap-2">
+                                <Share2 className="h-4 w-4" />
+                                {t("publicFeed", "share")}
+                              </Button>
+                            </div>
+
+                            {/* show social links only when present */}
+                            <SocialLinks ad={ad} />
                           </div>
                           {ad.websiteUrl && (
                             <Button
