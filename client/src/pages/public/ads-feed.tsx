@@ -268,13 +268,9 @@ export default function AdsFeed() {
              grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
             ">
                 {adsResponse?.data.map((ad) => (
-                  <div className="lg:min-h-[80vh]">
+                  <div key={ad.id} className="w-full">
                     <Card
-                      key={ad.id}
-                      className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit *:
-                    
-                    
-                    ">
+                      className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit">
                       <CardContent className="p-0">
                         {/* Header */}
                         <div className="p-4 border-b">
@@ -298,7 +294,7 @@ export default function AdsFeed() {
                             <img
                               src={ad.imageUrl}
                               alt={language === "en" ? ad.titleEn : ad.titleAr}
-                              className="w-full h-64 object-cover rounded-lg"
+                              className="w-full object-cover rounded-lg h-48 sm:h-56 md:h-64 lg:h-48 xl:h-64"
                               loading="lazy"
                             />
                           )}
