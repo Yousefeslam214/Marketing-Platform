@@ -10,6 +10,58 @@ import { useState } from "react";
 import { editAdPath } from "@/lib/paths";
 import DataPagination from "@/components/ui/data-pagination";
 
+function ImageCarousel({
+  images,
+  alt,
+  dataTestId,
+}: {
+  images: string[];
+  alt?: string;
+  dataTestId?: string;
+}) {
+  const [index, setIndex] = useState(0);
+  if (!images || images.length === 0) return null;
+
+  const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+  const next = () => setIndex((i) => (i + 1) % images.length);
+
+  return (
+    <div className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden relative">
+      <img
+        src={images[index]}
+        alt={alt}
+        className="w-full h-full object-cover"
+        data-testid={dataTestId}
+      />
+
+      <button
+        type="button"
+        onClick={prev}
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1">
+        <i className="fas fa-chevron-left"></i>
+      </button>
+
+      <button
+        type="button"
+        onClick={next}
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1">
+        <i className="fas fa-chevron-right"></i>
+      </button>
+
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-2 flex gap-2">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`w-2 h-2 rounded-full ${i === index ? "bg-white" : "bg-white/50"}`}
+            aria-label={`Go to image ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function AdsIndex() {
   const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
@@ -75,14 +127,18 @@ export default function AdsIndex() {
                     </div>
 
                     {ad.imageUrl ? (
-                      <div className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden">
-                        <img
-                          src={ad.imageUrl}
-                          alt={ad.titleEn || ad.titleAr}
-                          className="w-full h-full object-cover"
-                          data-testid={`ad-image-${ad.id}`}
-                        />
-                      </div>
+                      Array.isArray(ad.imageUrl) && ad.imageUrl.length > 0 ? (
+                        <ImageCarousel images={ad.imageUrl} alt={ad.titleEn || ad.titleAr} dataTestId={`ad-image-${ad.id}`} />
+                      ) : (
+                        <div className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden">
+                          <img
+                            src={ad.imageUrl}
+                            alt={ad.titleEn || ad.titleAr}
+                            className="w-full h-full object-cover"
+                            data-testid={`ad-image-${ad.id}`}
+                          />
+                        </div>
+                      )
                     ) : (
                       <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
                         <div className="text-center text-muted-foreground">
