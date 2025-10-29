@@ -132,15 +132,15 @@ export function AdEditor({
       setServerImages(imgs);
       setPhotoPreview(imgs[0] || null);
       // keep form in sync
-  // keep form.imageUrl as a single string (primary image) to match schema
-  form.setValue("imageUrl", imgs[0] || "");
+      // keep form.imageUrl as a single string (primary image) to match schema
+      form.setValue("imageUrl", imgs[0] || "");
     }
   }, [existingData]);
 
   // keep form value in sync when serverImages change
   useEffect(() => {
-  // schema expects a string for imageUrl; keep the primary image as the form value
-  form.setValue("imageUrl", serverImages[0] || "");
+    // schema expects a string for imageUrl; keep the primary image as the form value
+    form.setValue("imageUrl", serverImages[0] || "");
   }, [serverImages]);
 
   // Photo upload mutation
@@ -311,7 +311,8 @@ export function AdEditor({
       await new Promise<void>((resolve) => {
         canvas.toBlob(async (blob) => {
           if (!blob) return resolve();
-          const file = new File([blob],
+          const file = new File(
+            [blob],
             // editingFile can be string (url) or File
             typeof editingFile === "string" ? "edited.png" : editingFile.name,
             { type: blob.type }
@@ -511,8 +512,14 @@ export function AdEditor({
                                 <div className="space-y-3">
                                   <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                                     {serverImages.map((src, i) => (
-                                      <div key={i} className="relative rounded overflow-hidden border">
-                                        <img src={src} alt={`thumb-${i}`} className="w-full h-20 object-cover" />
+                                      <div
+                                        key={i}
+                                        className="relative rounded overflow-hidden border">
+                                        <img
+                                          src={src}
+                                          alt={`thumb-${i}`}
+                                          className="w-full h-20 object-cover"
+                                        />
                                         <div className="absolute top-1 right-1 flex flex-col gap-1">
                                           <Button
                                             size="xs"

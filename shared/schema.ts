@@ -322,10 +322,7 @@ export const createAdSchema = insertAdSchema.extend({
     .url("Invalid Google Ads URL")
     .optional()
     .or(z.literal("")),
-  phoneNumber: z
-    .string()
-    .optional()
-    .or(z.literal("")),
+  phoneNumber: z.string().optional().or(z.literal("")),
 });
 
 export const purchaseCreditsSchema = z.object({

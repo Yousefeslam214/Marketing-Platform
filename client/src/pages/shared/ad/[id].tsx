@@ -632,7 +632,7 @@ export default function AdDetail({ params }: AdDetailProps) {
               </Card>
               {/* Social Media Links */}
               {(ad.websiteUrl ||
-              ad.phoneNumber ||
+                ad.phoneNumber ||
                 ad.facebookLink ||
                 ad.instagramLink ||
                 ad.tiktokLink ||
@@ -728,11 +728,13 @@ export default function AdDetail({ params }: AdDetailProps) {
                         </a>
                       )}
 
-                      {ad.phoneNumber && (
+                      {ad.phoneNumber &&
                         (() => {
                           const raw = String(ad.phoneNumber || "");
                           const sanitized = raw.replace(/\D/g, "");
-                          const waHref = sanitized ? `https://wa.me/${sanitized}` : `tel:${raw}`;
+                          const waHref = sanitized
+                            ? `https://wa.me/${sanitized}`
+                            : `tel:${raw}`;
                           return (
                             <a
                               href={waHref}
@@ -746,8 +748,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                               </div>
                             </a>
                           );
-                        })()
-                      )}
+                        })()}
 
                       {/* {ad.googleAdsLink && (
                         <a
