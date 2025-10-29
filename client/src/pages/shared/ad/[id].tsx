@@ -165,6 +165,7 @@ export default function AdDetail({ params }: AdDetailProps) {
   };
 
   const ad = data?.data;
+  console.log(ad);
 
   // Filter approved ads and type safely
 
@@ -631,6 +632,7 @@ export default function AdDetail({ params }: AdDetailProps) {
               </Card>
               {/* Social Media Links */}
               {(ad.websiteUrl ||
+              ad.phoneNumber ||
                 ad.facebookLink ||
                 ad.instagramLink ||
                 ad.tiktokLink ||
@@ -724,6 +726,27 @@ export default function AdDetail({ params }: AdDetailProps) {
                             Snapchat
                           </div>
                         </a>
+                      )}
+
+                      {ad.phoneNumber && (
+                        (() => {
+                          const raw = String(ad.phoneNumber || "");
+                          const sanitized = raw.replace(/\D/g, "");
+                          const waHref = sanitized ? `https://wa.me/${sanitized}` : `tel:${raw}`;
+                          return (
+                            <a
+                              href={waHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-green-600 hover:underline text-sm truncate"
+                              data-testid="ad-whatsapp-link">
+                              <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
+                                <i className="fab fa-whatsapp text-green-600 text-lg"></i>
+                                {t("ads", "phoneNumber")} {raw}
+                              </div>
+                            </a>
+                          );
+                        })()
                       )}
 
                       {/* {ad.googleAdsLink && (

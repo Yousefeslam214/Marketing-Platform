@@ -191,6 +191,19 @@ export default function AdsIndex() {
                             : ad.websiteClicks || "0"}
                         </div>
                       </div>
+                      {ad.phoneNumber && (
+                        <div>
+                          <div className="text-xs">{t("ads", "phoneNumber")}</div>
+                          <div className="font-medium">
+                            <a
+                              href={`tel:${ad.phoneNumber}`}
+                              data-testid={`ad-phone-${ad.id}`}
+                              className="text-primary hover:underline">
+                              {ad.phoneNumber}
+                            </a>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-2 mt-4">
