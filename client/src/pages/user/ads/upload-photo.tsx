@@ -17,7 +17,8 @@ export default function UploadPhoto() {
   const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  // Keep photoPreview as an array so multiple staged or uploaded photos are shown
+  const [photoPreview, setPhotoPreview] = useState<string[]>([]);
   const [selectedPreviews, setSelectedPreviews] = useState<string[]>([]);
   const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState<string[] | null>(
     null
@@ -87,11 +88,14 @@ export default function UploadPhoto() {
       if (photoUrl) {
         // push to uploaded urls list
         setUploadedPhotoUrls((prev) => [...(prev || []), photoUrl]);
-        // Replace local main preview with server URL if it was a blob
-        if (photoPreview && photoPreview.startsWith("blob:")) {
-          URL.revokeObjectURL(photoPreview);
-        }
-        setPhotoPreview(photoUrl);
+        // If previous previews were blobs, revoke them when replaced by server URL
+        setPhotoPreview((prev) => {
+          // revoke any local blob URLs we've replaced
+          prev.forEach((p) => {
+            if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+          });
+          return [...prev, photoUrl];
+        });
         toast({
           title: "Upload Successful",
           description: "Your photo has been uploaded successfully.",
@@ -106,10 +110,14 @@ export default function UploadPhoto() {
         variant: "destructive",
       });
       // If upload fails, remove the preview
-      if (photoPreview && photoPreview.startsWith("blob:")) {
-        URL.revokeObjectURL(photoPreview);
-        setPhotoPreview(null);
-      }
+      // remove any staged blob previews
+      setPhotoPreview((prev) => {
+        const remaining = prev.filter((p) => !(p && p.startsWith("blob:")));
+        prev.forEach((p) => {
+          if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+        });
+        return remaining;
+      });
     },
   });
 
@@ -145,13 +153,13 @@ export default function UploadPhoto() {
         data.data?.photos || data.data?.photo ? [data.data?.photo].flat() : [];
       if (photos && photos.length) {
         setUploadedPhotoUrls((prev) => [...(prev || []), ...photos]);
-        // replace previews with server URLs where appropriate: use first as main preview
-        if (photos[0]) {
-          if (photoPreview && photoPreview.startsWith("blob:")) {
-            URL.revokeObjectURL(photoPreview);
-          }
-          setPhotoPreview(photos[0]);
-        }
+        // Append server URLs to photoPreview array and revoke any staged blob previews
+        setPhotoPreview((prev) => {
+          prev.forEach((p) => {
+            if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+          });
+          return [...prev, ...photos];
+        });
         // Revoke local preview URLs and clear staged previews
         selectedPreviews.forEach((p) => {
           if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
@@ -195,10 +203,11 @@ export default function UploadPhoto() {
     },
     onSuccess: () => {
       // Clear server photo and preview
-      if (photoPreview && photoPreview.startsWith("blob:")) {
-        URL.revokeObjectURL(photoPreview);
-      }
-      setPhotoPreview(null);
+      // revoke all staged blob previews
+      photoPreview.forEach((p) => {
+        if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+      });
+      setPhotoPreview([]);
       setUploadedPhotoUrls(null);
       toast({
         title: t("uploadPhoto", "uploadSuccess"),
@@ -253,10 +262,8 @@ export default function UploadPhoto() {
     const newPreviews = validFiles.map((f) => URL.createObjectURL(f));
     setSelectedFiles((prev) => [...prev, ...validFiles]);
     setSelectedPreviews((prev) => [...prev, ...newPreviews]);
-    // if there's no main photo preview yet, set it from the first newly added
-    if (!photoPreview) {
-      setPhotoPreview(newPreviews[0]);
-    }
+    // Append staged previews to the main photoPreview array so multiple previews are kept
+    setPhotoPreview((prev) => [...prev, ...newPreviews]);
     // If only one file was added, open editor for it
     if (validFiles.length === 1) {
       setEditingIndex((prev) => (prev === null ? selectedFiles.length : prev));
@@ -302,6 +309,8 @@ export default function UploadPhoto() {
   };
 
   const removeSelected = (index: number) => {
+    // remove selected staged file + preview + any edited file mapping
+    const removedPreview = selectedPreviews[index];
     setSelectedFiles((s) => s.filter((_, i) => i !== index));
     setEditedFiles((m) => {
       const copy = new Map(m);
@@ -310,15 +319,14 @@ export default function UploadPhoto() {
     });
     setSelectedPreviews((p) => {
       const copy = [...p];
-      const removed = copy.splice(index, 1)[0];
-      if (removed && removed.startsWith("blob:")) URL.revokeObjectURL(removed);
+      copy.splice(index, 1);
       return copy;
     });
-    // clear main preview if no staged previews exist
-    setPhotoPreview((prev) => {
-      if (selectedPreviews.length <= 1) return null;
-      return selectedPreviews[0] || prev;
-    });
+    // revoke and remove from main preview list
+    if (removedPreview && removedPreview.startsWith("blob:")) {
+      URL.revokeObjectURL(removedPreview);
+    }
+    setPhotoPreview((prev) => prev.filter((p) => p !== removedPreview));
   };
 
   const uploadAllSelected = async () => {
@@ -374,14 +382,29 @@ export default function UploadPhoto() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {/* Photo Preview */}
-                  {photoPreview && (
+                  {/* Photo Preview (show all previews uploaded/staged) */}
+                  {photoPreview.length > 0 && (
                     <div className="relative">
-                      <img
-                        src={photoPreview}
-                        alt={t("uploadPhoto", "PhotoPreview")}
-                        className="w-full max-w-md mx-auto h-64 object-cover rounded-lg border shadow-sm"
-                      />
+                      <div className="max-w-md mx-auto">
+                        <img
+                          src={photoPreview[0]}
+                          alt={t("uploadPhoto", "PhotoPreview")}
+                          className="w-full h-64 object-cover rounded-lg border shadow-sm"
+                        />
+
+                        {photoPreview.length > 1 && (
+                          <div className="mt-2 flex gap-2 overflow-x-auto">
+                            {photoPreview.map((p, i) => (
+                              <img
+                                key={i}
+                                src={p}
+                                alt={`thumb-${i}`}
+                                className="w-20 h-12 object-cover rounded border"
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <Button
                         type="button"
                         variant="destructive"
@@ -389,18 +412,18 @@ export default function UploadPhoto() {
                         className="absolute top-2 right-2"
                         onClick={() => {
                           if (uploadedPhotoUrls) {
-                            // call API to delete server photo
+                            // call API to delete server photo(s)
                             deletePhotoMutation.mutate();
                             return;
                           }
 
-                          if (
-                            photoPreview &&
-                            photoPreview.startsWith("blob:")
-                          ) {
-                            URL.revokeObjectURL(photoPreview);
-                          }
-                          setPhotoPreview(null);
+                          // revoke any local blob previews and clear
+                          photoPreview.forEach((p) => {
+                            if (p && p.startsWith("blob:")) {
+                              URL.revokeObjectURL(p);
+                            }
+                          });
+                          setPhotoPreview([]);
                           setUploadedPhotoUrls(null);
                         }}>
                         <i className="fas fa-trash mr-2"></i>
@@ -453,7 +476,7 @@ export default function UploadPhoto() {
                           <>
                             <i className="fas fa-upload mr-2"></i>
                             {photoPreview
-                              ? t("uploadPhoto", "Change Photo")
+                              ? t("uploadPhoto", "upload more Photos")
                               : t("uploadPhoto", "Choose Photo")}
                           </>
                         )}
@@ -625,7 +648,7 @@ export default function UploadPhoto() {
                   <div className="mt-4 space-y-2">
                     <Button
                       type="button"
-                      variant={photoPreview ? "outline" : "default"}
+                      variant={photoPreview.length > 0 ? "outline" : "default"}
                       onClick={() => fileInputRef.current?.click()}
                       disabled={uploadingPhoto || uploadPhotoMutation.isPending}
                       className="w-full sm:w-auto">
@@ -637,7 +660,7 @@ export default function UploadPhoto() {
                       ) : (
                         <>
                           <i className="fas fa-upload mr-2"></i>
-                          {photoPreview
+                          {photoPreview.length > 0
                             ? t("uploadPhoto", "Change Photo")
                             : t("uploadPhoto", "Choose Photo")}
                         </>
