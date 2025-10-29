@@ -326,7 +326,7 @@ export default function Dashboard() {
                         <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
                           {ad.imageUrl ? (
                             <img
-                              src={ad.imageUrl}
+                              src={ad.imageUrl[0]}
                               alt={language === "ar" ? ad.titleAr : ad.titleEn}
                               className="w-full h-full object-cover"
                             />

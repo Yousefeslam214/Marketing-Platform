@@ -77,6 +77,8 @@ export const ads = pgTable("ads", {
   googleAdsLink: text("google_ads_link"),
   instagramLink: text("instagram_link"),
   snapchatLink: text("snapchat_link"),
+  // WhatsApp / phone contact for the ad (optional)
+  phoneNumber: text("phone_number"),
   createdAt: timestamp("created_at")
     .notNull()
     .default(sql`now()`),
@@ -318,6 +320,10 @@ export const createAdSchema = insertAdSchema.extend({
   googleAdsLink: z
     .string()
     .url("Invalid Google Ads URL")
+    .optional()
+    .or(z.literal("")),
+  phoneNumber: z
+    .string()
     .optional()
     .or(z.literal("")),
 });

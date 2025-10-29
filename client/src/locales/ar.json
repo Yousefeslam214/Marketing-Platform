@@ -1131,428 +1131,432 @@
     "changesTitle": "تغييرات على الشروط",
     "changesContent": "نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سنخطر المستخدمين بالتغييرات المهمة عبر البريد الإلكتروني أو إشعارات المنصة. استمرار الاستخدام بعد التغييرات يشكل قبولاً للشروط الجديدة.",
     "legalContactTitle": "الاتصال القانوني",
-    "legalContactContent": "للمسائل القانونية أو الأسئلة حول هذه الشروط، يرجى الاتصال بفريقنا القانوني:"
-  },
-  "publicFeed": {
-    "title": "الاعلانات العامة",
-    "sponsored": "إعلان مدفوع",
-    "like": "أعجبني",
-    "share": "مشاركة",
-    "comment": "تعليق",
-    "learnMore": "اعرف المزيد",
-    "loadMore": "تحميل المزيد",
-    "loading": "جاري التحميل...",
-    "interactionRecorded": "تم تسجيل التفاعل",
-    "interactionRecordedDesc": "تم تسجيل تفاعلك بنجاح",
-    "copiedToClipboard": "تم النسخ للحافظة",
-    "adContentCopied": "تم نسخ محتوى الإعلان للحافظة",
-    "errorLoading": "حدث خطأ ما",
-    "unableToLoad": "لا يمكن تحميل تغذية الإعلانات",
-    "noAdsAvailable": "لا توجد إعلانات متاحة",
-    "checkBackLater": "تحقق لاحقًا للحصول على محتوى جديد"
-  },
-  "themeToggle": {
-    "light": "فاتح",
-    "dark": "داكن"
-  },
-  "landing": {
-    "navigation": {
-      "features": "المزايا",
-      "howItWorks": "كيف يعمل",
-      "pricing": "الأسعار",
-      "contact": "اتصل بنا"
+    "legalContactContent": "للمسائل القانونية أو الأسئلة حول هذه الشروط، يرجى الاتصال بفريقنا القانوني:",
+    "platformBanNotice": {
+      "title": "🚫 تنبيه هام من منصة إعلان أخطبوط",
+      "body": "🚫 تنبيه هام من منصة إعلان أخطبوط\n\nيُمنع الإعلان أو البيع داخل المنصة لأي من السلع المحظورة، ويُحظر نهائيًا كل من يعلن عنها أو يتجاوب معها عبر الردود أو الرسائل الخاصة، دون تنبيه مسبق.\n\nالسلع الممنوعة تشمل:\n- كل ما يخالف أنظمة المملكة العربية السعودية\n- التقسيط والمنتجات البنكية\n- الأدوية والمنتجات الطبية والصحية\n- التسويق الشبكي\n- الأسلحة ومستلزماتها\n- المنتجات الجنسية\n- الأسهم والعملات وإدارة المحافظ\n- أجهزة الليزر والتجسس\n- المواقع والخدمات الإلكترونية والعضويات\n- السلع المجانية أو المنسوخة\n- منتجات التبغ\n- المنتجات التي تتطلب ترخيص بدون توفره\n- الأجهزة ذات المخاطر الأمنية أو غير المصرّح بها\n- شرائح وخدمات الاتصالات بدون ترخيص\n- بيع أو جمع البيانات بشكل مخالف\n\n📌 الحظر نهائي ولا نقاش فيه"
     },
-    "hero": {
-      "badge": "🚀 منصة تسويق متقدمة",
-      "title": "نمِّ عملك بالإعلان الذكي",
-      "subtitle": "أنشئ وأدر وحسن حملاتك الإعلانية عبر منصات متعددة. احصل على تحليلات فورية وعظم عائد استثمارك مع منصتنا التسويقية الذكية.",
-      "getStarted": "ابدأ مجاناً",
-      "watchDemo": "شاهد العرض التوضيحي",
-      "features": {
-        "noSetup": "لا حاجة للإعداد",
-        "multiPlatform": "متعدد المنصات",
-        "analytics": "تحليلات فورية"
+    "publicFeed": {
+      "title": "الاعلانات العامة",
+      "sponsored": "إعلان مدفوع",
+      "like": "أعجبني",
+      "share": "مشاركة",
+      "comment": "تعليق",
+      "learnMore": "اعرف المزيد",
+      "loadMore": "تحميل المزيد",
+      "loading": "جاري التحميل...",
+      "interactionRecorded": "تم تسجيل التفاعل",
+      "interactionRecordedDesc": "تم تسجيل تفاعلك بنجاح",
+      "copiedToClipboard": "تم النسخ للحافظة",
+      "adContentCopied": "تم نسخ محتوى الإعلان للحافظة",
+      "errorLoading": "حدث خطأ ما",
+      "unableToLoad": "لا يمكن تحميل تغذية الإعلانات",
+      "noAdsAvailable": "لا توجد إعلانات متاحة",
+      "checkBackLater": "تحقق لاحقًا للحصول على محتوى جديد"
+    },
+    "themeToggle": {
+      "light": "فاتح",
+      "dark": "داكن"
+    },
+    "landing": {
+      "navigation": {
+        "features": "المزايا",
+        "howItWorks": "كيف يعمل",
+        "pricing": "الأسعار",
+        "contact": "اتصل بنا"
       },
-      "dashboard": {
-        "title": "لوحة تحكم الحملات",
-        "live": "مباشر",
-        "campaigns": "الحملات",
-        "engagement": "المشاركة",
-        "leads": "العملاء المحتملون",
-        "performance": "تحليلات الأداء"
-      }
-    },
-    "features": {
-      "title": "كل ما تحتاجه للنجاح",
-      "subtitle": "منصتنا توفر أدوات شاملة لإنشاء وإدارة وتحسين حملاتك الإعلانية بسهولة.",
-      "items": {
-        "easySetup": {
-          "title": "إعداد سهل",
-          "description": "ابدأ في دقائق مع واجهتنا البديهية. لا حاجة لمعرفة تقنية."
+      "hero": {
+        "badge": "🚀 منصة تسويق متقدمة",
+        "title": "نمِّ عملك بالإعلان الذكي",
+        "subtitle": "أنشئ وأدر وحسن حملاتك الإعلانية عبر منصات متعددة. احصل على تحليلات فورية وعظم عائد استثمارك مع منصتنا التسويقية الذكية.",
+        "getStarted": "ابدأ مجاناً",
+        "watchDemo": "شاهد العرض التوضيحي",
+        "features": {
+          "noSetup": "لا حاجة للإعداد",
+          "multiPlatform": "متعدد المنصات",
+          "analytics": "تحليلات فورية"
         },
-        "analytics": {
-          "title": "تحليلات متقدمة",
-          "description": "تتبع الأداء برؤى مفصلة وتقارير فورية لجميع حملاتك."
-        },
-        "multiPlatform": {
-          "title": "دعم متعدد المنصات",
-          "description": "أدر الحملات عبر فيسبوك وإنستجرام وجوجل والمزيد من لوحة واحدة."
-        },
-        "secure": {
-          "title": "أمان على مستوى المؤسسات",
-          "description": "بياناتك محمية بأمان مصرفي وتخزين مشفر."
-        },
-        "realTime": {
-          "title": "تحديثات فورية",
-          "description": "راقب حملاتك في الوقت الفعلي واتخذ قرارات مدروسة فوراً."
-        },
-        "support": {
-          "title": "دعم على مدار الساعة",
-          "description": "احصل على المساعدة عند الحاجة مع فريق الدعم المخصص المتاح طوال الوقت."
+        "dashboard": {
+          "title": "لوحة تحكم الحملات",
+          "live": "مباشر",
+          "campaigns": "الحملات",
+          "engagement": "المشاركة",
+          "leads": "العملاء المحتملون",
+          "performance": "تحليلات الأداء"
         }
-      }
-    },
-    "howItWorks": {
-      "title": "كيف يعمل",
-      "subtitle": "اجعل حملاتك الإعلانية تعمل في أربع خطوات بسيطة فقط.",
-      "getStarted": "ابدأ حملتك الأولى",
-      "steps": {
-        "signup": {
-          "title": "التسجيل",
-          "description": "أنشئ حسابك المجاني واحصل على وصول فوري لمنصتنا."
-        },
-        "setup": {
-          "title": "إعداد الملف الشخصي",
-          "description": "اضبط ملف عملك واربط حساباتك الإعلانية."
-        },
-        "create": {
-          "title": "إنشاء الحملات",
-          "description": "صمم وأطلق حملاتك الإعلانية بأدواتنا سهلة الاستخدام."
-        },
-        "track": {
-          "title": "التتبع والتحسين",
-          "description": "راقب الأداء وحسن حملاتك للحصول على نتائج أفضل."
-        }
-      }
-    },
-    "stats": {
-      "campaigns": "الحملات النشطة",
-      "clients": "العملاء السعداء",
-      "uptime": "وقت التشغيل",
-      "support": "الدعم"
-    },
-    "pricing": {
-      "title": "أسعار بسيطة وشفافة",
-      "subtitle": "اختر الخطة التي تناسب عملك. جميع الخطط تشمل ميزاتنا الأساسية.",
-      "currency": "ريال سعودي",
-      "perImpression": "لكل انطباع",
-      "impressions": "مشاهدات",
-      "getStarted": "ابدأ الآن",
+      },
       "features": {
-        "analytics": "تحليلات متقدمة",
-        "multiPlatform": "دعم متعدد المنصات",
-        "support": "دعم عملاء 24/7",
-        "reporting": "تقارير فورية",
-        "optimization": "تحسين الحملات",
-        "api": "وصول API"
+        "title": "كل ما تحتاجه للنجاح",
+        "subtitle": "منصتنا توفر أدوات شاملة لإنشاء وإدارة وتحسين حملاتك الإعلانية بسهولة.",
+        "items": {
+          "easySetup": {
+            "title": "إعداد سهل",
+            "description": "ابدأ في دقائق مع واجهتنا البديهية. لا حاجة لمعرفة تقنية."
+          },
+          "analytics": {
+            "title": "تحليلات متقدمة",
+            "description": "تتبع الأداء برؤى مفصلة وتقارير فورية لجميع حملاتك."
+          },
+          "multiPlatform": {
+            "title": "دعم متعدد المنصات",
+            "description": "أدر الحملات عبر فيسبوك وإنستجرام وجوجل والمزيد من لوحة واحدة."
+          },
+          "secure": {
+            "title": "أمان على مستوى المؤسسات",
+            "description": "بياناتك محمية بأمان مصرفي وتخزين مشفر."
+          },
+          "realTime": {
+            "title": "تحديثات فورية",
+            "description": "راقب حملاتك في الوقت الفعلي واتخذ قرارات مدروسة فوراً."
+          },
+          "support": {
+            "title": "دعم على مدار الساعة",
+            "description": "احصل على المساعدة عند الحاجة مع فريق الدعم المخصص المتاح طوال الوقت."
+          }
+        }
       },
-      "loading": "جاري تحميل الأسعار...",
-      "error": "تعذر تحميل معلومات الأسعار",
-      "retry": "إعادة المحاولة",
-      "noData": "لا توجد بيانات أسعار متاحة"
-    },
-    "cta": {
-      "title": "مستعد لتحويل تسويقك؟",
-      "subtitle": "انضم لآلاف الشركات التي تنمو بالفعل مع منصتنا.",
-      "getStarted": "ابدأ التجربة المجانية",
-      "contact": "تحدث مع المبيعات"
-    },
-    "whyChoose": {
-      "title": "لماذا تختار إعلان أخطبوط؟",
-      "points": [
-        "انشئ وشارك إعلاناتك مجانا",
-        "فريقنا يتولى ترويج إعلانك باحترافية",
-        "الترويج على وسائل التواصل",
-        "شبكة إعلانات قوية ومتوسعة"
-      ]
-    },
-    "footer": {
-      "description": "أقوى منصة تسويق لتنمية عملك بحلول إعلانية ذكية.",
-      "product": "المنتج",
-      "support": "الدعم",
-      "contact": "اتصل بنا",
-      "privacy": "سياسة الخصوصية",
-      "terms": "شروط الخدمة",
-      "copyright": "© ٢٠٢٥ OctopusAd. جميع الحقوق محفوظة."
-    }
-  },
-  "adDetail": {
-    "title": "تفاصيل الحملة الإعلانية",
-    "description": "تفاصيل وأداء الحملة الإعلانية",
-    "performanceOverview": "نظرة عامة على الأداء",
-    "impressionsCredit": "رصيد المشاهدات",
-    "amountSpent": "المبلغ المنفق",
-    "likesCount": "عدد الإعجابات",
-    "status": "الحالة",
-    "active": "نشط",
-    "inactive": "غير نشط",
-    "campaignManagement": "إدارة الحملة",
-    "assignCredits": "تخصيص الأرصدة",
-    "assignCredit": "تخصيص رصيد",
-    "assigning": "جاري التخصيص...",
-    "activateCampaign": "تفعيل الحملة",
-    "activating": "جاري التفعيل...",
-    "deactivateCampaign": "إلغاء تفعيل الحملة",
-    "deactivating": "جاري إلغاء التفعيل...",
-    "creditAssignInfo": "قم بتخصيص الأرصدة لهذه الحملة قبل التفعيل. كل رصيد يمثل قدرة انطباع لإعلاناتك.",
-    "adContent": "محتوى الإعلان",
-    "englishTitle": "العنوان الإنجليزي",
-    "arabicTitle": "العنوان العربي",
-    "englishDescription": "الوصف الإنجليزي",
-    "arabicDescription": "الوصف العربي",
-    "websiteUrl": "رابط الموقع",
-    "campaignDetails": "تفاصيل الحملة",
-    "campaignStatus": "حالة الحملة",
-    "targetAudience": "الجمهور المستهدف",
-    "targetCities": "المدن المستهدفة",
-    "budgetType": "نوع الاعلان",
-    "created": "تاريخ الإنشاء",
-    "lastUpdated": "آخر تحديث",
-    "approvedBy": "تمت الموافقة من قبل",
-    "publishToken": "رمز النشر",
-    "pageId": "معرف الصفحة",
-    "postIdOnPlatform": "معرف المنشور على المنصة",
-    "rejectionReason": "سبب الرفض",
-    "socialMediaLinks": "روابط وسائل التواصل الاجتماعي",
-    "adPreview": "معاينة الإعلان",
-    "viewAnalytics": "عرض التحليلات",
-    "purchaseImpressions": "شراء مشاهدات",
-    "backToCampaigns": "العودة للحملات",
-    "adNotFound": "الإعلان غير موجود",
-    "failedToLoadMetrics": "فشل في تحميل المقاييس",
-    "pleaseRetryLater": "يرجى المحاولة مرة أخرى لاحقاً.",
-    "creditAssignedSuccess": "تم تخصيص الرصيد بنجاح",
-    "creditsAssignedMessage": "رصيد(أرصدة) تم تخصيصها للحملة الإعلانية",
-    "failedToAssignCredit": "فشل في تخصيص الرصيد",
-    "adActivatedSuccess": "تم تفعيل الإعلان بنجاح",
-    "campaignActiveMessage": "حملتك الإعلانية الآن نشطة وتعمل",
-    "adDeactivatedSuccess": "تم إلغاء تفعيل الإعلان",
-    "campaignDeactivatedMessage": "تم إيقاف حملتك الإعلانية مؤقتًا",
-    "failedToActivateAd": "فشل في تفعيل الإعلان",
-    "insufficientCreditsMessage": "لا يمكن تفعيل الإعلان: أرصدة انطباع غير كافية",
-    "invalidCreditAmount": "مبلغ رصيد غير صحيح",
-    "enterValidCredit": "يرجى إدخال مبلغ رصيد صحيح",
-    "uploadPhoto": {
-      "header": {
-        "title": "تحميل صورة الإعلان",
-        "description": "أضف صورة جذابة لإعلانك"
+      "howItWorks": {
+        "title": "كيف يعمل",
+        "subtitle": "اجعل حملاتك الإعلانية تعمل في أربع خطوات بسيطة فقط.",
+        "getStarted": "ابدأ حملتك الأولى",
+        "steps": {
+          "signup": {
+            "title": "التسجيل",
+            "description": "أنشئ حسابك المجاني واحصل على وصول فوري لمنصتنا."
+          },
+          "setup": {
+            "title": "إعداد الملف الشخصي",
+            "description": "اضبط ملف عملك واربط حساباتك الإعلانية."
+          },
+          "create": {
+            "title": "إنشاء الحملات",
+            "description": "صمم وأطلق حملاتك الإعلانية بأدواتنا سهلة الاستخدام."
+          },
+          "track": {
+            "title": "التتبع والتحسين",
+            "description": "راقب الأداء وحسن حملاتك للحصول على نتائج أفضل."
+          }
+        }
       },
-      "card": {
-        "title": "تحميل صورة إعلانك",
-        "description": "أضف صورة مقنعة لجعل إعلانك أكثر جاذبية وتفاعلاً."
+      "stats": {
+        "campaigns": "الحملات النشطة",
+        "clients": "العملاء السعداء",
+        "uptime": "وقت التشغيل",
+        "support": "الدعم"
       },
-      "preview": {
-        "alt": "معاينة الإعلان"
+      "pricing": {
+        "title": "أسعار بسيطة وشفافة",
+        "subtitle": "اختر الخطة التي تناسب عملك. جميع الخطط تشمل ميزاتنا الأساسية.",
+        "currency": "ريال سعودي",
+        "perImpression": "لكل انطباع",
+        "impressions": "مشاهدات",
+        "getStarted": "ابدأ الآن",
+        "features": {
+          "analytics": "تحليلات متقدمة",
+          "multiPlatform": "دعم متعدد المنصات",
+          "support": "دعم عملاء 24/7",
+          "reporting": "تقارير فورية",
+          "optimization": "تحسين الحملات",
+          "api": "وصول API"
+        },
+        "loading": "جاري تحميل الأسعار...",
+        "error": "تعذر تحميل معلومات الأسعار",
+        "retry": "إعادة المحاولة",
+        "noData": "لا توجد بيانات أسعار متاحة"
       },
-      "uploadArea": {
-        "title": "ارفع صورة إعلانك",
-        "description": "اختر صورة عالية الجودة تمثل إعلانك",
-        "fileSupport": "يدعم JPG، PNG حتى 5 ميجابايت"
+      "cta": {
+        "title": "مستعد لتحويل تسويقك؟",
+        "subtitle": "انضم لآلاف الشركات التي تنمو بالفعل مع منصتنا.",
+        "getStarted": "ابدأ التجربة المجانية",
+        "contact": "تحدث مع المبيعات"
       },
-      "guidelines": {
-        "title": "إرشادات الصورة:",
-        "highRes": "استخدم صور عالية الدقة (الحد الأدنى 800x600 بكسل)",
-        "goodLighting": "تأكد من الإضاءة الجيدة والوضوح",
-        "avoidText": "تجنب الصور المليئة بالنصوص",
-        "relateToAudience": "استخدم صور تتعلق بجمهورك المستهدف"
+      "whyChoose": {
+        "title": "لماذا تختار إعلان أخطبوط؟",
+        "points": [
+          "انشئ وشارك إعلاناتك مجانا",
+          "فريقنا يتولى ترويج إعلانك باحترافية",
+          "الترويج على وسائل التواصل",
+          "شبكة إعلانات قوية ومتوسعة"
+        ]
       },
-      "buttons": {
-        "remove": "إزالة",
-        "uploading": "جارٍ الرفع...",
-        "choose": "اختر صورة",
-        "change": "تغيير الصورة",
-        "continue": "المتابعة إلى تخصيص الرصيد",
-        "skip": "تخطي الصورة"
-      },
-      "success": {
-        "title": "تم تحميل الصورة بنجاح",
-        "description": "تم تحميل صورة إعلانك"
-      },
-      "errors": {
-        "title": "فشل في التحميل",
-        "invalidAdId": "معرف إعلان غير صحيح",
-        "tryAgain": "غير قادر على العثور على معرف الإعلان. يرجى المحاولة مرة أخرى.",
-        "uploadFailed": "فشل في تحميل الصورة",
-        "invalidFileType": "نوع ملف غير صحيح",
-        "selectImage": "يرجى اختيار ملف صورة",
-        "fileTooLarge": "يجب أن يكون حجم الملف أقل من {size}",
-        "currentSize": "الحجم الحالي: {size}",
-        "photoRequired": "الصورة مطلوبة",
-        "uploadBeforeContinue": "يرجى تحميل صورة قبل المتابعة"
+      "footer": {
+        "description": "أقوى منصة تسويق لتنمية عملك بحلول إعلانية ذكية.",
+        "product": "المنتج",
+        "support": "الدعم",
+        "contact": "اتصل بنا",
+        "privacy": "سياسة الخصوصية",
+        "terms": "شروط الخدمة",
+        "copyright": "© ٢٠٢٥ OctopusAd. جميع الحقوق محفوظة."
       }
     },
-    "editor": {
-      "card": {
-        "title": "معلومات الإعلان"
-      },
-      "form": {
-        "titleEn": "عنوان الإعلان (بالإنجليزية)",
-        "titleEnPlaceholder": "أدخل عنوان الإعلان...",
-        "titleAr": "عنوان الإعلان (بالعربية)",
-        "titleArPlaceholder": "أدخل عنوان الإعلان...",
-        "descriptionEn": "الوصف (بالإنجليزية)",
-        "descriptionEnPlaceholder": "أدخل وصف الإعلان...",
-        "descriptionAr": "الوصف (بالعربية)",
-        "descriptionArPlaceholder": "أدخل وصف الإعلان...",
-        "websiteUrl": "رابط الموقع الإلكتروني",
-        "websiteUrlPlaceholder": "https://example.com",
-        "socialMediaLinks": "روابط وسائل التواصل الاجتماعي (اختيارية)",
-        "facebookLink": "رابط فيسبوك",
-        "facebookPlaceholder": "https://facebook.com/yourpage",
-        "targetAudience": "الجمهور المستهدف",
-        "selectAudience": "اختر الجمهور",
-        "audienceOptions": {
-          "general": "الجمهور العام",
-          "tech": "المختصون في التكنولوجيا",
-          "business": "أصحاب الأعمال",
-          "students": "الطلاب"
+    "adDetail": {
+      "title": "تفاصيل الحملة الإعلانية",
+      "description": "تفاصيل وأداء الحملة الإعلانية",
+      "performanceOverview": "نظرة عامة على الأداء",
+      "impressionsCredit": "رصيد المشاهدات",
+      "amountSpent": "المبلغ المنفق",
+      "likesCount": "عدد الإعجابات",
+      "status": "الحالة",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "campaignManagement": "إدارة الحملة",
+      "assignCredits": "تخصيص الأرصدة",
+      "assignCredit": "تخصيص رصيد",
+      "assigning": "جاري التخصيص...",
+      "activateCampaign": "تفعيل الحملة",
+      "activating": "جاري التفعيل...",
+      "deactivateCampaign": "إلغاء تفعيل الحملة",
+      "deactivating": "جاري إلغاء التفعيل...",
+      "creditAssignInfo": "قم بتخصيص الأرصدة لهذه الحملة قبل التفعيل. كل رصيد يمثل قدرة انطباع لإعلاناتك.",
+      "adContent": "محتوى الإعلان",
+      "englishTitle": "العنوان الإنجليزي",
+      "arabicTitle": "العنوان العربي",
+      "englishDescription": "الوصف الإنجليزي",
+      "arabicDescription": "الوصف العربي",
+      "websiteUrl": "رابط الموقع",
+      "campaignDetails": "تفاصيل الحملة",
+      "campaignStatus": "حالة الحملة",
+      "targetAudience": "الجمهور المستهدف",
+      "targetCities": "المدن المستهدفة",
+      "budgetType": "نوع الاعلان",
+      "created": "تاريخ الإنشاء",
+      "lastUpdated": "آخر تحديث",
+      "approvedBy": "تمت الموافقة من قبل",
+      "publishToken": "رمز النشر",
+      "pageId": "معرف الصفحة",
+      "postIdOnPlatform": "معرف المنشور على المنصة",
+      "rejectionReason": "سبب الرفض",
+      "socialMediaLinks": "روابط وسائل التواصل الاجتماعي",
+      "adPreview": "معاينة الإعلان",
+      "viewAnalytics": "عرض التحليلات",
+      "purchaseImpressions": "شراء مشاهدات",
+      "backToCampaigns": "العودة للحملات",
+      "adNotFound": "الإعلان غير موجود",
+      "failedToLoadMetrics": "فشل في تحميل المقاييس",
+      "pleaseRetryLater": "يرجى المحاولة مرة أخرى لاحقاً.",
+      "creditAssignedSuccess": "تم تخصيص الرصيد بنجاح",
+      "creditsAssignedMessage": "رصيد(أرصدة) تم تخصيصها للحملة الإعلانية",
+      "failedToAssignCredit": "فشل في تخصيص الرصيد",
+      "adActivatedSuccess": "تم تفعيل الإعلان بنجاح",
+      "campaignActiveMessage": "حملتك الإعلانية الآن نشطة وتعمل",
+      "adDeactivatedSuccess": "تم إلغاء تفعيل الإعلان",
+      "campaignDeactivatedMessage": "تم إيقاف حملتك الإعلانية مؤقتًا",
+      "failedToActivateAd": "فشل في تفعيل الإعلان",
+      "insufficientCreditsMessage": "لا يمكن تفعيل الإعلان: أرصدة انطباع غير كافية",
+      "invalidCreditAmount": "مبلغ رصيد غير صحيح",
+      "enterValidCredit": "يرجى إدخال مبلغ رصيد صحيح",
+      "uploadPhoto": {
+        "header": {
+          "title": "تحميل صورة الإعلان",
+          "description": "أضف صورة جذابة لإعلانك"
         },
-        "budgetType": "نوع الاعلان",
-        "selectBudgetType": "اختر نوع الاعلان",
-        "budgetOptions": {
-          "impressions": "الدفع مقابل 1000 ظهور",
-          "clicks": "الدفع مقابل النقرة"
+        "card": {
+          "title": "تحميل صورة إعلانك",
+          "description": "أضف صورة مقنعة لجعل إعلانك أكثر جاذبية وتفاعلاً."
         },
-        "targetCities": "المدن المستهدفة"
-      },
-      "buttons": {
-        "cancel": "إلغاء",
-        "saving": "جارٍ الحفظ...",
-        "saveDraft": "حفظ كمسودة"
-      },
-      "success": {
-        "title": "تم إنشاء الإعلان بنجاح",
-        "description": "تم إنشاء إعلانك وحفظه كمسودة"
-      },
-      "warning": {
-        "title": "تحذير",
-        "description": "تم إنشاء الإعلان ولكن لا يمكن تحميل الصورة. يرجى المحاولة لاحقاً."
-      },
-      "error": {
-        "title": "فشل في إنشاء الإعلان",
-        "description": "يرجى المحاولة مرة أخرى"
-      }
-    },
-    "editorUpdate": {
-      "card": {
-        "title": "تحديث معلومات الإعلان"
-      },
-      "form": {
-        "titleEn": "عنوان الإعلان (بالإنجليزية)",
-        "titleEnPlaceholder": "أدخل عنوان الإعلان...",
-        "adPhoto": "صورة الإعلان"
-      },
-      "buttons": {
-        "remove": "إزالة",
-        "updating": "جارٍ التحديث...",
-        "updateAd": "تحديث الإعلان"
-      },
-      "photoUpload": {
+        "preview": {
+          "alt": "معاينة الإعلان"
+        },
+        "uploadArea": {
+          "title": "ارفع صورة إعلانك",
+          "description": "اختر صورة عالية الجودة تمثل إعلانك",
+          "fileSupport": "يدعم JPG، PNG حتى 5 ميجابايت"
+        },
+        "guidelines": {
+          "title": "إرشادات الصورة:",
+          "highRes": "استخدم صور عالية الدقة (الحد الأدنى 800x600 بكسل)",
+          "goodLighting": "تأكد من الإضاءة الجيدة والوضوح",
+          "avoidText": "تجنب الصور المليئة بالنصوص",
+          "relateToAudience": "استخدم صور تتعلق بجمهورك المستهدف"
+        },
+        "buttons": {
+          "remove": "إزالة",
+          "uploading": "جارٍ الرفع...",
+          "choose": "اختر صورة",
+          "change": "تغيير الصورة",
+          "continue": "المتابعة إلى تخصيص الرصيد",
+          "skip": "تخطي الصورة"
+        },
         "success": {
           "title": "تم تحميل الصورة بنجاح",
           "description": "تم تحميل صورة إعلانك"
         },
+        "errors": {
+          "title": "فشل في التحميل",
+          "invalidAdId": "معرف إعلان غير صحيح",
+          "tryAgain": "غير قادر على العثور على معرف الإعلان. يرجى المحاولة مرة أخرى.",
+          "uploadFailed": "فشل في تحميل الصورة",
+          "invalidFileType": "نوع ملف غير صحيح",
+          "selectImage": "يرجى اختيار ملف صورة",
+          "fileTooLarge": "يجب أن يكون حجم الملف أقل من {size}",
+          "currentSize": "الحجم الحالي: {size}",
+          "photoRequired": "الصورة مطلوبة",
+          "uploadBeforeContinue": "يرجى تحميل صورة قبل المتابعة"
+        }
+      },
+      "editor": {
+        "card": {
+          "title": "معلومات الإعلان"
+        },
+        "form": {
+          "titleEn": "عنوان الإعلان (بالإنجليزية)",
+          "titleEnPlaceholder": "أدخل عنوان الإعلان...",
+          "titleAr": "عنوان الإعلان (بالعربية)",
+          "titleArPlaceholder": "أدخل عنوان الإعلان...",
+          "descriptionEn": "الوصف (بالإنجليزية)",
+          "descriptionEnPlaceholder": "أدخل وصف الإعلان...",
+          "descriptionAr": "الوصف (بالعربية)",
+          "descriptionArPlaceholder": "أدخل وصف الإعلان...",
+          "websiteUrl": "رابط الموقع الإلكتروني",
+          "websiteUrlPlaceholder": "https://example.com",
+          "socialMediaLinks": "روابط وسائل التواصل الاجتماعي (اختيارية)",
+          "facebookLink": "رابط فيسبوك",
+          "facebookPlaceholder": "https://facebook.com/yourpage",
+          "targetAudience": "الجمهور المستهدف",
+          "selectAudience": "اختر الجمهور",
+          "audienceOptions": {
+            "general": "الجمهور العام",
+            "tech": "المختصون في التكنولوجيا",
+            "business": "أصحاب الأعمال",
+            "students": "الطلاب"
+          },
+          "budgetType": "نوع الاعلان",
+          "selectBudgetType": "اختر نوع الاعلان",
+          "budgetOptions": {
+            "impressions": "الدفع مقابل 1000 ظهور",
+            "clicks": "الدفع مقابل النقرة"
+          },
+          "targetCities": "المدن المستهدفة"
+        },
+        "buttons": {
+          "cancel": "إلغاء",
+          "saving": "جارٍ الحفظ...",
+          "saveDraft": "حفظ كمسودة"
+        },
+        "success": {
+          "title": "تم إنشاء الإعلان بنجاح",
+          "description": "تم إنشاء إعلانك وحفظه كمسودة"
+        },
+        "warning": {
+          "title": "تحذير",
+          "description": "تم إنشاء الإعلان ولكن لا يمكن تحميل الصورة. يرجى المحاولة لاحقاً."
+        },
         "error": {
-          "title": "فشل في تحميل الصورة",
+          "title": "فشل في إنشاء الإعلان",
           "description": "يرجى المحاولة مرة أخرى"
         }
       },
-      "validation": {
-        "invalidFileType": "نوع ملف غير صحيح",
-        "selectImage": "يرجى اختيار ملف صورة",
-        "fileTooLarge": "الملف كبير جداً",
-        "fileSizeLimit": "يرجى اختيار صورة أصغر من 5 ميجابايت"
+      "editorUpdate": {
+        "card": {
+          "title": "تحديث معلومات الإعلان"
+        },
+        "form": {
+          "titleEn": "عنوان الإعلان (بالإنجليزية)",
+          "titleEnPlaceholder": "أدخل عنوان الإعلان...",
+          "adPhoto": "صورة الإعلان"
+        },
+        "buttons": {
+          "remove": "إزالة",
+          "updating": "جارٍ التحديث...",
+          "updateAd": "تحديث الإعلان"
+        },
+        "photoUpload": {
+          "success": {
+            "title": "تم تحميل الصورة بنجاح",
+            "description": "تم تحميل صورة إعلانك"
+          },
+          "error": {
+            "title": "فشل في تحميل الصورة",
+            "description": "يرجى المحاولة مرة أخرى"
+          }
+        },
+        "validation": {
+          "invalidFileType": "نوع ملف غير صحيح",
+          "selectImage": "يرجى اختيار ملف صورة",
+          "fileTooLarge": "الملف كبير جداً",
+          "fileSizeLimit": "يرجى اختيار صورة أصغر من 5 ميجابايت"
+        },
+        "success": {
+          "title": "تم تحديث الإعلان بنجاح",
+          "description": "تم تحديث إعلانك"
+        },
+        "error": {
+          "title": "فشل في تحديث الإعلان",
+          "description": "يرجى المحاولة مرة أخرى"
+        }
       },
-      "success": {
-        "title": "تم تحديث الإعلان بنجاح",
-        "description": "تم تحديث إعلانك"
+      "form": {
+        "title": "\u0627\u0644\u0627\u0633\u062a\u0647\u062f\u0627\u0641 \u0648\u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
+        "primaryAudience": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629",
+        "selectPrimaryAudience": "\u0627\u062e\u062a\u0631 \u0627\u0644\u062c\u0645\u0647\u0648\u0631",
+        "audienceOptions": {
+          "general": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0627\u0644\u0639\u0627\u0645",
+          "youngAdults": "\u0634\u0628\u0627\u0628 \u0635\u063a\u064a\u0631\u0629 (18-30)",
+          "professionals": "\u0627\u0644\u0645\u062d\u062a\u0631\u0641\u064a\u0646",
+          "businessOwners": "\u0623\u0635\u062d\u0627\u0628 \u0627\u0644\u0623\u0639\u0645\u0627\u0644",
+          "students": "\u0627\u0644\u0637\u0644\u0627\u0628",
+          "parents": "\u0627\u0644\u0623\u0648\u0627\u0644\u0627\u0646",
+          "seniors": "\u0627\u0644\u0633\u0646\u064a\u0648\u0631\u0633 (50+)"
+        },
+        "budgetType": "\u0646\u0648\u0639 \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
+        "selectBudgetType": "\u0627\u062e\u062a\u0631 \u0646\u0648\u0639 \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
+        "budgetOptions": {
+          "impressions": "\u0627\u0644\u062f\u0641\u0639 \u0645\u0642\u0627\u0628\u0644 1000 \u0638\u0647\u0648\u0631",
+          "clicks": "\u0627\u0644\u062f\u0641\u0639 \u0645\u0642\u0627\u0628\u0644 \u0627\u0644\u0646\u0642\u0631\u0629"
+        },
+        "ageRange": "\u0645\u062f\u0629 \u0627\u0644\u0639\u0645\u0631",
+        "minAgePlaceholder": "\u0623\u062f\u0646\u0649 \u0627\u0644\u0639\u0645\u0631",
+        "maxAgePlaceholder": "\u0623\u0642\u0635\u0649 \u0627\u0644\u0639\u0645\u0631",
+        "gender": "\u0627\u0644\u062c\u0646\u0633",
+        "genders": {
+          "male": "\u0630\u0643\u0631",
+          "female": "\u0623\u0646\u062b\u0649",
+          "all": "\u0627\u0644\u062c\u0645\u064a\u0639"
+        },
+        "languages": "\u0627\u0644\u0644\u063a\u0627\u062a",
+        "languageOptions": {
+          "en": "English",
+          "ar": "Arabic",
+          "both": "Both"
+        },
+        "interests": "\u0627\u0644\u0627\u0647\u062a\u0645\u0627\u0645\u0627\u062a",
+        "technology": "\u0627\u0644\u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627",
+        "business": "\u0623\u0635\u062d\u0627\u0628",
+        "finance": "\u0627\u0644\u0645\u0627\u0644\u064a\u0627\u062a",
+        "health": "\u0627\u0644\u0635\u062d\u0629",
+        "fitness": "\u0627\u0644\u0644\u0627\u0631\u064a\u0628",
+        "food": "\u0627\u0644\u0637\u0639\u0627\u0645",
+        "travel": "\u0627\u0644\u0633\u0641\u0631",
+        "education": "\u0627\u0644\u062a\u0639\u0644\u064a\u0645",
+        "entertainment": "\u0627\u0644\u062a\u0631\u0641\u064a\u0647",
+        "shopping": "\u0627\u0644\u062a\u0633\u0648\u0642",
+        "automotive": "\u0627\u0644\u0645\u0648\u0627\u0635\u0644\u0627\u062a",
+        "realEstate": "\u0627\u0644\u0639\u0639\u0627\u0631",
+        "locations": "\u0627\u0644\u0645\u0648\u0627\u0642\u0639",
+        "dailyBudget": "\u0627\u0644\u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u064a\u0648\u0645\u064a\u0629",
+        "approxImpressions": "\u062a\u0642\u0631\u064a\u0628\u0627 \u062d\u0648\u0627\u0644\u064a \u0627\u0644\u0623\u0646\u0637\u0628\u0627\u0639 \u0644\u0643\u0644 {count} \u064a\u0648\u0645",
+        "basedOnCPC": "\u0628\u0627\u0644\u0627\u0633\u062a\u0646\u0627\u062f \u0639\u0644\u0649 \u062a\u0643\u0644\u0641\u0629 \u0627\u0644\u0646\u0642\u0631",
+        "saving": "\u062c\u0627\u0631\u064a \u0627\u0644\u062d\u0641\u0638...",
+        "saveTargeting": "\u062d\u0641\u0638 \u0627\u0644\u0627\u0633\u062a\u0647\u062f\u0627\u0641",
+        "save": "\u062d\u0641\u0638",
+        "selectPlaceholder": "\u0627\u062e\u062a\u0631..."
       },
-      "error": {
-        "title": "فشل في تحديث الإعلان",
-        "description": "يرجى المحاولة مرة أخرى"
+      "card": {
+        "buttons": {
+          "view": "عرض",
+          "edit": "تعديل",
+          "analytics": "إحصائيات",
+          "purchaseImpressions": "شراء مشاهدات",
+          "viewPublicAd": "عرض الإعلان العام",
+          "approve": "موافقة",
+          "reject": "رفض"
+        },
+        "rejectionReason": "سبب الرفض:"
       }
     },
-    "form": {
-      "title": "\u0627\u0644\u0627\u0633\u062a\u0647\u062f\u0627\u0641 \u0648\u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
-      "primaryAudience": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629",
-      "selectPrimaryAudience": "\u0627\u062e\u062a\u0631 \u0627\u0644\u062c\u0645\u0647\u0648\u0631",
-      "audienceOptions": {
-        "general": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0627\u0644\u0639\u0627\u0645",
-        "youngAdults": "\u0634\u0628\u0627\u0628 \u0635\u063a\u064a\u0631\u0629 (18-30)",
-        "professionals": "\u0627\u0644\u0645\u062d\u062a\u0631\u0641\u064a\u0646",
-        "businessOwners": "\u0623\u0635\u062d\u0627\u0628 \u0627\u0644\u0623\u0639\u0645\u0627\u0644",
-        "students": "\u0627\u0644\u0637\u0644\u0627\u0628",
-        "parents": "\u0627\u0644\u0623\u0648\u0627\u0644\u0627\u0646",
-        "seniors": "\u0627\u0644\u0633\u0646\u064a\u0648\u0631\u0633 (50+)"
-      },
-      "budgetType": "\u0646\u0648\u0639 \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
-      "selectBudgetType": "\u0627\u062e\u062a\u0631 \u0646\u0648\u0639 \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
-      "budgetOptions": {
-        "impressions": "\u0627\u0644\u062f\u0641\u0639 \u0645\u0642\u0627\u0628\u0644 1000 \u0638\u0647\u0648\u0631",
-        "clicks": "\u0627\u0644\u062f\u0641\u0639 \u0645\u0642\u0627\u0628\u0644 \u0627\u0644\u0646\u0642\u0631\u0629"
-      },
-      "ageRange": "\u0645\u062f\u0629 \u0627\u0644\u0639\u0645\u0631",
-      "minAgePlaceholder": "\u0623\u062f\u0646\u0649 \u0627\u0644\u0639\u0645\u0631",
-      "maxAgePlaceholder": "\u0623\u0642\u0635\u0649 \u0627\u0644\u0639\u0645\u0631",
-      "gender": "\u0627\u0644\u062c\u0646\u0633",
-      "genders": {
-        "male": "\u0630\u0643\u0631",
-        "female": "\u0623\u0646\u062b\u0649",
-        "all": "\u0627\u0644\u062c\u0645\u064a\u0639"
-      },
-      "languages": "\u0627\u0644\u0644\u063a\u0627\u062a",
-      "languageOptions": {
-        "en": "English",
-        "ar": "Arabic",
-        "both": "Both"
-      },
-      "interests": "\u0627\u0644\u0627\u0647\u062a\u0645\u0627\u0645\u0627\u062a",
-      "technology": "\u0627\u0644\u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627",
-      "business": "\u0623\u0635\u062d\u0627\u0628",
-      "finance": "\u0627\u0644\u0645\u0627\u0644\u064a\u0627\u062a",
-      "health": "\u0627\u0644\u0635\u062d\u0629",
-      "fitness": "\u0627\u0644\u0644\u0627\u0631\u064a\u0628",
-      "food": "\u0627\u0644\u0637\u0639\u0627\u0645",
-      "travel": "\u0627\u0644\u0633\u0641\u0631",
-      "education": "\u0627\u0644\u062a\u0639\u0644\u064a\u0645",
-      "entertainment": "\u0627\u0644\u062a\u0631\u0641\u064a\u0647",
-      "shopping": "\u0627\u0644\u062a\u0633\u0648\u0642",
-      "automotive": "\u0627\u0644\u0645\u0648\u0627\u0635\u0644\u0627\u062a",
-      "realEstate": "\u0627\u0644\u0639\u0639\u0627\u0631",
-      "locations": "\u0627\u0644\u0645\u0648\u0627\u0642\u0639",
-      "dailyBudget": "\u0627\u0644\u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u064a\u0648\u0645\u064a\u0629",
-      "approxImpressions": "\u062a\u0642\u0631\u064a\u0628\u0627 \u062d\u0648\u0627\u0644\u064a \u0627\u0644\u0623\u0646\u0637\u0628\u0627\u0639 \u0644\u0643\u0644 {count} \u064a\u0648\u0645",
-      "basedOnCPC": "\u0628\u0627\u0644\u0627\u0633\u062a\u0646\u0627\u062f \u0639\u0644\u0649 \u062a\u0643\u0644\u0641\u0629 \u0627\u0644\u0646\u0642\u0631",
-      "saving": "\u062c\u0627\u0631\u064a \u0627\u0644\u062d\u0641\u0638...",
-      "saveTargeting": "\u062d\u0641\u0638 \u0627\u0644\u0627\u0633\u062a\u0647\u062f\u0627\u0641",
-      "save": "\u062d\u0641\u0638",
-      "selectPlaceholder": "\u0627\u062e\u062a\u0631..."
-    },
-    "card": {
-      "buttons": {
-        "view": "عرض",
-        "edit": "تعديل",
-        "analytics": "إحصائيات",
-        "purchaseImpressions": "شراء مشاهدات",
-        "viewPublicAd": "عرض الإعلان العام",
-        "approve": "موافقة",
-        "reject": "رفض"
-      },
-      "rejectionReason": "سبب الرفض:"
+    "common": {
+      "dashboard": "لوحة التحكم",
+      "contactSupport": "اتصل بالدعم"
     }
-  },
-  "common": {
-    "dashboard": "لوحة التحكم",
-    "contactSupport": "اتصل بالدعم"
   }
 }

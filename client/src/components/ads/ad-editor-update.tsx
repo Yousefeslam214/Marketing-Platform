@@ -56,17 +56,26 @@ export function AdEditor({
   existingData,
   isUpdate = false,
 }: AdEditorUpdateProps) {
+  console.log("existingData:", existingData);
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { t } = useLanguage();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  // support multiple images
+  const initialImages: string[] = Array.isArray(existingData?.imageUrl)
+    ? existingData.imageUrl
+    : existingData?.imageUrl
+    ? [existingData.imageUrl]
+    : [];
+  const [serverImages, setServerImages] = useState<string[]>(initialImages);
   const [photoPreview, setPhotoPreview] = useState<string | null>(
-    existingData?.imageUrl || null
+    initialImages[0] || null
   );
-  const editorRef = useRef<AvatarEditor | null>(null);
-  const [editingFile, setEditingFile] = useState<File | null>(null);
+  const editorRef = useRef<any>(null);
+  const [editingFile, setEditingFile] = useState<string | File | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editScale, setEditScale] = useState(1);
   const [editRotate, setEditRotate] = useState(0);
 
@@ -78,6 +87,7 @@ export function AdEditor({
       descriptionEn: existingData?.descriptionEn || "",
       descriptionAr: existingData?.descriptionAr || "",
       websiteUrl: existingData?.websiteUrl || "",
+      phoneNumber: existingData?.phoneNumber || "",
       imageUrl: existingData?.imageUrl || "",
       targetAudience: existingData?.targetAudience || "",
       targetCities: (existingData as any)?.targetCities || [],
@@ -101,6 +111,7 @@ export function AdEditor({
         descriptionEn: existingData.descriptionEn || "",
         descriptionAr: existingData.descriptionAr || "",
         websiteUrl: existingData.websiteUrl || "",
+        phoneNumber: existingData.phoneNumber || "",
         imageUrl: existingData.imageUrl || "",
         targetAudience: existingData.targetAudience || "",
         targetCities: existingData.targetCities || [],
@@ -112,10 +123,25 @@ export function AdEditor({
         snapchatLink: existingData.snapchatLink || "",
         googleAdsLink: existingData.googleAdsLink || "",
       });
-      // ensure photo preview reflects server image
-      setPhotoPreview(existingData?.imageUrl || null);
+      // ensure photo preview reflects server image(s)
+      const imgs = Array.isArray(existingData?.imageUrl)
+        ? existingData.imageUrl
+        : existingData?.imageUrl
+        ? [existingData.imageUrl]
+        : [];
+      setServerImages(imgs);
+      setPhotoPreview(imgs[0] || null);
+      // keep form in sync
+  // keep form.imageUrl as a single string (primary image) to match schema
+  form.setValue("imageUrl", imgs[0] || "");
     }
   }, [existingData]);
+
+  // keep form value in sync when serverImages change
+  useEffect(() => {
+  // schema expects a string for imageUrl; keep the primary image as the form value
+  form.setValue("imageUrl", serverImages[0] || "");
+  }, [serverImages]);
 
   // Photo upload mutation
   const uploadPhotoMutation = useMutation({
@@ -270,6 +296,7 @@ export function AdEditor({
       const localPreview = URL.createObjectURL(file);
       setPhotoPreview(localPreview);
       setEditingFile(file);
+      setEditingIndex(null);
       setEditScale(1);
       setEditRotate(0);
     }
@@ -284,9 +311,40 @@ export function AdEditor({
       await new Promise<void>((resolve) => {
         canvas.toBlob(async (blob) => {
           if (!blob) return resolve();
-          const file = new File([blob], editingFile.name, { type: blob.type });
+          const file = new File([blob],
+            // editingFile can be string (url) or File
+            typeof editingFile === "string" ? "edited.png" : editingFile.name,
+            { type: blob.type }
+          );
           try {
-            await uploadPhotoMutation.mutateAsync(file);
+            // upload and capture server response
+            const result = await uploadPhotoMutation.mutateAsync(file);
+            const newPhotoUrl = result?.data?.photo;
+            if (newPhotoUrl) {
+              if (editingIndex !== null) {
+                // replace specific index
+                setServerImages((prev) => {
+                  const copy = [...prev];
+                  copy[editingIndex] = newPhotoUrl;
+                  return copy;
+                });
+              } else {
+                // append new photo
+                setServerImages((prev) => [...prev, newPhotoUrl]);
+              }
+              // update preview and form value
+              setPhotoPreview(newPhotoUrl);
+              const updated =
+                editingIndex !== null
+                  ? (() => {
+                      const copy = [...serverImages];
+                      copy[editingIndex] = newPhotoUrl;
+                      return copy;
+                    })()
+                  : [...serverImages, newPhotoUrl];
+              // keep the form value as the primary image string to satisfy zod
+              form.setValue("imageUrl", updated[0] || "");
+            }
           } catch (e) {
             // handled in mutation
           }
@@ -296,6 +354,7 @@ export function AdEditor({
     } finally {
       setUploadingPhoto(false);
       setEditingFile(null);
+      setEditingIndex(null);
     }
   };
 
@@ -447,43 +506,38 @@ export function AdEditor({
                           <FormLabel>{t("ads", "adPhotoLabel")}</FormLabel>
                           <FormControl>
                             <div className="space-y-4">
-                              {/* Photo Preview */}
-                              {photoPreview && (
-                                <div className="relative">
-                                  <img
-                                    src={photoPreview}
-                                    alt="Ad preview"
-                                    className="w-full   object-cover rounded-lg border"
-                                  />
-                                  <Button
-                                    type="button"
-                                    variant="destructive"
-                                    size="sm"
-                                    className="absolute top-2 right-2"
-                                    onClick={() => {
-                                      // If the preview looks like a server URL (not a local blob), call API to delete
-                                      if (
-                                        photoPreview &&
-                                        !photoPreview.startsWith("blob:")
-                                      ) {
-                                        deletePhotoMutation.mutate();
-                                        return;
-                                      }
+                              {/* Photo Preview & Thumbnails */}
+                              {serverImages.length > 0 && (
+                                <div className="space-y-3">
+                                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                                    {serverImages.map((src, i) => (
+                                      <div key={i} className="relative rounded overflow-hidden border">
+                                        <img src={src} alt={`thumb-${i}`} className="w-full h-20 object-cover" />
+                                        <div className="absolute top-1 right-1 flex flex-col gap-1">
+                                          <Button
+                                            size="xs"
+                                            onClick={() => {
+                                              // open editor for this image (pass url)
+                                              setEditingIndex(i);
+                                              setEditingFile(src);
+                                              setPhotoPreview(src);
+                                              setEditScale(1);
+                                              setEditRotate(0);
+                                            }}>
+                                            Edit
+                                          </Button>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
 
-                                      // Otherwise, it was a local preview — just revoke and clear
-                                      if (
-                                        photoPreview &&
-                                        photoPreview.startsWith("blob:")
-                                      ) {
-                                        URL.revokeObjectURL(photoPreview);
-                                      }
-                                      setPhotoPreview(null);
-                                      form.setValue("imageUrl", "");
-                                    }}
-                                    disabled={deletePhotoMutation.isPending}>
-                                    <i className="fas fa-trash mx-2"></i>
-                                    {t("ads", "removePhoto")}
-                                  </Button>
+                                  <div className="relative">
+                                    <img
+                                      src={photoPreview || serverImages[0]}
+                                      alt="Ad preview"
+                                      className="w-full object-cover rounded-lg border"
+                                    />
+                                  </div>
                                 </div>
                               )}
 
@@ -927,6 +981,23 @@ export function AdEditor({
                             <Input
                               type="url"
                               placeholder="https://youtube.com/..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phoneNumber"
+                      render={({ field }: { field: any }) => (
+                        <FormItem>
+                          <FormLabel>{t("ads", "phoneNumber")}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="tel"
+                              placeholder={t("ads", "phoneNumber")}
                               {...field}
                             />
                           </FormControl>

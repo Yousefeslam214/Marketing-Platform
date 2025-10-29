@@ -43,6 +43,7 @@ export function AdEditor() {
       descriptionEn: "",
       descriptionAr: "",
       websiteUrl: "",
+      phoneNumber: "",
       targetAudience: "",
       targetCities: [],
       budgetType: "impressions",
@@ -308,6 +309,25 @@ export function AdEditor() {
                           placeholder="https://snapchat.com/add/yourusername"
                           data-testid="input-snapchat-link"
                           {...field} // field is of type { field: any }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("ads", "phoneNumber")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder={t("ads", "phoneNumber")}
+                          data-testid="input-phone-number"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />

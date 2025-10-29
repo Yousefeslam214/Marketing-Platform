@@ -1079,291 +1079,372 @@
     "changesTitle": "Changes to Terms",
     "changesContent": "We reserve the right to modify these terms at any time. We will notify users of significant changes via email or platform notifications. Continued use after changes constitutes acceptance of new terms.",
     "legalContactTitle": "Legal Contact",
-    "legalContactContent": "For legal matters or questions about these terms, please contact our legal team:"
-  },
-  "publicFeed": {
-    "title": "Public Feed",
-    "sponsored": "Sponsored",
-    "like": "Like",
-    "share": "Share",
-    "comment": "Comment",
-    "learnMore": "Learn More",
-    "loadMore": "Load More",
-    "loading": "Loading...",
-    "interactionRecorded": "Interaction recorded",
-    "interactionRecordedDesc": "Your interaction has been recorded",
-    "copiedToClipboard": "Copied to clipboard",
-    "adContentCopied": "Ad content copied to clipboard",
-    "errorLoading": "Something went wrong",
-    "unableToLoad": "Unable to load ads feed",
-    "noAdsAvailable": "No ads available",
-    "checkBackLater": "Check back later for new content"
-  },
-  "themeToggle": {
-    "light": "Light",
-    "dark": "Dark"
-  },
-  "landing": {
-    "navigation": {
-      "features": "Features",
-      "howItWorks": "How It Works",
-      "pricing": "Pricing",
-      "contact": "Contact"
+    "legalContactContent": "For legal matters or questions about these terms, please contact our legal team:",
+    "platformBanNotice": {
+      "title": "🚫 Important notice from Octopus Ad",
+      "body": "🚫 تنبيه هام من منصة إعلان أخطبوط\n\nيُمنع الإعلان أو البيع داخل المنصة لأي من السلع المحظورة، ويُحظر نهائيًا كل من يعلن عنها أو يتجاوب معها عبر الردود أو الرسائل الخاصة، دون تنبيه مسبق.\n\nالسلع الممنوعة تشمل:\n- كل ما يخالف أنظمة المملكة العربية السعودية\n- التقسيط والمنتجات البنكية\n- الأدوية والمنتجات الطبية والصحية\n- التسويق الشبكي\n- الأسلحة ومستلزماتها\n- المنتجات الجنسية\n- الأسهم والعملات وإدارة المحافظ\n- أجهزة الليزر والتجسس\n- المواقع والخدمات الإلكترونية والعضويات\n- السلع المجانية أو المنسوخة\n- منتجات التبغ\n- المنتجات التي تتطلب ترخيص بدون توفره\n- الأجهزة ذات المخاطر الأمنية أو غير المصرّح بها\n- شرائح وخدمات الاتصالات بدون ترخيص\n- بيع أو جمع البيانات بشكل مخالف\n\n📌 الحظر نهائي ولا نقاش فيه"
     },
-    "hero": {
-      "badge": "🚀 Advanced Marketing Platform",
-      "title": "Grow Your Business with Smart Advertising",
-      "subtitle": "Create, manage, and optimize your advertising campaigns across multiple platforms. Get real-time analytics and maximize your ROI with our intelligent marketing platform.",
-      "getStarted": "Get Started Free",
-      "watchDemo": "Watch Demo",
-      "features": {
-        "noSetup": "No Setup Required",
-        "multiPlatform": "Multi-Platform",
-        "analytics": "Real-time Analytics"
+    "publicFeed": {
+      "title": "Public Feed",
+      "sponsored": "Sponsored",
+      "like": "Like",
+      "share": "Share",
+      "comment": "Comment",
+      "learnMore": "Learn More",
+      "loadMore": "Load More",
+      "loading": "Loading...",
+      "interactionRecorded": "Interaction recorded",
+      "interactionRecordedDesc": "Your interaction has been recorded",
+      "copiedToClipboard": "Copied to clipboard",
+      "adContentCopied": "Ad content copied to clipboard",
+      "errorLoading": "Something went wrong",
+      "unableToLoad": "Unable to load ads feed",
+      "noAdsAvailable": "No ads available",
+      "checkBackLater": "Check back later for new content"
+    },
+    "themeToggle": {
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "landing": {
+      "navigation": {
+        "features": "Features",
+        "howItWorks": "How It Works",
+        "pricing": "Pricing",
+        "contact": "Contact"
       },
-      "dashboard": {
-        "title": "Campaign Dashboard",
-        "live": "Live",
-        "campaigns": "Campaigns",
-        "engagement": "Engagement",
-        "leads": "Leads",
-        "performance": "Performance Analytics"
-      }
-    },
-    "features": {
-      "title": "Everything You Need to Succeed",
-      "subtitle": "Our platform provides comprehensive tools to create, manage, and optimize your advertising campaigns with ease.",
-      "items": {
-        "easySetup": {
-          "title": "Easy Setup",
-          "description": "Get started in minutes with our intuitive interface. No technical knowledge required."
+      "hero": {
+        "badge": "🚀 Advanced Marketing Platform",
+        "title": "Grow Your Business with Smart Advertising",
+        "subtitle": "Create, manage, and optimize your advertising campaigns across multiple platforms. Get real-time analytics and maximize your ROI with our intelligent marketing platform.",
+        "getStarted": "Get Started Free",
+        "watchDemo": "Watch Demo",
+        "features": {
+          "noSetup": "No Setup Required",
+          "multiPlatform": "Multi-Platform",
+          "analytics": "Real-time Analytics"
         },
-        "analytics": {
-          "title": "Advanced Analytics",
-          "description": "Track performance with detailed insights and real-time reporting on all your campaigns."
-        },
-        "multiPlatform": {
-          "title": "Multi-Platform Support",
-          "description": "Manage campaigns across Facebook, Instagram, Google, and more from one dashboard."
-        },
-        "secure": {
-          "title": "Enterprise Security",
-          "description": "Your data is protected with bank-level security and encrypted storage."
-        },
-        "realTime": {
-          "title": "Real-Time Updates",
-          "description": "Monitor your campaigns in real-time and make data-driven decisions instantly."
-        },
-        "support": {
-          "title": "24/7 Support",
-          "description": "Get help when you need it with our dedicated support team available around the clock."
+        "dashboard": {
+          "title": "Campaign Dashboard",
+          "live": "Live",
+          "campaigns": "Campaigns",
+          "engagement": "Engagement",
+          "leads": "Leads",
+          "performance": "Performance Analytics"
         }
-      }
-    },
-    "howItWorks": {
-      "title": "How It Works",
-      "subtitle": "Get your advertising campaigns up and running in just four simple steps.",
-      "getStarted": "Start Your First Campaign",
-      "steps": {
-        "signup": {
-          "title": "Sign Up",
-          "description": "Create your free account and get instant access to our platform."
-        },
-        "setup": {
-          "title": "Setup Profile",
-          "description": "Configure your business profile and connect your advertising accounts."
-        },
-        "create": {
-          "title": "Create Campaigns",
-          "description": "Design and launch your advertising campaigns with our easy-to-use tools."
-        },
-        "track": {
-          "title": "Track & Optimize",
-          "description": "Monitor performance and optimize your campaigns for better results."
-        }
-      }
-    },
-    "stats": {
-      "campaigns": "Active Campaigns",
-      "clients": "Happy Clients",
-      "uptime": "Uptime",
-      "support": "Support"
-    },
-    "pricing": {
-      "title": "Simple, Transparent Pricing",
-      "subtitle": "Choose the plan that works best for your business. All plans include our core features.",
-      "currency": "SAR",
-      "perImpression": "per impression",
-      "impressions": "impressions",
-      "getStarted": "Get Started",
+      },
       "features": {
-        "analytics": "Advanced Analytics",
-        "multiPlatform": "Multi-Platform Support",
-        "support": "24/7 Customer Support",
-        "reporting": "Real-time Reporting",
-        "optimization": "Campaign Optimization",
-        "api": "API Access"
+        "title": "Everything You Need to Succeed",
+        "subtitle": "Our platform provides comprehensive tools to create, manage, and optimize your advertising campaigns with ease.",
+        "items": {
+          "easySetup": {
+            "title": "Easy Setup",
+            "description": "Get started in minutes with our intuitive interface. No technical knowledge required."
+          },
+          "analytics": {
+            "title": "Advanced Analytics",
+            "description": "Track performance with detailed insights and real-time reporting on all your campaigns."
+          },
+          "multiPlatform": {
+            "title": "Multi-Platform Support",
+            "description": "Manage campaigns across Facebook, Instagram, Google, and more from one dashboard."
+          },
+          "secure": {
+            "title": "Enterprise Security",
+            "description": "Your data is protected with bank-level security and encrypted storage."
+          },
+          "realTime": {
+            "title": "Real-Time Updates",
+            "description": "Monitor your campaigns in real-time and make data-driven decisions instantly."
+          },
+          "support": {
+            "title": "24/7 Support",
+            "description": "Get help when you need it with our dedicated support team available around the clock."
+          }
+        }
       },
-      "loading": "Loading pricing...",
-      "error": "Unable to load pricing information",
-      "retry": "Retry",
-      "noData": "No pricing data available"
-    },
-    "cta": {
-      "title": "Ready to Transform Your Marketing?",
-      "subtitle": "Join thousands of businesses already growing with our platform.",
-      "getStarted": "Start Free Trial",
-      "contact": "Talk to Sales"
-    },
-    "whyChoose": {
-      "title": "Why Choose Oktopoot Ads?",
-      "points": [
-        "Create and share your ads for free",
-        "Our team promotes your ad professionally",
-        "Social media advertising",
-        "A strong and expanding ad network"
-      ]
-    },
-    "footer": {
-      "description": "The most powerful marketing platform to grow your business with intelligent advertising solutions.",
-      "product": "Product",
-      "support": "Support",
-      "contact": "Contact",
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "copyright": "© 2025 OctopusAd. All rights reserved."
-    }
-  },
-  "adDetail": {
-    "title": "Ad Campaign Details",
-    "description": "Ad campaign details and performance",
-    "performanceOverview": "Performance Overview",
-    "impressionsCredit": "Impressions Credit",
-    "amountSpent": "Amount Spent",
-    "likesCount": "Likes Count",
-    "status": "Status",
-    "active": "Active",
-    "inactive": "Inactive",
-    "campaignManagement": "Campaign Management",
-    "assignCredits": "Assign Credits",
-    "assignCredit": "Assign Credit",
-    "assigning": "Assigning...",
-    "activateCampaign": "Activate Campaign",
-    "activating": "Activating...",
-    "deactivateCampaign": "Deactivate Campaign",
-    "deactivating": "Deactivating...",
-    "creditAssignInfo": "Assign credits to this campaign before activation. Each credit represents impression capacity for your ads.",
-    "adContent": "Ad Content",
-    "englishTitle": "English Title",
-    "arabicTitle": "Arabic Title",
-    "englishDescription": "English Description",
-    "arabicDescription": "Arabic Description",
-    "websiteUrl": "Website URL",
-    "campaignDetails": "Campaign Details",
-    "campaignStatus": "Campaign Status",
-    "targetAudience": "Target Audience",
-    "targetCities": "Target Cities",
-    "budgetType": "Budget Type",
-    "created": "Created",
-    "lastUpdated": "Last Updated",
-    "approvedBy": "Approved By",
-    "publishToken": "Publish Token",
-    "pageId": "Page ID",
-    "postIdOnPlatform": "Post ID on Platform",
-    "rejectionReason": "Rejection Reason",
-    "socialMediaLinks": "Social Media Links",
-    "adPreview": "Ad Preview",
-    "viewAnalytics": "View Analytics",
-    "purchaseImpressions": "Purchase Impressions",
-    "backToCampaigns": "Back to Campaigns",
-    "adNotFound": "Ad not found",
-    "failedToLoadMetrics": "Failed to load metrics",
-    "pleaseRetryLater": "Please try again later.",
-    "creditAssignedSuccess": "Credit Assigned Successfully",
-    "creditsAssignedMessage": "credit(s) assigned to ad campaign",
-    "failedToAssignCredit": "Failed to Assign Credit",
-    "adActivatedSuccess": "Ad Activated Successfully",
-    "campaignActiveMessage": "Your ad campaign is now active and running",
-    "adDeactivatedSuccess": "Ad Deactivated",
-    "campaignDeactivatedMessage": "Your ad campaign has been paused",
-    "failedToActivateAd": "Failed to Activate Ad",
-    "insufficientCreditsMessage": "Cannot activate ad: insufficient impression credits",
-    "invalidCreditAmount": "Invalid Credit Amount",
-    "enterValidCredit": "Please enter a valid credit amount",
-    "uploadPhoto": {
-      "header": {
-        "title": "Upload Ad Photo",
-        "description": "Add an eye-catching photo to your advertisement"
+      "howItWorks": {
+        "title": "How It Works",
+        "subtitle": "Get your advertising campaigns up and running in just four simple steps.",
+        "getStarted": "Start Your First Campaign",
+        "steps": {
+          "signup": {
+            "title": "Sign Up",
+            "description": "Create your free account and get instant access to our platform."
+          },
+          "setup": {
+            "title": "Setup Profile",
+            "description": "Configure your business profile and connect your advertising accounts."
+          },
+          "create": {
+            "title": "Create Campaigns",
+            "description": "Design and launch your advertising campaigns with our easy-to-use tools."
+          },
+          "track": {
+            "title": "Track & Optimize",
+            "description": "Monitor performance and optimize your campaigns for better results."
+          }
+        }
       },
-      "card": {
-        "title": "Upload Your Ad Photo",
-        "description": "Add a compelling image to make your ad more attractive and engaging."
+      "stats": {
+        "campaigns": "Active Campaigns",
+        "clients": "Happy Clients",
+        "uptime": "Uptime",
+        "support": "Support"
       },
-      "preview": {
-        "alt": "Ad preview"
+      "pricing": {
+        "title": "Simple, Transparent Pricing",
+        "subtitle": "Choose the plan that works best for your business. All plans include our core features.",
+        "currency": "SAR",
+        "perImpression": "per impression",
+        "impressions": "impressions",
+        "getStarted": "Get Started",
+        "features": {
+          "analytics": "Advanced Analytics",
+          "multiPlatform": "Multi-Platform Support",
+          "support": "24/7 Customer Support",
+          "reporting": "Real-time Reporting",
+          "optimization": "Campaign Optimization",
+          "api": "API Access"
+        },
+        "loading": "Loading pricing...",
+        "error": "Unable to load pricing information",
+        "retry": "Retry",
+        "noData": "No pricing data available"
       },
-      "uploadArea": {
-        "title": "Upload your ad photo",
-        "description": "Choose a high-quality image that represents your ad",
-        "fileSupport": "Supports JPG, PNG up to 5MB"
+      "cta": {
+        "title": "Ready to Transform Your Marketing?",
+        "subtitle": "Join thousands of businesses already growing with our platform.",
+        "getStarted": "Start Free Trial",
+        "contact": "Talk to Sales"
       },
-      "guidelines": {
-        "title": "Photo Guidelines:",
-        "highRes": "Use high-resolution images (minimum 800x600px)",
-        "goodLighting": "Ensure good lighting and clear visibility",
-        "avoidText": "Avoid text-heavy images",
-        "relateToAudience": "Use images that relate to your target audience"
+      "whyChoose": {
+        "title": "Why Choose Oktopoot Ads?",
+        "points": [
+          "Create and share your ads for free",
+          "Our team promotes your ad professionally",
+          "Social media advertising",
+          "A strong and expanding ad network"
+        ]
       },
-      "buttons": {
-        "remove": "Remove",
-        "uploading": "Uploading...",
-        "choose": "Choose Photo",
-        "change": "Change Photo",
-        "continue": "Continue to Credit Assignment",
-        "skip": "Skip Photo"
-      },
-      "success": {
-        "title": "Photo uploaded successfully",
-        "description": "Your ad photo has been uploaded"
-      },
-      "errors": {
-        "title": "Upload Failed",
-        "invalidAdId": "Invalid Ad ID",
-        "tryAgain": "Unable to find the ad ID. Please try again.",
-        "uploadFailed": "Failed to upload photo",
-        "invalidFileType": "Invalid file type",
-        "selectImage": "Please select an image file",
-        "fileTooLarge": "File size must be less than {size}",
-        "currentSize": "Current size: {size}",
-        "photoRequired": "Photo required",
-        "uploadBeforeContinue": "Please upload a photo before continuing"
+      "footer": {
+        "description": "The most powerful marketing platform to grow your business with intelligent advertising solutions.",
+        "product": "Product",
+        "support": "Support",
+        "contact": "Contact",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "copyright": "© 2025 OctopusAd. All rights reserved."
       }
     },
-    "editor": {
-      "card": {
-        "title": "Ad Information"
+    "adDetail": {
+      "title": "Ad Campaign Details",
+      "description": "Ad campaign details and performance",
+      "performanceOverview": "Performance Overview",
+      "impressionsCredit": "Impressions Credit",
+      "amountSpent": "Amount Spent",
+      "likesCount": "Likes Count",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "campaignManagement": "Campaign Management",
+      "assignCredits": "Assign Credits",
+      "assignCredit": "Assign Credit",
+      "assigning": "Assigning...",
+      "activateCampaign": "Activate Campaign",
+      "activating": "Activating...",
+      "deactivateCampaign": "Deactivate Campaign",
+      "deactivating": "Deactivating...",
+      "creditAssignInfo": "Assign credits to this campaign before activation. Each credit represents impression capacity for your ads.",
+      "adContent": "Ad Content",
+      "englishTitle": "English Title",
+      "arabicTitle": "Arabic Title",
+      "englishDescription": "English Description",
+      "arabicDescription": "Arabic Description",
+      "websiteUrl": "Website URL",
+      "campaignDetails": "Campaign Details",
+      "campaignStatus": "Campaign Status",
+      "targetAudience": "Target Audience",
+      "targetCities": "Target Cities",
+      "budgetType": "Budget Type",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "approvedBy": "Approved By",
+      "publishToken": "Publish Token",
+      "pageId": "Page ID",
+      "postIdOnPlatform": "Post ID on Platform",
+      "rejectionReason": "Rejection Reason",
+      "socialMediaLinks": "Social Media Links",
+      "adPreview": "Ad Preview",
+      "viewAnalytics": "View Analytics",
+      "purchaseImpressions": "Purchase Impressions",
+      "backToCampaigns": "Back to Campaigns",
+      "adNotFound": "Ad not found",
+      "failedToLoadMetrics": "Failed to load metrics",
+      "pleaseRetryLater": "Please try again later.",
+      "creditAssignedSuccess": "Credit Assigned Successfully",
+      "creditsAssignedMessage": "credit(s) assigned to ad campaign",
+      "failedToAssignCredit": "Failed to Assign Credit",
+      "adActivatedSuccess": "Ad Activated Successfully",
+      "campaignActiveMessage": "Your ad campaign is now active and running",
+      "adDeactivatedSuccess": "Ad Deactivated",
+      "campaignDeactivatedMessage": "Your ad campaign has been paused",
+      "failedToActivateAd": "Failed to Activate Ad",
+      "insufficientCreditsMessage": "Cannot activate ad: insufficient impression credits",
+      "invalidCreditAmount": "Invalid Credit Amount",
+      "enterValidCredit": "Please enter a valid credit amount",
+      "uploadPhoto": {
+        "header": {
+          "title": "Upload Ad Photo",
+          "description": "Add an eye-catching photo to your advertisement"
+        },
+        "card": {
+          "title": "Upload Your Ad Photo",
+          "description": "Add a compelling image to make your ad more attractive and engaging."
+        },
+        "preview": {
+          "alt": "Ad preview"
+        },
+        "uploadArea": {
+          "title": "Upload your ad photo",
+          "description": "Choose a high-quality image that represents your ad",
+          "fileSupport": "Supports JPG, PNG up to 5MB"
+        },
+        "guidelines": {
+          "title": "Photo Guidelines:",
+          "highRes": "Use high-resolution images (minimum 800x600px)",
+          "goodLighting": "Ensure good lighting and clear visibility",
+          "avoidText": "Avoid text-heavy images",
+          "relateToAudience": "Use images that relate to your target audience"
+        },
+        "buttons": {
+          "remove": "Remove",
+          "uploading": "Uploading...",
+          "choose": "Choose Photo",
+          "change": "Change Photo",
+          "continue": "Continue to Credit Assignment",
+          "skip": "Skip Photo"
+        },
+        "success": {
+          "title": "Photo uploaded successfully",
+          "description": "Your ad photo has been uploaded"
+        },
+        "errors": {
+          "title": "Upload Failed",
+          "invalidAdId": "Invalid Ad ID",
+          "tryAgain": "Unable to find the ad ID. Please try again.",
+          "uploadFailed": "Failed to upload photo",
+          "invalidFileType": "Invalid file type",
+          "selectImage": "Please select an image file",
+          "fileTooLarge": "File size must be less than {size}",
+          "currentSize": "Current size: {size}",
+          "photoRequired": "Photo required",
+          "uploadBeforeContinue": "Please upload a photo before continuing"
+        }
+      },
+      "editor": {
+        "card": {
+          "title": "Ad Information"
+        },
+        "form": {
+          "titleEn": "Ad Title (English)",
+          "titleEnPlaceholder": "Enter ad title...",
+          "titleAr": "Ad Title (Arabic)",
+          "titleArPlaceholder": "أدخل عنوان الإعلان...",
+          "descriptionEn": "Description (English)",
+          "descriptionEnPlaceholder": "Enter ad description...",
+          "descriptionAr": "Description (Arabic)",
+          "descriptionArPlaceholder": "أدخل وصف الإعلان...",
+          "websiteUrl": "Website URL",
+          "websiteUrlPlaceholder": "https://example.com",
+          "socialMediaLinks": "Social Media Links (Optional)",
+          "facebookLink": "Facebook Link",
+          "facebookPlaceholder": "https://facebook.com/yourpage",
+          "targetAudience": "Target Audience",
+          "selectAudience": "Select audience",
+          "audienceOptions": {
+            "general": "General Audience",
+            "tech": "Tech Professionals",
+            "business": "Business Owners",
+            "students": "Students"
+          },
+          "budgetType": "Budget Type",
+          "selectBudgetType": "Select budget type",
+          "budgetOptions": {
+            "impressions": "Pay per 1000 impressions",
+            "clicks": "Pay per click"
+          },
+          "targetCities": "Target Cities"
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "saving": "Saving...",
+          "saveDraft": "Save Draft"
+        },
+        "success": {
+          "title": "Ad created successfully",
+          "description": "Your ad has been created and saved as draft"
+        },
+        "warning": {
+          "title": "Warning",
+          "description": "Ad created but unable to upload photo. Please try uploading later."
+        },
+        "error": {
+          "title": "Failed to create ad",
+          "description": "Please try again"
+        }
+      },
+      "editorUpdate": {
+        "card": {
+          "title": "Update Ad Information"
+        },
+        "form": {
+          "titleEn": "Ad Title (English)",
+          "titleEnPlaceholder": "Enter ad title...",
+          "adPhoto": "Ad Photo"
+        },
+        "buttons": {
+          "remove": "Remove",
+          "updating": "Updating Ad...",
+          "updateAd": "Update Ad"
+        },
+        "photoUpload": {
+          "success": {
+            "title": "Photo uploaded successfully",
+            "description": "Your ad photo has been uploaded"
+          },
+          "error": {
+            "title": "Failed to upload photo",
+            "description": "Please try again"
+          }
+        },
+        "validation": {
+          "invalidFileType": "Invalid file type",
+          "selectImage": "Please select an image file",
+          "fileTooLarge": "File too large",
+          "fileSizeLimit": "Please select an image smaller than 5MB"
+        },
+        "success": {
+          "title": "Ad updated successfully",
+          "description": "Your ad has been updated"
+        },
+        "error": {
+          "title": "Failed to update ad",
+          "description": "Please try again"
+        }
       },
       "form": {
-        "titleEn": "Ad Title (English)",
-        "titleEnPlaceholder": "Enter ad title...",
-        "titleAr": "Ad Title (Arabic)",
-        "titleArPlaceholder": "أدخل عنوان الإعلان...",
-        "descriptionEn": "Description (English)",
-        "descriptionEnPlaceholder": "Enter ad description...",
-        "descriptionAr": "Description (Arabic)",
-        "descriptionArPlaceholder": "أدخل وصف الإعلان...",
-        "websiteUrl": "Website URL",
-        "websiteUrlPlaceholder": "https://example.com",
-        "socialMediaLinks": "Social Media Links (Optional)",
-        "facebookLink": "Facebook Link",
-        "facebookPlaceholder": "https://facebook.com/yourpage",
-        "targetAudience": "Target Audience",
-        "selectAudience": "Select audience",
+        "title": "Targeting & Budget",
+        "primaryAudience": "Primary Audience",
+        "selectPrimaryAudience": "Select primary audience",
         "audienceOptions": {
           "general": "General Audience",
-          "tech": "Tech Professionals",
-          "business": "Business Owners",
-          "students": "Students"
+          "youngAdults": "Young Adults (18-30)",
+          "professionals": "Working Professionals",
+          "businessOwners": "Business Owners",
+          "students": "Students",
+          "parents": "Parents",
+          "seniors": "Seniors (50+)"
         },
         "budgetType": "Budget Type",
         "selectBudgetType": "Select budget type",
@@ -1371,136 +1452,59 @@
           "impressions": "Pay per 1000 impressions",
           "clicks": "Pay per click"
         },
-        "targetCities": "Target Cities"
-      },
-      "buttons": {
-        "cancel": "Cancel",
-        "saving": "Saving...",
-        "saveDraft": "Save Draft"
-      },
-      "success": {
-        "title": "Ad created successfully",
-        "description": "Your ad has been created and saved as draft"
-      },
-      "warning": {
-        "title": "Warning",
-        "description": "Ad created but unable to upload photo. Please try uploading later."
-      },
-      "error": {
-        "title": "Failed to create ad",
-        "description": "Please try again"
-      }
-    },
-    "editorUpdate": {
-      "card": {
-        "title": "Update Ad Information"
-      },
-      "form": {
-        "titleEn": "Ad Title (English)",
-        "titleEnPlaceholder": "Enter ad title...",
-        "adPhoto": "Ad Photo"
-      },
-      "buttons": {
-        "remove": "Remove",
-        "updating": "Updating Ad...",
-        "updateAd": "Update Ad"
-      },
-      "photoUpload": {
-        "success": {
-          "title": "Photo uploaded successfully",
-          "description": "Your ad photo has been uploaded"
+        "ageRange": "Age Range",
+        "minAgePlaceholder": "Min age",
+        "maxAgePlaceholder": "Max age",
+        "gender": "Gender",
+        "genders": {
+          "male": "Male",
+          "female": "Female",
+          "all": "All"
         },
-        "error": {
-          "title": "Failed to upload photo",
-          "description": "Please try again"
-        }
+        "languages": "Languages",
+        "languageOptions": {
+          "en": "English",
+          "ar": "Arabic",
+          "both": "Both"
+        },
+        "interests": "Interests",
+        "technology": "Technology",
+        "business": "Business",
+        "finance": "Finance",
+        "health": "Health",
+        "fitness": "Fitness",
+        "food": "Food",
+        "travel": "Travel",
+        "education": "Education",
+        "entertainment": "Entertainment",
+        "shopping": "Shopping",
+        "automotive": "Automotive",
+        "realEstate": "Real Estate",
+        "locations": "Locations",
+        "dailyBudget": "Daily Budget",
+        "approxImpressions": "Approximately {count} impressions per day",
+        "basedOnCPC": "Based on estimated cost per click",
+        "saving": "Saving...",
+        "saveTargeting": "Save Targeting",
+        "save": "Save",
+        "selectPlaceholder": "Select..."
       },
-      "validation": {
-        "invalidFileType": "Invalid file type",
-        "selectImage": "Please select an image file",
-        "fileTooLarge": "File too large",
-        "fileSizeLimit": "Please select an image smaller than 5MB"
-      },
-      "success": {
-        "title": "Ad updated successfully",
-        "description": "Your ad has been updated"
-      },
-      "error": {
-        "title": "Failed to update ad",
-        "description": "Please try again"
+      "card": {
+        "buttons": {
+          "view": "View",
+          "edit": "Edit",
+          "analytics": "Analytics",
+          "purchaseImpressions": "Purchase Impressions",
+          "viewPublicAd": "View Public Ad",
+          "approve": "Approve",
+          "reject": "Reject"
+        },
+        "rejectionReason": "Rejection Reason:"
       }
     },
-    "form": {
-      "title": "Targeting & Budget",
-      "primaryAudience": "Primary Audience",
-      "selectPrimaryAudience": "Select primary audience",
-      "audienceOptions": {
-        "general": "General Audience",
-        "youngAdults": "Young Adults (18-30)",
-        "professionals": "Working Professionals",
-        "businessOwners": "Business Owners",
-        "students": "Students",
-        "parents": "Parents",
-        "seniors": "Seniors (50+)"
-      },
-      "budgetType": "Budget Type",
-      "selectBudgetType": "Select budget type",
-      "budgetOptions": {
-        "impressions": "Pay per 1000 impressions",
-        "clicks": "Pay per click"
-      },
-      "ageRange": "Age Range",
-      "minAgePlaceholder": "Min age",
-      "maxAgePlaceholder": "Max age",
-      "gender": "Gender",
-      "genders": {
-        "male": "Male",
-        "female": "Female",
-        "all": "All"
-      },
-      "languages": "Languages",
-      "languageOptions": {
-        "en": "English",
-        "ar": "Arabic",
-        "both": "Both"
-      },
-      "interests": "Interests",
-      "technology": "Technology",
-      "business": "Business",
-      "finance": "Finance",
-      "health": "Health",
-      "fitness": "Fitness",
-      "food": "Food",
-      "travel": "Travel",
-      "education": "Education",
-      "entertainment": "Entertainment",
-      "shopping": "Shopping",
-      "automotive": "Automotive",
-      "realEstate": "Real Estate",
-      "locations": "Locations",
-      "dailyBudget": "Daily Budget",
-      "approxImpressions": "Approximately {count} impressions per day",
-      "basedOnCPC": "Based on estimated cost per click",
-      "saving": "Saving...",
-      "saveTargeting": "Save Targeting",
-      "save": "Save",
-      "selectPlaceholder": "Select..."
-    },
-    "card": {
-      "buttons": {
-        "view": "View",
-        "edit": "Edit",
-        "analytics": "Analytics",
-        "purchaseImpressions": "Purchase Impressions",
-        "viewPublicAd": "View Public Ad",
-        "approve": "Approve",
-        "reject": "Reject"
-      },
-      "rejectionReason": "Rejection Reason:"
+    "common": {
+      "dashboard": "Dashboard",
+      "contactSupport": "Contact Support"
     }
-  },
-  "common": {
-    "dashboard": "Dashboard",
-    "contactSupport": "Contact Support"
   }
 }
