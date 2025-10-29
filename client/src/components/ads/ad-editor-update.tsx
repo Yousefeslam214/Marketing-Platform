@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
+import AvatarEditor from "react-avatar-editor";
 import { createAdSchema, type CreateAdData } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,6 +65,10 @@ export function AdEditor({
   const [photoPreview, setPhotoPreview] = useState<string | null>(
     existingData?.imageUrl || null
   );
+  const editorRef = useRef<AvatarEditor | null>(null);
+  const [editingFile, setEditingFile] = useState<File | null>(null);
+  const [editScale, setEditScale] = useState(1);
+  const [editRotate, setEditRotate] = useState(0);
 
   const form = useForm<CreateAdData>({
     resolver: zodResolver(createAdSchema),
@@ -261,18 +266,36 @@ export function AdEditor({
         return;
       }
 
-      // Show local preview immediately
+      // Show local preview immediately and open editor
       const localPreview = URL.createObjectURL(file);
       setPhotoPreview(localPreview);
+      setEditingFile(file);
+      setEditScale(1);
+      setEditRotate(0);
+    }
+  };
 
-      setUploadingPhoto(true);
-      try {
-        await uploadPhotoMutation.mutateAsync(file);
-      } catch {
-        // Error handled in mutation onError
-      } finally {
-        setUploadingPhoto(false);
-      }
+  // Apply edit and upload (update flow)
+  const applyEditAndUpload = async () => {
+    if (!editingFile || !editorRef.current) return;
+    setUploadingPhoto(true);
+    try {
+      const canvas = editorRef.current.getImageScaledToCanvas();
+      await new Promise<void>((resolve) => {
+        canvas.toBlob(async (blob) => {
+          if (!blob) return resolve();
+          const file = new File([blob], editingFile.name, { type: blob.type });
+          try {
+            await uploadPhotoMutation.mutateAsync(file);
+          } catch (e) {
+            // handled in mutation
+          }
+          resolve();
+        }, "image/png");
+      });
+    } finally {
+      setUploadingPhoto(false);
+      setEditingFile(null);
     }
   };
 
@@ -473,33 +496,78 @@ export function AdEditor({
                                   onChange={handlePhotoSelect}
                                   className="hidden"
                                 />
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  onClick={() => fileInputRef.current?.click()}
-                                  disabled={
-                                    uploadingPhoto ||
-                                    uploadPhotoMutation.isPending
-                                  }>
-                                  {uploadingPhoto ||
-                                  uploadPhotoMutation.isPending ? (
-                                    <>
-                                      <i className="fas fa-spinner fa-spin mx-2"></i>
-                                      {t("ads", "uploading")}
-                                    </>
-                                  ) : (
-                                    <>
-                                      <i className="fas fa-upload mx-2"></i>
-                                      {photoPreview
-                                        ? t("ads", "changePhoto")
-                                        : t("ads", "choosePhoto")}
-                                    </>
-                                  )}
-                                </Button>
-                                {!photoPreview && (
-                                  <span className="text-sm text-muted-foreground">
-                                    {t("ads", "supportedFormatsNote")}
-                                  </span>
+                                {!editingFile ? (
+                                  <>
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      onClick={() => fileInputRef.current?.click()}
+                                      disabled={
+                                        uploadingPhoto || uploadPhotoMutation.isPending
+                                      }>
+                                      {uploadingPhoto || uploadPhotoMutation.isPending ? (
+                                        <>
+                                          <i className="fas fa-spinner fa-spin mx-2"></i>
+                                          {t("ads", "uploading")}
+                                        </>
+                                      ) : (
+                                        <>
+                                          <i className="fas fa-upload mx-2"></i>
+                                          {photoPreview ? t("ads", "changePhoto") : t("ads", "choosePhoto")}
+                                        </>
+                                      )}
+                                    </Button>
+                                    {!photoPreview && (
+                                      <span className="text-sm text-muted-foreground">
+                                        {t("ads", "supportedFormatsNote")}
+                                      </span>
+                                    )}
+                                  </>
+                                ) : (
+                                  <div className="w-full">
+                                    <div className="flex gap-4 items-start">
+                                      <div className="bg-muted rounded">
+                                        <AvatarEditor
+                                          ref={editorRef}
+                                          image={editingFile}
+                                          width={360}
+                                          height={240}
+                                          border={20}
+                                          color={[255, 255, 255, 0.6]}
+                                          scale={editScale}
+                                          rotate={editRotate}
+                                        />
+                                      </div>
+                                      <div className="flex flex-col gap-2">
+                                        <label className="text-sm">{t("ads", "zoom")}</label>
+                                        <input
+                                          type="range"
+                                          min="1"
+                                          max="3"
+                                          step="0.01"
+                                          value={editScale}
+                                          onChange={(e) => setEditScale(parseFloat(e.target.value))}
+                                        />
+                                        <label className="text-sm">{t("ads", "rotate")}</label>
+                                        <input
+                                          type="range"
+                                          min="0"
+                                          max="360"
+                                          step="1"
+                                          value={editRotate}
+                                          onChange={(e) => setEditRotate(parseInt(e.target.value))}
+                                        />
+                                        <div className="flex gap-2 pt-2">
+                                          <Button size="sm" onClick={applyEditAndUpload} disabled={uploadPhotoMutation.isPending || uploadingPhoto}>
+                                            {t("ads", "upload")}
+                                          </Button>
+                                          <Button size="sm" variant="outline" onClick={() => { setEditingFile(null); if (photoPreview && photoPreview.startsWith("blob:")) { URL.revokeObjectURL(photoPreview); setPhotoPreview(existingData?.imageUrl || null); } }}>
+                                            {t("ads", "cancel")}
+                                          </Button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 )}
                               </div>
 

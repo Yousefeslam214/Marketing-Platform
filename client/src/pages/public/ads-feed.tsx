@@ -14,7 +14,14 @@ import { useLanguage } from "@/hooks/use-language";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Heart, MessageCircle, Share2, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ExternalLink,
+  Heart,
+  MessageCircle,
+  Share2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useState, useMemo } from "react";
 
 // Memoized skeleton list component to avoid recreating placeholders on each render
@@ -212,8 +219,7 @@ export default function AdsFeed() {
         <div
           className="w-full overflow-hidden rounded-lg"
           onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-        >
+          onTouchEnd={onTouchEnd}>
           <img
             src={images[index]}
             alt={`ad image ${index + 1}`}
@@ -228,15 +234,13 @@ export default function AdsFeed() {
             <button
               aria-label="Previous image"
               onClick={prev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow"
-            >
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow">
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               aria-label="Next image"
               onClick={next}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow"
-            >
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow">
               <ChevronRight className="w-5 h-5" />
             </button>
 
@@ -247,7 +251,9 @@ export default function AdsFeed() {
                   key={i}
                   onClick={() => setIndex(i)}
                   aria-label={`Go to image ${i + 1}`}
-                  className={`w-2 h-2 rounded-full ${i === index ? "bg-foreground" : "bg-muted"}`}
+                  className={`w-2 h-2 rounded-full ${
+                    i === index ? "bg-foreground" : "bg-muted"
+                  }`}
                 />
               ))}
             </div>
@@ -264,7 +270,11 @@ export default function AdsFeed() {
         href: ad.youtubeLink,
         label: "YouTube",
         svg: (
-          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+          <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4"
+            fill="currentColor"
+            aria-hidden>
             <path d="M10 15l5-3-5-3v6z" />
             <path d="M21 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C15.7 4.8 12 4.8 12 4.8s-3.7 0-6.1.3c-.4.1-1.3.1-2.1.9C3.2 6.6 3 8 3 8S2.8 9.6 3 11.1c.2 1.5.8 2.9.8 2.9s.2 1.4.8 2c.8.8 1.8.8 2.3.9 1.7.2 7 .3 7 .3s3.7 0 6.1-.3c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.5 0-3c-.2-1.5-.8-2.9-.8-2.9z" />
           </svg>
@@ -274,7 +284,11 @@ export default function AdsFeed() {
         href: ad.tiktokLink,
         label: "TikTok",
         svg: (
-          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+          <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4"
+            fill="currentColor"
+            aria-hidden>
             <path d="M12 2v10.5A3.5 3.5 0 1 0 15.5 16V7h3.5V4h-6z" />
           </svg>
         ),
@@ -283,7 +297,11 @@ export default function AdsFeed() {
         href: ad.instagramLink,
         label: "Instagram",
         svg: (
-          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+          <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4"
+            fill="currentColor"
+            aria-hidden>
             <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zM12 7.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm5.5-2a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" />
           </svg>
         ),
@@ -292,7 +310,11 @@ export default function AdsFeed() {
         href: ad.facebookLink,
         label: "Facebook",
         svg: (
-          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+          <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4"
+            fill="currentColor"
+            aria-hidden>
             <path d="M13 3h2v3h-2c-1.1 0-1 1-1 1v2h3l-.5 3H12v7h-3v-7H6v-3h3V7a4 4 0 0 1 4-4z" />
           </svg>
         ),
@@ -301,7 +323,11 @@ export default function AdsFeed() {
         href: ad.snapchatLink,
         label: "Snapchat",
         svg: (
-          <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+          <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4"
+            fill="currentColor"
+            aria-hidden>
             <path d="M12 2a5 5 0 0 0-5 5 7 7 0 0 0-2 5v2a2 2 0 0 0 2 2c1 0 1 1 1 1s1 .5 3 .5 3-.5 3-.5 0-1 1-1a2 2 0 0 0 2-2v-2a7 7 0 0 0-2-5 5 5 0 0 0-5-5z" />
           </svg>
         ),
@@ -318,8 +344,7 @@ export default function AdsFeed() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={it.label}
-              className="text-muted-foreground hover:text-foreground"
-            >
+              className="text-muted-foreground hover:text-foreground">
               {it.svg}
             </a>
           ) : null
@@ -440,7 +465,8 @@ export default function AdsFeed() {
                               : ad.descriptionAr}
                           </p>
 
-                          {Array.isArray(ad.imageUrl) && ad.imageUrl.length > 0 ? (
+                          {Array.isArray(ad.imageUrl) &&
+                          ad.imageUrl.length > 0 ? (
                             <ImageCarousel images={ad.imageUrl} />
                           ) : ad.imageUrl ? (
                             <img

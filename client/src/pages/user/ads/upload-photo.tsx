@@ -1,4 +1,5 @@
 import { useState, useRef, ChangeEvent } from "react";
+import AvatarEditor from "react-avatar-editor";
 import { useRoute, useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/layout/header";
@@ -17,7 +18,16 @@ export default function UploadPhoto() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
+  const [selectedPreviews, setSelectedPreviews] = useState<string[]>([]);
+  const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState<string[] | null>(null);
+
+  // Multiple selection + edit support
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [editedFiles, setEditedFiles] = useState<Map<number, File>>(new Map());
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const editorRef = useRef<any>(null);
+  const [scale, setScale] = useState<number>(1);
+  const [rotate, setRotate] = useState<number>(0);
 
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
@@ -73,8 +83,9 @@ export default function UploadPhoto() {
     onSuccess: (data) => {
       const photoUrl = data.data?.photo;
       if (photoUrl) {
-        setUploadedPhotoUrl(photoUrl);
-        // Replace local preview with server URL
+        // push to uploaded urls list
+        setUploadedPhotoUrls((prev) => [...(prev || []), photoUrl]);
+        // Replace local main preview with server URL if it was a blob
         if (photoPreview && photoPreview.startsWith("blob:")) {
           URL.revokeObjectURL(photoPreview);
         }
@@ -97,6 +108,67 @@ export default function UploadPhoto() {
         URL.revokeObjectURL(photoPreview);
         setPhotoPreview(null);
       }
+    },
+  });
+
+  // Mutation to upload multiple photos in one request
+  const uploadPhotosMutation = useMutation({
+    mutationFn: async (files: File[]) => {
+      if (!adId) throw new Error("Ad ID is missing");
+
+      const formData = new FormData();
+      files.forEach((f) => formData.append("photo", f));
+
+      const uploadUrl = `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`;
+
+      const response = await fetch(uploadUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Upload failed: ${response.status} - ${errorText}`);
+      }
+
+      const result = await response.json();
+      return result;
+    },
+    onSuccess: (data) => {
+      // Expecting the API to return an array of uploaded photo urls or a single photo
+      const photos = data.data?.photos || data.data?.photo ? [data.data?.photo].flat() : [];
+      if (photos && photos.length) {
+        setUploadedPhotoUrls((prev) => [...(prev || []), ...photos]);
+        // replace previews with server URLs where appropriate: use first as main preview
+        if (photos[0]) {
+          if (photoPreview && photoPreview.startsWith("blob:")) {
+            URL.revokeObjectURL(photoPreview);
+          }
+          setPhotoPreview(photos[0]);
+        }
+        // Revoke local preview URLs and clear staged previews
+        selectedPreviews.forEach((p) => {
+          if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+        });
+        setSelectedFiles([]);
+        setSelectedPreviews([]);
+        setEditedFiles(new Map());
+        toast({
+          title: "Upload Successful",
+          description: "Your photos have been uploaded successfully.",
+        });
+      }
+    },
+    onError: (error) => {
+      toast({
+        title: "Upload Failed",
+        description:
+          error.message || "An error occurred while uploading your photos.",
+        variant: "destructive",
+      });
     },
   });
 
@@ -124,7 +196,7 @@ export default function UploadPhoto() {
         URL.revokeObjectURL(photoPreview);
       }
       setPhotoPreview(null);
-      setUploadedPhotoUrl(null);
+      setUploadedPhotoUrls(null);
       toast({
         title: t("uploadPhoto", "uploadSuccess"),
         description: t("uploadPhoto", "uploadSuccessDesc"),
@@ -141,19 +213,20 @@ export default function UploadPhoto() {
   });
 
   const handlePhotoSelect = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Validate file type
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
+
+    // Validate and accept files for staged upload
+    const validFiles: File[] = [];
+    for (const file of files) {
       if (!file.type.startsWith("image/")) {
         toast({
           title: t("uploadPhoto", "Invalid file type"),
           description: t("uploadPhoto", "Please select an image file"),
           variant: "destructive",
         });
-        return;
+        continue;
       }
-
-      // Validate file size (1MB limit)
       const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
       if (file.size > maxSizeInBytes) {
         const sizeStr = (file.size / 1024 / 1024).toFixed(2);
@@ -166,37 +239,100 @@ export default function UploadPhoto() {
           description: raw.replace("{size}", sizeStr),
           variant: "destructive",
         });
-        return;
+        continue;
       }
+      validFiles.push(file);
+    }
 
-      // Show local preview immediately
-      const localPreview = URL.createObjectURL(file);
-      setPhotoPreview(localPreview);
-      const sizeStr = (file.size / 1024 / 1024).toFixed(2);
-      const currentRaw = t("uploadPhoto", "Current file size: {size}MB");
-      toast({
-        title: t("uploadPhoto", "File Selected"),
-        description: currentRaw.replace("{size}", sizeStr),
-      });
+    if (validFiles.length === 0) return;
 
-      setUploadingPhoto(true);
-      try {
-        await uploadPhotoMutation.mutateAsync(file);
-      } catch (error) {
-        // Error handled in mutation onError, but show fallback message
-        toast({
-          title: t("uploadPhoto", "Upload Failed"),
-          variant: "destructive",
-          description: error instanceof Error ? error.message : "",
+    // Create previews and stage files for editing/upload
+    const newPreviews = validFiles.map((f) => URL.createObjectURL(f));
+    setSelectedFiles((prev) => [...prev, ...validFiles]);
+    setSelectedPreviews((prev) => [...prev, ...newPreviews]);
+    // if there's no main photo preview yet, set it from the first newly added
+    if (!photoPreview) {
+      setPhotoPreview(newPreviews[0]);
+    }
+    // If only one file was added, open editor for it
+    if (validFiles.length === 1) {
+      setEditingIndex((prev) => (prev === null ? selectedFiles.length : prev));
+    }
+  };
+
+  const startEditing = (index: number) => {
+    setEditingIndex(index);
+    setScale(1);
+    setRotate(0);
+  };
+
+  const applyEdit = async () => {
+    if (editingIndex == null || !editorRef.current) return;
+    const canvas = editorRef.current.getImageScaledToCanvas();
+    await new Promise<void>((resolve) => {
+      canvas.toBlob((blob: Blob | null) => {
+        if (!blob) return resolve();
+        const original = selectedFiles[editingIndex];
+        const file = new File([blob], original?.name || "edited.png", {
+          type: blob.type,
         });
-      } finally {
-        setUploadingPhoto(false);
-      }
+        setEditedFiles((m) => {
+          const copy = new Map(m);
+          copy.set(editingIndex, file);
+          return copy;
+        });
+        // update preview for that index
+        const preview = URL.createObjectURL(file);
+        setSelectedPreviews((p) => {
+          const copy = [...p];
+          // revoke previous preview
+          if (copy[editingIndex] && copy[editingIndex].startsWith("blob:")) {
+            URL.revokeObjectURL(copy[editingIndex]);
+          }
+          copy[editingIndex] = preview;
+          return copy;
+        });
+        resolve();
+      }, "image/png");
+    });
+    setEditingIndex(null);
+  };
+
+  const removeSelected = (index: number) => {
+    setSelectedFiles((s) => s.filter((_, i) => i !== index));
+    setEditedFiles((m) => {
+      const copy = new Map(m);
+      copy.delete(index);
+      return copy;
+    });
+    setSelectedPreviews((p) => {
+      const copy = [...p];
+      const removed = copy.splice(index, 1)[0];
+      if (removed && removed.startsWith("blob:")) URL.revokeObjectURL(removed);
+      return copy;
+    });
+    // clear main preview if no staged previews exist
+    setPhotoPreview((prev) => {
+      if (selectedPreviews.length <= 1) return null;
+      return selectedPreviews[0] || prev;
+    });
+  };
+
+  const uploadAllSelected = async () => {
+    if (selectedFiles.length === 0) return;
+    setUploadingPhoto(true);
+    try {
+      // Prepare files: prefer edited file for each index
+      const filesToUpload: File[] = selectedFiles.map((f, i) => editedFiles.get(i) || f);
+      await uploadPhotosMutation.mutateAsync(filesToUpload);
+    } finally {
+      setUploadingPhoto(false);
+      // Note: onSuccess will clear staged files and revoke previews
     }
   };
 
   const handleContinue = () => {
-    if (uploadedPhotoUrl) {
+    if (uploadedPhotoUrls && uploadedPhotoUrls.length > 0) {
       setLocation(`/ads/${params.adId}/assign-credit`);
     } else {
       toast({
@@ -247,7 +383,7 @@ export default function UploadPhoto() {
                         size="sm"
                         className="absolute top-2 right-2"
                         onClick={() => {
-                          if (uploadedPhotoUrl) {
+                          if (uploadedPhotoUrls) {
                             // call API to delete server photo
                             deletePhotoMutation.mutate();
                             return;
@@ -260,7 +396,7 @@ export default function UploadPhoto() {
                             URL.revokeObjectURL(photoPreview);
                           }
                           setPhotoPreview(null);
-                          setUploadedPhotoUrl(null);
+                          setUploadedPhotoUrls(null);
                         }}>
                         <i className="fas fa-trash mr-2"></i>
                         {t("uploadPhoto", "RemovePhoto")}
@@ -324,6 +460,129 @@ export default function UploadPhoto() {
                     </div>
                   </div>
 
+                    {/* Staged thumbnails + edit controls */}
+                    {selectedPreviews.length > 0 && (
+                      <div className="space-y-4">
+                        <h4 className="font-medium">
+                          {t("uploadPhoto", "Staged Photos")}
+                        </h4>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {selectedPreviews.map((p, i) => (
+                            <div key={i} className="relative rounded overflow-hidden border">
+                              <img
+                                src={p}
+                                alt={`preview-${i}`}
+                                className="w-full h-28 object-cover"
+                              />
+                              <div className="absolute top-2 right-2 flex flex-col gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() => startEditing(i)}>
+                                  Edit
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => removeSelected(i)}>
+                                  Remove
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="flex gap-3 mt-3">
+                          <Button
+                            onClick={uploadAllSelected}
+                            disabled={
+                              uploadingPhoto || uploadPhotosMutation.isPending || selectedPreviews.length === 0
+                            }
+                            className="flex-1">
+                            {uploadingPhoto || uploadPhotosMutation.isPending ? (
+                              <>
+                                <i className="fas fa-spinner fa-spin mr-2" />
+                                {t("uploadPhoto", "Uploading...")}
+                              </>
+                            ) : (
+                              <>
+                                <i className="fas fa-upload mr-2" />
+                                {t("uploadPhoto", "Upload All")}
+                              </>
+                            )}
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              // clear staged previews
+                              selectedPreviews.forEach((p) => {
+                                if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+                              });
+                              setSelectedFiles([]);
+                              setSelectedPreviews([]);
+                              setEditedFiles(new Map());
+                            }}
+                            disabled={uploadingPhoto || uploadPhotosMutation.isPending}
+                          >
+                            Clear
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Avatar editor modal/area */}
+                    {editingIndex !== null && selectedPreviews[editingIndex] && (
+                      <div className="mt-4 p-4 border rounded-lg bg-gray-50">
+                        <h4 className="font-medium mb-2">{t("uploadPhoto", "Edit Photo")}</h4>
+                        <div className="flex flex-col md:flex-row gap-4 items-start">
+                          <div>
+                            <AvatarEditor
+                              ref={editorRef}
+                              image={selectedPreviews[editingIndex]}
+                              width={320}
+                              height={200}
+                              border={40}
+                              scale={scale}
+                              rotate={rotate}
+                            />
+                          </div>
+
+                          <div className="flex-1">
+                            <label className="block text-sm mb-2">{t("uploadPhoto", "Zoom")}</label>
+                            <input
+                              type="range"
+                              min={1}
+                              max={2}
+                              step={0.01}
+                              value={scale}
+                              onChange={(e) => setScale(Number(e.target.value))}
+                              className="w-full"
+                            />
+
+                            <label className="block text-sm mt-3 mb-2">{t("uploadPhoto", "Rotate")}</label>
+                            <input
+                              type="range"
+                              min={0}
+                              max={360}
+                              step={1}
+                              value={rotate}
+                              onChange={(e) => setRotate(Number(e.target.value))}
+                              className="w-full"
+                            />
+
+                            <div className="flex gap-2 mt-4">
+                              <Button onClick={applyEdit}>{t("uploadPhoto", "Save")}</Button>
+                              <Button
+                                variant="outline"
+                                onClick={() => setEditingIndex(null)}>
+                                {t("uploadPhoto", "Cancel")}
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   {/* Guidelines */}
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
                     <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">
@@ -378,7 +637,7 @@ export default function UploadPhoto() {
                     <Button
                       onClick={handleContinue}
                       disabled={
-                        !uploadedPhotoUrl ||
+                        !uploadedPhotoUrls ||
                         uploadingPhoto ||
                         uploadPhotoMutation.isPending
                       }

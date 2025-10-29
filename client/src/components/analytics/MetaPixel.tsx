@@ -4,7 +4,8 @@ interface MetaPixelProps {
   id?: string;
 }
 
-export default function MetaPixel({ id = "1743635966210784" }: MetaPixelProps) {
+// export default function MetaPixel({ id = "1743635966210784" }: MetaPixelProps) {
+export default function MetaPixel({ id = "800700262549089" }: MetaPixelProps) {
   useEffect(() => {
     // If fbq already exists, don't re-initialize
     if ((window as any).fbq) {
@@ -21,7 +22,9 @@ export default function MetaPixel({ id = "1743635966210784" }: MetaPixelProps) {
     (function (f: any, b: any, e: any, v: any, n: any, t: any, s: any) {
       if (f.fbq) return;
       n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        n.callMethod
+          ? n.callMethod.apply(n, arguments)
+          : n.queue.push(arguments);
       };
       if (!f._fbq) f._fbq = n;
       n.push = n;
@@ -33,7 +36,15 @@ export default function MetaPixel({ id = "1743635966210784" }: MetaPixelProps) {
       t.src = v;
       s = b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t, s);
-    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js", undefined, undefined, undefined);
+    })(
+      window,
+      document,
+      "script",
+      "https://connect.facebook.net/en_US/fbevents.js",
+      undefined,
+      undefined,
+      undefined
+    );
 
     try {
       (window as any).fbq("init", id);

@@ -86,7 +86,6 @@ const PublicHeader = () => {
           {/* Desktop Actions */}
           {authorizeUser ? (
             <div className="hidden md:flex items-center space-x-2">
-
               <Link href="/dashboard" className="mx-2">
                 <div className="hidden md:flex items-center space-x-2">
                   <Button size="sm">{t("auth", "dashboard")}</Button>
@@ -237,7 +236,6 @@ const PublicHeader = () => {
           </div>
         </div>
       </div>
-      
     </nav>
   );
 };
