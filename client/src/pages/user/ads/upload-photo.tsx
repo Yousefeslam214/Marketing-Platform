@@ -19,7 +19,9 @@ export default function UploadPhoto() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [selectedPreviews, setSelectedPreviews] = useState<string[]>([]);
-  const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState<string[] | null>(null);
+  const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState<string[] | null>(
+    null
+  );
 
   // Multiple selection + edit support
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -139,7 +141,8 @@ export default function UploadPhoto() {
     },
     onSuccess: (data) => {
       // Expecting the API to return an array of uploaded photo urls or a single photo
-      const photos = data.data?.photos || data.data?.photo ? [data.data?.photo].flat() : [];
+      const photos =
+        data.data?.photos || data.data?.photo ? [data.data?.photo].flat() : [];
       if (photos && photos.length) {
         setUploadedPhotoUrls((prev) => [...(prev || []), ...photos]);
         // replace previews with server URLs where appropriate: use first as main preview
@@ -323,7 +326,9 @@ export default function UploadPhoto() {
     setUploadingPhoto(true);
     try {
       // Prepare files: prefer edited file for each index
-      const filesToUpload: File[] = selectedFiles.map((f, i) => editedFiles.get(i) || f);
+      const filesToUpload: File[] = selectedFiles.map(
+        (f, i) => editedFiles.get(i) || f
+      );
       await uploadPhotosMutation.mutateAsync(filesToUpload);
     } finally {
       setUploadingPhoto(false);
@@ -460,129 +465,141 @@ export default function UploadPhoto() {
                     </div>
                   </div>
 
-                    {/* Staged thumbnails + edit controls */}
-                    {selectedPreviews.length > 0 && (
-                      <div className="space-y-4">
-                        <h4 className="font-medium">
-                          {t("uploadPhoto", "Staged Photos")}
-                        </h4>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                          {selectedPreviews.map((p, i) => (
-                            <div key={i} className="relative rounded overflow-hidden border">
-                              <img
-                                src={p}
-                                alt={`preview-${i}`}
-                                className="w-full h-28 object-cover"
-                              />
-                              <div className="absolute top-2 right-2 flex flex-col gap-2">
-                                <Button
-                                  size="sm"
-                                  onClick={() => startEditing(i)}>
-                                  Edit
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  onClick={() => removeSelected(i)}>
-                                  Remove
-                                </Button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="flex gap-3 mt-3">
-                          <Button
-                            onClick={uploadAllSelected}
-                            disabled={
-                              uploadingPhoto || uploadPhotosMutation.isPending || selectedPreviews.length === 0
-                            }
-                            className="flex-1">
-                            {uploadingPhoto || uploadPhotosMutation.isPending ? (
-                              <>
-                                <i className="fas fa-spinner fa-spin mr-2" />
-                                {t("uploadPhoto", "Uploading...")}
-                              </>
-                            ) : (
-                              <>
-                                <i className="fas fa-upload mr-2" />
-                                {t("uploadPhoto", "Upload All")}
-                              </>
-                            )}
-                          </Button>
-
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                              // clear staged previews
-                              selectedPreviews.forEach((p) => {
-                                if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
-                              });
-                              setSelectedFiles([]);
-                              setSelectedPreviews([]);
-                              setEditedFiles(new Map());
-                            }}
-                            disabled={uploadingPhoto || uploadPhotosMutation.isPending}
-                          >
-                            Clear
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Avatar editor modal/area */}
-                    {editingIndex !== null && selectedPreviews[editingIndex] && (
-                      <div className="mt-4 p-4 border rounded-lg bg-gray-50">
-                        <h4 className="font-medium mb-2">{t("uploadPhoto", "Edit Photo")}</h4>
-                        <div className="flex flex-col md:flex-row gap-4 items-start">
-                          <div>
-                            <AvatarEditor
-                              ref={editorRef}
-                              image={selectedPreviews[editingIndex]}
-                              width={320}
-                              height={200}
-                              border={40}
-                              scale={scale}
-                              rotate={rotate}
+                  {/* Staged thumbnails + edit controls */}
+                  {selectedPreviews.length > 0 && (
+                    <div className="space-y-4">
+                      <h4 className="font-medium">
+                        {t("uploadPhoto", "Staged Photos")}
+                      </h4>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {selectedPreviews.map((p, i) => (
+                          <div
+                            key={i}
+                            className="relative rounded overflow-hidden border">
+                            <img
+                              src={p}
+                              alt={`preview-${i}`}
+                              className="w-full h-28 object-cover"
                             />
-                          </div>
-
-                          <div className="flex-1">
-                            <label className="block text-sm mb-2">{t("uploadPhoto", "Zoom")}</label>
-                            <input
-                              type="range"
-                              min={1}
-                              max={2}
-                              step={0.01}
-                              value={scale}
-                              onChange={(e) => setScale(Number(e.target.value))}
-                              className="w-full"
-                            />
-
-                            <label className="block text-sm mt-3 mb-2">{t("uploadPhoto", "Rotate")}</label>
-                            <input
-                              type="range"
-                              min={0}
-                              max={360}
-                              step={1}
-                              value={rotate}
-                              onChange={(e) => setRotate(Number(e.target.value))}
-                              className="w-full"
-                            />
-
-                            <div className="flex gap-2 mt-4">
-                              <Button onClick={applyEdit}>{t("uploadPhoto", "Save")}</Button>
+                            <div className="absolute top-2 right-2 flex flex-col gap-2">
+                              <Button size="sm" onClick={() => startEditing(i)}>
+                                Edit
+                              </Button>
                               <Button
-                                variant="outline"
-                                onClick={() => setEditingIndex(null)}>
-                                {t("uploadPhoto", "Cancel")}
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => removeSelected(i)}>
+                                Remove
                               </Button>
                             </div>
                           </div>
+                        ))}
+                      </div>
+
+                      <div className="flex gap-3 mt-3">
+                        <Button
+                          onClick={uploadAllSelected}
+                          disabled={
+                            uploadingPhoto ||
+                            uploadPhotosMutation.isPending ||
+                            selectedPreviews.length === 0
+                          }
+                          className="flex-1">
+                          {uploadingPhoto || uploadPhotosMutation.isPending ? (
+                            <>
+                              <i className="fas fa-spinner fa-spin mr-2" />
+                              {t("uploadPhoto", "Uploading...")}
+                            </>
+                          ) : (
+                            <>
+                              <i className="fas fa-upload mr-2" />
+                              {t("uploadPhoto", "Upload All")}
+                            </>
+                          )}
+                        </Button>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            // clear staged previews
+                            selectedPreviews.forEach((p) => {
+                              if (p && p.startsWith("blob:"))
+                                URL.revokeObjectURL(p);
+                            });
+                            setSelectedFiles([]);
+                            setSelectedPreviews([]);
+                            setEditedFiles(new Map());
+                          }}
+                          disabled={
+                            uploadingPhoto || uploadPhotosMutation.isPending
+                          }>
+                          Clear
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Avatar editor modal/area */}
+                  {editingIndex !== null && selectedPreviews[editingIndex] && (
+                    <div className="mt-4 p-4 border rounded-lg bg-gray-50">
+                      <h4 className="font-medium mb-2">
+                        {t("uploadPhoto", "Edit Photo")}
+                      </h4>
+                      <div className="flex flex-col md:flex-row gap-4 items-start">
+                        <div>
+                          <AvatarEditor
+                            ref={editorRef}
+                            image={selectedPreviews[editingIndex]}
+                            width={320}
+                            height={200}
+                            border={40}
+                            scale={scale}
+                            rotate={rotate}
+                          />
+                        </div>
+
+                        <div className="flex-1">
+                          <label className="block text-sm mb-2">
+                            {t("uploadPhoto", "Zoom")}
+                          </label>
+                          <input
+                            type="range"
+                            min={1}
+                            max={2}
+                            step={0.01}
+                            value={scale}
+                            onChange={(e) => setScale(Number(e.target.value))}
+                            className="w-full"
+                          />
+
+                          <label className="block text-sm mt-3 mb-2">
+                            {t("uploadPhoto", "Rotate")}
+                          </label>
+                          <input
+                            type="range"
+                            min={0}
+                            max={360}
+                            step={1}
+                            value={rotate}
+                            onChange={(e) => setRotate(Number(e.target.value))}
+                            className="w-full"
+                          />
+
+                          <div className="flex gap-2 mt-4">
+                            <Button onClick={applyEdit}>
+                              {t("uploadPhoto", "Save")}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => setEditingIndex(null)}>
+                              {t("uploadPhoto", "Cancel")}
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    )}
+                    </div>
+                  )}
                   {/* Guidelines */}
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
                     <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">

@@ -501,11 +501,15 @@ export function AdEditor({
                                     <Button
                                       type="button"
                                       variant="outline"
-                                      onClick={() => fileInputRef.current?.click()}
+                                      onClick={() =>
+                                        fileInputRef.current?.click()
+                                      }
                                       disabled={
-                                        uploadingPhoto || uploadPhotoMutation.isPending
+                                        uploadingPhoto ||
+                                        uploadPhotoMutation.isPending
                                       }>
-                                      {uploadingPhoto || uploadPhotoMutation.isPending ? (
+                                      {uploadingPhoto ||
+                                      uploadPhotoMutation.isPending ? (
                                         <>
                                           <i className="fas fa-spinner fa-spin mx-2"></i>
                                           {t("ads", "uploading")}
@@ -513,7 +517,9 @@ export function AdEditor({
                                       ) : (
                                         <>
                                           <i className="fas fa-upload mx-2"></i>
-                                          {photoPreview ? t("ads", "changePhoto") : t("ads", "choosePhoto")}
+                                          {photoPreview
+                                            ? t("ads", "changePhoto")
+                                            : t("ads", "choosePhoto")}
                                         </>
                                       )}
                                     </Button>
@@ -539,29 +545,63 @@ export function AdEditor({
                                         />
                                       </div>
                                       <div className="flex flex-col gap-2">
-                                        <label className="text-sm">{t("ads", "zoom")}</label>
+                                        <label className="text-sm">
+                                          {t("ads", "zoom")}
+                                        </label>
                                         <input
                                           type="range"
                                           min="1"
                                           max="3"
                                           step="0.01"
                                           value={editScale}
-                                          onChange={(e) => setEditScale(parseFloat(e.target.value))}
+                                          onChange={(e) =>
+                                            setEditScale(
+                                              parseFloat(e.target.value)
+                                            )
+                                          }
                                         />
-                                        <label className="text-sm">{t("ads", "rotate")}</label>
+                                        <label className="text-sm">
+                                          {t("ads", "rotate")}
+                                        </label>
                                         <input
                                           type="range"
                                           min="0"
                                           max="360"
                                           step="1"
                                           value={editRotate}
-                                          onChange={(e) => setEditRotate(parseInt(e.target.value))}
+                                          onChange={(e) =>
+                                            setEditRotate(
+                                              parseInt(e.target.value)
+                                            )
+                                          }
                                         />
                                         <div className="flex gap-2 pt-2">
-                                          <Button size="sm" onClick={applyEditAndUpload} disabled={uploadPhotoMutation.isPending || uploadingPhoto}>
+                                          <Button
+                                            size="sm"
+                                            onClick={applyEditAndUpload}
+                                            disabled={
+                                              uploadPhotoMutation.isPending ||
+                                              uploadingPhoto
+                                            }>
                                             {t("ads", "upload")}
                                           </Button>
-                                          <Button size="sm" variant="outline" onClick={() => { setEditingFile(null); if (photoPreview && photoPreview.startsWith("blob:")) { URL.revokeObjectURL(photoPreview); setPhotoPreview(existingData?.imageUrl || null); } }}>
+                                          <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => {
+                                              setEditingFile(null);
+                                              if (
+                                                photoPreview &&
+                                                photoPreview.startsWith("blob:")
+                                              ) {
+                                                URL.revokeObjectURL(
+                                                  photoPreview
+                                                );
+                                                setPhotoPreview(
+                                                  existingData?.imageUrl || null
+                                                );
+                                              }
+                                            }}>
                                             {t("ads", "cancel")}
                                           </Button>
                                         </div>

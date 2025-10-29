@@ -53,7 +53,9 @@ function ImageCarousel({
           <button
             key={i}
             onClick={() => setIndex(i)}
-            className={`w-2 h-2 rounded-full ${i === index ? "bg-white" : "bg-white/50"}`}
+            className={`w-2 h-2 rounded-full ${
+              i === index ? "bg-white" : "bg-white/50"
+            }`}
             aria-label={`Go to image ${i + 1}`}
           />
         ))}
@@ -85,7 +87,6 @@ export default function AdsIndex() {
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
-      
         <Header
           title={t("ads", "title")}
           description={t("ads", "description")}
@@ -128,7 +129,11 @@ export default function AdsIndex() {
 
                     {ad.imageUrl ? (
                       Array.isArray(ad.imageUrl) && ad.imageUrl.length > 0 ? (
-                        <ImageCarousel images={ad.imageUrl} alt={ad.titleEn || ad.titleAr} dataTestId={`ad-image-${ad.id}`} />
+                        <ImageCarousel
+                          images={ad.imageUrl}
+                          alt={ad.titleEn || ad.titleAr}
+                          dataTestId={`ad-image-${ad.id}`}
+                        />
                       ) : (
                         <div className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden">
                           <img
