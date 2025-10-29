@@ -329,6 +329,16 @@ export default function UploadPhoto() {
     setPhotoPreview((prev) => prev.filter((p) => p !== removedPreview));
   };
 
+  const promotePreview = (index: number) => {
+    setPhotoPreview((prev) => {
+      if (index <= 0 || index >= prev.length) return prev;
+      const copy = [...prev];
+      const [item] = copy.splice(index, 1);
+      copy.unshift(item);
+      return copy;
+    });
+  };
+
   const uploadAllSelected = async () => {
     if (selectedFiles.length === 0) return;
     setUploadingPhoto(true);
@@ -395,13 +405,14 @@ export default function UploadPhoto() {
                         {photoPreview.length > 1 && (
                           <div className="mt-2 flex gap-2 overflow-x-auto">
                             {photoPreview.map((p, i) => (
-                              <img
-                                key={i}
-                                src={p}
-                                alt={`thumb-${i}`}
-                                className="w-20 h-12 object-cover rounded border"
-                              />
-                            ))}
+                                <img
+                                  key={i}
+                                  src={p}
+                                  alt={`thumb-${i}`}
+                                  onClick={() => promotePreview(i)}
+                                  className="w-20 h-12 object-cover rounded border cursor-pointer"
+                                />
+                              ))}
                           </div>
                         )}
                       </div>
