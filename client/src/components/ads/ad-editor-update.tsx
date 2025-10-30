@@ -61,23 +61,6 @@ export function AdEditor({
   const { toast } = useToast();
   const { t } = useLanguage();
   const queryClient = useQueryClient();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  // support multiple images
-  const initialImages: string[] = Array.isArray(existingData?.imageUrl)
-    ? existingData.imageUrl
-    : existingData?.imageUrl
-    ? [existingData.imageUrl]
-    : [];
-  const [serverImages, setServerImages] = useState<string[]>(initialImages);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(
-    initialImages[0] || null
-  );
-  const editorRef = useRef<any>(null);
-  const [editingFile, setEditingFile] = useState<string | File | null>(null);
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editScale, setEditScale] = useState(1);
-  const [editRotate, setEditRotate] = useState(0);
 
   const form = useForm<CreateAdData>({
     resolver: zodResolver(createAdSchema),
@@ -88,7 +71,6 @@ export function AdEditor({
       descriptionAr: existingData?.descriptionAr || "",
       websiteUrl: existingData?.websiteUrl || "",
       phoneNumber: existingData?.phoneNumber || "",
-      imageUrl: existingData?.imageUrl || "",
       targetAudience: existingData?.targetAudience || "",
       targetCities: (existingData as any)?.targetCities || [],
       budgetType: existingData?.budgetType || "impressions",
@@ -112,7 +94,6 @@ export function AdEditor({
         descriptionAr: existingData.descriptionAr || "",
         websiteUrl: existingData.websiteUrl || "",
         phoneNumber: existingData.phoneNumber || "",
-        imageUrl: existingData.imageUrl || "",
         targetAudience: existingData.targetAudience || "",
         targetCities: existingData.targetCities || [],
         budgetType: existingData.budgetType || "impressions",
@@ -123,254 +104,47 @@ export function AdEditor({
         snapchatLink: existingData.snapchatLink || "",
         googleAdsLink: existingData.googleAdsLink || "",
       });
-      // ensure photo preview reflects server image(s)
-      const imgs = Array.isArray(existingData?.imageUrl)
-        ? existingData.imageUrl
-        : existingData?.imageUrl
-        ? [existingData.imageUrl]
-        : [];
-      setServerImages(imgs);
-      setPhotoPreview(imgs[0] || null);
-      // keep form in sync
-      // keep form.imageUrl as a single string (primary image) to match schema
-      form.setValue("imageUrl", imgs[0] || "");
     }
   }, [existingData]);
 
-  // keep form value in sync when serverImages change
-  useEffect(() => {
-    // schema expects a string for imageUrl; keep the primary image as the form value
-    form.setValue("imageUrl", serverImages[0] || "");
-  }, [serverImages]);
-
-  // Photo upload mutation
-  const uploadPhotoMutation = useMutation({
-    mutationFn: async (file: File) => {
-      const formData = new FormData();
-      formData.append("photo", file);
-      const response = await fetch(
-        `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${TokenManager.getAccessToken()}`,
-          },
-          body: formData,
-        }
-      );
-
-      // Attempt to parse JSON; if parsing fails, throw with text
-      const body = await response.json().catch(async () => {
-        const txt = await response.text();
-        throw new Error(`Upload failed: ${response.status} - ${txt}`);
-      });
-
-      // If server signalled failure or response not OK, throw
-      if (!response.ok || body?.success === false) {
-        const msg = body?.message || `Upload failed: ${response.status}`;
-        throw new Error(msg);
-      }
-
-      const photoUrl = body?.data?.photo;
-      if (!photoUrl) {
-        throw new Error("Upload succeeded but no photo URL returned");
-      }
-
-      // Clear cache after successful upload
-      queryClient.clear();
-
-      return body;
-    },
-    onSuccess: (data) => {
-      const photoUrl = data?.data?.photo;
-      if (photoUrl) {
-        form.setValue("imageUrl", photoUrl);
-        // Replace local preview with server URL
-        if (photoPreview && photoPreview.startsWith("blob:")) {
-          URL.revokeObjectURL(photoPreview);
-        }
-        setPhotoPreview(photoUrl);
-
-        // Clear photo-related cache
-        queryClient.invalidateQueries({
-          queryKey: [`/api/advertising/${adId}`],
-        });
-        queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
-
-        toast({
-          title: t("ads", "photoUploaded") || "Photo uploaded successfully",
-          description:
-            t("ads", "photoUploadDescription") || "Photo uploaded successfully",
-        });
-      }
-    },
-    onError: (error: any) => {
-      toast({
-        title: t("ads", "uploadFailed") || "Upload failed",
-        description:
-          error.message || t("ads", "uploadFailed") || "Upload failed",
-        variant: "destructive",
-      });
-      // If upload fails, remove the preview if it was a local preview
-      if (photoPreview && photoPreview.startsWith("blob:")) {
-        URL.revokeObjectURL(photoPreview);
-        setPhotoPreview(existingData?.imageUrl || null);
-      }
-    },
-  });
-
-  // Photo delete mutation
-  const deletePhotoMutation = useMutation({
-    mutationFn: async () => {
-      if (!adId) throw new Error("Ad ID missing");
-      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}`;
-      const res = await fetch(url, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
-        },
-      });
-      queryClient.clear();
-      if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(`Delete failed: ${res.status} - ${txt}`);
-      }
-      return res.json();
-    },
-    onSuccess: () => {
-      // Clear preview and form value
-      if (photoPreview && photoPreview.startsWith("blob:")) {
-        URL.revokeObjectURL(photoPreview);
-      }
-      setPhotoPreview(null);
-      form.setValue("imageUrl", "");
-
-      // Invalidate caches
-      queryClient.invalidateQueries({ queryKey: [`/api/advertising/${adId}`] });
-      queryClient.invalidateQueries({ queryKey: ["/api/advertising"] });
-
-      toast({
-        title: t("ads", "photoUploaded") || "Photo removed",
-        description: t("ads", "photoUploadDescription") || "Photo removed",
-      });
-    },
-    onError: (err: any) => {
-      toast({
-        title: t("ads", "uploadFailed") || "Delete failed",
-        description:
-          err?.message || t("ads", "uploadFailed") || "Delete failed",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handlePhotoSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith("image/")) {
-        toast({
-          title: t("ads", "invalidFileType") || "Invalid file type",
-          description:
-            t("ads", "selectImageFile") || "Please select an image file",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Validate file size (1MB limit)
-      const ONE_MB = 1 * 1024 * 1024;
-      if (file.size > ONE_MB) {
-        toast({
-          title: t("ads", "fileTooLarge") || "File too large",
-          description:
-            t("ads", "fileSizeLimit1MB") || "File size must be less than 1MB",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Show local preview immediately and open editor
-      const localPreview = URL.createObjectURL(file);
-      setPhotoPreview(localPreview);
-      setEditingFile(file);
-      setEditingIndex(null);
-      setEditScale(1);
-      setEditRotate(0);
-    }
-  };
-
-  // Apply edit and upload (update flow)
-  const applyEditAndUpload = async () => {
-    if (!editingFile || !editorRef.current) return;
-    setUploadingPhoto(true);
-    try {
-      const canvas = editorRef.current.getImageScaledToCanvas();
-      await new Promise<void>((resolve) => {
-        canvas.toBlob(async (blob) => {
-          if (!blob) return resolve();
-          const file = new File(
-            [blob],
-            // editingFile can be string (url) or File
-            typeof editingFile === "string" ? "edited.png" : editingFile.name,
-            { type: blob.type }
-          );
-          try {
-            // upload and capture server response
-            const result = await uploadPhotoMutation.mutateAsync(file);
-            const newPhotoUrl = result?.data?.photo;
-            if (newPhotoUrl) {
-              if (editingIndex !== null) {
-                // replace specific index
-                setServerImages((prev) => {
-                  const copy = [...prev];
-                  copy[editingIndex] = newPhotoUrl;
-                  return copy;
-                });
-              } else {
-                // append new photo
-                setServerImages((prev) => [...prev, newPhotoUrl]);
-              }
-              // update preview and form value
-              setPhotoPreview(newPhotoUrl);
-              const updated =
-                editingIndex !== null
-                  ? (() => {
-                      const copy = [...serverImages];
-                      copy[editingIndex] = newPhotoUrl;
-                      return copy;
-                    })()
-                  : [...serverImages, newPhotoUrl];
-              // keep the form value as the primary image string to satisfy zod
-              form.setValue("imageUrl", updated[0] || "");
-            }
-          } catch (e) {
-            // handled in mutation
-          }
-          resolve();
-        }, "image/png");
-      });
-    } finally {
-      setUploadingPhoto(false);
-      setEditingFile(null);
-      setEditingIndex(null);
-    }
-  };
-
   const updateAdMutation = useMutation<any, any, CreateAdData>({
     mutationFn: async (data: CreateAdData) => {
-      const response = await apiRequest(
-        "PUT",
-        `${VITE_API_BASE_URL}/api/advertising/${adId}`,
-        data
-      );
-      queryClient.clear();
-      if (response.status === 500) {
-        throw new Error("Internal Server Error (500)");
+      // Log payload for debugging server 500 errors
+      console.debug("Updating ad payload:", data);
+      console.log("Updating ad payload:", data);
+      try {
+        const response = await apiRequest(
+          "PUT",
+          `${VITE_API_BASE_URL}/api/advertising/${adId}`,
+          data
+        );
+
+        // Read response body as text to include any server error message
+        const text = await response.text();
+        let body: any = null;
+        try {
+          body = text ? JSON.parse(text) : null;
+        } catch (e) {
+          body = text;
+        }
+
+        queryClient.clear();
+
+        if (!response.ok) {
+          const msg =
+            body?.message ||
+            body ||
+            response.statusText ||
+            `Status ${response.status}`;
+          console.error("Update ad failed:", response.status, msg);
+          throw new Error(`${response.status}: ${msg}`);
+        }
+
+        return body;
+      } catch (err) {
+        // rethrow for mutation onError to handle
+        throw err;
       }
-      return response.json();
     },
     onSuccess: () => {
       // Clear all advertising-related cache
@@ -393,8 +167,26 @@ export function AdEditor({
   });
 
   const onSubmit = async (data: CreateAdData) => {
-    console.log("data:", data);
-    await updateAdMutation.mutateAsync(data);
+    // Helper to validate/normalize URLs: try as-is, then try adding https://, otherwise return empty string
+
+    // Build payload more defensively
+    const payload: any = {
+      ...data,
+      targetCities: Array.isArray((data as any).targetCities)
+        ? (data as any).targetCities
+        : (data as any).targetCities
+        ? [(data as any).targetCities]
+        : [],
+      facebookLink: data.facebookLink,
+      instagramLink: data.instagramLink,
+      tiktokLink: data.tiktokLink,
+      youtubeLink: data.youtubeLink,
+      snapchatLink: data.snapchatLink,
+      googleAdsLink: data.googleAdsLink,
+      phoneNumber: data.phoneNumber || "",
+    };
+
+    await updateAdMutation.mutateAsync(payload);
   };
 
   return (
@@ -495,197 +287,6 @@ export function AdEditor({
                     )}
                   />
                 </div>
-
-                {/* Photo Upload Section */}
-                {isUpdate && (
-                  <div className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="imageUrl"
-                      render={({ field }: { field: any }) => (
-                        <FormItem>
-                          <FormLabel>{t("ads", "adPhotoLabel")}</FormLabel>
-                          <FormControl>
-                            <div className="space-y-4">
-                              {/* Photo Preview & Thumbnails */}
-                              {serverImages.length > 0 && (
-                                <div className="space-y-3">
-                                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                                    {serverImages.map((src, i) => (
-                                      <div
-                                        key={i}
-                                        className="relative rounded overflow-hidden border">
-                                        <img
-                                          src={src}
-                                          alt={`thumb-${i}`}
-                                          className="w-full h-20 object-cover"
-                                        />
-                                        <div className="absolute top-1 right-1 flex flex-col gap-1">
-                                          <Button
-                                            size="xs"
-                                            onClick={() => {
-                                              // open editor for this image (pass url)
-                                              setEditingIndex(i);
-                                              setEditingFile(src);
-                                              setPhotoPreview(src);
-                                              setEditScale(1);
-                                              setEditRotate(0);
-                                            }}>
-                                            Edit
-                                          </Button>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-
-                                  <div className="relative">
-                                    <img
-                                      src={photoPreview || serverImages[0]}
-                                      alt="Ad preview"
-                                      className="w-full object-cover rounded-lg border"
-                                    />
-                                  </div>
-                                </div>
-                              )}
-
-                              {/* Upload Button */}
-                              <div className="flex items-center gap-4">
-                                <input
-                                  ref={fileInputRef}
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handlePhotoSelect}
-                                  className="hidden"
-                                />
-                                {!editingFile ? (
-                                  <>
-                                    <Button
-                                      type="button"
-                                      variant="outline"
-                                      onClick={() =>
-                                        fileInputRef.current?.click()
-                                      }
-                                      disabled={
-                                        uploadingPhoto ||
-                                        uploadPhotoMutation.isPending
-                                      }>
-                                      {uploadingPhoto ||
-                                      uploadPhotoMutation.isPending ? (
-                                        <>
-                                          <i className="fas fa-spinner fa-spin mx-2"></i>
-                                          {t("ads", "uploading")}
-                                        </>
-                                      ) : (
-                                        <>
-                                          <i className="fas fa-upload mx-2"></i>
-                                          {photoPreview
-                                            ? t("ads", "changePhoto")
-                                            : t("ads", "choosePhoto")}
-                                        </>
-                                      )}
-                                    </Button>
-                                    {!photoPreview && (
-                                      <span className="text-sm text-muted-foreground">
-                                        {t("ads", "supportedFormatsNote")}
-                                      </span>
-                                    )}
-                                  </>
-                                ) : (
-                                  <div className="w-full">
-                                    <div className="flex gap-4 items-start">
-                                      <div className="bg-muted rounded">
-                                        <AvatarEditor
-                                          ref={editorRef}
-                                          image={editingFile}
-                                          width={360}
-                                          height={240}
-                                          border={20}
-                                          color={[255, 255, 255, 0.6]}
-                                          scale={editScale}
-                                          rotate={editRotate}
-                                        />
-                                      </div>
-                                      <div className="flex flex-col gap-2">
-                                        <label className="text-sm">
-                                          {t("ads", "zoom")}
-                                        </label>
-                                        <input
-                                          type="range"
-                                          min="1"
-                                          max="3"
-                                          step="0.01"
-                                          value={editScale}
-                                          onChange={(e) =>
-                                            setEditScale(
-                                              parseFloat(e.target.value)
-                                            )
-                                          }
-                                        />
-                                        <label className="text-sm">
-                                          {t("ads", "rotate")}
-                                        </label>
-                                        <input
-                                          type="range"
-                                          min="0"
-                                          max="360"
-                                          step="1"
-                                          value={editRotate}
-                                          onChange={(e) =>
-                                            setEditRotate(
-                                              parseInt(e.target.value)
-                                            )
-                                          }
-                                        />
-                                        <div className="flex gap-2 pt-2">
-                                          <Button
-                                            size="sm"
-                                            onClick={applyEditAndUpload}
-                                            disabled={
-                                              uploadPhotoMutation.isPending ||
-                                              uploadingPhoto
-                                            }>
-                                            {t("ads", "upload")}
-                                          </Button>
-                                          <Button
-                                            size="sm"
-                                            variant="outline"
-                                            onClick={() => {
-                                              setEditingFile(null);
-                                              if (
-                                                photoPreview &&
-                                                photoPreview.startsWith("blob:")
-                                              ) {
-                                                URL.revokeObjectURL(
-                                                  photoPreview
-                                                );
-                                                setPhotoPreview(
-                                                  existingData?.imageUrl || null
-                                                );
-                                              }
-                                            }}>
-                                            {t("ads", "cancel")}
-                                          </Button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Hidden input for form validation */}
-                              <Input
-                                type="hidden"
-                                {...field}
-                                value={field.value || ""}
-                              />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
 
                 {/* Website URL */}
                 <FormField
@@ -1000,11 +601,11 @@ export function AdEditor({
                       name="phoneNumber"
                       render={({ field }: { field: any }) => (
                         <FormItem>
-                          <FormLabel>{t("ads", "phoneNumber")}</FormLabel>
+                          <FormLabel>{t("ads", "whatsappNumber")}</FormLabel>
                           <FormControl>
                             <Input
                               type="tel"
-                              placeholder={t("ads", "phoneNumber")}
+                              placeholder={t("ads", "whatsappNumber")}
                               {...field}
                             />
                           </FormControl>
@@ -1033,23 +634,6 @@ export function AdEditor({
                         )}
                       />
                     </div>
-                    {/* <FormField
-                  control={form.control}
-                  name="googleAdsLink"
-                  render={({ field }: { field: any }) => (
-                    <FormItem>
-                      <FormLabel>{t("ads", "googleAdsLinkLabel")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://ads.google.com/..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
                   </div>
                 </div>
 

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DataPagination } from "@/components/ui/data-pagination";
+import { ImageCarousel } from "@/components/ui/image-carousel";
 import {
   Select,
   SelectContent,
@@ -192,76 +193,6 @@ export default function AdsFeed() {
     }
   };
 
-  // Small inline carousel component for ad images. Supports touch swipe and prev/next.
-  function ImageCarousel({ images }: { images: string[] }) {
-    const [index, setIndex] = useState(0);
-    const [touchStartX, setTouchStartX] = useState<number | null>(null);
-
-    const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
-    const next = () => setIndex((i) => (i + 1) % images.length);
-
-    const onTouchStart = (e: any) => {
-      setTouchStartX(e.touches[0].clientX);
-    };
-
-    const onTouchEnd = (e: any) => {
-      if (touchStartX == null) return;
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-      const threshold = 40; // px
-      if (diff > threshold) next();
-      else if (diff < -threshold) prev();
-      setTouchStartX(null);
-    };
-
-    return (
-      <div className="relative w-full">
-        <div
-          className="w-full overflow-hidden rounded-lg"
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}>
-          <img
-            src={images[index]}
-            alt={`ad image ${index + 1}`}
-            className="w-full object-cover h-48 sm:h-56 md:h-64 lg:h-48 xl:h-64"
-            loading="lazy"
-          />
-        </div>
-
-        {/* Prev / Next buttons */}
-        {images.length > 1 && (
-          <>
-            <button
-              aria-label="Previous image"
-              onClick={prev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow">
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              aria-label="Next image"
-              onClick={next}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background/80 p-1 rounded-full shadow">
-              <ChevronRight className="w-5 h-5" />
-            </button>
-
-            {/* Dots */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIndex(i)}
-                  aria-label={`Go to image ${i + 1}`}
-                  className={`w-2 h-2 rounded-full ${
-                    i === index ? "bg-foreground" : "bg-muted"
-                  }`}
-                />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-    );
-  }
 
   // Social icons rendered only when the corresponding link exists on the ad
   function SocialLinks({ ad }: { ad: Ad }) {

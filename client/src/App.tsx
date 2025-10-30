@@ -63,6 +63,8 @@ import { TokenManager } from "./lib/auth";
 import AdminImpressionRatios from "./pages/admin/AdminImpressionRatios";
 
 function Router() {
+    const [, setLocation] = useLocation();
+
   const role = TokenManager.getRole();
   let auth = false;
   if (TokenManager.getAccessToken()) auth = true;
@@ -81,6 +83,10 @@ function Router() {
     );
   }
 
+  //   if (!TokenManager.getAccessToken()) {
+  //   // setLocation("/login");
+  //   // return null;
+  // }
   return (
     <Switch>
       {/* Public pages */}

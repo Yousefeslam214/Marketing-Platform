@@ -147,3 +147,23 @@ export function adminBillingPath() {
 export function publicFeedPath() {
   return "/feed";
 }
+
+export function handleCreateAd() {
+  return "/campaigns/new";
+}
+
+export function handleViewAd(id: string) {
+  return `/campaigns/${id}`;
+}
+
+export function handleEditAd(id: string) {
+  return `/ads/${id}/edit`;
+}
+
+export function handleAnalytics(id: string) {
+  return `/campaigns/${id}/analytics`;
+}
+
+export function handlePurchase() {
+  return `/billing`;
+}

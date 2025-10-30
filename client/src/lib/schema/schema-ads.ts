@@ -6,7 +6,7 @@ export type AdData = {
   descriptionEn: string;
   descriptionAr: string;
   websiteUrl: string;
-  imageUrl: string;
+  imageUrl: string[];
   status: string;
   targetAudience: string;
   budgetType: string;

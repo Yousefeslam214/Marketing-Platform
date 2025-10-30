@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TokenManager } from "@/lib/auth";
+import { ImageCarousel } from "@/components/ui/image-carousel";
 
 interface AdDetailProps {
   params: { id: string };
@@ -35,6 +36,8 @@ export default function AdDetail({ params }: AdDetailProps) {
     key: [`/ads/${id}`],
     url: `${VITE_API_BASE_URL}/api/advertising/${id}`,
   });
+  console.log(data);
+  console.log("[id].tsx");
   useEffect(() => {
     // Initialize adActivationStatus from API response when available
     if (!data?.data) return;
@@ -212,7 +215,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                 {ad.status === "approved" && (
                   <>
                     <Button
-                      onClick={() => setLocation(`/ads/${id}/purchase`)}
+                      onClick={() => setLocation(handlePurchase())}
                       data-testid="button-purchase-impressions">
                       <i className="fas fa-credit-card mr-2"></i>
                       {t("adDetail", "purchaseImpressions")}
@@ -776,12 +779,30 @@ export default function AdDetail({ params }: AdDetailProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="max-w-md mx-auto">
-                      <img
+                   
+                   {ad.imageUrl && ad.imageUrl.length > 0 ? (
+                      // Array.isArray(ad.imageUrl)
+                      <ImageCarousel
+                        images={ad?.imageUrl}
+                        alt={ad.titleEn || ad.titleAr}
+                        dataTestId={`ad-image-${ad.id}`}
+                      />
+                    ) : (
+                      <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
+                        <div className="text-center text-muted-foreground">
+                          <i className="fas fa-image text-2xl mb-2 block"></i>
+                          <div className="text-sm">
+                            {t("ads", "noImage") || "No image"}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                      {/* <img
                         src={ad?.imageUrl}
                         alt={ad?.titleEn}
                         className="w-full rounded-lg"
                         data-testid="ad-image-preview"
-                      />
+                      /> */}
                     </div>
                   </CardContent>
                 </Card>

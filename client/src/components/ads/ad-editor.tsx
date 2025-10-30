@@ -321,11 +321,11 @@ export function AdEditor() {
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("ads", "phoneNumber")}</FormLabel>
+                      <FormLabel>{t("ads", "whatsappNumber")}</FormLabel>
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder={t("ads", "phoneNumber")}
+                          placeholder={t("ads", "whatsappNumber")}
                           data-testid="input-phone-number"
                           {...field}
                         />

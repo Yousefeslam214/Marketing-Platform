@@ -11,7 +11,7 @@ export function useAdNavigation() {
 
   const handleAnalytics = (id: string) => setLocation(`/campaigns/${id}/analytics`);
 
-  const handlePurchase = (id: string) => setLocation(`/campaigns/${id}/purchase`);
+  const handlePurchase = () => setLocation(`/billing`);
 
   return {
     handleCreateAd,

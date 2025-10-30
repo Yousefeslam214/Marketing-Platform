@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { AdData } from "@/lib/schema/schema-ads";
 import { getStatusColor } from "@/lib/utils";
 import { useLanguage } from "@/hooks/use-language";
+import { ImageCarousel } from "../ui/image-carousel";
 
 export type { AdData };
 
@@ -88,12 +89,17 @@ export function AdCard({
 
         {ad.imageUrl && (
           <div className="w-full h-32 bg-muted rounded-lg mb-4 overflow-hidden">
-            <img
+            <ImageCarousel 
+              images={Array.isArray(ad.imageUrl) ? ad.imageUrl : [ad.imageUrl]}
+              alt={title}
+              dataTestId={`ad-image-${ad.id}`}
+            />
+            {/* <img
               src={ad.imageUrl}
               alt={title}
               className="w-full h-full object-cover"
               data-testid={`ad-image-${ad.id}`}
-            />
+            /> */}
           </div>
         )}
         <div>

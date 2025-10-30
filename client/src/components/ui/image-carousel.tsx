@@ -18,16 +18,18 @@ export function ImageCarousel({
   const [loaded, setLoaded] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<number | null>(null);
-
   if (!images || images.length === 0) return null;
-
+  const isSingleImage = images.length === 1 || images.length === 0;
   const nextIndex = (i: number) => (i + 1) % images.length;
   const prev = () => {
+    if (isSingleImage) return;
     setPrevIndex(index);
     setLoaded(false);
     setIndex((i) => (i - 1 + images.length) % images.length);
   };
   const next = () => {
+    if (isSingleImage) return;
+
     setPrevIndex(index);
     setLoaded(false);
     setIndex((i) => (i + 1) % images.length);
@@ -56,7 +58,7 @@ export function ImageCarousel({
 
   // Autoplay timer
   useEffect(() => {
-    if (!autoPlay || isPaused) return;
+    if (!autoPlay || isPaused || isSingleImage) return;
     timerRef.current = window.setTimeout(() => {
       setPrevIndex(index);
       setLoaded(false);
@@ -78,8 +80,7 @@ export function ImageCarousel({
     <div
       className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden relative"
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+      onMouseLeave={handleMouseLeave}>
       {/* Previous image (fades out) */}
       {typeof prevIndex === "number" && images[prevIndex] && (
         <img
@@ -109,36 +110,42 @@ export function ImageCarousel({
       )}
 
       {/* Controls */}
-      <button
-        type="button"
-        onClick={prev}
-        aria-label="Previous image"
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1">
-        <i className="fas fa-chevron-left"></i>
-      </button>
-
-      <button
-        type="button"
-        onClick={next}
-        aria-label="Next image"
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1">
-        <i className="fas fa-chevron-right"></i>
-      </button>
-
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-2 flex gap-2">
-        {images.map((_, i) => (
+      {!isSingleImage && (
+        <>
           <button
-            key={i}
-            onClick={() => {
-              setPrevIndex(index);
-              setLoaded(false);
-              setIndex(i);
-            }}
-            className={`w-2 h-2 rounded-full ${i === index ? "bg-white" : "bg-white/50"}`}
-            aria-label={`Go to image ${i + 1}`}
-          />
-        ))}
-      </div>
+            type="button"
+            onClick={prev}
+            aria-label="Previous image"
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1">
+            <i className="fas fa-chevron-left"></i>
+          </button>
+
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next image"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1">
+            <i className="fas fa-chevron-right"></i>
+          </button>
+
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-2 flex gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setPrevIndex(index);
+                  setLoaded(false);
+                  setIndex(i);
+                }}
+                className={`w-2 h-2 rounded-full ${
+                  i === index ? "bg-white" : "bg-white/50"
+                }`}
+                aria-label={`Go to image ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

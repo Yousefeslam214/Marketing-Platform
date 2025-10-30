@@ -405,14 +405,14 @@ export default function UploadPhoto() {
                         {photoPreview.length > 1 && (
                           <div className="mt-2 flex gap-2 overflow-x-auto">
                             {photoPreview.map((p, i) => (
-                                <img
-                                  key={i}
-                                  src={p}
-                                  alt={`thumb-${i}`}
-                                  onClick={() => promotePreview(i)}
-                                  className="w-20 h-12 object-cover rounded border cursor-pointer"
-                                />
-                              ))}
+                              <img
+                                key={i}
+                                src={p}
+                                alt={`thumb-${i}`}
+                                onClick={() => promotePreview(i)}
+                                className="w-20 h-12 object-cover rounded border cursor-pointer"
+                              />
+                            ))}
                           </div>
                         )}
                       </div>
