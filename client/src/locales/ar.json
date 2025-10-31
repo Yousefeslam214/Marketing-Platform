@@ -1262,6 +1262,8 @@
       "retry": "إعادة المحاولة",
       "noData": "لا توجد بيانات أسعار متاحة"
     },
+    "bestValue": "أفضل قيمة",
+    "Pricing": "التسعير",
     "simplePricing": "التسعير البسيط",
     "cta": {
       "title": "مستعد لتحويل تسويقك؟",
@@ -1300,6 +1302,11 @@
     "inactive": "غير نشط",
     "campaignManagement": "إدارة الحملة",
     "assignCredits": "تخصيص الأرصدة",
+  "Promote Status": "حالة الترويج",
+  "impressionRatios": "نسب المشاهدات",
+  "loadingImpressionRatios": "جاري تحميل نسب المشاهدات…",
+  "noImpressionRatiosFound": "لم يتم العثور على نسب المشاهدات.",
+  "balanceLabel": "الرصيد",
     "assignCredit": "تخصيص رصيد",
     "assigning": "جاري التخصيص...",
     "activateCampaign": "تفعيل الحملة",

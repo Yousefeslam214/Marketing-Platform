@@ -1210,6 +1210,8 @@
       "retry": "Retry",
       "noData": "No pricing data available"
     },
+    "bestValue": "Best Value",
+    "Pricing": "Pricing",
     "simplePricing": "Simple Pricing",
     "cta": {
       "title": "Ready to Transform Your Marketing?",
@@ -1248,6 +1250,11 @@
     "inactive": "Inactive",
     "campaignManagement": "Campaign Management",
     "assignCredits": "Assign Credits",
+  "Promote Status": "Promote Status",
+  "impressionRatios": "Impression Ratios",
+  "loadingImpressionRatios": "Loading impression ratios…",
+  "noImpressionRatiosFound": "No impression ratios found.",
+  "balanceLabel": "Balance",
     "assignCredit": "Assign Credit",
     "assigning": "Assigning...",
     "activateCampaign": "Activate Campaign",
