@@ -66,10 +66,11 @@ export class AuthService {
     window.location.href = "/login";
   }
 
-  static async getCurrentUser(): Promise<AuthResponse> {
+  static async getCurrentUser(): Promise<AuthResponse | null> {
     const response = await apiRequest("GET", `${BACKEND_URL}/api/auth/me`);
     const result = await response.json();
-    return result.data;
+    // Ensure we never return `undefined` (react-query v5 requires a defined return)
+    return result?.data ?? null;
   }
 
   static async getGoogleAuthUrl(): Promise<string> {

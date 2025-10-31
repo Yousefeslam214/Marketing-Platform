@@ -1553,6 +1553,28 @@
       "rejectionReason": "سبب الرفض:"
     }
   },
+  "pixels": {
+    "title": "بكسلات",
+    "description": "إدارة بكسلات التسويق المستخدمة للتتبع والتحليلات.",
+    "create": "إنشاء بكسل",
+    "edit": "تعديل البكسل",
+    "delete": "حذف البكسل",
+    "name": "الاسم",
+    "platform": "المنصة",
+    "pixelId": "معرّف البكسل",
+    "listTitle": "البكسلات",
+    "noPixels": "لا توجد بكسلات",
+    "createdSuccess": "تم إنشاء البكسل بنجاح",
+    "createFailed": "فشل إنشاء البكسل",
+    "updatedSuccess": "تم تحديث البكسل بنجاح",
+    "updateFailed": "فشل تحديث البكسل",
+    "deletedSuccess": "تم حذف البكسل بنجاح",
+    "deleteFailed": "فشل حذف البكسل",
+    "validationRequired": "يرجى ملء الحقول المطلوبة",
+    "dialogDesc": "إدارة بكسلات التسويق المستخدمة للتتبع والتحليلات",
+    "cancel": "إلغاء",
+    "save": "حفظ"
+  },
   "common": {
     "dashboard": "لوحة التحكم",
     "contactSupport": "اتصل بالدعم"

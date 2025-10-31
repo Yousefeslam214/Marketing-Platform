@@ -63,6 +63,7 @@ import { TokenManager } from "./lib/auth";
 import AdminImpressionRatios from "./pages/admin/AdminImpressionRatios";
 import UploadPhoto from "./components/ads/create/upload-photo";
 import EditPhoto from "./components/ads/update/edit-photo";
+import AdminPixels from "./pages/admin/pixels/pixels";
 
 function Router() {
     const [, setLocation] = useLocation();
@@ -197,6 +198,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <ApprovedAds />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/pixels"
+        component={() => (
+          <AppLayout>
+            <AdminPixels />
           </AppLayout>
         )}
       />

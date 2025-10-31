@@ -1501,6 +1501,28 @@
       "rejectionReason": "Rejection Reason:"
     }
   },
+  "pixels": {
+    "title": "Pixels",
+    "description": "Manage marketing pixels used for tracking and analytics.",
+    "create": "Create Pixel",
+    "edit": "Edit Pixel",
+    "delete": "Delete Pixel",
+    "name": "Name",
+    "platform": "Platform",
+    "pixelId": "Pixel ID",
+    "listTitle": "Pixels",
+    "noPixels": "No pixels found",
+    "createdSuccess": "Pixel created successfully",
+    "createFailed": "Failed to create pixel",
+    "updatedSuccess": "Pixel updated successfully",
+    "updateFailed": "Failed to update pixel",
+    "deletedSuccess": "Pixel deleted successfully",
+    "deleteFailed": "Failed to delete pixel",
+    "validationRequired": "Please fill required fields",
+    "dialogDesc": "Manage marketing pixels used for tracking and analytics",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
   "common": {
     "dashboard": "Dashboard",
     "contactSupport": "Contact Support"

@@ -21,6 +21,7 @@ interface ImpressionRatio {
   updatedBy: string;
   createdAt: string;
   updatedAt: string;
+  promoted?: boolean;
 }
 
 interface ImpressionRatiosResponse {
@@ -57,7 +58,7 @@ export default function AdminImpressionRatios() {
     url: `${VITE_API_BASE_URL}/api/users/impression-ratios`,
     enabled: !!TokenManager.getAccessToken(),
   });
-
+console.log(ratiosResponse)
   // Extract data with defaults
   const impressionRatios = ratiosResponse?.data || [];
 
@@ -326,6 +327,11 @@ export default function AdminImpressionRatios() {
                                 className="text-lg px-3 py-1">
                                 {getCurrencyLabel(ratio.currency)}
                               </Badge>
+                              {ratio.promoted ? (
+                                <Badge className="ml-2 bg-emerald-100 text-emerald-800">
+                                  Promoted
+                                </Badge>
+                              ) : null}
                               <p className="text-2xl font-bold">
                                 {ratio.impressionsPerUnit}{" "}
                                 {t(

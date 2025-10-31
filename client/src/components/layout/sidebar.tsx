@@ -69,58 +69,63 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     navigation.push({
       section: t("sidebar", "adminSection"),
       items: [
+      {
+        name: t("sidebar", "dashboard"),
+        href: adminDashboardPath(),
+        icon: "fas fa-tachometer-alt",
+      },
+      {
+        name: t("sidebar", "adsManagement"),
+        href: "#",
+        icon: "fas fa-bullhorn",
+        subItems: [
         {
-          name: t("sidebar", "dashboard"),
-          href: adminDashboardPath(),
-          icon: "fas fa-chart-line",
+          name: t("sidebar", "AllAds"),
+          href: adminAllAdsPath(),
+          icon: "fas fa-list-alt",
         },
         {
-          name: t("sidebar", "adsManagement"),
-          href: "#",
-          icon: "fas fa-ad",
-          subItems: [
-            {
-              name: t("sidebar", "AllAds"),
-              href: adminAllAdsPath(),
-              icon: "fas fa-list",
-            },
-            {
-              name: t("sidebar", "pending"),
-              href: adminPendingAdsPath(),
-              icon: "fas fa-clock",
-            },
-            {
-              name: t("sidebar", "approved"),
-              href: adminApprovedAdsPath(),
-              icon: "fas fa-check-circle",
-            },
-            {
-              name: t("sidebar", "rejected"),
-              href: adminRejectedAdsPath(),
-              icon: "fas fa-times-circle",
-            },
-          ],
+          name: t("sidebar", "pending"),
+          href: adminPendingAdsPath(),
+          icon: "fas fa-hourglass-half",
         },
         {
-          name: t("sidebar", "userManagement"),
-          href: adminUsersPath(),
-          icon: "fas fa-users",
+          name: t("sidebar", "approved"),
+          href: adminApprovedAdsPath(),
+          icon: "fas fa-check-circle",
         },
         {
-          name: t("sidebar", "billing"),
-          href: adminBillingPath(),
-          icon: "fas fa-credit-card",
+          name: t("sidebar", "rejected"),
+          href: adminRejectedAdsPath(),
+          icon: "fas fa-times-circle",
         },
-        {
-          name: t("sidebar", "impressionRatios"),
-          href: "/admin/impression-ratios",
-          icon: "fas fa-chart-bar",
-        },
-        {
-          name: t("sidebar", "adsFeed"),
-          href: "/feed",
-          icon: "fas fa-rss",
-        },
+        ],
+      },
+      {
+        name: t("sidebar", "userManagement"),
+        href: adminUsersPath(),
+        icon: "fas fa-user-cog",
+      },
+      {
+        name: t("sidebar", "billing"),
+        href: adminBillingPath(),
+        icon: "fas fa-file-invoice-dollar",
+      },
+      {
+        name: t("sidebar", "impressionRatios"),
+        href: "/admin/impression-ratios",
+        icon: "fas fa-percentage",
+      },
+      {
+        name: t("sidebar", "adsFeed"),
+        href: "/feed",
+        icon: "fas fa-rss",
+      },
+      {
+        name: t("sidebar", "pixels"),
+        href: "/pixels",
+        icon: "fas fa-crosshairs",
+      },
       ],
     });
   }
@@ -145,11 +150,6 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: userBillingPath(),
           icon: "fas fa-credit-card",
         },
-        // {
-        //   name: t("sidebar", "analytics"),
-        //   href: userAnalyticsPath(),
-        //   icon: "fas fa-chart-bar",
-        // },
         {
           name: t("sidebar", "faq"),
           href: "/user-faq",
@@ -160,11 +160,6 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: "/user-contact",
           icon: "fas fa-envelope",
         },
-        // {
-        //   name: t("sidebar", "privacyTerms"),
-        //   href: privacyTermsPath(),
-        //   icon: "fas fa-shield-alt",
-        // },
         {
           name: t("sidebar", "adsFeed"),
           href: "/feed",

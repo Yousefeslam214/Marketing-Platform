@@ -24,6 +24,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState, useMemo } from "react";
+import useLoadPixels, { Pixel } from "@/hooks/useLoadPixels";
+import { TokenManager } from "@/lib/auth";
 
 // Memoized skeleton list component to avoid recreating placeholders on each render
 function SkeletonList() {
@@ -193,7 +195,6 @@ export default function AdsFeed() {
     }
   };
 
-
   // Social icons rendered only when the corresponding link exists on the ad
   function SocialLinks({ ad }: { ad: Ad }) {
     const items: { href?: string | null; label: string; svg: JSX.Element }[] = [
@@ -305,6 +306,33 @@ export default function AdsFeed() {
     }
     setPage(1); // Reset to first page when changing city
   };
+
+  const {
+    data: pixelsData,
+    isLoading: pixelsLoading,
+    isError: pixelsIsError,
+    error: pixelsError,
+  } = useQuery<{ success: boolean; message?: string; data: Pixel[] }, Error>({
+    queryKey: ["pixels"],
+    queryFn: async () => {
+      const token = TokenManager.getAccessToken();
+      const res = await fetch(`${VITE_API_BASE_URL}/api/pixels`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) throw new Error("Failed to fetch pixels");
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
+
+  const pixels: Pixel[] = pixelsData?.data ?? [];
+
+  const { loadedPlatforms, trackEvent } = useLoadPixels(pixels);
 
   if (error) {
     return (

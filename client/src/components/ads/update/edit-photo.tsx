@@ -10,7 +10,6 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
 import { useLanguage } from "@/hooks/use-language";
 
-// Type definitions for better TypeScript support
 interface PhotoEditState {
   preview: string | null;
   file: File | null;
@@ -35,16 +34,13 @@ export default function EditPhoto() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editorRef = useRef<AvatarEditor>(null);
 
-  // Get initial state from navigation
   const navState = useMemo(() => (window.history.state as any) || {}, []);
   const initialImgData = useMemo(() => navState?.imgData || [], [navState]);
   
-  // State management
   const [photoList, setPhotoList] = useState<string[]>(initialImgData);
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   
-  // Combined edit state to reduce re-renders
   const [editState, setEditState] = useState<PhotoEditState>({
     preview: null,
     file: null,
@@ -56,7 +52,6 @@ export default function EditPhoto() {
 
   const adId = useMemo(() => window.location.pathname.split("/")[2], []);
 
-  // Response parser with memoization
   const parsePhotoResponse = useCallback((data: ApiResponse): string[] => {
     if (!data?.data) return [];
 
@@ -77,7 +72,6 @@ export default function EditPhoto() {
     return [];
   }, []);
 
-  // Optimized mutations
   const updatePhotoMutation = useMutation({
     mutationFn: async (file: File) => {
       if (!selectedUrl) throw new Error("No photo selected for replacement");
@@ -180,43 +174,36 @@ export default function EditPhoto() {
     },
   });
 
-  // Reset selection helper
   const resetSelection = useCallback(() => {
     setSelectedUrl(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }, []);
 
-  // Cleanup blob URLs
   const cleanupBlobUrl = useCallback((url: string | null) => {
-    if (url && editState.isBlob) {
+    if (url) {
       try {
         URL.revokeObjectURL(url);
       } catch (e) {
         console.warn("Failed to revoke blob URL:", e);
       }
     }
-  }, [editState.isBlob]);
+  }, []);
 
-  // Initialize editor with first photo
+  // Initialize with first photo only if we're not editing
   useEffect(() => {
-    if (!isEditing && photoList.length > 0) {
+    if (!isEditing && photoList.length > 0 && !editState.preview) {
       setSelectedUrl(photoList[0]);
-      setEditState(prev => ({
-        ...prev,
-        preview: photoList[0],
-        isBlob: false,
-      }));
     }
-  }, [isEditing, photoList]);
+  }, [isEditing, photoList, editState.preview]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      cleanupBlobUrl(editState.preview);
+      if (editState.preview && editState.isBlob) {
+        cleanupBlobUrl(editState.preview);
+      }
     };
-  }, [editState.preview, cleanupBlobUrl]);
+  }, [editState.preview, editState.isBlob, cleanupBlobUrl]);
 
-  // Event handlers
   const handleReplaceClick = useCallback((url: string) => {
     setSelectedUrl(url);
     setEditState(prev => ({ ...prev, isAdd: false }));
@@ -258,7 +245,7 @@ export default function EditPhoto() {
       if (!file || !validateFile(file)) return;
       
       const preview = URL.createObjectURL(file);
-      cleanupBlobUrl(editState.preview); // Cleanup previous blob
+      cleanupBlobUrl(editState.preview);
       
       setEditState(prev => ({
         ...prev,
@@ -276,7 +263,7 @@ export default function EditPhoto() {
       if (!file || !validateFile(file)) return;
 
       const preview = URL.createObjectURL(file);
-      cleanupBlobUrl(editState.preview); // Cleanup previous blob
+      cleanupBlobUrl(editState.preview);
 
       setEditState({
         preview,
@@ -310,7 +297,6 @@ export default function EditPhoto() {
     try {
       const canvas = editorRef.current.getImageScaledToCanvas();
       
-      // Use promise-based blob conversion
       const blob = await new Promise<Blob>((resolve, reject) => {
         canvas.toBlob((blob: Blob | null) => {
           if (blob) resolve(blob);
@@ -322,22 +308,21 @@ export default function EditPhoto() {
       const file = new File([blob], fileName, { type: blob.type });
 
       if (editState.isAdd) {
-        uploadPhotosMutation.mutate([file]);
+        await uploadPhotosMutation.mutateAsync([file]);
       } else {
-        updatePhotoMutation.mutate(file);
+        await updatePhotoMutation.mutateAsync(file);
       }
 
       // Cleanup and reset
       cleanupBlobUrl(editState.preview);
-      setEditState(prev => ({
-        ...prev,
+      setEditState({
         preview: null,
         file: null,
         isBlob: false,
         isAdd: false,
         scale: 1,
         rotate: 0,
-      }));
+      });
       setIsEditing(false);
       resetSelection();
 
@@ -408,7 +393,7 @@ export default function EditPhoto() {
     fileInputRef.current?.click();
   }, []);
 
-  // Memoized photo grid to prevent unnecessary re-renders
+  // Memoized photo grid
   const photoGrid = useMemo(() => (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
       {photoList.map((url, index) => (
@@ -417,7 +402,7 @@ export default function EditPhoto() {
             src={url}
             alt={`photo-${index}`}
             className="w-full h-36 object-cover"
-            loading="lazy" // Lazy load images for better performance
+            loading="lazy"
           />
           <div className="absolute top-2 right-2 flex flex-col gap-2 transition">
             <Button size="sm" variant="secondary" onClick={() => handleEditClick(url)}>
@@ -435,46 +420,86 @@ export default function EditPhoto() {
     </div>
   ), [photoList, handleEditClick, handleReplaceClick, handleDelete]);
 
-  // Memoized editor controls
-  const editorControls = useMemo(() => (
-    <div className="flex-1 space-y-4">
-      <div>
-        <label className="block text-sm mb-2">{t("uploadPhoto", "Zoom")}</label>
-        <input
-          type="range"
-          min={1}
-          max={2}
-          step={0.01}
-          value={editState.scale}
-          onChange={(e) => setEditState(prev => ({ ...prev, scale: Number(e.target.value) }))}
-          className="w-full"
-        />
+  // Memoized editor controls - ONLY show when actively editing
+  const editorControls = useMemo(() => {
+    if (!isEditing || !editState.preview) return null;
+
+    return (
+      <div className="flex-1 space-y-4">
+        <div>
+          <label className="block text-sm mb-2">{t("uploadPhoto", "Zoom")}</label>
+          <input
+            type="range"
+            min={1}
+            max={2}
+            step={0.01}
+            value={editState.scale}
+            onChange={(e) => setEditState(prev => ({ ...prev, scale: Number(e.target.value) }))}
+            className="w-full"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-2">{t("uploadPhoto", "Rotate")}</label>
+          <input
+            type="range"
+            min={0}
+            max={360}
+            step={1}
+            value={editState.rotate}
+            onChange={(e) => setEditState(prev => ({ ...prev, rotate: Number(e.target.value) }))}
+            className="w-full"
+          />
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            onClick={applyEditAndReplace}
+            disabled={updatePhotoMutation.isPending || uploadPhotosMutation.isPending}
+          >
+            {t("uploadPhoto", "Save")}
+          </Button>
+          <Button variant="outline" onClick={cancelEdit}>
+            {t("uploadPhoto", "Cancel")}
+          </Button>
+        </div>
       </div>
-      <div>
-        <label className="block text-sm mb-2">{t("uploadPhoto", "Rotate")}</label>
-        <input
-          type="range"
-          min={0}
-          max={360}
-          step={1}
-          value={editState.rotate}
-          onChange={(e) => setEditState(prev => ({ ...prev, rotate: Number(e.target.value) }))}
-          className="w-full"
-        />
+    );
+  }, [
+    isEditing, 
+    editState.preview, 
+    editState.scale, 
+    editState.rotate, 
+    applyEditAndReplace, 
+    cancelEdit, 
+    t, 
+    updatePhotoMutation.isPending, 
+    uploadPhotosMutation.isPending
+  ]);
+
+  // Memoized editor section - ONLY show when actively editing
+  const editorSection = useMemo(() => {
+    if (!isEditing || !editState.preview) return null;
+
+    return (
+      <div className="mt-4 p-4 border rounded-lg bg-gray-50">
+        <h4 className="font-medium mb-2">{t("editPhoto", "Edit Photo")}</h4>
+        <div className="flex flex-col md:flex-row gap-4 items-start">
+          <div>
+            <AvatarEditor
+              ref={editorRef}
+              image={editState.preview}
+              width={320}
+              height={200}
+              border={40}
+              scale={editState.scale}
+              rotate={editState.rotate}
+              crossOrigin="anonymous"
+            />
+          </div>
+          {editorControls}
+        </div>
       </div>
-      <div className="flex gap-2">
-        <Button 
-          onClick={applyEditAndReplace}
-          disabled={updatePhotoMutation.isPending || uploadPhotosMutation.isPending}
-        >
-          {t("uploadPhoto", "Save")}
-        </Button>
-        <Button variant="outline" onClick={cancelEdit}>
-          {t("uploadPhoto", "Cancel")}
-        </Button>
-      </div>
-    </div>
-  ), [editState.scale, editState.rotate, applyEditAndReplace, cancelEdit, t, updatePhotoMutation.isPending, uploadPhotosMutation.isPending]);
+    );
+  }, [isEditing, editState.preview, editState.scale, editState.rotate, editorControls, t]);
 
   return (
     <div className="flex h-screen bg-background">
@@ -505,26 +530,8 @@ export default function EditPhoto() {
                   photoGrid
                 )}
 
-                {isEditing && editState.preview && (
-                  <div className="mt-4 p-4 border rounded-lg bg-gray-50">
-                    <h4 className="font-medium mb-2">{t("editPhoto", "Edit Photo")}</h4>
-                    <div className="flex flex-col md:flex-row gap-4 items-start">
-                      <div>
-                        <AvatarEditor
-                          ref={editorRef}
-                          image={editState.preview}
-                          width={320}
-                          height={200}
-                          border={40}
-                          scale={editState.scale}
-                          rotate={editState.rotate}
-                          crossOrigin="anonymous" // Helps with CORS issues
-                        />
-                      </div>
-                      {editorControls}
-                    </div>
-                  </div>
-                )}
+                {/* Only show editor when actively editing */}
+                {editorSection}
 
                 <div className="mt-6 flex justify-between">
                   <Button onClick={handleAddNewPhoto}>

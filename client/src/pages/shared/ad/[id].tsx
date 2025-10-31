@@ -226,7 +226,7 @@ export default function AdDetail({ params }: AdDetailProps) {
       return body;
     },
     onSuccess: (res: any) => {
-      setAdPromoteStatus(false);
+      setAdPromoteStatus(true);
       queryClient.invalidateQueries({ queryKey: [`/ads/${id}`] });
       toast({
         title: t("adDetail", "depromoteSuccess") || "Ad Depromoted",
