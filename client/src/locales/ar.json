@@ -379,7 +379,8 @@
     "tiktokLinkLabel": "رابط تيك توك",
     "youtubeLinkLabel": "رابط يوتيوب",
     "snapchatLinkLabel": "رابط سناب شات",
-    "googleAdsLinkLabel": "رابط إعلانات جوجل",
+  "googleAdsLinkLabel": "رابط إعلانات جوجل",
+  "whatsappNumber": "رقم واتساب",
     "audienceCars": "سيارات",
     "audienceRealestate": "عقارات",
     "audienceDevices": "أجهزة",
@@ -1566,6 +1567,23 @@
       "rejectionReason": "سبب الرفض:"
     }
   },
+  "editPhoto": {
+    "Edit Photos": "تعديل الصور",
+    "Manage, replace, or delete your ad photos": "إدارة، استبدال، أو حذف صور الإعلان الخاصة بك",
+    "Your Ad Photos": "صور إعلانك",
+    "No photos uploaded yet.": "لا توجد صور مرفوعة بعد.",
+    "Edit": "تعديل",
+    "Replace": "استبدال",
+    "Delete": "حذف",
+    "Add Photo": "إضافة صورة",
+    "Done": "تم",
+    "Edit Photo": "تعديل الصورة",
+    "Zoom": "تكبير",
+    "Rotate": "تدوير",
+    "Save": "حفظ",
+    "Cancel": "إلغاء"
+  },
+
   "pixels": {
     "title": "بكسلات",
     "description": "إدارة بكسلات التسويق المستخدمة للتتبع والتحليلات.",

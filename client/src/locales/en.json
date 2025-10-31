@@ -398,6 +398,24 @@
     "uploading": "Uploading...",
     "changePhoto": "Change Photo",
     "supportedFormatsNote": "JPG, PNG up to 5MB"
+    ,
+    "whatsappNumber": "WhatsApp Number"
+  },
+  "editPhoto": {
+    "Edit Photos": "Edit Photos",
+    "Manage, replace, or delete your ad photos": "Manage, replace, or delete your ad photos",
+    "Your Ad Photos": "Your Ad Photos",
+    "No photos uploaded yet.": "No photos uploaded yet.",
+    "Edit": "Edit",
+    "Replace": "Replace",
+    "Delete": "Delete",
+    "Add Photo": "Add Photo",
+    "Done": "Done",
+    "Edit Photo": "Edit Photo",
+    "Zoom": "Zoom",
+    "Rotate": "Rotate",
+    "Save": "Save",
+    "Cancel": "Cancel"
   },
   "uploadPhoto": {
     "High Resolution": "High Resolution",
