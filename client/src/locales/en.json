@@ -809,6 +809,10 @@
     "rateLabel": "rate",
     "clicksLabel": "clicks",
     "sarLabel": "SAR"
+    ,
+    "currency": "Currency",
+    "rate": "Rate",
+    "clicks": "Clicks"
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -1112,6 +1116,7 @@
     "like": "Like",
     "share": "Share",
     "comment": "Comment",
+    "website": "Website",
     "learnMore": "Learn More",
     "loadMore": "Load More",
     "loading": "Loading...",
@@ -1535,6 +1540,7 @@
   "pixels": {
     "title": "Pixels",
     "description": "Manage marketing pixels used for tracking and analytics.",
+    "loading": "Loading...",
     "create": "Create Pixel",
     "edit": "Edit Pixel",
     "delete": "Delete Pixel",
