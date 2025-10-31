@@ -543,6 +543,12 @@
 
     "assignCredit": "Assign Credit",
     "assignCredits": "Assign Credits",
+  "depromote": "Depromote",
+  "depromoting": "Depromoting...",
+  "Balance": "Balance",
+  "promoteNote": "Promoting this ad will pin it near the top of the public feed to increase its visibility to viewers.",
+  "Created": "Created",
+  "Last Updated": "Last Updated",
     "addMoreCredits": "Add More Credits",
     "adCredits": "Ad Credits",
     "availableCredits": "Available Credits",

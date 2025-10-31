@@ -462,7 +462,10 @@ export default function AdDetail({ params }: AdDetailProps) {
                   <CardTitle>{t("adDetail", "campaignManagement")}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center gap-4 flex-wrap">
+                  <div
+                    className="flex items-center gap-4 flex-wrap
+                  overflow-x-auto
+                  ">
                     <div className="flex items-center gap-2">
                       <Label htmlFor="credit-amount">
                         {t("adDetail", "assignCredits")}:
@@ -575,7 +578,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                       {/* Show user's current payment balance (if available) */}
                       <div className="ml-4">
                         <div className="text-sm text-muted-foreground">
-                          Balance
+                          {t("adDetail", "Balance")}
                         </div>
                         <div className="text-lg font-semibold">
                           {paymentHistoryResponse?.data?.balance ?? 0}
@@ -587,49 +590,41 @@ export default function AdDetail({ params }: AdDetailProps) {
                   <div className="mt-4">
                     <Card>
                       <CardHeader>
-                        <CardTitle>Impression Ratios</CardTitle>
-                      </CardHeader>
+                          <CardTitle>{t("adDetail", "impressionRatios")}</CardTitle>
+                        </CardHeader>
                       <CardContent>
-                        {isLoadingRatios ? (
-                          <div>Loading impression ratios…</div>
-                        ) : (
-                          (() => {
-                            const ratios =
-                              (impressionRatiosResponse?.data as any[]) || [];
-                            if (!ratios || ratios.length === 0) {
+                          {isLoadingRatios ? (
+                            <div>{t("adDetail", "loadingImpressionRatios")}</div>
+                          ) : (
+                            (() => {
+                              const ratios = (impressionRatiosResponse?.data as any[]) || [];
+                              if (!ratios || ratios.length === 0) {
+                                return (
+                                  <div className="text-sm text-muted-foreground">{t("adDetail", "noImpressionRatiosFound")}</div>
+                                );
+                              }
+
                               return (
-                                <div className="text-sm text-muted-foreground">
-                                  No impression ratios found.
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                  {ratios.map((r: any) => (
+                                    <div
+                                      key={r.id || r.currency}
+                                      className="flex items-center justify-between gap-2 p-2 bg-muted/20 rounded">
+                                      <div className="flex items-center gap-2">
+                                        <div className="text-sm font-medium">{(r.currency || "").toUpperCase()}</div>
+                                        <div className="text-xs text-muted-foreground">{r.impressionsPerUnit}</div>
+                                      </div>
+                                      <div>
+                                        {r.promoted ? (
+                                          <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">{t("adDetail", "Promoted") || "Promoted"}</span>
+                                        ) : null}
+                                      </div>
+                                    </div>
+                                  ))}
                                 </div>
                               );
-                            }
-                            return (
-                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                {ratios.map((r: any) => (
-                                  <div
-                                    key={r.id || r.currency}
-                                    className="flex items-center justify-between gap-2 p-2 bg-muted/20 rounded">
-                                    <div className="flex items-center gap-2">
-                                      <div className="text-sm font-medium">
-                                        {(r.currency || "").toUpperCase()}
-                                      </div>
-                                      <div className="text-xs text-muted-foreground">
-                                        {r.impressionsPerUnit}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      {r.promoted ? (
-                                        <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
-                                          Promoted
-                                        </span>
-                                      ) : null}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            );
-                          })()
-                        )}
+                            })()
+                          )}
                       </CardContent>
                     </Card>
                   </div>
@@ -641,8 +636,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                     </p>
                     <p className="text-sm text-muted-foreground">
                       <i className="fas fa-info-circle mx-2"></i>
-                      Promoting this ad will pin it near the top of the public
-                      feed to increase its visibility to viewers.
+                      {t("adDetail", "promoteNote")}
                     </p>
                   </div>
                 </CardContent>
@@ -770,7 +764,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Created
+                      {t("adDetail", "Created")}
                     </h4>
                     <p
                       className="text-foreground"
@@ -781,7 +775,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      Last Updated
+                      {t("adDetail", "Last Updated")}
                     </h4>
                     <p
                       className="text-foreground"
