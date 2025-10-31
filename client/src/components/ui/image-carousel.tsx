@@ -56,6 +56,13 @@ export function ImageCarousel({
     };
   }, [index, images]);
 
+  // Clear prevIndex after the fade transition ends so the previous image is removed from DOM
+  useEffect(() => {
+    if (prevIndex === null) return;
+    const timer = window.setTimeout(() => setPrevIndex(null), 500); // match CSS duration
+    return () => window.clearTimeout(timer);
+  }, [prevIndex]);
+
   // Autoplay timer
   useEffect(() => {
     if (!autoPlay || isPaused || isSingleImage) return;
@@ -81,25 +88,26 @@ export function ImageCarousel({
       className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
-      {/* Previous image (fades out) */}
+      {/*  Previous image (fades out) */}
       {typeof prevIndex === "number" && images[prevIndex] && (
-        <img
-          src={images[prevIndex]}
-          alt={alt}
-          className="w-full h-full object-cover absolute inset-0 transition-opacity duration-500"
-          style={{ opacity: loaded ? 0 : 1 }}
-          aria-hidden
-        />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <img
+            src={images[prevIndex]}
+            alt={alt}
+            className="h-auto max-h-full w-auto max-w-full object-contain transition-opacity duration-500 mx-auto"
+            // keep className unchanged per request; control visibility via inline style
+            style={{ opacity: loaded ? 0 : 1, transition: "opacity 0.5s" }}
+          />
+        </div>
       )}
 
       {/* Current image (fades in when loaded) */}
       <img
         src={images[index]}
         alt={alt}
-        className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-500 ${
-          loaded ? "opacity-100" : "opacity-0"
-        }`}
-        data-testid={dataTestId}
+        className="h-auto max-h-full w-auto max-w-full object-contain transition-opacity duration-500 mx-auto"
+        // keep className unchanged per request; fade in when loaded
+        // style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.5s" }}
       />
 
       {/* Loading overlay while current image is loading */}

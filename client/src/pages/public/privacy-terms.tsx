@@ -91,7 +91,7 @@ export default function PrivacyTerms() {
         <div className="container relative">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
-              <Shield className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
+              <Shield className={`w-4 h-4 ${isRTL ? "ml-2" : "mx-2"}`} />
               {t("privacyTerms", "lastUpdated")}
             </Badge>
             <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
@@ -113,7 +113,7 @@ export default function PrivacyTerms() {
                 className={`text-3xl font-bold mb-8 flex items-center
                    `}>
                 <Shield
-                  className={`w-8 h-8 text-primary ${isRTL ? "ml-3" : "mr-3"}`}
+                  className={`w-8 h-8 text-primary ${isRTL ? "ml-3" : "mx-3"}`}
                 />
                 {t("privacyTerms", "privacyTitle")}
               </h2>
@@ -159,7 +159,7 @@ export default function PrivacyTerms() {
                 className={`text-3xl font-bold mb-8 flex items-center 
                 `}>
                 <Scale
-                  className={`w-8 h-8 text-primary ${isRTL ? "ml-3" : "mr-3"}`}
+                  className={`w-8 h-8 text-primary ${isRTL ? "ml-3" : "mx-3"}`}
                 />
                 {t("privacyTerms", "termsTitle")}
               </h2>

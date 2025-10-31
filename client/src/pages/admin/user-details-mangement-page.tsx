@@ -246,7 +246,7 @@ export default function UserDetails() {
                 data-testid="button-back-to-users">
                 <i
                   className={`fas fa-arrow-left ${
-                    isRTL ? "ml-2" : "mr-2"
+                    isRTL ? "ml-2" : "mx-2"
                   }`}></i>
                 {t("userDetails", "backToUsers")}
               </Button>
@@ -287,7 +287,7 @@ export default function UserDetails() {
                       variant="default">
                       <i
                         className={`fas fa-user-shield ${
-                          isRTL ? "ml-2" : "mr-2"
+                          isRTL ? "ml-2" : "mx-2"
                         }`}></i>
                       {isPromoting
                         ? t("userDetails", "promoting")
@@ -302,7 +302,7 @@ export default function UserDetails() {
                         data-testid="button-delete-user">
                         <i
                           className={`fas fa-trash ${
-                            isRTL ? "ml-2" : "mr-2"
+                            isRTL ? "ml-2" : "mx-2"
                           }`}></i>
                         {isDeleting
                           ? t("userDetails", "deleting")

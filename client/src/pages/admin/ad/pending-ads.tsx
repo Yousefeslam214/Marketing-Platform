@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { AdCard } from "@/components/ads/ad-card";
@@ -60,7 +59,6 @@ export default function PendingAds() {
     }
   };
 
- 
   if (error) {
     return (
       <div className="flex flex-center justify-center h-screen bg-background">
@@ -84,7 +82,7 @@ export default function PendingAds() {
           //   actions={
           //   <div className="flex items-center gap-2">
           //     <Button onClick={handleCreateAd}>
-          //       <i className="fas fa-plus mr-2"></i>
+          //       <i className="fas fa-plus mx-2"></i>
           //       {t("ads", "createAd")}
           //     </Button>
           //   </div>

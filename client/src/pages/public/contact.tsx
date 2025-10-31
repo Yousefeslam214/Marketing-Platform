@@ -51,7 +51,7 @@ export default function Contact() {
             <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
               <div className="text-center space-y-4 mb-16">
                 <Badge variant="secondary" className="w-fit mx-auto">
-                  <Mail className="w-4 h-4 mr-2" />
+                  <Mail className="w-4 h-4 mx-2" />
                   {t("contact", "getInTouch")}
                 </Badge>
                 <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
@@ -200,7 +200,7 @@ export default function Contact() {
                       window.open(`https://wa.me/966502274696`, "_blank");
                     }}>
                     <SiWhatsapp
-                      className={`h-5 w-5 ${isRTL ? "ml-2" : "mr-2"}`}
+                      className={`h-5 w-5 ${isRTL ? "ml-2" : "mx-2"}`}
                     />
                     {t("contact", "openWhatsapp")}
                   </Button>

@@ -133,12 +133,12 @@ export default function PaymentSuccess() {
                   variant="outline"
                   size="sm"
                   disabled={!transactionData?.transactionId}>
-                  <Download className="w-4 h-4 mr-2" />
+                  <Download className="w-4 h-4 mx-2" />
                   {t("payment", "successReceipt")}
                 </Button>
 
                 <Button onClick={handleGoHome} variant="outline" size="sm">
-                  <Home className="w-4 h-4 mr-2" />
+                  <Home className="w-4 h-4 mx-2" />
                   {t("payment", "gotoads")}
                 </Button>
               </div>

@@ -89,7 +89,7 @@ export function AdCard({
 
         {ad.imageUrl && (
           <div className="w-full h-32 bg-muted rounded-lg mb-4 overflow-hidden">
-            <ImageCarousel 
+            <ImageCarousel
               images={Array.isArray(ad.imageUrl) ? ad.imageUrl : [ad.imageUrl]}
               alt={title}
               dataTestId={`ad-image-${ad.id}`}
@@ -114,7 +114,7 @@ export function AdCard({
               <span
                 data-testid={`ad-budget-${ad.id}`}
                 className="flex flex-col items-center justify-center text-center max-w-[50%]">
-                <i className="fas fa-sar-sign mr-1"></i>
+                <i className="fas fa-sar-sign mx-1"></i>
                 {ad.budgetType}
               </span>
             </div>
@@ -136,7 +136,7 @@ export function AdCard({
                   // onClick={() => onView?.(ad.id)}
                   className="flex-1"
                   data-testid={`button-view-ad-${ad.id}`}>
-                  <i className="fas fa-eye mr-1"></i>
+                  <i className="fas fa-eye mx-1"></i>
                   {t("ads", "view") || "View"}
                 </Button>
                 <Link href={`/ads/${ad.id}/edit`} className="w-[50%]">
@@ -147,7 +147,7 @@ export function AdCard({
                       // onClick={() => onEdit?.(ad.id)}
                       className="w-full"
                       data-testid={`button-edit-ad-${ad.id}`}>
-                      <i className="fas fa-edit mr-1"></i>
+                      <i className="fas fa-edit mx-1"></i>
                       {t("ads", "edit") || "Edit"}
                     </Button>
                   )}
@@ -159,7 +159,7 @@ export function AdCard({
                     onClick={() => onAnalytics(ad.id)}
                     className="flex-1"
                     data-testid={`button-analytics-ad-${ad.id}`}>
-                    <i className="fas fa-chart-bar mr-1"></i>
+                    <i className="fas fa-chart-bar mx-1"></i>
                     {t("ads", "analytics") || "Analytics"}
                   </Button>
                 )}
@@ -172,7 +172,7 @@ export function AdCard({
                   onClick={() => onPurchase(ad.id)}
                   className="w-full mt-3"
                   data-testid={`button-purchase-ad-${ad.id}`}>
-                  <i className="fas fa-credit-card mr-1"></i>
+                  <i className="fas fa-credit-card mx-1"></i>
                   {t("adDetail", "purchaseImpressions") ||
                     "Purchase Impressions"}
                 </Button>
@@ -205,9 +205,9 @@ export function AdCard({
                   disabled={isLoading}
                   data-testid={`button-approve-ad-${ad.id}`}>
                   {isLoading ? (
-                    <i className="fas fa-spinner fa-spin mr-1"></i>
+                    <i className="fas fa-spinner fa-spin mx-1"></i>
                   ) : (
-                    <i className="fas fa-check mr-1"></i>
+                    <i className="fas fa-check mx-1"></i>
                   )}
                   {t("ads", "approve") || "Approve"}
                 </Button>
@@ -221,9 +221,9 @@ export function AdCard({
                   disabled={isLoading}
                   data-testid={`button-reject-ad-${ad.id}`}>
                   {isLoading ? (
-                    <i className="fas fa-spinner fa-spin mr-1"></i>
+                    <i className="fas fa-spinner fa-spin mx-1"></i>
                   ) : (
-                    <i className="fas fa-times mr-1"></i>
+                    <i className="fas fa-times mx-1"></i>
                   )}
                   {t("ads", "reject") || "Reject"}
                 </Button>

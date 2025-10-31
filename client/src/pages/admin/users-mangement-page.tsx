@@ -269,9 +269,7 @@ export default function AdminUsers() {
                       <p
                         className="font-medium"
                         data-testid={`user-spend-${userData.id}`}>
-                        <div
-                        className="flex items-center gap-1"
-                        >
+                        <div className="flex items-center gap-1">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -312,14 +310,14 @@ export default function AdminUsers() {
                         setLocation(`/admin/user-details/${userData.id}`)
                       }
                       data-testid={`button-view-user-${userData.id}`}>
-                      <i className="fas fa-eye mr-1"></i>
+                      <i className="fas fa-eye mx-1"></i>
                       {t("userManagement", "view")}
                     </Button>
                     {/* <Button
                       variant="outline"
                       size="sm"
                       data-testid={`button-edit-user-${userData.id}`}>
-                      <i className="fas fa-edit mr-1"></i>
+                      <i className="fas fa-edit mx-1"></i>
                       Edit
                     </Button> */}
                   </div>

@@ -168,7 +168,7 @@ export default function AdminDashboard() {
               <Button
                 onClick={() => setLocation("/admin/users")}
                 data-testid="button-manage-users">
-                <i className={`fas fa-users ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                <i className={`fas fa-users ${isRTL ? "ml-2" : "mx-2"}`}></i>
                 {t("AdminDashboard", "manageUsers")}
               </Button>
             </div>

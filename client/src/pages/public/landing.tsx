@@ -123,7 +123,7 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/signup">
                   <Button size="lg" className="w-full sm:w-auto">
-                    <i className="fas fa-play-circle mr-2"></i>
+                    <i className="fas fa-play-circle mx-2"></i>
                     {t("landing", "hero.getStarted")}
                   </Button>
                 </Link>
@@ -131,7 +131,7 @@ export default function LandingPage() {
                   variant="outline"
                   size="lg"
                   className="w-full sm:w-auto">
-                  <i className="fas fa-video mr-2"></i>
+                  <i className="fas fa-video mx-2"></i>
                   {t("landing", "hero.watchDemo")}
                 </Button>
               </div>
@@ -337,7 +337,7 @@ export default function LandingPage() {
           <div className="text-center mt-12">
             <Link href="/signup">
               <Button size="lg">
-                <i className="fas fa-arrow-right mr-2"></i>
+                <i className="fas fa-arrow-right mx-2"></i>
                 {t("landing", "howItWorks.getStarted")}
               </Button>
             </Link>
@@ -373,7 +373,7 @@ export default function LandingPage() {
                     <span>{t("landing", "pricing.error")}</span>
                   </div>
                   <Button onClick={retryFetchPricing} variant="outline">
-                    <RefreshCw className="w-4 h-4 mr-2" />
+                    <RefreshCw className="w-4 h-4 mx-2" />
                     {t("landing", "pricing.retry")}
                   </Button>
                 </div>
@@ -390,12 +390,12 @@ export default function LandingPage() {
                 <Card className="border-2 border-primary shadow-xl relative">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <Badge className="px-3 py-1">
-                      {t("landing", "pricing.bestValue")}
+                      {t("landing", "bestValue")}
                     </Badge>
                   </div>
                   <CardHeader className="text-center pb-6 pt-8">
                     <CardTitle className="text-2xl mb-4">
-                      {t("landing", "simplePricing")}
+                      {t("landing", "Pricing")}
                     </CardTitle>
                     <div className="space-y-2">
                       <div className="text-4xl font-bold text-primary">
@@ -415,13 +415,13 @@ export default function LandingPage() {
                   <CardContent className="space-y-6">
                     <div className="space-y-4">
                       <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <Check className="w-5 h-5 text-green-500 mx-3" />
                         <span className="text-sm">
                           {t("landing", "pricing.features.analytics")}
                         </span>
                       </div>
                       <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <Check className="w-5 h-5 text-green-500 mx-3" />
                         <span className="text-sm">
                           {t(
                             "landing",
@@ -430,25 +430,25 @@ export default function LandingPage() {
                         </span>
                       </div>
                       <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <Check className="w-5 h-5 text-green-500 mx-3" />
                         <span className="text-sm">
                           {t("landing", "pricing.features.support")}
                         </span>
                       </div>
                       <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <Check className="w-5 h-5 text-green-500 mx-3" />
                         <span className="text-sm">
                           {t("landing", "pricing.features.reporting")}
                         </span>
                       </div>
                       <div className="flex items-center mb-2">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <Check className="w-5 h-5 text-green-500 mx-3" />
                         <span className="text-sm">
                           {t("landing", "pricing.features.optimization")}
                         </span>
                       </div>
                       {/* <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
+                        <Check className="w-5 h-5 text-green-500 mx-3" />
                         <span className="text-sm">{t("landing", "pricing.features.api")}</span>
                       </div> */}
                     </div>
@@ -466,7 +466,8 @@ export default function LandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-primary w-full
+      <section
+        className="py-12 sm:py-16 md:py-20 bg-primary w-full
       flex flex-col align-center 
       ">
         <div className="container px-4 sm:px-6 lg:px-8">
@@ -523,7 +524,7 @@ export default function LandingPage() {
                   size="lg"
                   variant="secondary"
                   className="w-full sm:w-auto hover:scale-105 transition-transform hover:text-primary">
-                  <i className="fas fa-rocket mr-2"></i>
+                  <i className="fas fa-rocket mx-2"></i>
                   {t("landing", "cta.getStarted")}
                 </Button>
               </Link>
@@ -534,7 +535,7 @@ export default function LandingPage() {
                   className="w-full sm:w-auto border-primary-foreground text-primary hover:bg-primary-foreground
                   hover:scale-105 transition-transform
                   ">
-                  <i className="fas fa-phone mr-2"></i>
+                  <i className="fas fa-phone mx-2"></i>
                   {t("landing", "cta.contact")}
                 </Button>
               </Link>

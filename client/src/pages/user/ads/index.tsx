@@ -11,8 +11,6 @@ import { editAdPath } from "@/lib/paths";
 import DataPagination from "@/components/ui/data-pagination";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 
-
-
 export default function AdsIndex() {
   const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
@@ -42,7 +40,7 @@ export default function AdsIndex() {
           description={t("ads", "description")}
           actions={
             <Button onClick={handleCreateAd} data-testid="button-create-ad">
-              <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+              <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
               {t("ads", "createAd")}
             </Button>
           }
@@ -77,26 +75,30 @@ export default function AdsIndex() {
                       </div>
                     </div>
 
-                    {ad.imageUrl && ad.imageUrl.length > 0 ? (
-                      // Array.isArray(ad.imageUrl)
-                      <ImageCarousel
-                        images={ad.imageUrl}
-                        alt={ad.titleEn || ad.titleAr}
-                        dataTestId={`ad-image-${ad.id}`}
-                      />
-                    ) : (
-                      <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
-                        <div className="text-center text-muted-foreground">
-                          <i className="fas fa-image text-2xl mb-2 block"></i>
-                          <div className="text-sm">
-                            {t("ads", "noImage") || "No image"}
+                    <div className="min-h-38">
+                      {ad.imageUrl && ad.imageUrl.length > 0 ? (
+                        // Array.isArray(ad.imageUrl)
+                        <ImageCarousel
+                          images={ad.imageUrl}
+                          alt={ad.titleEn || ad.titleAr}
+                          dataTestId={`ad-image-${ad.id}`}
+                        />
+                      ) : (
+                        <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
+                          <div className="text-center text-muted-foreground">
+                            <i className="fas fa-image text-2xl mb-2 block"></i>
+                            <div className="text-sm">
+                              {t("ads", "noImage") || "No image"}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
-                      <div>
+                      )}
+                    </div>
+                    <div
+                      className="grid grid-cols-4 gap-4 text-sm text-muted-foreground
+                    mx-2
+                    ">
+                      <div className="!flex !flex-col !items-center">
                         <div className="text-xs">
                           {t("ads", "impressions") || "Impressions"}
                         </div>
@@ -106,22 +108,22 @@ export default function AdsIndex() {
                             0}
                         </div>
                       </div>
-                      <div>
+                      <div className="!flex !flex-col !items-center">
                         <div className="text-xs">
-                          {t("ads", "spent") || "Spent"}
+                          {t("ads", "spent") || "Spent"} SAR
                         </div>
                         <div className="font-medium">
-                          {t("ads", "riyal") || "riyal"}{" "}
+                          {/* {t("ads", "riyal") || "riyal"}{" "} */}
                           {ad.spended?.toLocaleString?.() ?? 0}
                         </div>
                       </div>
-                      <div>
+                      <div className="!flex !flex-col !items-center">
                         <div className="text-xs">
                           {t("ads", "likes") || "Likes"}
                         </div>
                         <div className="font-medium">{ad.likesCount ?? 0}</div>
                       </div>
-                      <div>
+                      <div className="!flex !flex-col !items-center">
                         <div className="text-xs">
                           {t("ads", "websiteClicks") || "Website Clicks"}
                         </div>
@@ -136,6 +138,7 @@ export default function AdsIndex() {
                     <div className="flex items-center gap-2 mt-4">
                       <Button
                         variant="outline"
+                        className="min-w-[50%]"
                         size="sm"
                         onClick={() => setLocation(`/campaigns/${ad.id}`)}
                         data-testid={`button-view-ad-${ad.id}`}>
@@ -144,6 +147,7 @@ export default function AdsIndex() {
                       <Button
                         variant="outline"
                         size="sm"
+                        className="min-w-[50%]"
                         onClick={() => setLocation(editAdPath(ad.id))}
                         data-testid={`button-edit-${ad.id}`}>
                         {t("ads", "edit")}
@@ -165,7 +169,7 @@ export default function AdsIndex() {
               <Button
                 onClick={handleCreateAd}
                 data-testid="button-create-first-ad">
-                <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
                 {t("ads", "createFirstAd")}
               </Button>
             </div>

@@ -57,7 +57,7 @@ export default function ApprovedAds() {
           description={t("approvedAds", "description")}
           actions={
             <Button onClick={handleCreateAd} data-testid="button-create-ad">
-              <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+              <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
               {t("ads", "createAd")}
             </Button>
           }
@@ -97,7 +97,7 @@ export default function ApprovedAds() {
                 <Button
                   onClick={handleCreateAd}
                   data-testid="button-create-first-ad">
-                  <i className="fas fa-plus mr-2"></i>
+                  <i className="fas fa-plus mx-2"></i>
                   {t("ads", "createFirstAd")}
                 </Button>
               </div>

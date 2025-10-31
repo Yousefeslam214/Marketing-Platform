@@ -18,9 +18,9 @@ export function getFlexDirection(isRTL: boolean): string {
 
 export function getMarginAuto(isRTL: boolean, side: "left" | "right"): string {
   if (side === "left") {
-    return isRTL ? "mr-auto" : "ml-auto";
+    return isRTL ? "mx-auto" : "ml-auto";
   }
-  return isRTL ? "ml-auto" : "mr-auto";
+  return isRTL ? "ml-auto" : "mx-auto";
 }
 
 export function getPadding(

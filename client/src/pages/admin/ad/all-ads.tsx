@@ -39,9 +39,6 @@ export default function AllAds() {
   // Get all ads from response
   const allAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
 
-
-
- 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto">
@@ -51,7 +48,7 @@ export default function AllAds() {
           actions={
             <div className="flex items-center gap-2">
               <Button onClick={handleCreateAd}>
-                <i className="fas fa-plus mr-2"></i>
+                <i className="fas fa-plus mx-2"></i>
                 {t("ads", "createAd")}
               </Button>
             </div>
@@ -110,7 +107,7 @@ export default function AllAds() {
                     : "Start by creating your first ad to begin your marketing campaigns"}
                 </p>
                 <Button onClick={handleCreateAd}>
-                  <i className="fas fa-plus mr-2"></i>
+                  <i className="fas fa-plus mx-2"></i>
                   {isRTL ? "إنشاء إعلان جديد" : "Create New Ad"}
                 </Button>
               </div>

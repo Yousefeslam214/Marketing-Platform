@@ -196,7 +196,8 @@ export default function AssignCredit() {
                       <div className="flex items-center justify-between">
                         <span>{t("userAds", "availableBalance")}:</span>
                         <span className="text-xl font-bold text-blue-600">
-                          {userBalance.toLocaleString()} {t("userAds", "credits")}
+                          {userBalance.toLocaleString()}{" "}
+                          {t("userAds", "credits")}
                         </span>
                       </div>
                     </AlertDescription>
@@ -317,7 +318,7 @@ export default function AssignCredit() {
                             size="sm"
                             onClick={() => setLocation("/billing")}
                             className="text-xs">
-                            <i className="fas fa-plus mr-2"></i>
+                            <i className="fas fa-plus mx-2"></i>
                             {t("userAds", "addMoreCredits")}
                           </Button>
                         </div>
@@ -330,12 +331,12 @@ export default function AssignCredit() {
                           className="flex-1">
                           {isLoading || assignCreditMutation.isPending ? (
                             <>
-                              <i className="fas fa-spinner fa-spin mr-2"></i>
+                              <i className="fas fa-spinner fa-spin mx-2"></i>
                               {t("userAds", "assigningCredit")}
                             </>
                           ) : (
                             <>
-                              <i className="fas fa-credit-card mr-2"></i>
+                              <i className="fas fa-credit-card mx-2"></i>
                               {t("userAds", "assignCredit")}
                             </>
                           )}

@@ -455,12 +455,12 @@ export function TargetingForm({
                 data-testid="button-save-targeting">
                 {isLoading ? (
                   <>
-                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                    <i className="fas fa-spinner fa-spin mx-2"></i>
                     {t("form", "saving")}
                   </>
                 ) : (
                   <>
-                    <i className="fas fa-save mr-2"></i>
+                    <i className="fas fa-save mx-2"></i>
                     {t("form", "saveTargeting")}
                   </>
                 )}

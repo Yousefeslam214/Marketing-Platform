@@ -47,8 +47,6 @@ export default function PaymentFailed() {
     const currency = urlParams.get("currency") || "EGP";
     const reason = urlParams.get("reason");
 
-    
-
     setErrorData({
       errorCode,
       errorMessage,
@@ -237,7 +235,7 @@ export default function PaymentFailed() {
                 onClick={handleRetryPayment}
                 className="w-full bg-blue-600 hover:bg-blue-700"
                 size="lg">
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 mx-2" />
                 {t("payment", "tryAgain")}
               </Button>
 
@@ -246,12 +244,12 @@ export default function PaymentFailed() {
                   onClick={handleContactSupport}
                   variant="outline"
                   size="sm">
-                  <MessageCircle className="w-4 h-4 mr-2" />
+                  <MessageCircle className="w-4 h-4 mx-2" />
                   {t("payment", "contactSupport")}
                 </Button>
 
                 <Button onClick={handleGoHome} variant="outline" size="sm">
-                  <Home className="w-4 h-4 mr-2" />
+                  <Home className="w-4 h-4 mx-2" />
                   {t("payment", "gotoads")}
                 </Button>
               </div>

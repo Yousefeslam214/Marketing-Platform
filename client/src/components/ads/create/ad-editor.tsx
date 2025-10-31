@@ -326,8 +326,10 @@ export function AdEditor() {
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder={t("ads", "whatsappNumber")}
-                          data-testid="input-phone-number"
+                          inputMode="tel"
+                          placeholder="+9665X XXX XXXX"
+                          // pattern="^(\+9665|05)\d{8}$"
+                          // title="Saudi mobile numbers: 05XXXXXXXX or +9665XXXXXXXX"
                           {...field}
                         />
                       </FormControl>
@@ -519,7 +521,7 @@ export function AdEditor() {
                           <label
                             htmlFor="all-cities"
                             className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1">
-                            <i className="fas fa-globe mr-2 text-primary"></i>
+                            <i className="fas fa-globe mx-2 text-primary"></i>
                             {t("ads", "allCities")}
                           </label>
                         </div>
@@ -592,7 +594,7 @@ export function AdEditor() {
                 data-testid="button-save-draft">
                 {createAdMutation.isPending ? (
                   <>
-                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                    <i className="fas fa-spinner fa-spin mx-2"></i>
                     {t("ads", "uploading")}
                   </>
                 ) : (

@@ -98,15 +98,15 @@ export default function Signup() {
           <CardDescription>{t("auth", "signupDescription")}</CardDescription>
         </CardHeader> */}
         <CardHeader className="text-center">
-                  <div className="flex items-center justify-between flex-col mb-4">
-                    <div className="flex items-center gap-2">
-                      <img src="/logo.webp" alt="Logo" className="h-11" />
-                      {/* <CardTitle className="text-2xl">
+          <div className="flex items-center justify-between flex-col mb-4">
+            <div className="flex items-center gap-2">
+              <img src="/logo.webp" alt="Logo" className="h-11" />
+              {/* <CardTitle className="text-2xl">
                       </CardTitle> */}
-                    </div>
-                    {/* <LanguageToggle /> */}
-                  </div>
-                    <CardDescription>{t("auth", "signupDescription")}</CardDescription>
+            </div>
+            {/* <LanguageToggle /> */}
+          </div>
+          <CardDescription>{t("auth", "signupDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -194,7 +194,7 @@ export default function Signup() {
                 data-testid="button-signup">
                 {isLoading ? (
                   <>
-                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                    <i className="fas fa-spinner fa-spin mx-2"></i>
                     {t("auth", "creatingAccount")}
                   </>
                 ) : (
@@ -223,7 +223,7 @@ export default function Signup() {
               onClick={handleGoogleSignup}
               disabled={isLoading}
               data-testid="button-google-signup">
-              <i className={`fab fa-google ${isRTL ? "ml-2" : "mr-2"}`}></i>
+              <i className={`fab fa-google ${isRTL ? "ml-2" : "mx-2"}`}></i>
               Continue with Google
             </Button>
           </div>

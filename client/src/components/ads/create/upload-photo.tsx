@@ -73,7 +73,6 @@ export default function UploadPhoto() {
     onSuccess: (data) => {
       const photoUrl = data.data?.photo;
       if (photoUrl) {
-     
         // If previous previews were blobs, revoke them when replaced by server URL
         setPhotoPreview((prev) => {
           // revoke any local blob URLs we've replaced
@@ -376,8 +375,7 @@ export default function UploadPhoto() {
                         ))}
                       </div>
 
-                      <div className="flex gap-3 mt-3">
-                      </div>
+                      <div className="flex gap-3 mt-3"></div>
                     </div>
                   )}
 
@@ -479,12 +477,12 @@ export default function UploadPhoto() {
                         }>
                         {uploadingPhoto || uploadPhotoMutation.isPending ? (
                           <>
-                            <i className="fas fa-spinner fa-spin mr-2"></i>
+                            <i className="fas fa-spinner fa-spin mx-2"></i>
                             {t("uploadPhoto", "Uploading...")}
                           </>
                         ) : (
                           <>
-                            <i className="fas fa-upload mr-2"></i>
+                            <i className="fas fa-upload mx-2"></i>
                             {photoPreview
                               ? t("uploadPhoto", "upload more Photos")
                               : t("uploadPhoto", "Choose Photo")}
@@ -531,7 +529,7 @@ export default function UploadPhoto() {
                         selectedPreviews.length === 0
                       }
                       className="flex-1">
-                      <i className="fas fa-arrow-right mr-2"></i>
+                      <i className="fas fa-arrow-right mx-2"></i>
                       {t("uploadPhoto", "Continue")}
                     </Button>
                     <Button

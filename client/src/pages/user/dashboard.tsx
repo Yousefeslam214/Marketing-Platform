@@ -160,7 +160,7 @@ export default function Dashboard() {
             <div className="items-center gap-4 flex">
               <LanguageToggle />
               <Button onClick={handleCreateAd} data-testid="button-create-ad">
-                <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
                 {t("dashboard", "createNewAd")}
               </Button>
             </div>
@@ -340,15 +340,15 @@ export default function Dashboard() {
                           </p>
                           <div className="flex items-center space-x-4 text-xs text-muted-foreground mt-1">
                             <span>
-                              <i className="fas fa-eye mr-1"></i>
+                              <i className="fas fa-eye mx-1"></i>
                               {ad.impressions.toLocaleString()}
                             </span>
                             <span>
-                              <i className="fas fa-mouse-pointer mr-1"></i>
+                              <i className="fas fa-mouse-pointer mx-1"></i>
                               {ad.clicks.toLocaleString()}
                             </span>
                             <span>
-                              <i className="fas fa-percentage mr-1"></i>
+                              <i className="fas fa-percentage mx-1"></i>
                               {ad.ctr.toFixed(2)}%
                             </span>
                           </div>
@@ -533,7 +533,7 @@ export default function Dashboard() {
                     className="w-full"
                     onClick={handlePurchaseCredits}
                     data-testid="button-purchase-credits">
-                    <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                    <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
                     {t("dashboard", "purchaseMoreCredits")}
                   </Button>
                 </div>

@@ -69,63 +69,63 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     navigation.push({
       section: t("sidebar", "adminSection"),
       items: [
-      {
-        name: t("sidebar", "dashboard"),
-        href: adminDashboardPath(),
-        icon: "fas fa-tachometer-alt",
-      },
-      {
-        name: t("sidebar", "adsManagement"),
-        href: "#",
-        icon: "fas fa-bullhorn",
-        subItems: [
         {
-          name: t("sidebar", "AllAds"),
-          href: adminAllAdsPath(),
-          icon: "fas fa-list-alt",
+          name: t("sidebar", "dashboard"),
+          href: adminDashboardPath(),
+          icon: "fas fa-tachometer-alt",
         },
         {
-          name: t("sidebar", "pending"),
-          href: adminPendingAdsPath(),
-          icon: "fas fa-hourglass-half",
+          name: t("sidebar", "adsManagement"),
+          href: "#",
+          icon: "fas fa-bullhorn",
+          subItems: [
+            {
+              name: t("sidebar", "AllAds"),
+              href: adminAllAdsPath(),
+              icon: "fas fa-list-alt",
+            },
+            {
+              name: t("sidebar", "pending"),
+              href: adminPendingAdsPath(),
+              icon: "fas fa-hourglass-half",
+            },
+            {
+              name: t("sidebar", "approved"),
+              href: adminApprovedAdsPath(),
+              icon: "fas fa-check-circle",
+            },
+            {
+              name: t("sidebar", "rejected"),
+              href: adminRejectedAdsPath(),
+              icon: "fas fa-times-circle",
+            },
+          ],
         },
         {
-          name: t("sidebar", "approved"),
-          href: adminApprovedAdsPath(),
-          icon: "fas fa-check-circle",
+          name: t("sidebar", "userManagement"),
+          href: adminUsersPath(),
+          icon: "fas fa-user-cog",
         },
         {
-          name: t("sidebar", "rejected"),
-          href: adminRejectedAdsPath(),
-          icon: "fas fa-times-circle",
+          name: t("sidebar", "billing"),
+          href: adminBillingPath(),
+          icon: "fas fa-file-invoice-dollar",
         },
-        ],
-      },
-      {
-        name: t("sidebar", "userManagement"),
-        href: adminUsersPath(),
-        icon: "fas fa-user-cog",
-      },
-      {
-        name: t("sidebar", "billing"),
-        href: adminBillingPath(),
-        icon: "fas fa-file-invoice-dollar",
-      },
-      {
-        name: t("sidebar", "impressionRatios"),
-        href: "/admin/impression-ratios",
-        icon: "fas fa-percentage",
-      },
-      {
-        name: t("sidebar", "adsFeed"),
-        href: "/feed",
-        icon: "fas fa-rss",
-      },
-      {
-        name: t("sidebar", "pixels"),
-        href: "/pixels",
-        icon: "fas fa-crosshairs",
-      },
+        {
+          name: t("sidebar", "impressionRatios"),
+          href: "/admin/impression-ratios",
+          icon: "fas fa-percentage",
+        },
+        {
+          name: t("sidebar", "adsFeed"),
+          href: "/feed",
+          icon: "fas fa-rss",
+        },
+        {
+          name: t("sidebar", "pixels"),
+          href: "/pixels",
+          icon: "fas fa-crosshairs",
+        },
       ],
     });
   }
@@ -216,7 +216,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           </button>
 
           {isExpanded && (
-            <div className={`mt-1 space-y-1 ${isRTL ? "mr-4" : "ml-4"}`}>
+            <div className={`mt-1 space-y-1 ${isRTL ? "mx-4" : "ml-4"}`}>
               {item.subItems?.map((subItem) => (
                 <Link key={subItem.href} href={subItem.href}>
                   <div
@@ -225,7 +225,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         ? "active bg-primary text-primary-foreground border-primary"
                         : "hover:bg-accent hover:text-accent-foreground border-transparent"
                     } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
-                      isRTL ? "mr-4" : "ml-4"
+                      isRTL ? "mx-4" : "ml-4"
                     }`}
                     style={{
                       fontWeight: location === subItem.href ? "bold" : "normal",

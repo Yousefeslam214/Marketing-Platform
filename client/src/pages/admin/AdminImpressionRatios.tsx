@@ -360,7 +360,7 @@ export default function AdminImpressionRatios() {
                               onClick={() => handleEdit(ratio)}
                               size="sm"
                               variant="outline">
-                              <i className="fas fa-edit mr-2"></i>
+                              <i className="fas fa-edit mx-2"></i>
                               {t("impressionRatios", "edit")}
                             </Button>
                           </div>

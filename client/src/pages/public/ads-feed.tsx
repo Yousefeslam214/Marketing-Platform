@@ -306,7 +306,7 @@ export default function AdsFeed() {
     }
     setPage(1); // Reset to first page when changing city
   };
-
+console.log("adsResponse", adsResponse);
   const {
     data: pixelsData,
     isLoading: pixelsLoading,

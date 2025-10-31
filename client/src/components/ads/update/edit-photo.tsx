@@ -36,11 +36,11 @@ export default function EditPhoto() {
 
   const navState = useMemo(() => (window.history.state as any) || {}, []);
   const initialImgData = useMemo(() => navState?.imgData || [], [navState]);
-  
+
   const [photoList, setPhotoList] = useState<string[]>(initialImgData);
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  
+
   const [editState, setEditState] = useState<PhotoEditState>({
     preview: null,
     file: null,
@@ -61,25 +61,27 @@ export default function EditPhoto() {
       return Array.isArray(imageUrl) ? imageUrl : [imageUrl];
     }
     if (photos) {
-      return Array.isArray(photos) 
-        ? photos.map((p: any) => p?.url ? p.url : p)
+      return Array.isArray(photos)
+        ? photos.map((p: any) => (p?.url ? p.url : p))
         : [photos];
     }
     if (photo) {
       return Array.isArray(photo) ? photo : [photo];
     }
-    
+
     return [];
   }, []);
 
   const updatePhotoMutation = useMutation({
     mutationFn: async (file: File) => {
       if (!selectedUrl) throw new Error("No photo selected for replacement");
-      
+
       const formData = new FormData();
       formData.append("photo", file);
 
-      const url = `${VITE_API_BASE_URL}/api/advertising/updatePhoto/${adId}?photoUrl=${encodeURIComponent(selectedUrl)}`;
+      const url = `${VITE_API_BASE_URL}/api/advertising/updatePhoto/${adId}?photoUrl=${encodeURIComponent(
+        selectedUrl
+      )}`;
 
       const response = await fetch(url, {
         method: "PUT",
@@ -95,9 +97,11 @@ export default function EditPhoto() {
     onSuccess: (data) => {
       const photos = parsePhotoResponse(data);
       const newUrl = photos[0];
-      
+
       if (newUrl && selectedUrl) {
-        setPhotoList(prev => prev.map(p => p === selectedUrl ? newUrl : p));
+        setPhotoList((prev) =>
+          prev.map((p) => (p === selectedUrl ? newUrl : p))
+        );
         toast({
           title: "Photo Updated",
           description: "Your photo was replaced successfully.",
@@ -116,7 +120,9 @@ export default function EditPhoto() {
 
   const deletePhotoMutation = useMutation({
     mutationFn: async (photoUrl: string) => {
-      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}?photoUrl=${encodeURIComponent(photoUrl)}`;
+      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}?photoUrl=${encodeURIComponent(
+        photoUrl
+      )}`;
       const res = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -127,7 +133,7 @@ export default function EditPhoto() {
       return true;
     },
     onSuccess: (_, photoUrl) => {
-      setPhotoList(prev => prev.filter(p => p !== photoUrl));
+      setPhotoList((prev) => prev.filter((p) => p !== photoUrl));
       toast({ title: "Photo Deleted", description: "Photo removed." });
     },
     onError: (err) => {
@@ -142,10 +148,10 @@ export default function EditPhoto() {
   const uploadPhotosMutation = useMutation({
     mutationFn: async (files: File[]) => {
       if (!adId) throw new Error("Ad ID is missing");
-      
+
       const formData = new FormData();
-      files.forEach(f => formData.append("photo", f));
-      
+      files.forEach((f) => formData.append("photo", f));
+
       const url = `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`;
       const res = await fetch(url, {
         method: "POST",
@@ -154,14 +160,14 @@ export default function EditPhoto() {
         },
         body: formData,
       });
-      
+
       if (!res.ok) throw new Error(await res.text());
       return res.json();
     },
     onSuccess: (data) => {
       const photos = parsePhotoResponse(data);
       if (photos.length) {
-        setPhotoList(prev => [...prev, ...photos]);
+        setPhotoList((prev) => [...prev, ...photos]);
         toast({ title: "Photos Uploaded", description: "New photos added." });
       }
     },
@@ -206,7 +212,7 @@ export default function EditPhoto() {
 
   const handleReplaceClick = useCallback((url: string) => {
     setSelectedUrl(url);
-    setEditState(prev => ({ ...prev, isAdd: false }));
+    setEditState((prev) => ({ ...prev, isAdd: false }));
     fileInputRef.current?.click();
   }, []);
 
@@ -223,66 +229,78 @@ export default function EditPhoto() {
     setIsEditing(true);
   }, []);
 
-  const validateFile = useCallback((file: File): boolean => {
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        title: "File too large",
-        description: "Please select images smaller than 5MB",
-        variant: "destructive",
-      });
-      return false;
-    }
-    return true;
-  }, [toast]);
+  const validateFile = useCallback(
+    (file: File): boolean => {
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please select images smaller than 5MB",
+          variant: "destructive",
+        });
+        return false;
+      }
+      return true;
+    },
+    [toast]
+  );
 
-  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
+  const handleFileChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(e.target.files || []);
+      if (files.length === 0) return;
 
-    // Replace flow
-    if (selectedUrl) {
-      const file = files[0];
-      if (!file || !validateFile(file)) return;
-      
-      const preview = URL.createObjectURL(file);
-      cleanupBlobUrl(editState.preview);
-      
-      setEditState(prev => ({
-        ...prev,
-        preview,
-        file,
-        isBlob: true,
-      }));
-      setIsEditing(true);
-      return;
-    }
+      // Replace flow
+      if (selectedUrl) {
+        const file = files[0];
+        if (!file || !validateFile(file)) return;
 
-    // Add flow - single file with editor
-    if (files.length === 1) {
-      const file = files[0];
-      if (!file || !validateFile(file)) return;
+        const preview = URL.createObjectURL(file);
+        cleanupBlobUrl(editState.preview);
 
-      const preview = URL.createObjectURL(file);
-      cleanupBlobUrl(editState.preview);
+        setEditState((prev) => ({
+          ...prev,
+          preview,
+          file,
+          isBlob: true,
+        }));
+        setIsEditing(true);
+        return;
+      }
 
-      setEditState({
-        preview,
-        file,
-        isBlob: true,
-        isAdd: true,
-        scale: 1,
-        rotate: 0,
-      });
-      setIsEditing(true);
-      return;
-    }
+      // Add flow - single file with editor
+      if (files.length === 1) {
+        const file = files[0];
+        if (!file || !validateFile(file)) return;
 
-    // Bulk upload without editor
-    const validFiles = files.filter(file => validateFile(file));
-    if (validFiles.length > 0) {
-      uploadPhotosMutation.mutate(validFiles);
-    }
-  }, [selectedUrl, validateFile, uploadPhotosMutation, editState.preview, cleanupBlobUrl]);
+        const preview = URL.createObjectURL(file);
+        cleanupBlobUrl(editState.preview);
+
+        setEditState({
+          preview,
+          file,
+          isBlob: true,
+          isAdd: true,
+          scale: 1,
+          rotate: 0,
+        });
+        setIsEditing(true);
+        return;
+      }
+
+      // Bulk upload without editor
+      const validFiles = files.filter((file) => validateFile(file));
+      if (validFiles.length > 0) {
+        uploadPhotosMutation.mutate(validFiles);
+      }
+    },
+    [
+      selectedUrl,
+      validateFile,
+      uploadPhotosMutation,
+      editState.preview,
+      cleanupBlobUrl,
+    ]
+  );
 
   const applyEditAndReplace = useCallback(async () => {
     if (!editorRef.current || (!selectedUrl && !editState.isAdd)) {
@@ -296,7 +314,7 @@ export default function EditPhoto() {
 
     try {
       const canvas = editorRef.current.getImageScaledToCanvas();
-      
+
       const blob = await new Promise<Blob>((resolve, reject) => {
         canvas.toBlob((blob: Blob | null) => {
           if (blob) resolve(blob);
@@ -325,25 +343,24 @@ export default function EditPhoto() {
       });
       setIsEditing(false);
       resetSelection();
-
     } catch (err: any) {
       console.error("Edit failed:", err);
-      
+
       // Handle CORS issues for external images
       if (!editState.isBlob && editState.preview) {
         try {
           const response = await fetch(editState.preview);
           if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
-          
+
           const blob = await response.blob();
           const blobUrl = URL.createObjectURL(blob);
-          
-          setEditState(prev => ({
+
+          setEditState((prev) => ({
             ...prev,
             preview: blobUrl,
             isBlob: true,
           }));
-          
+
           toast({
             title: "Retry Edit",
             description: "Image loaded locally - please Save again.",
@@ -367,7 +384,7 @@ export default function EditPhoto() {
     uploadPhotosMutation,
     cleanupBlobUrl,
     resetSelection,
-    toast
+    toast,
   ]);
 
   const cancelEdit = useCallback(() => {
@@ -384,9 +401,12 @@ export default function EditPhoto() {
     resetSelection();
   }, [editState.preview, cleanupBlobUrl, resetSelection]);
 
-  const handleDelete = useCallback((url: string) => {
-    deletePhotoMutation.mutate(url);
-  }, [deletePhotoMutation]);
+  const handleDelete = useCallback(
+    (url: string) => {
+      deletePhotoMutation.mutate(url);
+    },
+    [deletePhotoMutation]
+  );
 
   const handleAddNewPhoto = useCallback(() => {
     setSelectedUrl(null);
@@ -394,31 +414,45 @@ export default function EditPhoto() {
   }, []);
 
   // Memoized photo grid
-  const photoGrid = useMemo(() => (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-      {photoList.map((url, index) => (
-        <div key={`${url}-${index}`} className="relative rounded border overflow-hidden group">
-          <img
-            src={url}
-            alt={`photo-${index}`}
-            className="w-full h-36 object-cover"
-            loading="lazy"
-          />
-          <div className="absolute top-2 right-2 flex flex-col gap-2 transition">
-            <Button size="sm" variant="secondary" onClick={() => handleEditClick(url)}>
-              Edit
-            </Button>
-            <Button size="sm" variant="secondary" onClick={() => handleReplaceClick(url)}>
-              Replace
-            </Button>
-            <Button size="sm" variant="destructive" onClick={() => handleDelete(url)}>
-              Delete
-            </Button>
+  const photoGrid = useMemo(
+    () => (
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {photoList.map((url, index) => (
+          <div
+            key={`${url}-${index}`}
+            className="relative rounded border overflow-hidden group">
+            <img
+              src={url}
+              alt={`photo-${index}`}
+              className="w-full h-36 object-cover"
+              loading="lazy"
+            />
+            <div className="absolute top-2 right-2 flex flex-col gap-2 transition">
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => handleEditClick(url)}>
+                Edit
+              </Button>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => handleReplaceClick(url)}>
+                Replace
+              </Button>
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={() => handleDelete(url)}>
+                Delete
+              </Button>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
-  ), [photoList, handleEditClick, handleReplaceClick, handleDelete]);
+        ))}
+      </div>
+    ),
+    [photoList, handleEditClick, handleReplaceClick, handleDelete]
+  );
 
   // Memoized editor controls - ONLY show when actively editing
   const editorControls = useMemo(() => {
@@ -427,34 +461,49 @@ export default function EditPhoto() {
     return (
       <div className="flex-1 space-y-4">
         <div>
-          <label className="block text-sm mb-2">{t("uploadPhoto", "Zoom")}</label>
+          <label className="block text-sm mb-2">
+            {t("uploadPhoto", "Zoom")}
+          </label>
           <input
             type="range"
             min={1}
             max={2}
             step={0.01}
             value={editState.scale}
-            onChange={(e) => setEditState(prev => ({ ...prev, scale: Number(e.target.value) }))}
+            onChange={(e) =>
+              setEditState((prev) => ({
+                ...prev,
+                scale: Number(e.target.value),
+              }))
+            }
             className="w-full"
           />
         </div>
         <div>
-          <label className="block text-sm mb-2">{t("uploadPhoto", "Rotate")}</label>
+          <label className="block text-sm mb-2">
+            {t("uploadPhoto", "Rotate")}
+          </label>
           <input
             type="range"
             min={0}
             max={360}
             step={1}
             value={editState.rotate}
-            onChange={(e) => setEditState(prev => ({ ...prev, rotate: Number(e.target.value) }))}
+            onChange={(e) =>
+              setEditState((prev) => ({
+                ...prev,
+                rotate: Number(e.target.value),
+              }))
+            }
             className="w-full"
           />
         </div>
         <div className="flex gap-2">
-          <Button 
+          <Button
             onClick={applyEditAndReplace}
-            disabled={updatePhotoMutation.isPending || uploadPhotosMutation.isPending}
-          >
+            disabled={
+              updatePhotoMutation.isPending || uploadPhotosMutation.isPending
+            }>
             {t("uploadPhoto", "Save")}
           </Button>
           <Button variant="outline" onClick={cancelEdit}>
@@ -464,15 +513,15 @@ export default function EditPhoto() {
       </div>
     );
   }, [
-    isEditing, 
-    editState.preview, 
-    editState.scale, 
-    editState.rotate, 
-    applyEditAndReplace, 
-    cancelEdit, 
-    t, 
-    updatePhotoMutation.isPending, 
-    uploadPhotosMutation.isPending
+    isEditing,
+    editState.preview,
+    editState.scale,
+    editState.rotate,
+    applyEditAndReplace,
+    cancelEdit,
+    t,
+    updatePhotoMutation.isPending,
+    uploadPhotosMutation.isPending,
   ]);
 
   // Memoized editor section - ONLY show when actively editing
@@ -499,14 +548,24 @@ export default function EditPhoto() {
         </div>
       </div>
     );
-  }, [isEditing, editState.preview, editState.scale, editState.rotate, editorControls, t]);
+  }, [
+    isEditing,
+    editState.preview,
+    editState.scale,
+    editState.rotate,
+    editorControls,
+    t,
+  ]);
 
   return (
     <div className="flex h-screen bg-background">
       <div className="flex-1 overflow-auto">
         <Header
           title={t("editPhoto", "Edit Photos")}
-          description={t("editPhoto", "Manage, replace, or delete your ad photos")}
+          description={t(
+            "editPhoto",
+            "Manage, replace, or delete your ad photos"
+          )}
         />
         <main className="p-6">
           <div className="max-w-3xl mx-auto">
@@ -525,7 +584,9 @@ export default function EditPhoto() {
                 />
 
                 {photoList.length === 0 ? (
-                  <p className="text-muted-foreground">No photos uploaded yet.</p>
+                  <p className="text-muted-foreground">
+                    No photos uploaded yet.
+                  </p>
                 ) : (
                   photoGrid
                 )}
@@ -535,9 +596,11 @@ export default function EditPhoto() {
 
                 <div className="mt-6 flex justify-between">
                   <Button onClick={handleAddNewPhoto}>
-                    <i className="fas fa-plus mr-2"></i> Add Photo
+                    <i className="fas fa-plus mx-2"></i> Add Photo
                   </Button>
-                  <Button variant="outline" onClick={() => setLocation(`/campaigns/${adId}`)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setLocation(`/campaigns/${adId}`)}>
                     Done
                   </Button>
                 </div>

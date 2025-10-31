@@ -322,7 +322,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                     <Button
                       onClick={() => setLocation(handlePurchase())}
                       data-testid="button-purchase-impressions">
-                      <i className="fas fa-credit-card mr-2"></i>
+                      <i className="fas fa-credit-card mx-2"></i>
                       {t("adDetail", "purchaseImpressions")}
                     </Button>
                     <Button
@@ -331,12 +331,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                       data-testid="button-promote-ad">
                       {promoteAdMutation.isPending ? (
                         <>
-                          <i className="fas fa-spinner fa-spin mr-2"></i>
+                          <i className="fas fa-spinner fa-spin mx-2"></i>
                           {t("adDetail", "promoting")}
                         </>
                       ) : (
                         <>
-                          <i className="fas fa-bullhorn mr-2"></i>
+                          <i className="fas fa-bullhorn mx-2"></i>
                           {t("adDetail", "promote")}
                         </>
                       )}
@@ -486,12 +486,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                         data-testid="button-assign-credit">
                         {assignCreditMutation.isPending ? (
                           <>
-                            <i className="fas fa-spinner fa-spin mr-2"></i>
+                            <i className="fas fa-spinner fa-spin mx-2"></i>
                             {t("adDetail", "assigning")}
                           </>
                         ) : (
                           <>
-                            <i className="fas fa-coins mr-2"></i>
+                            <i className="fas fa-coins mx-2"></i>
                             {t("adDetail", "assignCredit")}
                           </>
                         )}
@@ -504,12 +504,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                             data-testid="button-promote-ad">
                             {promoteAdMutation.isPending ? (
                               <>
-                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                <i className="fas fa-spinner fa-spin mx-2"></i>
                                 {t("adDetail", "promoting")}
                               </>
                             ) : (
                               <>
-                                <i className="fas fa-bullhorn mr-2"></i>
+                                <i className="fas fa-bullhorn mx-2"></i>
                                 {t("adDetail", "promote")}
                               </>
                             )}
@@ -522,12 +522,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                             variant="outline">
                             {depromoteAdMutation.isPending ? (
                               <>
-                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                <i className="fas fa-spinner fa-spin mx-2"></i>
                                 {t("adDetail", "depromoting")}
                               </>
                             ) : (
                               <>
-                                <i className="fas fa-level-down-alt mr-2"></i>
+                                <i className="fas fa-level-down-alt mx-2"></i>
                                 {t("adDetail", "depromote")}
                               </>
                             )}
@@ -542,12 +542,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                             data-testid="button-activate-ad-main">
                             {activateAdMutation.isPending ? (
                               <>
-                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                <i className="fas fa-spinner fa-spin mx-2"></i>
                                 {t("adDetail", "activating")}
                               </>
                             ) : (
                               <>
-                                <i className="fas fa-rocket mr-2"></i>
+                                <i className="fas fa-rocket mx-2"></i>
                                 {t("adDetail", "activateCampaign")}
                               </>
                             )}
@@ -560,12 +560,12 @@ export default function AdDetail({ params }: AdDetailProps) {
                             data-testid="button-activate-ad-main">
                             {deActivateAdMutation.isPending ? (
                               <>
-                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                <i className="fas fa-spinner fa-spin mx-2"></i>
                                 {t("adDetail", "deactivating")}
                               </>
                             ) : (
                               <>
-                                <i className="fas fa-ban mr-2"></i>
+                                <i className="fas fa-ban mx-2"></i>
                                 {t("adDetail", "deactivateCampaign")}
                               </>
                             )}
@@ -636,11 +636,11 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div className="mt-4 p-3 bg-muted/50 rounded-lg">
                     <p className="text-sm text-muted-foreground">
-                      <i className="fas fa-info-circle mr-2"></i>
+                      <i className="fas fa-info-circle mx-2"></i>
                       {t("adDetail", "creditAssignInfo")}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      <i className="fas fa-info-circle mr-2"></i>
+                      <i className="fas fa-info-circle mx-2"></i>
                       Promoting this ad will pin it near the top of the public
                       feed to increase its visibility to viewers.
                     </p>
@@ -726,7 +726,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                         <Badge
                           variant="outline"
                           className="text-green-600 border-green-600">
-                          <i className="fas fa-play mr-1"></i>
+                          <i className="fas fa-play mx-1"></i>
                           {t("adDetail", "active")}
                         </Badge>
                       )}

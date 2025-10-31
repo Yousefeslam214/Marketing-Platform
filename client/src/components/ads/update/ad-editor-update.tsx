@@ -611,13 +611,16 @@ export function AdEditor({
                       render={({ field }: { field: any }) => (
                         <FormItem>
                           <FormLabel>{t("ads", "whatsappNumber")}</FormLabel>
-                          <FormControl>
+                            <FormControl>
                             <Input
                               type="tel"
-                              placeholder={t("ads", "whatsappNumber")}
+                              inputMode="tel"
+                              placeholder="+9665X XXX XXXX"
+                              // pattern="^(\+9665|05)\d{8}$"
+                              // title="Saudi mobile numbers: 05XXXXXXXX or +9665XXXXXXXX"
                               {...field}
                             />
-                          </FormControl>
+                            </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}

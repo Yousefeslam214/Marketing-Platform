@@ -96,7 +96,7 @@ export default function FAQ() {
                 <div className="text-center space-y-4 mb-16">
                   <Badge variant="secondary" className="w-fit mx-auto">
                     <HelpCircle
-                      className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`}
+                      className={`w-4 h-4 ${isRTL ? "ml-2" : "mx-2"}`}
                     />
                     {t("faq", "helpCenter")}
                   </Badge>
@@ -171,7 +171,7 @@ export default function FAQ() {
                       <Button size="lg">{t("faq", "contactSupport")}</Button>
                     </Link>
                     <Button variant="outline" size="lg">
-                      <Clock className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
+                      <Clock className={`w-4 h-4 ${isRTL ? "ml-2" : "mx-2"}`} />
                       {t("faq", "scheduleCall")}
                     </Button>
                   </div>

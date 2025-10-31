@@ -52,7 +52,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                   setSidebarOpen(true);
                 }}
                 className="md:hidden">
-                <i className={`fas fa-bars ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                <i className={`fas fa-bars ${isRTL ? "ml-2" : "mx-2"}`}></i>
                 Menu
               </Button>
               <span className="text-xs text-muted-foreground ml-2">

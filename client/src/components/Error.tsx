@@ -37,11 +37,11 @@ export function ErrorState({
                 {language === "ar" ? (
                   <>
                     {t("error", "retry") || "Retry"}
-                    <i className="fas fa-redo mr-2"></i>
+                    <i className="fas fa-redo mx-2"></i>
                   </>
                 ) : (
                   <>
-                    <i className="fas fa-redo mr-2"></i>
+                    <i className="fas fa-redo mx-2"></i>
                     {t("error", "retry") || "Retry"}
                   </>
                 )}
@@ -59,7 +59,7 @@ export function ErrorState({
                   </>
                 ) : (
                   <>
-                    <i className="fas fa-home mr-2"></i>
+                    <i className="fas fa-home mx-2"></i>
                     {t("error", "home") || "Home"}
                   </>
                 )}

@@ -21,7 +21,9 @@ export default function PaymentSuccess() {
   }
 
   const [isVerifying, setIsVerifying] = useState(true);
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
+  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(
+    null
+  );
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -166,7 +168,7 @@ export default function PaymentSuccess() {
                   <Badge
                     variant="default"
                     className="bg-green-100 text-green-800">
-                    <i className="fas fa-check mr-1"></i>
+                    <i className="fas fa-check mx-1"></i>
                     {t("billing", "completed") || "Completed"}
                   </Badge>
                 </div>
@@ -218,7 +220,7 @@ export default function PaymentSuccess() {
               className="flex-1">
               <i
                 className={`fas fa-tachometer-alt ${
-                  isRTL ? "ml-2" : "mr-2"
+                  isRTL ? "ml-2" : "mx-2"
                 }`}></i>
               {t("common", "dashboard") || "Go to Dashboard"}
             </Button>
@@ -226,7 +228,7 @@ export default function PaymentSuccess() {
               variant="outline"
               onClick={() => setLocation("/campaigns/new")}
               className="flex-1">
-              <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+              <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
               {t("ads", "createAd") || "Create Ad"}
             </Button>
           </div>
@@ -262,7 +264,7 @@ export default function PaymentSuccess() {
               variant="ghost"
               size="sm"
               onClick={() => setLocation("/contact")}>
-              <i className={`fas fa-headset ${isRTL ? "ml-2" : "mr-2"}`}></i>
+              <i className={`fas fa-headset ${isRTL ? "ml-2" : "mx-2"}`}></i>
               {t("common", "contactSupport") || "Contact Support"}
             </Button>
           </div>

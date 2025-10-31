@@ -153,7 +153,7 @@ export function DataPagination({
                     ? "pointer-events-none opacity-50"
                     : "cursor-pointer"
                 }>
-                <span className={isRTL ? "mr-2" : "ml-2"}>
+                <span className={isRTL ? "mx-2" : "ml-2"}>
                   {t("pagination", "previous")}
                 </span>
               </PaginationPrevious>
@@ -230,7 +230,7 @@ export function DataPagination({
                     ? "pointer-events-none opacity-50"
                     : "cursor-pointer"
                 }>
-                <span className={isRTL ? "ml-2" : "mr-2"}>
+                <span className={isRTL ? "ml-2" : "mx-2"}>
                   {t("pagination", "next")}
                 </span>
               </PaginationNext>
