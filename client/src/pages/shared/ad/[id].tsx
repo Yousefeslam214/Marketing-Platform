@@ -16,6 +16,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TokenManager } from "@/lib/auth";
 import { ImageCarousel } from "@/components/ui/image-carousel";
+import SocialLinks from "@/components/ad/social-links";
 
 interface AdDetailProps {
   params: { id: string };
@@ -50,7 +51,7 @@ export default function AdDetail({ params }: AdDetailProps) {
     } else if (userRole === "admin") {
       setAdActivationStatus(Boolean(payload.active));
     }
-    setAdPromoteStatus(data.data.hasPromoted)
+    setAdPromoteStatus(data.data.hasPromoted);
   }, [data, userRole]);
 
   // Assign credit mutation
@@ -155,18 +156,33 @@ export default function AdDetail({ params }: AdDetailProps) {
   // Promote ad mutation
   const promoteAdMutation = useMutation({
     mutationFn: async () => {
+      if (adPromoteStatus) {
+        toast({
+          title: t("adDetail", "promoteSuccess") || "Ad Promoted",
+          description:
+            t("adDetail", "promoteSuccessDescription") ||
+            "Your ad has been promoted successfully.",
+        });
+        // Prevent API call if already promoted
+        return;
+      }
+
       const response = await apiRequest(
         "PUT",
         `${VITE_API_BASE_URL}/api/advertising/${id}/promote`
       );
       const body = await response.json();
+
       if (!response.ok || (body && body.success === false)) {
         const msg = body?.message || t("adDetail", "failedToPromoteAd");
         throw new Error(msg);
       }
+
       return body;
     },
+
     onSuccess: (res: any) => {
+      if (!res) return; // prevent success toast when already promoted
       setAdPromoteStatus(true);
       queryClient.invalidateQueries({ queryKey: [`/ads/${id}`] });
       toast({
@@ -177,9 +193,52 @@ export default function AdDetail({ params }: AdDetailProps) {
       });
       refetch();
     },
+
     onError: (err: any) => {
       toast({
         title: t("adDetail", "failedToPromoteAd") || "Failed to Promote",
+        description: err.message || t("adDetail", "pleaseRetryLater"),
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Depromote ad mutation
+  const depromoteAdMutation = useMutation({
+    mutationFn: async () => {
+      if (!adPromoteStatus) {
+        // already not promoted
+        toast({
+          title: t("adDetail", "alreadyDepromoted") || "Already depromoted",
+        });
+        return;
+      }
+
+      const response = await apiRequest(
+        "PUT",
+        `${VITE_API_BASE_URL}/api/advertising/${id}/depromote`
+      );
+      const body = await response.json();
+      if (!response.ok || (body && body.success === false)) {
+        const msg = body?.message || t("adDetail", "failedToDepromoteAd");
+        throw new Error(msg);
+      }
+      return body;
+    },
+    onSuccess: (res: any) => {
+      setAdPromoteStatus(false);
+      queryClient.invalidateQueries({ queryKey: [`/ads/${id}`] });
+      toast({
+        title: t("adDetail", "depromoteSuccess") || "Ad Depromoted",
+        description:
+          t("adDetail", "depromoteSuccessDescription") ||
+          "Your ad has been moved back.",
+      });
+      refetch();
+    },
+    onError: (err: any) => {
+      toast({
+        title: t("adDetail", "failedToDepromoteAd") || "Failed to Depromote",
         description: err.message || t("adDetail", "pleaseRetryLater"),
         variant: "destructive",
       });
@@ -243,13 +302,6 @@ export default function AdDetail({ params }: AdDetailProps) {
             actions={
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
-                {/* <Button
-                variant="outline"
-                onClick={() => setLocation(analyticsCampaignPath(id))}
-                data-testid="button-view-analytics">
-                <i className="fas fa-chart-bar mr-2"></i>
-                {t("adDetail", "viewAnalytics")}
-              </Button> */}
                 {ad.status === "approved" && (
                   <>
                     <Button
@@ -274,7 +326,6 @@ export default function AdDetail({ params }: AdDetailProps) {
                         </>
                       )}
                     </Button>
-                
                   </>
                 )}
               </div>
@@ -284,22 +335,15 @@ export default function AdDetail({ params }: AdDetailProps) {
         {isLoading ? (
           <Loading />
         ) : ad ? (
-          <main
-            className="p-6 
-            
-        
-          ">
-            <div
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6
-         
-            ">
+          <main className="p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Performance Overview */}
               <Card className="lg:col-span-2">
                 <CardHeader>
                   <CardTitle>{t("adDetail", "performanceOverview")}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                     <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 rounded-lg">
                       <i className="fas fa-eye text-blue-600 text-2xl mb-2"></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
@@ -363,7 +407,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                       </h4>
                       <p
                         className={`text-lg font-bold ${
-                          ad.adActivationStatus
+                          adActivationStatus
                             ? "text-green-600"
                             : "text-gray-600"
                         }`}>
@@ -372,21 +416,20 @@ export default function AdDetail({ params }: AdDetailProps) {
                           : t("adDetail", "inactive")}
                       </p>
                     </div>
+
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
                       <i
                         className={`fas ${
-                          adActivationStatus
+                          adPromoteStatus
                             ? "fa-play text-green-600"
                             : "fa-pause text-gray-600"
                         } text-2xl mb-2`}></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        {t("adDetail", "status")}
+                        {t("adDetail", "Promote Status")}
                       </h4>
                       <p
                         className={`text-lg font-bold ${
-                          ad.hasPromoted
-                            ? "text-green-600"
-                            : "text-gray-600"
+                          ad.hasPromoted ? "text-green-600" : "text-gray-600"
                         }`}>
                         {adPromoteStatus
                           ? t("adDetail", "active")
@@ -438,61 +481,82 @@ export default function AdDetail({ params }: AdDetailProps) {
                           </>
                         )}
                       </Button>
-                    </div>
+                      <div className="flex items-center gap-2 mx-5">
+                        {!adPromoteStatus ? (
+                          <Button
+                            onClick={() => promoteAdMutation.mutate()}
+                            disabled={promoteAdMutation.isPending}
+                            data-testid="button-promote-ad">
+                            {promoteAdMutation.isPending ? (
+                              <>
+                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                {t("adDetail", "promoting")}
+                              </>
+                            ) : (
+                              <>
+                                <i className="fas fa-bullhorn mr-2"></i>
+                                {t("adDetail", "promote")}
+                              </>
+                            )}
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => depromoteAdMutation.mutate()}
+                            disabled={depromoteAdMutation.isPending}
+                            data-testid="button-depromote-ad"
+                            variant="outline">
+                            {depromoteAdMutation.isPending ? (
+                              <>
+                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                {t("adDetail", "depromoting")}
+                              </>
+                            ) : (
+                              <>
+                                <i className="fas fa-level-down-alt mr-2"></i>
+                                {t("adDetail", "depromote")}
+                              </>
+                            )}
+                          </Button>
+                        )}
 
-                    <div className="flex items-center gap-2 ml-auto">
-                      <Button
-                        onClick={handleActivateAd}
-                        disabled={activateAdMutation.isPending}
-                        variant="default"
-                        data-testid="button-activate-ad-main">
-                        {activateAdMutation.isPending ? (
-                          <>
-                            <i className="fas fa-spinner fa-spin mr-2"></i>
-                            {t("adDetail", "activating")}
-                          </>
+                        {!adActivationStatus ? (
+                          <Button
+                            onClick={handleActivateAd}
+                            disabled={activateAdMutation.isPending}
+                            variant="default"
+                            data-testid="button-activate-ad-main">
+                            {activateAdMutation.isPending ? (
+                              <>
+                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                {t("adDetail", "activating")}
+                              </>
+                            ) : (
+                              <>
+                                <i className="fas fa-rocket mr-2"></i>
+                                {t("adDetail", "activateCampaign")}
+                              </>
+                            )}
+                          </Button>
                         ) : (
-                          <>
-                            <i className="fas fa-rocket mr-2"></i>
-                            {t("adDetail", "activateCampaign")}
-                          </>
+                          <Button
+                            onClick={handleDeActivateAd}
+                            disabled={deActivateAdMutation.isPending}
+                            variant="default"
+                            data-testid="button-activate-ad-main">
+                            {deActivateAdMutation.isPending ? (
+                              <>
+                                <i className="fas fa-spinner fa-spin mr-2"></i>
+                                {t("adDetail", "deactivating")}
+                              </>
+                            ) : (
+                              <>
+                                <i className="fas fa-ban mr-2"></i>
+                                {t("adDetail", "deactivateCampaign")}
+                              </>
+                            )}
+                          </Button>
                         )}
-                      </Button>
-                    </div>
-                    <div className="flex items-center gap-2 ml-auto">
-                       <Button
-                      onClick={() => promoteAdMutation.mutate()}
-                      disabled={promoteAdMutation.isPending}
-                      data-testid="button-promote-ad">
-                      {promoteAdMutation.isPending ? (
-                        <>
-                          <i className="fas fa-spinner fa-spin mr-2"></i>
-                          {t("adDetail", "promoting")}
-                        </>
-                      ) : (
-                        <>
-                          <i className="fas fa-bullhorn mr-2"></i>
-                          {t("adDetail", "promote")}
-                        </>
-                      )}
-                    </Button>
-                      <Button
-                        onClick={handleDeActivateAd}
-                        disabled={deActivateAdMutation.isPending}
-                        variant="default"
-                        data-testid="button-activate-ad-main">
-                        {deActivateAdMutation.isPending ? (
-                          <>
-                            <i className="fas fa-spinner fa-spin mr-2"></i>
-                            {t("adDetail", "deactivating")}
-                          </>
-                        ) : (
-                          <>
-                            <i className="fas fa-ban mr-2"></i>
-                            {t("adDetail", "deactivateCampaign")}
-                          </>
-                        )}
-                      </Button>
+                      </div>
                     </div>
                   </div>
 
@@ -564,22 +628,6 @@ export default function AdDetail({ params }: AdDetailProps) {
                         data-testid="ad-description-ar">
                         {ad.descriptionAr}
                       </p>
-                    </div>
-                  )}
-
-                  {ad.websiteUrl && (
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        {t("adDetail", "websiteUrl")}
-                      </h4>
-                      <a
-                        href={ad.websiteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                        data-testid="ad-target-url">
-                        {ad.websiteUrl}
-                      </a>
                     </div>
                   )}
                 </CardContent>
@@ -729,129 +777,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                   )}
                 </CardContent>
               </Card>
-              {/* Social Media Links */}
-              {(ad.websiteUrl ||
-                ad.phoneNumber ||
-                ad.facebookLink ||
-                ad.instagramLink ||
-                ad.tiktokLink ||
-                ad.youtubeLink ||
-                ad.snapchatLink) && (
-                <Card className="lg:col-span-2">
-                  <CardHeader>
-                    <CardTitle>{t("analytics", "socialMediaLinks")}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {ad.websiteUrl && (
-                        <a
-                          href={ad.websiteUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-gray-800 dark:text-gray-200 hover:underline text-sm truncate"
-                          data-testid="ad-website-link">
-                          <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg">
-                            <i className="fab fa-website text-gray-800 dark:text-gray-200 text-lg"></i>
-                            Website
-                          </div>
-                        </a>
-                      )}
-
-                      {ad.facebookLink && (
-                        <a
-                          href={ad.facebookLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline text-sm truncate"
-                          data-testid="ad-facebook-link">
-                          <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
-                            <i className="fab fa-facebook text-blue-600 text-lg"></i>
-                            Facebook
-                          </div>
-                        </a>
-                      )}
-
-                      {ad.instagramLink && (
-                        <a
-                          href={ad.instagramLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-pink-600 hover:underline text-sm truncate"
-                          data-testid="ad-instagram-link">
-                          <div className="flex items-center gap-2 p-3 bg-pink-50 dark:bg-pink-950/20 rounded-lg">
-                            <i className="fab fa-instagram text-pink-600 text-lg"></i>
-                            Instagram
-                          </div>
-                        </a>
-                      )}
-
-                      {ad.tiktokLink && (
-                        <a
-                          href={ad.tiktokLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-gray-800 dark:text-gray-200 hover:underline text-sm truncate"
-                          data-testid="ad-tiktok-link">
-                          <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg">
-                            <i className="fab fa-tiktok text-gray-800 dark:text-gray-200 text-lg"></i>
-                            TikTok
-                          </div>
-                        </a>
-                      )}
-
-                      {ad.youtubeLink && (
-                        <a
-                          href={ad.youtubeLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-red-600 hover:underline text-sm truncate"
-                          data-testid="ad-youtube-link">
-                          <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg">
-                            <i className="fab fa-youtube text-red-600 text-lg"></i>
-                            YouTube
-                          </div>
-                        </a>
-                      )}
-
-                      {ad.snapchatLink && (
-                        <a
-                          href={ad.snapchatLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-yellow-600 hover:underline text-sm truncate"
-                          data-testid="ad-snapchat-link">
-                          <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg">
-                            <i className="fab fa-snapchat text-yellow-500 text-lg"></i>
-                            Snapchat
-                          </div>
-                        </a>
-                      )}
-
-                      {ad.phoneNumber &&
-                        (() => {
-                          const raw = String(ad.phoneNumber || "");
-                          const sanitized = raw.replace(/\D/g, "");
-                          const waHref = sanitized
-                            ? `https://wa.me/${sanitized}`
-                            : `tel:${raw}`;
-                          return (
-                            <a
-                              href={waHref}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-green-600 hover:underline text-sm truncate"
-                              data-testid="ad-whatsapp-link">
-                              <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
-                                <i className="fab fa-whatsapp text-green-600 text-lg"></i>
-                                {t("ads", "phoneNumber")} {raw}
-                              </div>
-                            </a>
-                          );
-                        })()}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+              <SocialLinks ad={ad} />
 
               {/* Ad Preview */}
               {ad.imageUrl && (
@@ -861,25 +787,23 @@ export default function AdDetail({ params }: AdDetailProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="max-w-md mx-auto">
-                   
-                   {ad.imageUrl && ad.imageUrl.length > 0 ? (
-                      // Array.isArray(ad.imageUrl)
-                      <ImageCarousel
-                        images={ad?.imageUrl}
-                        alt={ad.titleEn || ad.titleAr}
-                        dataTestId={`ad-image-${ad.id}`}
-                      />
-                    ) : (
-                      <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
-                        <div className="text-center text-muted-foreground">
-                          <i className="fas fa-image text-2xl mb-2 block"></i>
-                          <div className="text-sm">
-                            {t("ads", "noImage") || "No image"}
+                      {ad.imageUrl && ad.imageUrl.length > 0 ? (
+                        // Array.isArray(ad.imageUrl)
+                        <ImageCarousel
+                          images={ad?.imageUrl}
+                          alt={ad.titleEn || ad.titleAr}
+                          dataTestId={`ad-image-${ad.id}`}
+                        />
+                      ) : (
+                        <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
+                          <div className="text-center text-muted-foreground">
+                            <i className="fas fa-image text-2xl mb-2 block"></i>
+                            <div className="text-sm">
+                              {t("ads", "noImage") || "No image"}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                    
+                      )}
                     </div>
                   </CardContent>
                 </Card>

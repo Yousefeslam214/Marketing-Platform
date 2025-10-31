@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent, useEffect } from "react";
+import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
@@ -10,45 +10,83 @@ import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
 import { useLanguage } from "@/hooks/use-language";
 
+// Type definitions for better TypeScript support
+interface PhotoEditState {
+  preview: string | null;
+  file: File | null;
+  isBlob: boolean;
+  isAdd: boolean;
+  scale: number;
+  rotate: number;
+}
+
+interface ApiResponse {
+  data?: {
+    imageUrl?: string | string[];
+    photos?: any[] | any;
+    photo?: string | string[];
+  };
+}
+
 export default function EditPhoto() {
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const editorRef = useRef<AvatarEditor>(null);
 
-  // Editor state for replace flow
-  const editorRef = useRef<any>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingPreview, setEditingPreview] = useState<string | null>(null);
-  const [editingFile, setEditingFile] = useState<File | null>(null);
-  const [editingPreviewIsBlob, setEditingPreviewIsBlob] =
-    useState<boolean>(false);
-  const [editingIsAdd, setEditingIsAdd] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(1);
-  const [rotate, setRotate] = useState<number>(0);
-
-  const navState = (window.history.state as any) || {};
-
-  const imgData = navState?.imgData || [];
-  console.log("edit-photo.tsx imgData:", imgData);
-  const [photoList, setPhotoList] = useState<string[]>(imgData);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // Get initial state from navigation
+  const navState = useMemo(() => (window.history.state as any) || {}, []);
+  const initialImgData = useMemo(() => navState?.imgData || [], [navState]);
+  
+  // State management
+  const [photoList, setPhotoList] = useState<string[]>(initialImgData);
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Combined edit state to reduce re-renders
+  const [editState, setEditState] = useState<PhotoEditState>({
+    preview: null,
+    file: null,
+    isBlob: false,
+    isAdd: false,
+    scale: 1,
+    rotate: 0,
+  });
 
-  const adId = window.location.pathname.split("/")[2];
-  //   const adId = navState?.adId || window.location.pathname.split("/")[2];
-  // === upload or replace ===
+  const adId = useMemo(() => window.location.pathname.split("/")[2], []);
+
+  // Response parser with memoization
+  const parsePhotoResponse = useCallback((data: ApiResponse): string[] => {
+    if (!data?.data) return [];
+
+    const { imageUrl, photos, photo } = data.data;
+
+    if (imageUrl) {
+      return Array.isArray(imageUrl) ? imageUrl : [imageUrl];
+    }
+    if (photos) {
+      return Array.isArray(photos) 
+        ? photos.map((p: any) => p?.url ? p.url : p)
+        : [photos];
+    }
+    if (photo) {
+      return Array.isArray(photo) ? photo : [photo];
+    }
+    
+    return [];
+  }, []);
+
+  // Optimized mutations
   const updatePhotoMutation = useMutation({
     mutationFn: async (file: File) => {
       if (!selectedUrl) throw new Error("No photo selected for replacement");
+      
       const formData = new FormData();
       formData.append("photo", file);
 
-      const url = `${VITE_API_BASE_URL}/api/advertising/updatePhoto/${adId}?photoUrl=${encodeURIComponent(
-        selectedUrl
-      )}`;
+      const url = `${VITE_API_BASE_URL}/api/advertising/updatePhoto/${adId}?photoUrl=${encodeURIComponent(selectedUrl)}`;
 
-      // server examples show POST form-data for update; use POST to be compatible
       const response = await fetch(url, {
         method: "PUT",
         headers: {
@@ -61,32 +99,16 @@ export default function EditPhoto() {
       return response.json();
     },
     onSuccess: (data) => {
-      // normalize response to find the new url
-      let photos: string[] = [];
-      if (data?.data?.imageUrl) {
-        photos = Array.isArray(data.data.imageUrl)
-          ? data.data.imageUrl
-          : [data.data.imageUrl];
-      } else if (data?.data?.photos) {
-        photos = Array.isArray(data.data.photos)
-          ? data.data.photos.map((p: any) => (p?.url ? p.url : p))
-          : [data.data.photos];
-      } else if (data?.data?.photo) {
-        photos = Array.isArray(data.data.photo)
-          ? data.data.photo
-          : [data.data.photo];
-      }
+      const photos = parsePhotoResponse(data);
       const newUrl = photos[0];
+      
       if (newUrl && selectedUrl) {
-        setPhotoList((prev) =>
-          prev.map((p) => (p === selectedUrl ? newUrl : p))
-        );
+        setPhotoList(prev => prev.map(p => p === selectedUrl ? newUrl : p));
         toast({
           title: "Photo Updated",
           description: "Your photo was replaced successfully.",
         });
-        setSelectedUrl(null);
-        setSelectedFile(null);
+        resetSelection();
       }
     },
     onError: (err) => {
@@ -98,12 +120,9 @@ export default function EditPhoto() {
     },
   });
 
-  // === delete photo ===
   const deletePhotoMutation = useMutation({
     mutationFn: async (photoUrl: string) => {
-      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}?photoUrl=${encodeURIComponent(
-        photoUrl
-      )}`;
+      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}?photoUrl=${encodeURIComponent(photoUrl)}`;
       const res = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -114,7 +133,7 @@ export default function EditPhoto() {
       return true;
     },
     onSuccess: (_, photoUrl) => {
-      setPhotoList((prev) => prev.filter((p) => p !== photoUrl));
+      setPhotoList(prev => prev.filter(p => p !== photoUrl));
       toast({ title: "Photo Deleted", description: "Photo removed." });
     },
     onError: (err) => {
@@ -126,12 +145,13 @@ export default function EditPhoto() {
     },
   });
 
-  // === upload multiple new photos (create) ===
   const uploadPhotosMutation = useMutation({
     mutationFn: async (files: File[]) => {
       if (!adId) throw new Error("Ad ID is missing");
+      
       const formData = new FormData();
-      files.forEach((f) => formData.append("photo", f));
+      files.forEach(f => formData.append("photo", f));
+      
       const url = `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`;
       const res = await fetch(url, {
         method: "POST",
@@ -140,27 +160,14 @@ export default function EditPhoto() {
         },
         body: formData,
       });
+      
       if (!res.ok) throw new Error(await res.text());
       return res.json();
     },
     onSuccess: (data) => {
-      // parse returned photos (data.data.imageUrl | data.data.photos | data.data.photo)
-      let photos: string[] = [];
-      if (data?.data?.imageUrl) {
-        photos = Array.isArray(data.data.imageUrl)
-          ? data.data.imageUrl
-          : [data.data.imageUrl];
-      } else if (data?.data?.photos) {
-        photos = Array.isArray(data.data.photos)
-          ? data.data.photos.map((p: any) => (p?.url ? p.url : p))
-          : [data.data.photos];
-      } else if (data?.data?.photo) {
-        photos = Array.isArray(data.data.photo)
-          ? data.data.photo
-          : [data.data.photo];
-      }
+      const photos = parsePhotoResponse(data);
       if (photos.length) {
-        setPhotoList((prev) => [...prev, ...photos]);
+        setPhotoList(prev => [...prev, ...photos]);
         toast({ title: "Photos Uploaded", description: "New photos added." });
       }
     },
@@ -173,282 +180,308 @@ export default function EditPhoto() {
     },
   });
 
-  const handleReplaceClick = (url: string) => {
-    setSelectedUrl(url);
-    setEditingIsAdd(false);
-    fileInputRef.current?.click();
-  };
+  // Reset selection helper
+  const resetSelection = useCallback(() => {
+    setSelectedUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }, []);
 
-  const handleEditClick = (url: string) => {
-    // Open editor with the existing server image
-    setSelectedUrl(url);
-    setEditingPreview(url);
-    setEditingFile(null);
-    setEditingPreviewIsBlob(false);
-    setEditingIsAdd(false);
-    setScale(1);
-    setRotate(0);
-    setIsEditing(true);
-  };
+  // Cleanup blob URLs
+  const cleanupBlobUrl = useCallback((url: string | null) => {
+    if (url && editState.isBlob) {
+      try {
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        console.warn("Failed to revoke blob URL:", e);
+      }
+    }
+  }, [editState.isBlob]);
 
-  // default editor preview should be the first photo when not actively editing
+  // Initialize editor with first photo
   useEffect(() => {
-    if (!isEditing && photoList && photoList.length > 0) {
+    if (!isEditing && photoList.length > 0) {
       setSelectedUrl(photoList[0]);
-      setEditingPreview(photoList[0]);
-      setEditingPreviewIsBlob(false);
+      setEditState(prev => ({
+        ...prev,
+        preview: photoList[0],
+        isBlob: false,
+      }));
     }
   }, [isEditing, photoList]);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanupBlobUrl(editState.preview);
+    };
+  }, [editState.preview, cleanupBlobUrl]);
 
-    // If selectedUrl is set, we're in a replace flow: open the editor with the first selected file
+  // Event handlers
+  const handleReplaceClick = useCallback((url: string) => {
+    setSelectedUrl(url);
+    setEditState(prev => ({ ...prev, isAdd: false }));
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleEditClick = useCallback((url: string) => {
+    setSelectedUrl(url);
+    setEditState({
+      preview: url,
+      file: null,
+      isBlob: false,
+      isAdd: false,
+      scale: 1,
+      rotate: 0,
+    });
+    setIsEditing(true);
+  }, []);
+
+  const validateFile = useCallback((file: File): boolean => {
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select images smaller than 5MB",
+        variant: "destructive",
+      });
+      return false;
+    }
+    return true;
+  }, [toast]);
+
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    // Replace flow
     if (selectedUrl) {
       const file = files[0];
-      if (!file) return;
+      if (!file || !validateFile(file)) return;
+      
       const preview = URL.createObjectURL(file);
-      setEditingPreview(preview);
-      setEditingFile(file);
-      setEditingPreviewIsBlob(true);
+      cleanupBlobUrl(editState.preview); // Cleanup previous blob
+      
+      setEditState(prev => ({
+        ...prev,
+        preview,
+        file,
+        isBlob: true,
+      }));
       setIsEditing(true);
-      // keep selectedUrl so applyEditAndReplace knows which server photo to replace
       return;
     }
 
-    // Otherwise this is an add/new-photos flow.
-    // If user selected exactly one file, open editor for edit-before-upload.
+    // Add flow - single file with editor
     if (files.length === 1) {
       const file = files[0];
-      if (!file) return;
-      if (file.size > 5 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please select images smaller than 5MB",
-          variant: "destructive",
-        });
-        return;
-      }
+      if (!file || !validateFile(file)) return;
+
       const preview = URL.createObjectURL(file);
-      setEditingPreview(preview);
-      setEditingFile(file);
-      setEditingPreviewIsBlob(true);
-      setEditingIsAdd(true);
+      cleanupBlobUrl(editState.preview); // Cleanup previous blob
+
+      setEditState({
+        preview,
+        file,
+        isBlob: true,
+        isAdd: true,
+        scale: 1,
+        rotate: 0,
+      });
       setIsEditing(true);
       return;
     }
 
-    // If multiple selected, treat as bulk upload (no edit)
-    const validFiles: File[] = [];
-    for (const file of files) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please select images smaller than 5MB",
-          variant: "destructive",
-        });
-        continue;
-      }
-      validFiles.push(file);
+    // Bulk upload without editor
+    const validFiles = files.filter(file => validateFile(file));
+    if (validFiles.length > 0) {
+      uploadPhotosMutation.mutate(validFiles);
     }
-    if (validFiles.length === 0) return;
-    uploadPhotosMutation.mutate(validFiles);
-  };
+  }, [selectedUrl, validateFile, uploadPhotosMutation, editState.preview, cleanupBlobUrl]);
 
-  const applyEditAndReplace = async () => {
-    // allow saving when editing an added photo (editingIsAdd) even if selectedUrl is null
-    if (!editorRef.current || (!selectedUrl && !editingIsAdd)) return;
-    const canvas = editorRef.current.getImageScaledToCanvas();
-    try {
-      await new Promise<void>((resolve, reject) => {
-        try {
-          canvas.toBlob(async (blob: Blob | null) => {
-            if (!blob) return reject(new Error("toBlob returned null"));
-            const nameFrom =
-              editingFile?.name ||
-              (selectedUrl ? selectedUrl.split("/").pop() : undefined) ||
-              "edited.png";
-            const file = new File([blob], nameFrom, {
-              type: blob.type,
-            });
-            // call mutation: replace if selectedUrl present, otherwise upload as a new photo
-            try {
-              if (editingIsAdd) {
-                // upload the edited new photo
-                if ((uploadPhotosMutation as any).mutateAsync) {
-                  const res = await (uploadPhotosMutation as any).mutateAsync([
-                    file,
-                  ]);
-                  // normalize returned photos
-                  let photos: string[] = [];
-                  if (res?.data?.imageUrl) {
-                    photos = Array.isArray(res.data.imageUrl)
-                      ? res.data.imageUrl
-                      : [res.data.imageUrl];
-                  } else if (res?.data?.photos) {
-                    photos = Array.isArray(res.data.photos)
-                      ? res.data.photos.map((p: any) => (p?.url ? p.url : p))
-                      : [res.data.photos];
-                  } else if (res?.data?.photo) {
-                    photos = Array.isArray(res.data.photo)
-                      ? res.data.photo
-                      : [res.data.photo];
-                  }
-                  if (photos.length) {
-                    // prepend new photo(s)
-                    setPhotoList((prev) => [...photos, ...prev]);
-                    toast({
-                      title: "Photo Added",
-                      description: "New photo uploaded successfully.",
-                    });
-                  }
-                } else {
-                  // fallback: fire-and-forget
-                  uploadPhotosMutation.mutate([file]);
-                }
-              } else {
-                // replace existing photo
-                if ((updatePhotoMutation as any).mutateAsync) {
-                  await (updatePhotoMutation as any).mutateAsync(file);
-                } else {
-                  updatePhotoMutation.mutate(file);
-                }
-              }
-              resolve();
-            } catch (mErr) {
-              reject(mErr);
-            }
-          }, "image/png");
-        } catch (err) {
-          reject(err);
-        }
-      });
-    } catch (err: any) {
-      // likely a SecurityError due to tainted canvas (cross-origin image without CORS)
-      console.error("toBlob failed:", err);
-      if (!editingPreviewIsBlob && editingPreview) {
-        // try to fetch the image as a blob and reopen editor with a local blob URL
-        try {
-          const resp = await fetch(editingPreview);
-          if (!resp.ok)
-            throw new Error(`Failed to fetch image: ${resp.status}`);
-          const blob = await resp.blob();
-          const blobUrl = URL.createObjectURL(blob);
-          setEditingPreview(blobUrl);
-          setEditingPreviewIsBlob(true);
-          toast({
-            title: "Retry Edit",
-            description:
-              "Could not export edited image due to CORS. Loaded a local copy — please Save again.",
-          });
-          return;
-        } catch (fetchErr) {
-          console.error("fetch fallback failed:", fetchErr);
-          toast({
-            title: "Edit Failed",
-            description:
-              "Cannot export edited image because the server does not allow cross-origin access. Try replacing the photo with a local file instead.",
-            variant: "destructive",
-          });
-          // close editor
-          setIsEditing(false);
-          setEditingPreview(null);
-          setSelectedUrl(null);
-          if (fileInputRef.current) fileInputRef.current.value = "";
-          return;
-        }
-      }
-      // other errors
+  const applyEditAndReplace = useCallback(async () => {
+    if (!editorRef.current || (!selectedUrl && !editState.isAdd)) {
       toast({
-        title: "Edit Failed",
-        description: err?.message || "Unable to export edited image.",
+        title: "Error",
+        description: "No image to save",
         variant: "destructive",
       });
       return;
     }
-    // clean up editor state only if we created a blob preview
-    if (editingPreview && editingPreviewIsBlob) {
-      try {
-        URL.revokeObjectURL(editingPreview);
-      } catch (e) {}
-    }
-    setEditingPreview(null);
-    setEditingFile(null);
-    setEditingPreviewIsBlob(false);
-    setEditingIsAdd(false);
-    setIsEditing(false);
-    // clear file input so same file can be selected again
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
 
-  const cancelEdit = () => {
-    if (editingPreview && editingPreviewIsBlob) {
-      try {
-        URL.revokeObjectURL(editingPreview);
-      } catch (e) {}
-    }
-    setEditingPreview(null);
-    setEditingFile(null);
-    setIsEditing(false);
-    setEditingIsAdd(false);
-    setSelectedUrl(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
+    try {
+      const canvas = editorRef.current.getImageScaledToCanvas();
+      
+      // Use promise-based blob conversion
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob((blob: Blob | null) => {
+          if (blob) resolve(blob);
+          else reject(new Error("Failed to create image blob"));
+        }, "image/png");
+      });
 
-  // cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (editingPreview && editingPreviewIsBlob) {
-        try {
-          URL.revokeObjectURL(editingPreview);
-        } catch (e) {}
+      const fileName = editState.file?.name || "edited.png";
+      const file = new File([blob], fileName, { type: blob.type });
+
+      if (editState.isAdd) {
+        uploadPhotosMutation.mutate([file]);
+      } else {
+        updatePhotoMutation.mutate(file);
       }
-    };
-  }, [editingPreview]);
 
-  const handleDelete = (url: string) => {
-    deletePhotoMutation.mutate(url);
-  };
+      // Cleanup and reset
+      cleanupBlobUrl(editState.preview);
+      setEditState(prev => ({
+        ...prev,
+        preview: null,
+        file: null,
+        isBlob: false,
+        isAdd: false,
+        scale: 1,
+        rotate: 0,
+      }));
+      setIsEditing(false);
+      resetSelection();
 
-  const handleAddNewPhoto = () => {
-    setSelectedUrl(null);
-    fileInputRef.current?.click();
-  };
+    } catch (err: any) {
+      console.error("Edit failed:", err);
+      
+      // Handle CORS issues for external images
+      if (!editState.isBlob && editState.preview) {
+        try {
+          const response = await fetch(editState.preview);
+          if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+          
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          
+          setEditState(prev => ({
+            ...prev,
+            preview: blobUrl,
+            isBlob: true,
+          }));
+          
+          toast({
+            title: "Retry Edit",
+            description: "Image loaded locally - please Save again.",
+          });
+          return;
+        } catch (fetchErr) {
+          console.error("Fetch fallback failed:", fetchErr);
+        }
+      }
 
-  const handleAddPhotoFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("photo", file);
-    const url = `${VITE_API_BASE_URL}/api/advertising/updatePhoto/${adId}?photoUrl=`;
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${TokenManager.getAccessToken()}` },
-      body: formData,
-    });
-
-    const result = await res.json();
-    const newUrl = result?.data?.photos?.[0]?.url;
-    if (newUrl) {
-      setPhotoList((prev) => [...prev, newUrl]);
       toast({
-        title: "Photo Added",
-        description: "New photo uploaded successfully.",
+        title: "Edit Failed",
+        description: err?.message || "Unable to export edited image",
+        variant: "destructive",
       });
     }
-  };
+  }, [
+    selectedUrl,
+    editState,
+    updatePhotoMutation,
+    uploadPhotosMutation,
+    cleanupBlobUrl,
+    resetSelection,
+    toast
+  ]);
+
+  const cancelEdit = useCallback(() => {
+    cleanupBlobUrl(editState.preview);
+    setEditState({
+      preview: null,
+      file: null,
+      isBlob: false,
+      isAdd: false,
+      scale: 1,
+      rotate: 0,
+    });
+    setIsEditing(false);
+    resetSelection();
+  }, [editState.preview, cleanupBlobUrl, resetSelection]);
+
+  const handleDelete = useCallback((url: string) => {
+    deletePhotoMutation.mutate(url);
+  }, [deletePhotoMutation]);
+
+  const handleAddNewPhoto = useCallback(() => {
+    setSelectedUrl(null);
+    fileInputRef.current?.click();
+  }, []);
+
+  // Memoized photo grid to prevent unnecessary re-renders
+  const photoGrid = useMemo(() => (
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      {photoList.map((url, index) => (
+        <div key={`${url}-${index}`} className="relative rounded border overflow-hidden group">
+          <img
+            src={url}
+            alt={`photo-${index}`}
+            className="w-full h-36 object-cover"
+            loading="lazy" // Lazy load images for better performance
+          />
+          <div className="absolute top-2 right-2 flex flex-col gap-2 transition">
+            <Button size="sm" variant="secondary" onClick={() => handleEditClick(url)}>
+              Edit
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => handleReplaceClick(url)}>
+              Replace
+            </Button>
+            <Button size="sm" variant="destructive" onClick={() => handleDelete(url)}>
+              Delete
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  ), [photoList, handleEditClick, handleReplaceClick, handleDelete]);
+
+  // Memoized editor controls
+  const editorControls = useMemo(() => (
+    <div className="flex-1 space-y-4">
+      <div>
+        <label className="block text-sm mb-2">{t("uploadPhoto", "Zoom")}</label>
+        <input
+          type="range"
+          min={1}
+          max={2}
+          step={0.01}
+          value={editState.scale}
+          onChange={(e) => setEditState(prev => ({ ...prev, scale: Number(e.target.value) }))}
+          className="w-full"
+        />
+      </div>
+      <div>
+        <label className="block text-sm mb-2">{t("uploadPhoto", "Rotate")}</label>
+        <input
+          type="range"
+          min={0}
+          max={360}
+          step={1}
+          value={editState.rotate}
+          onChange={(e) => setEditState(prev => ({ ...prev, rotate: Number(e.target.value) }))}
+          className="w-full"
+        />
+      </div>
+      <div className="flex gap-2">
+        <Button 
+          onClick={applyEditAndReplace}
+          disabled={updatePhotoMutation.isPending || uploadPhotosMutation.isPending}
+        >
+          {t("uploadPhoto", "Save")}
+        </Button>
+        <Button variant="outline" onClick={cancelEdit}>
+          {t("uploadPhoto", "Cancel")}
+        </Button>
+      </div>
+    </div>
+  ), [editState.scale, editState.rotate, applyEditAndReplace, cancelEdit, t, updatePhotoMutation.isPending, uploadPhotosMutation.isPending]);
 
   return (
     <div className="flex h-screen bg-background">
       <div className="flex-1 overflow-auto">
         <Header
           title={t("editPhoto", "Edit Photos")}
-          description={t(
-            "editPhoto",
-            "Manage, replace, or delete your ad photos"
-          )}
+          description={t("editPhoto", "Manage, replace, or delete your ad photos")}
         />
         <main className="p-6">
           <div className="max-w-3xl mx-auto">
@@ -463,113 +496,41 @@ export default function EditPhoto() {
                   onChange={handleFileChange}
                   className="hidden"
                   accept="image/*"
-                  // allow multiple when adding new photos (not replacing)
                   multiple
                 />
 
                 {photoList.length === 0 ? (
-                  <p className="text-muted-foreground">
-                    No photos uploaded yet.
-                  </p>
+                  <p className="text-muted-foreground">No photos uploaded yet.</p>
                 ) : (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {photoList.map((url, i) => (
-                      <div
-                        key={i}
-                        className="relative rounded border overflow-hidden group">
-                        <img
-                          src={url}
-                          alt={`photo-${i}`}
-                          className="w-full h-36 object-cover"
+                  photoGrid
+                )}
+
+                {isEditing && editState.preview && (
+                  <div className="mt-4 p-4 border rounded-lg bg-gray-50">
+                    <h4 className="font-medium mb-2">{t("editPhoto", "Edit Photo")}</h4>
+                    <div className="flex flex-col md:flex-row gap-4 items-start">
+                      <div>
+                        <AvatarEditor
+                          ref={editorRef}
+                          image={editState.preview}
+                          width={320}
+                          height={200}
+                          border={40}
+                          scale={editState.scale}
+                          rotate={editState.rotate}
+                          crossOrigin="anonymous" // Helps with CORS issues
                         />
-                        <div className="absolute top-2 right-2 flex flex-col gap-2   transition">
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={() => handleEditClick(url)}>
-                            Edit
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={() => handleReplaceClick(url)}>
-                            Replace
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDelete(url)}>
-                            Delete
-                          </Button>
-                        </div>
                       </div>
-                    ))}
+                      {editorControls}
+                    </div>
                   </div>
                 )}
-                <div className="mt-4 p-4 border rounded-lg bg-gray-50">
-                  <h4 className="font-medium mb-2">
-                    {t("editPhoto", "Edit Photo")}
-                  </h4>
-                  <div className="flex flex-col md:flex-row gap-4 items-start">
-                    <div>
-                      <AvatarEditor
-                        ref={editorRef}
-                        image={editingPreview}
-                        width={320}
-                        height={200}
-                        border={40}
-                        scale={scale}
-                        rotate={rotate}
-                        // request CORS for remote images so canvas export is allowed when possible
-                        crossOrigin={
-                          editingPreviewIsBlob ? undefined : "anonymous"
-                        }
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-sm mb-2">
-                        {t("uploadPhoto", "Zoom")}
-                      </label>
-                      <input
-                        type="range"
-                        min={1}
-                        max={2}
-                        step={0.01}
-                        value={scale}
-                        onChange={(e) => setScale(Number(e.target.value))}
-                        className="w-full"
-                      />
-                      <label className="block text-sm mt-3 mb-2">
-                        {t("uploadPhoto", "Rotate")}
-                      </label>
-                      <input
-                        type="range"
-                        min={0}
-                        max={360}
-                        step={1}
-                        value={rotate}
-                        onChange={(e) => setRotate(Number(e.target.value))}
-                        className="w-full"
-                      />
-                      <div className="flex gap-2 mt-4">
-                        <Button onClick={applyEditAndReplace}>
-                          {t("uploadPhoto", "Save")}
-                        </Button>
-                        <Button variant="outline" onClick={cancelEdit}>
-                          {t("uploadPhoto", "Cancel")}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
                 <div className="mt-6 flex justify-between">
                   <Button onClick={handleAddNewPhoto}>
                     <i className="fas fa-plus mr-2"></i> Add Photo
                   </Button>
-
-                  <Button
-                    variant="outline"
-                    onClick={() => setLocation(`/campaigns/${adId}`)}>
+                  <Button variant="outline" onClick={() => setLocation(`/campaigns/${adId}`)}>
                     Done
                   </Button>
                 </div>
