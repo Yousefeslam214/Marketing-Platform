@@ -58,7 +58,7 @@ export default function AdminImpressionRatios() {
     url: `${VITE_API_BASE_URL}/api/users/impression-ratios`,
     enabled: !!TokenManager.getAccessToken(),
   });
-console.log(ratiosResponse)
+  console.log(ratiosResponse);
   // Extract data with defaults
   const impressionRatios = ratiosResponse?.data || [];
 
