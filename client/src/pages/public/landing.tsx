@@ -138,15 +138,15 @@ export default function LandingPage() {
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center">
-                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                  <i className="fas fa-check-circle text-green-500 mx-2"></i>
                   {t("landing", "hero.features.noSetup")}
                 </div>
                 <div className="flex items-center">
-                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                  <i className="fas fa-check-circle text-green-500 mx-2"></i>
                   {t("landing", "hero.features.multiPlatform")}
                 </div>
                 <div className="flex items-center">
-                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                  <i className="fas fa-check-circle text-green-500 mx-2"></i>
                   {t("landing", "hero.features.analytics")}
                 </div>
               </div>
@@ -395,7 +395,7 @@ export default function LandingPage() {
                   </div>
                   <CardHeader className="text-center pb-6 pt-8">
                     <CardTitle className="text-2xl mb-4">
-                      {t("landing", "pricing.simplePricing")}
+                      {t("landing", "simplePricing")}
                     </CardTitle>
                     <div className="space-y-2">
                       <div className="text-4xl font-bold text-primary">
@@ -466,7 +466,9 @@ export default function LandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-primary w-full">
+      <section className="py-12 sm:py-16 md:py-20 bg-primary w-full
+      flex flex-col align-center 
+      ">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center text-primary-foreground">
             <div>

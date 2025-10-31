@@ -27,7 +27,8 @@ import { createAdSchema, type CreateAdData } from "@shared/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useLocation } from "wouter";
-import { locationOptions } from "./targeting-form";
+import { locationOptions } from "../targeting-form";
+// import { locationOptions } from "./targeting-form";
 
 export function AdEditor() {
   const [, setLocation] = useLocation();

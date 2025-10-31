@@ -16,7 +16,7 @@ import Dashboard from "@/pages/user/dashboard";
 import AdsIndex from "@/pages/user/ads/index";
 import NewAd from "@/pages/user/ads/new";
 import EditAd from "@/pages/user/ads/edit";
-import UploadPhoto from "@/pages/user/ads/upload-photo";
+// import UploadPhoto from "@/pages/user/ads/upload-photo";
 import AssignCredit from "@/pages/user/ads/assign-credit";
 import Billing from "@/pages/user/billing";
 import PaymentSuccess from "@/pages/user/payment-success";
@@ -61,6 +61,8 @@ import LandingPage from "./pages/public/landing";
 import { PublicLayout } from "./components/layout/public-layout";
 import { TokenManager } from "./lib/auth";
 import AdminImpressionRatios from "./pages/admin/AdminImpressionRatios";
+import UploadPhoto from "./components/ads/create/upload-photo";
+import EditPhoto from "./components/ads/update/edit-photo";
 
 function Router() {
     const [, setLocation] = useLocation();
@@ -256,6 +258,14 @@ function Router() {
         )}
       />
       <Route
+        path="/ads/:adId/edit-photo"
+        component={() => (
+          <AppLayout>
+            <EditPhoto />
+          </AppLayout>
+        )}
+      />
+      <Route
         path="/ads/:adId/assign-credit"
         component={() => (
           <AppLayout>
@@ -374,6 +384,7 @@ function Router() {
           </AppLayout>
         )}
       />
+
       {/* <Route
         path="/public/:id"
         component={(props: { params: { id: string } }) => (

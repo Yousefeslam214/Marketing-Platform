@@ -20,10 +20,6 @@ export default function UploadPhoto() {
   // Keep photoPreview as an array so multiple staged or uploaded photos are shown
   const [photoPreview, setPhotoPreview] = useState<string[]>([]);
   const [selectedPreviews, setSelectedPreviews] = useState<string[]>([]);
-  const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState<string[] | null>(
-    null
-  );
-
   // Multiple selection + edit support
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [editedFiles, setEditedFiles] = useState<Map<number, File>>(new Map());
@@ -32,17 +28,13 @@ export default function UploadPhoto() {
   const [scale, setScale] = useState<number>(1);
   const [rotate, setRotate] = useState<number>(0);
 
-  if (!TokenManager.getAccessToken()) {
-    setLocation("/login");
-    return null;
-  }
-
   if (!match) {
     setLocation("/campaigns");
     return null;
   }
 
-  if (!params?.adId) {
+  const adId = params?.adId;
+  if (!adId) {
     toast({
       title: "Invalid Ad",
       description: "No Ad ID provided in the URL",
@@ -52,20 +44,15 @@ export default function UploadPhoto() {
     return null;
   }
 
-  const adId = params.adId;
-
   // Photo upload mutation
   const uploadPhotoMutation = useMutation({
     mutationFn: async (file: File) => {
       if (!adId) {
         throw new Error("Ad ID is missing");
       }
-
       const formData = new FormData();
       formData.append("photo", file);
-
       const uploadUrl = `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`;
-
       const response = await fetch(uploadUrl, {
         method: "POST",
         headers: {
@@ -86,8 +73,7 @@ export default function UploadPhoto() {
     onSuccess: (data) => {
       const photoUrl = data.data?.photo;
       if (photoUrl) {
-        // push to uploaded urls list
-        setUploadedPhotoUrls((prev) => [...(prev || []), photoUrl]);
+     
         // If previous previews were blobs, revoke them when replaced by server URL
         setPhotoPreview((prev) => {
           // revoke any local blob URLs we've replaced
@@ -130,7 +116,7 @@ export default function UploadPhoto() {
       files.forEach((f) => formData.append("photo", f));
 
       const uploadUrl = `${VITE_API_BASE_URL}/api/advertising/uploadPhoto/${adId}`;
-
+      console.log("formData:", formData);
       const response = await fetch(uploadUrl, {
         method: "POST",
         headers: {
@@ -148,25 +134,48 @@ export default function UploadPhoto() {
       return result;
     },
     onSuccess: (data) => {
-      // Expecting the API to return an array of uploaded photo urls or a single photo
-      const photos =
-        data.data?.photos || data.data?.photo ? [data.data?.photo].flat() : [];
+      console.log("photos uploaded:", data);
+      // Extract server-returned image URLs. API may return data.imageUrl (array), data.photos (array) or data.photo (string)
+      let photos: string[] = [];
+      if (data?.data?.imageUrl) {
+        photos = Array.isArray(data.data.imageUrl)
+          ? data.data.imageUrl
+          : [data.data.imageUrl];
+      } else if (data?.data?.photos) {
+        photos = Array.isArray(data.data.photos)
+          ? data.data.photos
+          : [data.data.photos];
+      } else if (data?.data?.photo) {
+        photos = Array.isArray(data.data.photo)
+          ? data.data.photo
+          : [data.data.photo];
+      }
+
       if (photos && photos.length) {
-        setUploadedPhotoUrls((prev) => [...(prev || []), ...photos]);
-        // Append server URLs to photoPreview array and revoke any staged blob previews
-        setPhotoPreview((prev) => {
-          prev.forEach((p) => {
-            if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
-          });
-          return [...prev, ...photos];
-        });
-        // Revoke local preview URLs and clear staged previews
+        // Revoke any staged blob previews that were part of selectedPreviews
         selectedPreviews.forEach((p) => {
-          if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+          if (p && p.startsWith("blob:")) {
+            try {
+              URL.revokeObjectURL(p);
+            } catch (e) {
+              /* ignore */
+            }
+          }
         });
+
+        // Update main preview list: remove staged blob previews, keep server urls and existing server urls, then append new server urls
+        setPhotoPreview((prev) => {
+          const filtered = prev.filter(
+            (p) => !(p && p.startsWith("blob:") && selectedPreviews.includes(p))
+          );
+          return [...filtered, ...photos];
+        });
+
+        // Clear staged selections and edited map
         setSelectedFiles([]);
         setSelectedPreviews([]);
         setEditedFiles(new Map());
+
         toast({
           title: "Upload Successful",
           description: "Your photos have been uploaded successfully.",
@@ -178,47 +187,6 @@ export default function UploadPhoto() {
         title: "Upload Failed",
         description:
           error.message || "An error occurred while uploading your photos.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Photo delete mutation
-  const deletePhotoMutation = useMutation({
-    mutationFn: async () => {
-      if (!adId) throw new Error("Ad ID missing");
-      const url = `${VITE_API_BASE_URL}/api/advertising/deletePhoto/${adId}`;
-      const res = await fetch(url, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${TokenManager.getAccessToken()}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(`Delete failed: ${res.status} - ${txt}`);
-      }
-      return await res.json();
-    },
-    onSuccess: () => {
-      // Clear server photo and preview
-      // revoke all staged blob previews
-      photoPreview.forEach((p) => {
-        if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
-      });
-      setPhotoPreview([]);
-      setUploadedPhotoUrls(null);
-      toast({
-        title: t("uploadPhoto", "uploadSuccess"),
-        description: t("uploadPhoto", "uploadSuccessDesc"),
-      });
-    },
-    onError: (err) => {
-      toast({
-        title: t("uploadPhoto", "uploadFailed"),
-        description:
-          (err as Error).message || t("uploadPhoto", "uploadFailedDesc"),
         variant: "destructive",
       });
     },
@@ -329,16 +297,6 @@ export default function UploadPhoto() {
     setPhotoPreview((prev) => prev.filter((p) => p !== removedPreview));
   };
 
-  const promotePreview = (index: number) => {
-    setPhotoPreview((prev) => {
-      if (index <= 0 || index >= prev.length) return prev;
-      const copy = [...prev];
-      const [item] = copy.splice(index, 1);
-      copy.unshift(item);
-      return copy;
-    });
-  };
-
   const uploadAllSelected = async () => {
     if (selectedFiles.length === 0) return;
     setUploadingPhoto(true);
@@ -348,21 +306,16 @@ export default function UploadPhoto() {
         (f, i) => editedFiles.get(i) || f
       );
       await uploadPhotosMutation.mutateAsync(filesToUpload);
+      setLocation(`/ads/${params.adId}/assign-credit`);
+    } catch (e) {
+      toast({
+        title: "Upload Failed",
+        description: "There was an error uploading your photos.",
+        variant: "destructive",
+      });
     } finally {
       setUploadingPhoto(false);
       // Note: onSuccess will clear staged files and revoke previews
-    }
-  };
-
-  const handleContinue = () => {
-    if (uploadedPhotoUrls && uploadedPhotoUrls.length > 0) {
-      setLocation(`/ads/${params.adId}/assign-credit`);
-    } else {
-      toast({
-        title: "Photo Required",
-        description: "Please upload a photo before continuing.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -392,113 +345,6 @@ export default function UploadPhoto() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {/* Photo Preview (show all previews uploaded/staged) */}
-                  {photoPreview.length > 0 && (
-                    <div className="relative">
-                      <div className="max-w-md mx-auto">
-                        <img
-                          src={photoPreview[0]}
-                          alt={t("uploadPhoto", "PhotoPreview")}
-                          className="w-full h-64 object-cover rounded-lg border shadow-sm"
-                        />
-
-                        {photoPreview.length > 1 && (
-                          <div className="mt-2 flex gap-2 overflow-x-auto">
-                            {photoPreview.map((p, i) => (
-                              <img
-                                key={i}
-                                src={p}
-                                alt={`thumb-${i}`}
-                                onClick={() => promotePreview(i)}
-                                className="w-20 h-12 object-cover rounded border cursor-pointer"
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        className="absolute top-2 right-2"
-                        onClick={() => {
-                          if (uploadedPhotoUrls) {
-                            // call API to delete server photo(s)
-                            deletePhotoMutation.mutate();
-                            return;
-                          }
-
-                          // revoke any local blob previews and clear
-                          photoPreview.forEach((p) => {
-                            if (p && p.startsWith("blob:")) {
-                              URL.revokeObjectURL(p);
-                            }
-                          });
-                          setPhotoPreview([]);
-                          setUploadedPhotoUrls(null);
-                        }}>
-                        <i className="fas fa-trash mr-2"></i>
-                        {t("uploadPhoto", "RemovePhoto")}
-                      </Button>
-                    </div>
-                  )}
-
-                  {/* Upload Area */}
-                  <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handlePhotoSelect}
-                      className="hidden"
-                    />
-
-                    {!photoPreview && (
-                      <div className="space-y-4">
-                        <i className="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
-                        <div>
-                          <h3 className="text-lg font-medium">
-                            {t("uploadPhoto", "Upload a Photo")}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            {t(
-                              "uploadPhoto",
-                              "Please upload a photo for your ad"
-                            )}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="mt-4 space-y-2">
-                      <Button
-                        type="button"
-                        variant={photoPreview ? "outline" : "default"}
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={
-                          uploadingPhoto || uploadPhotoMutation.isPending
-                        }>
-                        {uploadingPhoto || uploadPhotoMutation.isPending ? (
-                          <>
-                            <i className="fas fa-spinner fa-spin mr-2"></i>
-                            {t("uploadPhoto", "Uploading...")}
-                          </>
-                        ) : (
-                          <>
-                            <i className="fas fa-upload mr-2"></i>
-                            {photoPreview
-                              ? t("uploadPhoto", "upload more Photos")
-                              : t("uploadPhoto", "Choose Photo")}
-                          </>
-                        )}
-                      </Button>
-
-                      <p className="text-xs text-muted-foreground">
-                        {t("uploadPhoto", "Supports: JPG, PNG, GIF")}
-                      </p>
-                    </div>
-                  </div>
-
                   {/* Staged thumbnails + edit controls */}
                   {selectedPreviews.length > 0 && (
                     <div className="space-y-4">
@@ -531,45 +377,6 @@ export default function UploadPhoto() {
                       </div>
 
                       <div className="flex gap-3 mt-3">
-                        <Button
-                          onClick={uploadAllSelected}
-                          disabled={
-                            uploadingPhoto ||
-                            uploadPhotosMutation.isPending ||
-                            selectedPreviews.length === 0
-                          }
-                          className="flex-1">
-                          {uploadingPhoto || uploadPhotosMutation.isPending ? (
-                            <>
-                              <i className="fas fa-spinner fa-spin mr-2" />
-                              {t("uploadPhoto", "Uploading...")}
-                            </>
-                          ) : (
-                            <>
-                              <i className="fas fa-upload mr-2" />
-                              {t("uploadPhoto", "Upload All")}
-                            </>
-                          )}
-                        </Button>
-
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => {
-                            // clear staged previews
-                            selectedPreviews.forEach((p) => {
-                              if (p && p.startsWith("blob:"))
-                                URL.revokeObjectURL(p);
-                            });
-                            setSelectedFiles([]);
-                            setSelectedPreviews([]);
-                            setEditedFiles(new Map());
-                          }}
-                          disabled={
-                            uploadingPhoto || uploadPhotosMutation.isPending
-                          }>
-                          Clear
-                        </Button>
                       </div>
                     </div>
                   )}
@@ -634,6 +441,63 @@ export default function UploadPhoto() {
                       </div>
                     </div>
                   )}
+
+                  {/* Upload Area */}
+                  <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoSelect}
+                      className="hidden"
+                    />
+
+                    {!photoPreview && (
+                      <div className="space-y-4">
+                        <i className="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                        <div>
+                          <h3 className="text-lg font-medium">
+                            {t("uploadPhoto", "Upload a Photo")}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {t(
+                              "uploadPhoto",
+                              "Please upload a photo for your ad"
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="mt-4 space-y-2">
+                      <Button
+                        type="button"
+                        variant={photoPreview ? "outline" : "default"}
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={
+                          uploadingPhoto || uploadPhotoMutation.isPending
+                        }>
+                        {uploadingPhoto || uploadPhotoMutation.isPending ? (
+                          <>
+                            <i className="fas fa-spinner fa-spin mr-2"></i>
+                            {t("uploadPhoto", "Uploading...")}
+                          </>
+                        ) : (
+                          <>
+                            <i className="fas fa-upload mr-2"></i>
+                            {photoPreview
+                              ? t("uploadPhoto", "upload more Photos")
+                              : t("uploadPhoto", "Choose Photo")}
+                          </>
+                        )}
+                      </Button>
+
+                      <p className="text-xs text-muted-foreground">
+                        {t("uploadPhoto", "Supports: JPG, PNG, GIF")}
+                      </p>
+                    </div>
+                  </div>
+
                   {/* Guidelines */}
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
                     <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">
@@ -655,46 +519,38 @@ export default function UploadPhoto() {
                   </div>
 
                   {/* Action Buttons */}
-
-                  <div className="mt-4 space-y-2">
-                    <Button
-                      type="button"
-                      variant={photoPreview.length > 0 ? "outline" : "default"}
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={uploadingPhoto || uploadPhotoMutation.isPending}
-                      className="w-full sm:w-auto">
-                      {uploadingPhoto || uploadPhotoMutation.isPending ? (
-                        <>
-                          <i className="fas fa-spinner fa-spin mr-2"></i>
-                          {t("uploadPhoto", "Uploading...")}
-                        </>
-                      ) : (
-                        <>
-                          <i className="fas fa-upload mr-2"></i>
-                          {photoPreview.length > 0
-                            ? t("uploadPhoto", "Change Photo")
-                            : t("uploadPhoto", "Choose Photo")}
-                        </>
-                      )}
-                    </Button>
-
-                    <p className="text-xs text-muted-foreground">
-                      {t("uploadPhoto", "Supports: JPG, PNG, GIF")}
-                    </p>
-                  </div>
+                  <div className="mt-4 space-y-2"></div>
 
                   {/* Action Buttons */}
                   <div className="flex gap-3">
                     <Button
-                      onClick={handleContinue}
+                      onClick={uploadAllSelected}
                       disabled={
-                        !uploadedPhotoUrls ||
                         uploadingPhoto ||
-                        uploadPhotoMutation.isPending
+                        uploadPhotosMutation.isPending ||
+                        selectedPreviews.length === 0
                       }
                       className="flex-1">
                       <i className="fas fa-arrow-right mr-2"></i>
                       {t("uploadPhoto", "Continue")}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        // clear staged previews
+                        selectedPreviews.forEach((p) => {
+                          if (p && p.startsWith("blob:"))
+                            URL.revokeObjectURL(p);
+                        });
+                        setSelectedFiles([]);
+                        setSelectedPreviews([]);
+                        setEditedFiles(new Map());
+                      }}
+                      disabled={
+                        uploadingPhoto || uploadPhotosMutation.isPending
+                      }>
+                      Clear
                     </Button>
                     <Button
                       type="button"

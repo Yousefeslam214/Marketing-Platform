@@ -7,8 +7,9 @@ import { apiRequest } from "@/lib/queryClient";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
-import { AdEditor } from "@/components/ads/ad-editor-update";
+// import { AdEditor } from "@/components/ads/ad-editor-update";
 import { useLanguage } from "@/hooks/use-language";
+import { AdEditor } from "@/components/ads/update/ad-editor-update";
 
 export default function UpdateAd() {
   const [, setLocation] = useLocation();

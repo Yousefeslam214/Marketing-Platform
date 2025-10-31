@@ -29,9 +29,10 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { TokenManager } from "@/lib/auth";
-import { locationOptions } from "./targeting-form";
+import { locationOptions } from "./../targeting-form";
 import { useLanguage } from "@/hooks/use-language";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { navigate } from "wouter/use-browser-location";
 
 interface AdEditorUpdateProps {
   adId: string;
@@ -57,6 +58,8 @@ export function AdEditor({
   isUpdate = false,
 }: AdEditorUpdateProps) {
   console.log("existingData:", existingData);
+  const imgData = existingData?.imageUrl || [];
+  console.log("imageData:", imgData);
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -155,7 +158,13 @@ export function AdEditor({
         description: t("ads", "adUpdatedDescription"),
       });
 
-      setLocation(`/campaigns/${adId}`);
+      // setLocation(`/campaigns/${adId}`);
+      // After success
+
+      console.log("imgData to pass:", imgData);
+      navigate(`/ads/${adId}/edit-photo`, { state: { imgData } });
+      
+      // navigate(`/ads/${adId}/edit-photo?img=${encodeURIComponent(JSON.stringify(imgData))}`);
     },
     onError: (error: any) => {
       toast({

@@ -29,6 +29,7 @@ export default function AdDetail({ params }: AdDetailProps) {
   const { id } = params;
   const userRole = TokenManager.getRole();
   const [adActivationStatus, setAdActivationStatus] = useState(false);
+  const [adPromoteStatus, setAdPromoteStatus] = useState(false);
 
   const [creditAmount, setCreditAmount] = useState<number>(1);
 
@@ -36,8 +37,10 @@ export default function AdDetail({ params }: AdDetailProps) {
     key: [`/ads/${id}`],
     url: `${VITE_API_BASE_URL}/api/advertising/${id}`,
   });
+
   console.log(data);
   console.log("[id].tsx");
+
   useEffect(() => {
     // Initialize adActivationStatus from API response when available
     if (!data?.data) return;
@@ -47,6 +50,7 @@ export default function AdDetail({ params }: AdDetailProps) {
     } else if (userRole === "admin") {
       setAdActivationStatus(Boolean(payload.active));
     }
+    setAdPromoteStatus(data.data.hasPromoted)
   }, [data, userRole]);
 
   // Assign credit mutation
@@ -148,6 +152,40 @@ export default function AdDetail({ params }: AdDetailProps) {
     },
   });
 
+  // Promote ad mutation
+  const promoteAdMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest(
+        "PUT",
+        `${VITE_API_BASE_URL}/api/advertising/${id}/promote`
+      );
+      const body = await response.json();
+      if (!response.ok || (body && body.success === false)) {
+        const msg = body?.message || t("adDetail", "failedToPromoteAd");
+        throw new Error(msg);
+      }
+      return body;
+    },
+    onSuccess: (res: any) => {
+      setAdPromoteStatus(true);
+      queryClient.invalidateQueries({ queryKey: [`/ads/${id}`] });
+      toast({
+        title: t("adDetail", "promoteSuccess") || "Ad Promoted",
+        description:
+          t("adDetail", "promoteSuccessDescription") ||
+          "Your ad has been promoted successfully.",
+      });
+      refetch();
+    },
+    onError: (err: any) => {
+      toast({
+        title: t("adDetail", "failedToPromoteAd") || "Failed to Promote",
+        description: err.message || t("adDetail", "pleaseRetryLater"),
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleAssignCredit = () => {
     if (creditAmount > 0) {
       assignCreditMutation.mutate(creditAmount);
@@ -220,6 +258,23 @@ export default function AdDetail({ params }: AdDetailProps) {
                       <i className="fas fa-credit-card mr-2"></i>
                       {t("adDetail", "purchaseImpressions")}
                     </Button>
+                    <Button
+                      onClick={() => promoteAdMutation.mutate()}
+                      disabled={promoteAdMutation.isPending}
+                      data-testid="button-promote-ad">
+                      {promoteAdMutation.isPending ? (
+                        <>
+                          <i className="fas fa-spinner fa-spin mr-2"></i>
+                          {t("adDetail", "promoting")}
+                        </>
+                      ) : (
+                        <>
+                          <i className="fas fa-bullhorn mr-2"></i>
+                          {t("adDetail", "promote")}
+                        </>
+                      )}
+                    </Button>
+                
                   </>
                 )}
               </div>
@@ -317,6 +372,27 @@ export default function AdDetail({ params }: AdDetailProps) {
                           : t("adDetail", "inactive")}
                       </p>
                     </div>
+                    <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
+                      <i
+                        className={`fas ${
+                          adActivationStatus
+                            ? "fa-play text-green-600"
+                            : "fa-pause text-gray-600"
+                        } text-2xl mb-2`}></i>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                        {t("adDetail", "status")}
+                      </h4>
+                      <p
+                        className={`text-lg font-bold ${
+                          ad.hasPromoted
+                            ? "text-green-600"
+                            : "text-gray-600"
+                        }`}>
+                        {adPromoteStatus
+                          ? t("adDetail", "active")
+                          : t("adDetail", "inactive")}
+                      </p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -384,6 +460,22 @@ export default function AdDetail({ params }: AdDetailProps) {
                       </Button>
                     </div>
                     <div className="flex items-center gap-2 ml-auto">
+                       <Button
+                      onClick={() => promoteAdMutation.mutate()}
+                      disabled={promoteAdMutation.isPending}
+                      data-testid="button-promote-ad">
+                      {promoteAdMutation.isPending ? (
+                        <>
+                          <i className="fas fa-spinner fa-spin mr-2"></i>
+                          {t("adDetail", "promoting")}
+                        </>
+                      ) : (
+                        <>
+                          <i className="fas fa-bullhorn mr-2"></i>
+                          {t("adDetail", "promote")}
+                        </>
+                      )}
+                    </Button>
                       <Button
                         onClick={handleDeActivateAd}
                         disabled={deActivateAdMutation.isPending}
@@ -408,6 +500,10 @@ export default function AdDetail({ params }: AdDetailProps) {
                     <p className="text-sm text-muted-foreground">
                       <i className="fas fa-info-circle mr-2"></i>
                       {t("adDetail", "creditAssignInfo")}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      <i className="fas fa-info-circle mr-2"></i>
+                      {t("adDetail", "promoteadwillputonthefirstofads")}
                     </p>
                   </div>
                 </CardContent>
@@ -752,20 +848,6 @@ export default function AdDetail({ params }: AdDetailProps) {
                             </a>
                           );
                         })()}
-
-                      {/* {ad.googleAdsLink && (
-                        <a
-                          href={ad.googleAdsLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-green-600 hover:underline text-sm truncate"
-                          data-testid="ad-google-ads-link">
-                          <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
-                            <i className="fab fa-google text-green-600 text-lg"></i>
-                            Google Ads
-                          </div>
-                        </a>
-                      )} */}
                     </div>
                   </CardContent>
                 </Card>
@@ -797,12 +879,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                         </div>
                       </div>
                     )}
-                      {/* <img
-                        src={ad?.imageUrl}
-                        alt={ad?.titleEn}
-                        className="w-full rounded-lg"
-                        data-testid="ad-image-preview"
-                      /> */}
+                    
                     </div>
                   </CardContent>
                 </Card>

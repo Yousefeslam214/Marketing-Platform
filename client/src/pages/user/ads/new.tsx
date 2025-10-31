@@ -1,8 +1,9 @@
 import { useLocation } from "wouter";
 import { Header } from "@/components/layout/header";
-import { AdEditor } from "@/components/ads/ad-editor";
+// import { AdEditor } from "@/components/ads/ad-editor";
 import { TokenManager } from "@/lib/auth";
 import { useLanguage } from "@/hooks/use-language";
+import { AdEditor } from "@/components/ads/create/ad-editor";
 
 export default function NewAd() {
   const [, setLocation] = useLocation();
