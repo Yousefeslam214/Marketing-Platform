@@ -42,22 +42,21 @@ export default function AdReports() {
   });
 
   const reports: AnyRecord[] = (data as AnyRecord[]) || [];
-
+  console.log(reports);
   const filtered = useMemo(() => {
     if (!query.trim()) return reports;
     const q = query.toLowerCase();
     return reports.filter((r) => {
       // Search common fields if present
       const hay = [
+        r.campaignId,
+        r.adId,
+        r.reportedBy,
+        r.username,
+        r.phoneNumber,
+        r.reportDescription,
+        r.email,
         r.id,
-        r.adId || r.adID || r.campaignId,
-        r.adTitle || r.title,
-        r.reportedBy || r.user || r.username,
-        r.type,
-        r.reason,
-        r.description,
-        r.source,
-        r.status,
       ]
         .filter(Boolean)
         .join(" ")
@@ -187,14 +186,19 @@ export default function AdReports() {
             <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>{t("adminAdReports", "title")}</CardTitle>
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                {/* <Input
+                <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={t("adminAdReports", "searchPlaceholder")}
                   className="max-w-xs"
-                /> */}
-                <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
-                  {isFetching ? t("adminAdReports", "refreshing") : t("adminAdReports", "refresh")}
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => refetch()}
+                  disabled={isFetching}>
+                  {isFetching
+                    ? t("adminAdReports", "refreshing")
+                    : t("adminAdReports", "refresh")}
                 </Button>
               </div>
             </CardHeader>
@@ -204,7 +208,6 @@ export default function AdReports() {
                   {(error as Error).message || t("adminAdReports", "error")}
                 </div>
               ) : null}
-
               {isLoading ? (
                 <div className="space-y-3">
                   <Skeleton className="h-6 w-48" />
@@ -221,7 +224,11 @@ export default function AdReports() {
                     <thead>
                       <tr className="border-b text-muted-foreground">
                         {dynamicCols.map((col) => (
-                          <th key={col} className={`px-3 py-2 ${isRTL ? "text-right" : "text-left"} whitespace-nowrap`}>
+                          <th
+                            key={col}
+                            className={`px-3 py-2 ${
+                              isRTL ? "text-right" : "text-left"
+                            } whitespace-nowrap`}>
                             {t("adminAdReports", `columns.${col}`) || col}
                           </th>
                         ))}
@@ -231,7 +238,9 @@ export default function AdReports() {
                       {filtered.map((row, idx) => (
                         <tr key={idx} className="border-b hover:bg-muted/30">
                           {dynamicCols.map((col) => (
-                            <td key={col} className="px-3 py-2 align-top max-w-[360px]">
+                            <td
+                              key={col}
+                              className="px-3 py-2 align-top max-w-[360px]">
                               {renderCell(row, col)}
                             </td>
                           ))}

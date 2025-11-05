@@ -5,6 +5,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { DataPagination } from "@/components/ui/data-pagination";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -84,6 +95,13 @@ export default function AdsFeed() {
   const [limit, setLimit] = useState(6);
   const [targetCities, setTargetCities] = useState<string[]>(["riyadh"]);
   const [likedAds, setLikedAds] = useState<Set<string>>(new Set());
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportAdId, setReportAdId] = useState<string | null>(null);
+  const [reportEmail, setReportEmail] = useState("");
+  const [reportUsername, setReportUsername] = useState("");
+  const [reportPhone, setReportPhone] = useState("");
+  const [reportDescription, setReportDescription] = useState("");
+  const [reportSubmitting, setReportSubmitting] = useState(false);
 
   // Optional filters: read from URL query params so links can control filtering
   // Initialize filters from URL params once
@@ -206,6 +224,69 @@ export default function AdsFeed() {
         title: t("publicFeed", "copiedToClipboard"),
         description: t("publicFeed", "adContentCopied"),
       });
+    }
+  };
+
+  const openReportDialog = (adId: string) => {
+    setReportAdId(adId);
+    setReportOpen(true);
+  };
+
+  const closeReportDialog = () => {
+    setReportOpen(false);
+    setReportAdId(null);
+    setReportEmail("");
+    setReportUsername("");
+    setReportPhone("");
+    setReportDescription("");
+    setReportSubmitting(false);
+  };
+
+  const handleReportSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportAdId) return;
+    // Basic validation
+    if (!reportEmail || !reportUsername || !reportDescription) {
+      toast({
+        title: t("publicFeed", "reportValidationTitle") || "Missing info",
+        description:
+          t("publicFeed", "reportValidationDesc") ||
+          "Please fill required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    try {
+      setReportSubmitting(true);
+      const res = await fetch(`${VITE_API_BASE_URL}/api/users/ad-report`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: reportEmail,
+          username: reportUsername,
+          phoneNumber: reportPhone,
+          reportDescription,
+          adId: reportAdId,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to submit report");
+      toast({
+        title: t("publicFeed", "reportSuccessTitle") || "Report sent",
+        description:
+          t("publicFeed", "reportSuccessDesc") ||
+          "Thanks for letting us know.",
+      });
+      closeReportDialog();
+    } catch (err) {
+      toast({
+        title: t("publicFeed", "reportErrorTitle") || "Submit failed",
+        description:
+          (err instanceof Error ? err.message : "") ||
+          (t("publicFeed", "reportErrorDesc") ||
+            "We couldn't send your report."),
+        variant: "destructive",
+      });
+      setReportSubmitting(false);
     }
   };
 
@@ -596,6 +677,15 @@ export default function AdsFeed() {
                                 <Share2 className="h-4 w-4" />
                                 {t("publicFeed", "share")}
                               </Button>
+
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => openReportDialog(ad.id)}
+                                className="gap-2">
+                                <MessageCircle className="h-4 w-4" />
+                                {t("publicFeed", "report") || "Report"}
+                              </Button>
                             </div>
 
                             {/* show social links only when present */}
@@ -655,6 +745,76 @@ export default function AdsFeed() {
           </div>
         )}
       </main>
+
+      {/* Report Dialog */}
+      <Dialog open={reportOpen} onOpenChange={(o) => (o ? setReportOpen(true) : closeReportDialog())}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{t("publicFeed", "reportThisAd") || "Report this ad"}</DialogTitle>
+            <DialogDescription>
+              {t("publicFeed", "reportDialogDesc") ||
+                "Tell us what's wrong with this ad. We'll review it shortly."}
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleReportSubmit} className="space-y-4">
+            <div className="grid gap-2">
+              <Label htmlFor="report-email">{t("publicFeed", "emailLabel") || "Email"}</Label>
+              <Input
+                id="report-email"
+                type="email"
+                value={reportEmail}
+                onChange={(e) => setReportEmail(e.target.value)}
+                placeholder={t("publicFeed", "emailPlaceholder") || "you@example.com"}
+                required
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="report-username">{t("publicFeed", "usernameLabel") || "Username"}</Label>
+              <Input
+                id="report-username"
+                value={reportUsername}
+                onChange={(e) => setReportUsername(e.target.value)}
+                placeholder={t("publicFeed", "usernamePlaceholder") || "JohnDoe"}
+                required
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="report-phone">{t("publicFeed", "phoneLabel") || "Phone number"}</Label>
+              <Input
+                id="report-phone"
+                value={reportPhone}
+                onChange={(e) => setReportPhone(e.target.value)}
+                placeholder={t("publicFeed", "phonePlaceholder") || "01012345678"}
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="report-desc">{t("publicFeed", "descriptionLabel") || "Description"}</Label>
+              <Textarea
+                id="report-desc"
+                value={reportDescription}
+                onChange={(e) => setReportDescription(e.target.value)}
+                placeholder={t("publicFeed", "descriptionPlaceholder") || "What is the issue?"}
+                required
+              />
+            </div>
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={closeReportDialog}>
+                {t("publicFeed", "cancel") || "Cancel"}
+              </Button>
+              <Button type="submit" disabled={reportSubmitting}>
+                {reportSubmitting
+                  ? t("publicFeed", "submitting") || "Submitting..."
+                  : t("publicFeed", "submitReport") || "Submit report"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

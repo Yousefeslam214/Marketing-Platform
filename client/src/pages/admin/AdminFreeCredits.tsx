@@ -32,7 +32,11 @@ export default function AdminFreeCredits() {
           },
         }
       );
-  if (!res.ok) throw new Error(t("adminFreeCredits", "errorFetch") || "Failed to fetch free credits setting");
+      if (!res.ok)
+        throw new Error(
+          t("adminFreeCredits", "errorFetch") ||
+            "Failed to fetch free credits setting"
+        );
       return res.json();
     },
     staleTime: 60_000,
@@ -90,7 +94,8 @@ export default function AdminFreeCredits() {
     onError: (err: any) => {
       toast({
         title: t("adminFreeCredits", "toastUpdateFailedTitle"),
-        description: err?.message || t("adminFreeCredits", "toastUpdateFailedDesc"),
+        description:
+          err?.message || t("adminFreeCredits", "toastUpdateFailedDesc"),
         variant: "destructive",
       });
     },
@@ -98,11 +103,11 @@ export default function AdminFreeCredits() {
 
   const sliderMax = useMemo(() => {
     const base = Number(currentAmount) || 0;
-    // give some headroom; minimum 10k
-    return Math.max(base * 2, 10000);
+    // give some headroom; minimum 22
+    return Math.max(base * 2, 100);
   }, [currentAmount]);
 
-  const presets = [100, 500, 1000, 5000];
+  const presets = [5, 10];
 
   const handleSet = (n: number) => {
     const next = Math.max(0, n);
@@ -153,7 +158,9 @@ export default function AdminFreeCredits() {
                   {/* Controls */}
                   <div className="lg:col-span-3 space-y-4">
                     <div>
-                      <Label htmlFor="freeCredits">{t("adminFreeCredits", "amountLabel")}</Label>
+                      <Label htmlFor="freeCredits">
+                        {t("adminFreeCredits", "amountLabel")}
+                      </Label>
                       <Input
                         id="freeCredits"
                         type="number"
@@ -169,7 +176,8 @@ export default function AdminFreeCredits() {
                         </p>
                       ) : (
                         <p className="text-xs text-muted-foreground mt-1">
-                          {t("adminFreeCredits", "currentServer")} <strong>{currentAmount}</strong>
+                          {t("adminFreeCredits", "currentServer")}{" "}
+                          <strong>{currentAmount}</strong>
                         </p>
                       )}
                     </div>
@@ -197,23 +205,30 @@ export default function AdminFreeCredits() {
                           type="button"
                           variant="outline"
                           size="sm"
-                          onClick={() => handleSet(Math.max(0, value - 500))}>
-                          -500
+                          onClick={() => handleSet(Math.max(0, value - 10))}>
+                          - 10
                         </Button>
                         <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleSet(Math.max(0, value - 5))}>
+                          - 5
+                        </Button>
+                        {/* <Button
                           type="button"
                           variant="outline"
                           size="sm"
                           onClick={() => handleSet(Number(currentAmount) || 0)}>
                           Use current
-                        </Button>
-                        <Button
+                        </Button> */}
+                        {/* <Button
                           type="button"
                           variant="outline"
                           size="sm"
                           onClick={() => handleSet(0)}>
                           Set 0
-                        </Button>
+                        </Button> */}
                       </div>
                     </div>
 
@@ -221,7 +236,9 @@ export default function AdminFreeCredits() {
                       <Button
                         onClick={() => updateMutation.mutate(value)}
                         disabled={!!inputError || updateMutation.isPending}>
-                        {updateMutation.isPending ? t("adminFreeCredits", "saving") : t("adminFreeCredits", "save")}
+                        {updateMutation.isPending
+                          ? t("adminFreeCredits", "saving")
+                          : t("adminFreeCredits", "save")}
                       </Button>
                       <Button
                         variant="outline"
@@ -234,19 +251,25 @@ export default function AdminFreeCredits() {
                   {/* Summary */}
                   <div className="lg:col-span-2 p-4 border rounded-lg bg-muted/30 space-y-3 h-fit">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{t("adminFreeCredits", "serverValue")}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t("adminFreeCredits", "serverValue")}
+                      </span>
                       <span className="font-semibold">
                         {currentAmount.toLocaleString()}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{t("adminFreeCredits", "proposed")}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t("adminFreeCredits", "proposed")}
+                      </span>
                       <span className="font-semibold">
                         {value.toLocaleString()}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{t("adminFreeCredits", "delta")}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t("adminFreeCredits", "delta")}
+                      </span>
                       <span
                         className={`font-semibold ${
                           value - Number(currentAmount) >= 0
@@ -256,7 +279,9 @@ export default function AdminFreeCredits() {
                         {(value - Number(currentAmount) || 0).toLocaleString()}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground pt-1">{t("adminFreeCredits", "deltaNote")}</p>
+                    <p className="text-xs text-muted-foreground pt-1">
+                      {t("adminFreeCredits", "deltaNote")}
+                    </p>
                   </div>
                 </div>
               )}
