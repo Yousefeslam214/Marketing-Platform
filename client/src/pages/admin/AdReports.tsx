@@ -187,12 +187,12 @@ export default function AdReports() {
             <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>{t("adminAdReports", "title")}</CardTitle>
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                <Input
+                {/* <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={t("adminAdReports", "searchPlaceholder")}
                   className="max-w-xs"
-                />
+                /> */}
                 <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
                   {isFetching ? t("adminAdReports", "refreshing") : t("adminAdReports", "refresh")}
                 </Button>
@@ -221,8 +221,8 @@ export default function AdReports() {
                     <thead>
                       <tr className="border-b text-muted-foreground">
                         {dynamicCols.map((col) => (
-                          <th key={col} className="px-3 py-2 text-left whitespace-nowrap">
-                            {t("adminAdReports.columns", col) || col}
+                          <th key={col} className={`px-3 py-2 ${isRTL ? "text-right" : "text-left"} whitespace-nowrap`}>
+                            {t("adminAdReports", `columns.${col}`) || col}
                           </th>
                         ))}
                       </tr>
