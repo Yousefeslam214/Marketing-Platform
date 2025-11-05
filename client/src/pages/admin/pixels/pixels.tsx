@@ -207,7 +207,7 @@ export default function AdminPixels() {
           <main className="p-6">
             <div className="grid grid-cols-1 gap-4">
               {isLoading ? (
-                <div>Loading…</div>
+                <div>{t("pixels", "Loading…")}</div>
               ) : (
                 pixels.map((p) => (
                   <Card key={p.id}>

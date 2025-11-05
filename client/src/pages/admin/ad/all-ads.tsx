@@ -82,14 +82,7 @@ export default function AllAds() {
                       showActions={true}
                     />
                     {/* Status Badge */}
-                    <div className="absolute top-2 right-2">
-                      {/* <Badge
-                      className={`${getStatusBadgeColor(
-                        ad.status
-                      )} text-xs font-medium`}>
-                      {getStatusText(ad.status)}
-                    </Badge> */}
-                    </div>
+                    <div className="absolute top-2 right-2"></div>
                   </div>
                 ))}
               </div>

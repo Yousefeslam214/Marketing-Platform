@@ -498,7 +498,7 @@ export default function AdminDashboard() {
                         {systemOverview.totalClicks || 0}
                       </p>
                       <p className="text-xs text-blue-600">
-                        {" "}
+                        
                         {t("AdminDashboard", "clicks")}
                       </p>
                     </div>

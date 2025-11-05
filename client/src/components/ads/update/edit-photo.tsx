@@ -432,19 +432,20 @@ export default function EditPhoto() {
                 size="sm"
                 variant="secondary"
                 onClick={() => handleEditClick(url)}>
-                Edit
+                
+                {t("editPhoto", "Edit")}
               </Button>
               <Button
                 size="sm"
                 variant="secondary"
                 onClick={() => handleReplaceClick(url)}>
-                Replace
+                {t("editPhoto", "Replace")}
               </Button>
               <Button
                 size="sm"
                 variant="destructive"
                 onClick={() => handleDelete(url)}>
-                Delete
+                {t("editPhoto", "Delete")}
               </Button>
             </div>
           </div>
@@ -585,7 +586,7 @@ export default function EditPhoto() {
 
                 {photoList.length === 0 ? (
                   <p className="text-muted-foreground">
-                    No photos uploaded yet.
+                    {t("editPhoto", "No photos uploaded yet.")}
                   </p>
                 ) : (
                   photoGrid
@@ -596,12 +597,13 @@ export default function EditPhoto() {
 
                 <div className="mt-6 flex justify-between">
                   <Button onClick={handleAddNewPhoto}>
-                    <i className="fas fa-plus mx-2"></i> Add Photo
+                    <i className="fas fa-plus mx-2"></i>
+                    {t("editPhoto", "Add Photo")}
                   </Button>
                   <Button
                     variant="outline"
                     onClick={() => setLocation(`/campaigns/${adId}`)}>
-                    Done
+                    {t("editPhoto", "Done")}
                   </Button>
                 </div>
               </CardContent>

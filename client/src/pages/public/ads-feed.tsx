@@ -438,7 +438,9 @@ console.log("adsResponse", adsResponse);
                         </div>
 
                         {/* Actions */}
-                        <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between">
+                        <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between
+                        overflow-x-auto
+                        ">
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-1">
                               <Button

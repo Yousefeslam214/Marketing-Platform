@@ -590,41 +590,53 @@ export default function AdDetail({ params }: AdDetailProps) {
                   <div className="mt-4">
                     <Card>
                       <CardHeader>
-                          <CardTitle>{t("adDetail", "impressionRatios")}</CardTitle>
-                        </CardHeader>
+                        <CardTitle>
+                          {t("adDetail", "impressionRatios")}
+                        </CardTitle>
+                      </CardHeader>
                       <CardContent>
-                          {isLoadingRatios ? (
-                            <div>{t("adDetail", "loadingImpressionRatios")}</div>
-                          ) : (
-                            (() => {
-                              const ratios = (impressionRatiosResponse?.data as any[]) || [];
-                              if (!ratios || ratios.length === 0) {
-                                return (
-                                  <div className="text-sm text-muted-foreground">{t("adDetail", "noImpressionRatiosFound")}</div>
-                                );
-                              }
-
+                        {isLoadingRatios ? (
+                          <div>{t("adDetail", "loadingImpressionRatios")}</div>
+                        ) : (
+                          (() => {
+                            const ratios =
+                              (impressionRatiosResponse?.data as any[]) || [];
+                            if (!ratios || ratios.length === 0) {
                               return (
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                  {ratios.map((r: any) => (
-                                    <div
-                                      key={r.id || r.currency}
-                                      className="flex items-center justify-between gap-2 p-2 bg-muted/20 rounded">
-                                      <div className="flex items-center gap-2">
-                                        <div className="text-sm font-medium">{(r.currency || "").toUpperCase()}</div>
-                                        <div className="text-xs text-muted-foreground">{r.impressionsPerUnit}</div>
-                                      </div>
-                                      <div>
-                                        {r.promoted ? (
-                                          <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">{t("adDetail", "Promoted") || "Promoted"}</span>
-                                        ) : null}
-                                      </div>
-                                    </div>
-                                  ))}
+                                <div className="text-sm text-muted-foreground">
+                                  {t("adDetail", "noImpressionRatiosFound")}
                                 </div>
                               );
-                            })()
-                          )}
+                            }
+
+                            return (
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                {ratios.map((r: any) => (
+                                  <div
+                                    key={r.id || r.currency}
+                                    className="flex items-center justify-between gap-2 p-2 bg-muted/20 rounded">
+                                    <div className="flex items-center gap-2">
+                                      <div className="text-sm font-medium">
+                                        {(r.currency || "").toUpperCase()}
+                                      </div>
+                                      <div className="text-xs text-muted-foreground">
+                                        {r.impressionsPerUnit}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      {r.promoted ? (
+                                        <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
+                                          {t("adDetail", "Promoted") ||
+                                            "Promoted"}
+                                        </span>
+                                      ) : null}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          })()
+                        )}
                       </CardContent>
                     </Card>
                   </div>

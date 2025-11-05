@@ -470,7 +470,9 @@ export default function LandingPage() {
         className="py-12 sm:py-16 md:py-20 bg-primary w-full
       flex flex-col align-center 
       ">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container px-4 sm:px-6 lg:px-8
+        m-auto
+        ">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center text-primary-foreground">
             <div>
               <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
