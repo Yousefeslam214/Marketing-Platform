@@ -61,6 +61,7 @@ import LandingPage from "./pages/public/landing";
 import { PublicLayout } from "./components/layout/public-layout";
 import { TokenManager } from "./lib/auth";
 import AdminImpressionRatios from "./pages/admin/AdminImpressionRatios";
+import AdminFreeCredits from "./pages/admin/AdminFreeCredits";
 import UploadPhoto from "./components/ads/create/upload-photo";
 import EditPhoto from "./components/ads/update/edit-photo";
 import AdminPixels from "./pages/admin/pixels/pixels";
@@ -381,6 +382,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <AdminImpressionRatios />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/free-credits"
+        component={() => (
+          <AppLayout>
+            <AdminFreeCredits />
           </AppLayout>
         )}
       />

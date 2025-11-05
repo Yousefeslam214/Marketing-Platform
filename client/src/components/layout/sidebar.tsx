@@ -117,6 +117,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           icon: "fas fa-percentage",
         },
         {
+          name: "Free Credits",
+          href: "/admin/free-credits",
+          icon: "fas fa-gift",
+        },
+        {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
           icon: "fas fa-rss",
