@@ -122,6 +122,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           icon: "fas fa-gift",
         },
         {
+          name: t("sidebar", "adReports") || "Ad Reports",
+          href: "/admin/ad-reports",
+          icon: "fas fa-flag",
+        },
+        {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
           icon: "fas fa-rss",

@@ -58,7 +58,9 @@
     "appName": "منصة اخطبوط",
     "appTagline": "منصة التسويق",
     "adsFeed": "الاعلانات العامة",
-    "impressionRatios": "نسب مشاهدات"
+    "impressionRatios": "نسب مشاهدات",
+    "adReports": "بلاغات الإعلانات",
+    "pixels": "بكسلات"
   },
   "layout": {
     "notifications": "الإشعارات",
@@ -1162,6 +1164,27 @@
     "unableToLoad": "لا يمكن تحميل تغذية الإعلانات",
     "noAdsAvailable": "لا توجد إعلانات متاحة",
     "checkBackLater": "تحقق لاحقًا للحصول على محتوى جديد"
+  },
+  "adminAdReports": {
+    "title": "بلاغات الإعلانات",
+    "description": "عرض وإدارة البلاغات التي أرسلها المستخدمون على الإعلانات.",
+    "searchPlaceholder": "ابحث حسب الإعلان أو المستخدم أو النوع أو السبب...",
+    "refresh": "تحديث",
+    "refreshing": "جاري التحديث...",
+    "error": "تعذر تحميل البلاغات",
+    "noReports": "لا توجد بلاغات",
+    "columns": {
+      "id": "المعرف",
+      "adId": "معرّف الإعلان",
+      "adTitle": "عنوان الإعلان",
+      "reportedBy": "المبلّغ",
+      "type": "النوع",
+      "reason": "السبب",
+      "description": "الوصف",
+      "source": "المصدر",
+      "status": "الحالة",
+      "createdAt": "تاريخ الإنشاء"
+    }
   },
   "themeToggle": {
     "light": "فاتح",

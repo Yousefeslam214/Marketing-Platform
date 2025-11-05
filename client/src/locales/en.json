@@ -50,7 +50,9 @@
     "appName": "OctopusAd",
     "appTagline": "Marketing Platform",
     "adsFeed": "Ads Feed",
-    "impressionRatios": "Impression Ratios"
+    "impressionRatios": "Impression Ratios",
+    "adReports": "Ad Reports",
+    "pixels": "Pixels"
   },
   "layout": {
     "notifications": "Notifications",
@@ -1126,6 +1128,27 @@
     "unableToLoad": "Unable to load ads feed",
     "noAdsAvailable": "No ads available",
     "checkBackLater": "Check back later for new content"
+  },
+  "adminAdReports": {
+    "title": "Ad Reports",
+    "description": "View and manage user reports submitted on ads.",
+    "searchPlaceholder": "Search by ad, user, type, reason...",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "error": "Unable to load reports",
+    "noReports": "No reports found",
+    "columns": {
+      "id": "ID",
+      "adId": "Ad ID",
+      "adTitle": "Ad Title",
+      "reportedBy": "Reported By",
+      "type": "Type",
+      "reason": "Reason",
+      "description": "Description",
+      "source": "Source",
+      "status": "Status",
+      "createdAt": "Created At"
+    }
   },
   "themeToggle": {
     "light": "Light",

@@ -65,6 +65,7 @@ import AdminFreeCredits from "./pages/admin/AdminFreeCredits";
 import UploadPhoto from "./components/ads/create/upload-photo";
 import EditPhoto from "./components/ads/update/edit-photo";
 import AdminPixels from "./pages/admin/pixels/pixels";
+import AdReports from "./pages/admin/AdReports";
 
 function Router() {
     const [, setLocation] = useLocation();
@@ -390,6 +391,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <AdminFreeCredits />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/ad-reports"
+        component={() => (
+          <AppLayout>
+            <AdReports />
           </AppLayout>
         )}
       />
