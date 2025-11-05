@@ -84,10 +84,36 @@ export default function AdsFeed() {
   const [limit, setLimit] = useState(6);
   const [targetCities, setTargetCities] = useState<string[]>(["riyadh"]);
   const [likedAds, setLikedAds] = useState<Set<string>>(new Set());
+
+  // Optional filters: read from URL query params so links can control filtering
+  // Initialize filters from URL params once
+  const initialFilters = useMemo(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        title: params.get("title") || "",
+        description: params.get("description") || "",
+        source: params.get("source") || "",
+        audience: params.get("targetAudience") || "",
+      };
+    } catch {
+      return { title: "", description: "", source: "", audience: "" };
+    }
+  }, []);
+
+  const [titleFilter, setTitleFilter] = useState<string>(initialFilters.title);
+  const [descriptionFilter, setDescriptionFilter] = useState<string>(
+    initialFilters.description
+  );
+  const [sourceFilter] = useState<string>(initialFilters.source);
+  const [audienceFilter, setAudienceFilter] = useState<string>(
+    initialFilters.audience
+  );
   // if (TokenManager.getAccessToken()) {
   //     window.location.href = "/ads/feed";
   //     return null;
   //   }
+  let adRtn
   const {
     data: adsResponse,
     isLoading,
@@ -98,19 +124,32 @@ export default function AdsFeed() {
       page,
       limit,
       targetCities,
+      titleFilter,
+      descriptionFilter,
+      sourceFilter,
+      audienceFilter,
     ],
     queryFn: async () => {
-      const targetCitiesParam = JSON.stringify(targetCities);
-      const response = await fetch(
-        `${VITE_API_BASE_URL}/api/advertising/listApprovedAdsForUser?page=${page}&limit=${limit}&targetCities=${encodeURIComponent(
-          targetCitiesParam
-        )}`
+      const url = new URL(
+        `${VITE_API_BASE_URL}/api/advertising/listApprovedAdsForUser`
       );
+      url.searchParams.set("page", String(page));
+      url.searchParams.set("limit", String(limit));
+      url.searchParams.set("targetCities", JSON.stringify(targetCities));
+      if (titleFilter) url.searchParams.set("title", titleFilter);
+      if (descriptionFilter)
+        url.searchParams.set("description", descriptionFilter);
+      if (sourceFilter) url.searchParams.set("source", sourceFilter);
+      if (audienceFilter)
+        url.searchParams.set("targetAudience", audienceFilter);
+
+      const response = await fetch(url.toString());
       if (!response.ok) {
         throw new Error("Failed to fetch ads");
       }
       const rtn = await response.json();
       console.log(rtn);
+      adRtn = rtn;
       return rtn;
     },
     retry: 1,
@@ -306,7 +345,7 @@ export default function AdsFeed() {
     }
     setPage(1); // Reset to first page when changing city
   };
-console.log("adsResponse", adsResponse);
+  console.log("adsResponse", adsResponse?.data, adRtn);
   const {
     data: pixelsData,
     isLoading: pixelsLoading,
@@ -361,9 +400,9 @@ console.log("adsResponse", adsResponse);
             </h1>
             {/* <img src="/logo.webp" alt="Logo" className="w-20 h-8" /> */}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4 overflow-x-auto px-2">
             <Select
-              value={targetCities[0] || ""}
+              value={targetCities[0] || undefined}
               onValueChange={handleCityChange}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="Select city" />
@@ -376,6 +415,95 @@ console.log("adsResponse", adsResponse);
                     </SelectItem>
                   )
                 )}
+              </SelectContent>
+            </Select>
+
+            {/* Title filter */}
+            <input
+              type="text"
+              value={titleFilter}
+              onChange={(e) => {
+                setTitleFilter(e.target.value);
+                setPage(1);
+              }}
+              className="w-40 md:w-48 lg:w-56 rounded-md border px-2 py-1 text-sm bg-background"
+              placeholder={t("publicFeed", "Search title")}
+            />
+
+            {/* Description filter */}
+            <input
+              type="text"
+              value={descriptionFilter}
+              onChange={(e) => {
+                setDescriptionFilter(e.target.value);
+                setPage(1);
+              }}
+              className="w-48 md:w-56 lg:w-64 rounded-md border px-2 py-1 text-sm bg-background"
+              placeholder={t("publicFeed", "Search description")}
+            />
+
+            {/* Audience filter (same values as ad-editor) */}
+            <Select
+              value={audienceFilter || undefined}
+              onValueChange={(v) => {
+                const mapped = v === "any" ? "" : v;
+                setAudienceFilter(mapped);
+                setPage(1);
+              }}>
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder={t("ads", "targetAudienceLabel")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="any">
+                  {t("ads", "targetAudiencePlaceholder")}
+                </SelectItem>
+                <SelectItem value="cars">{t("ads", "audienceCars")}</SelectItem>
+                <SelectItem value="realestate">
+                  {t("ads", "audienceRealestate")}
+                </SelectItem>
+                <SelectItem value="devices">
+                  {t("ads", "audienceDevices")}
+                </SelectItem>
+                <SelectItem value="animals">
+                  {t("ads", "audienceAnimals")}
+                </SelectItem>
+                <SelectItem value="furniture">
+                  {t("ads", "audienceFurniture")}
+                </SelectItem>
+                <SelectItem value="jobs">{t("ads", "audienceJobs")}</SelectItem>
+                <SelectItem value="services">
+                  {t("ads", "audienceServices")}
+                </SelectItem>
+                <SelectItem value="fashion">
+                  {t("ads", "audienceFashion")}
+                </SelectItem>
+                <SelectItem value="games">
+                  {t("ads", "audienceGames")}
+                </SelectItem>
+                <SelectItem value="rarities">
+                  {t("ads", "audienceRarities")}
+                </SelectItem>
+                <SelectItem value="art">{t("ads", "audienceArt")}</SelectItem>
+                <SelectItem value="trips">
+                  {t("ads", "audienceTrips")}
+                </SelectItem>
+                <SelectItem value="food">{t("ads", "audienceFood")}</SelectItem>
+                <SelectItem value="gardens">
+                  {t("ads", "audienceGardens")}
+                </SelectItem>
+                <SelectItem value="occasions">
+                  {t("ads", "audienceOccasions")}
+                </SelectItem>
+                <SelectItem value="tourism">
+                  {t("ads", "audienceTourism")}
+                </SelectItem>
+                <SelectItem value="lost">{t("ads", "audienceLost")}</SelectItem>
+                <SelectItem value="coach">
+                  {t("ads", "audienceCoach")}
+                </SelectItem>
+                <SelectItem value="code">{t("ads", "audienceCode")}</SelectItem>
+                <SelectItem value="fund">{t("ads", "audienceFund")}</SelectItem>
+                <SelectItem value="more">{t("ads", "audienceMore")}</SelectItem>
               </SelectContent>
             </Select>
             <Badge variant="secondary">{t("publicFeed", "title")}</Badge>
@@ -438,7 +566,8 @@ console.log("adsResponse", adsResponse);
                         </div>
 
                         {/* Actions */}
-                        <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between
+                        <div
+                          className="px-4 pb-4 border-t pt-3 flex items-center justify-between
                         overflow-x-auto
                         ">
                           <div className="flex items-center gap-4">
