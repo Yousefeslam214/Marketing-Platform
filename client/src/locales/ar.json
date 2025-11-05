@@ -1178,9 +1178,13 @@
       "adId": "معرّف الإعلان",
       "adTitle": "عنوان الإعلان",
       "reportedBy": "المبلّغ",
+      "email": "البريد الإلكتروني",
+      "username": "اسم المستخدم",
+      "phoneNumber": "رقم الهاتف",
       "type": "النوع",
       "reason": "السبب",
       "description": "الوصف",
+      "reportDescription": "وصف البلاغ",
       "source": "المصدر",
       "status": "الحالة",
       "createdAt": "تاريخ الإنشاء"

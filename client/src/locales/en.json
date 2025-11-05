@@ -1142,9 +1142,13 @@
       "adId": "Ad ID",
       "adTitle": "Ad Title",
       "reportedBy": "Reported By",
+      "email": "Email",
+      "username": "Username",
+      "phoneNumber": "Phone Number",
       "type": "Type",
       "reason": "Reason",
       "description": "Description",
+      "reportDescription": "Report Description",
       "source": "Source",
       "status": "Status",
       "createdAt": "Created At"
