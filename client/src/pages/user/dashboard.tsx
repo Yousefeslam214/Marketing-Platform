@@ -127,7 +127,7 @@ export default function Dashboard() {
   // const dashboardData2 = Array.isArray(dashboardData?.data) ? (dashboardData?.data as AdData[]) : [];
 
   // Type-safe metrics with defaults from the new API structure
-  const dashboardPayload = (dashboardData?.data as DashboardData | undefined);
+  const dashboardPayload = dashboardData?.data as DashboardData | undefined;
   const stats = dashboardPayload?.stats || {};
   const topAds = dashboardPayload?.topAds || [];
   const chartData = dashboardPayload?.chartData || [];
@@ -315,11 +315,11 @@ export default function Dashboard() {
 
             {/* Top Ads */}
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-6 ">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
                   {t("dashboard", "topPerformingAds")}
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-4 h-[11rem]">
                   {topAds.length > 0 ? (
                     topAds.slice(0, 3).map((ad: any) => (
                       <div
@@ -386,8 +386,11 @@ export default function Dashboard() {
                   {t("dashboard", "recentActivity")}
                 </h3>
                 {activity.length > 0 ? (
-                  <div className="space-y-3">
-                    {activity.slice(0, 5).map((item: any) => {
+                  <div
+                    className="space-y-3
+                  overflow-y-auto max-h-32
+                  ">
+                    {activity.map((item: any) => {
                       const getActivityIcon = (type: string) => {
                         switch (type) {
                           case "click":
@@ -469,7 +472,9 @@ export default function Dashboard() {
                                 {item.type}
                               </Badge>
                               {item.source ? (
-                                <Badge variant="secondary" className="text-xs capitalize">
+                                <Badge
+                                  variant="secondary"
+                                  className="text-xs capitalize">
                                   {item.source}
                                 </Badge>
                               ) : null}
