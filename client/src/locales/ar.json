@@ -1611,6 +1611,29 @@
     "cancel": "إلغاء",
     "save": "حفظ"
   },
+  "adminFreeCredits": {
+    "title": "الأرصدة المجانية",
+    "description": "تحكم في الأرصدة التي تُمنح تلقائياً للمستخدم بعد تسجيل الدخول.",
+    "errorFetch": "فشل في جلب إعداد الأرصدة المجانية",
+    "toastSavedTitle": "تم الحفظ",
+    "toastSavedDesc": "تم تحديث الأرصدة المجانية بنجاح.",
+    "toastUpdateFailedTitle": "فشل التحديث",
+    "toastUpdateFailedDesc": "تعذر تحديث الأرصدة المجانية.",
+    "validationNegative": "لا يمكن أن تكون القيمة سالبة",
+    "validationInteger": "يجب أن تكون القيمة عدداً صحيحاً",
+    "currentSetting": "الإعداد الحالي",
+    "amountLabel": "قيمة الأرصدة المجانية",
+    "placeholderAmount": "مثال: 1000",
+    "currentServer": "القيمة الحالية (الخادم):",
+    "adjustWithSlider": "التعديل عبر شريط التمرير",
+    "saving": "جارٍ الحفظ...",
+    "save": "حفظ",
+    "reset": "إعادة تعيين",
+    "serverValue": "قيمة الخادم",
+    "proposed": "القيمة المقترحة",
+    "delta": "الفرق",
+    "deltaNote": "سيتم تطبيق التغييرات على عمليات تسجيل الدخول الجديدة وفق منطق الخادم لديك."
+  },
   "common": {
     "dashboard": "لوحة التحكم",
     "contactSupport": "اتصل بالدعم"

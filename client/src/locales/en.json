@@ -1558,6 +1558,29 @@
     "cancel": "Cancel",
     "save": "Save"
   },
+  "adminFreeCredits": {
+    "title": "Free Credits",
+    "description": "Control the automatic credits granted to a user after sign-in.",
+    "errorFetch": "Failed to fetch free credits setting",
+    "toastSavedTitle": "Saved",
+    "toastSavedDesc": "Free credits updated successfully.",
+    "toastUpdateFailedTitle": "Update failed",
+    "toastUpdateFailedDesc": "Unable to update free credits.",
+    "validationNegative": "Value cannot be negative",
+    "validationInteger": "Value must be an integer",
+    "currentSetting": "Current Setting",
+    "amountLabel": "Free credits amount",
+    "placeholderAmount": "e.g. 1000",
+    "currentServer": "Current (server):",
+    "adjustWithSlider": "Adjust with slider",
+    "saving": "Saving...",
+    "save": "Save",
+    "reset": "Reset",
+    "serverValue": "Server value",
+    "proposed": "Proposed",
+    "delta": "Delta",
+    "deltaNote": "Changes apply to new sign-ins according to your backend logic."
+  },
   "common": {
     "dashboard": "Dashboard",
     "contactSupport": "Contact Support"
