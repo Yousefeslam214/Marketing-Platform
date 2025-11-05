@@ -43,6 +43,7 @@ export default function Dashboard() {
     type: string;
     adTitle: string;
     createdAt: string;
+    source?: string;
   };
 
   type DashboardData = {
@@ -126,10 +127,11 @@ export default function Dashboard() {
   // const dashboardData2 = Array.isArray(dashboardData?.data) ? (dashboardData?.data as AdData[]) : [];
 
   // Type-safe metrics with defaults from the new API structure
-  const stats = dashboardData?.data?.stats || {};
-  const topAds = dashboardData?.data?.topAds || [];
-  const chartData = dashboardData?.data?.chartData || [];
-  const activity = dashboardData?.data?.activity || [];
+  const dashboardPayload = (dashboardData?.data as DashboardData | undefined);
+  const stats = dashboardPayload?.stats || {};
+  const topAds = dashboardPayload?.topAds || [];
+  const chartData = dashboardPayload?.chartData || [];
+  const activity = dashboardPayload?.activity || [];
 
   const safeMetrics = {
     totalImpressions: stats.totalImpressions || 0,
@@ -462,9 +464,16 @@ export default function Dashboard() {
                             <span className="text-xs text-muted-foreground">
                               {formatTime(item.createdAt)}
                             </span>
-                            <Badge variant="outline" className="text-xs mt-1">
-                              {item.type}
-                            </Badge>
+                            <div className="flex items-center gap-1 mt-1">
+                              <Badge variant="outline" className="text-xs">
+                                {item.type}
+                              </Badge>
+                              {item.source ? (
+                                <Badge variant="secondary" className="text-xs capitalize">
+                                  {item.source}
+                                </Badge>
+                              ) : null}
+                            </div>
                           </div>
                         </div>
                       );

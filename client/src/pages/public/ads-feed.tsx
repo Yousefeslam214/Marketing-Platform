@@ -113,7 +113,7 @@ export default function AdsFeed() {
   //     window.location.href = "/ads/feed";
   //     return null;
   //   }
-  let adRtn
+  let adRtn;
   const {
     data: adsResponse,
     isLoading,
