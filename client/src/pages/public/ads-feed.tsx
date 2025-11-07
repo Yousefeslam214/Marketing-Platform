@@ -76,6 +76,8 @@ interface Ad {
   instagramLink?: string | null;
   facebookLink?: string | null;
   snapchatLink?: string | null;
+  // promotion status
+  hasPromoted?: boolean;
 }
 
 interface AdsFeedResponse {
@@ -667,11 +669,24 @@ export default function AdsFeed() {
                 {adsResponse?.data.map((ad) => (
                   <div key={ad.id} className="w-full">
                     <Card
-                      className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-full flex flex-col cursor-pointer"
+                      className={
+                        `overflow-hidden transition-shadow duration-300 h-full flex flex-col cursor-pointer relative group ` +
+                        (ad.hasPromoted
+                          ? "border-2 border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.3)]"
+                          : "hover:shadow-md")
+                      }
                       onClick={() => {
                         setActiveAd(ad);
                         setViewAdOpen(true);
                       }}>
+                      {/* Promoted corner ribbon */}
+                      {ad.hasPromoted && (
+                        <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden pointer-events-none">
+                          <div className="absolute -top-6 -left-6 rotate-[-45deg] bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg">
+                            {t("publicFeed", "promoted") || "Promoted"}
+                          </div>
+                        </div>
+                      )}
                       <CardContent className="p-0 flex flex-col h-full">
                         {/* Header */}
                         <div className="p-4 border-b">
@@ -735,7 +750,8 @@ export default function AdsFeed() {
 
                         {/* Actions */}
                         <div
-                          className="px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto"
+                          className={`px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto ` +
+                            (ad.hasPromoted ? "bg-[#eff6ff]" : "")}
                           onClick={(e) =>
                             e.stopPropagation()
                           } /* prevent card click */
@@ -956,7 +972,7 @@ export default function AdsFeed() {
           </DialogHeader>
           {activeAd && (
             <div className="space-y-6">
-              <div className="rounded-lg overflow-hidden">
+              <div className="rounded-lg overflow-hidden relative">
                 {Array.isArray(activeAd.imageUrl) &&
                 activeAd.imageUrl.length > 0 ? (
                   <ImageCarousel images={activeAd.imageUrl} isHovered={true} />
@@ -973,6 +989,13 @@ export default function AdsFeed() {
                     <span className="text-xs text-muted-foreground">
                       {t("ads", "noImage") || "No image"}
                     </span>
+                  </div>
+                )}
+                {activeAd.hasPromoted && (
+                  <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden pointer-events-none">
+                    <div className="absolute -top-6 -left-6 rotate-[-45deg] bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg">
+                      {t("publicFeed", "promoted") || "Promoted"}
+                    </div>
                   </div>
                 )}
               </div>
