@@ -40,11 +40,11 @@ import useLoadPixels, { Pixel } from "@/hooks/useLoadPixels";
 import { TokenManager } from "@/lib/auth";
 
 // Memoized skeleton list component to avoid recreating placeholders on each render
-function SkeletonList() {
-  const items = useMemo(() => [0, 1, 2], []);
+function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
+  const items = useMemo(() => Array.from({ length: numberOfItems }), [numberOfItems]);
   return (
     <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-      {items.map((i) => (
+      {items.map((_, i) => (
         <Card key={i} className="animate-pulse">
           <CardContent className="p-6">
             <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
@@ -103,6 +103,9 @@ export default function AdsFeed() {
   const [reportPhone, setReportPhone] = useState("");
   const [reportDescription, setReportDescription] = useState("");
   const [reportSubmitting, setReportSubmitting] = useState(false);
+  // Dialog state for viewing full ad details
+  const [viewAdOpen, setViewAdOpen] = useState(false);
+  const [activeAd, setActiveAd] = useState<Ad | null>(null);
 
   // Optional filters: read from URL query params so links can control filtering
   // Initialize filters from URL params once
@@ -634,7 +637,7 @@ export default function AdsFeed() {
                 </SelectItem>
               </SelectContent>
             </Select>
-            <Badge className="pt-1" variant="secondary">
+            <Badge className="pt-1 sm:hidden md:hidden lg:flex" variant="secondary">
               {t("publicFeed", "title")}
             </Badge>
           </div>
@@ -647,7 +650,7 @@ export default function AdsFeed() {
       flex flex-col items-center w-full
       ">
         {isLoading ? (
-          <SkeletonList />
+          <SkeletonList numberOfItems={6} />
         ) : (
           <div className="w-full flex flex-col items-center space-y-8">
             {/* Ads List */}
@@ -658,7 +661,13 @@ export default function AdsFeed() {
               <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                 {adsResponse?.data.map((ad) => (
                   <div key={ad.id} className="w-full">
-                    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
+                    <Card
+                      className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-full flex flex-col cursor-pointer"
+                      onClick={() => {
+                        setActiveAd(ad);
+                        setViewAdOpen(true);
+                      }}
+                    >
                       <CardContent className="p-0 flex flex-col h-full">
                         {/* Header */}
                         <div className="p-4 border-b">
@@ -718,7 +727,10 @@ export default function AdsFeed() {
                         </div>
 
                         {/* Actions */}
-                        <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto">
+                        <div
+                          className="px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto"
+                          onClick={(e) => e.stopPropagation()} /* prevent card click */
+                        >
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-1">
                               <Button
@@ -762,7 +774,10 @@ export default function AdsFeed() {
                           {ad.websiteUrl && (
                             <Button
                               variant="outline"
-                              onClick={() => handleWebsiteClick(ad)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleWebsiteClick(ad);
+                              }}
                               className="gap-2">
                               <ExternalLink className="h-4 w-4" />
                               {t("publicFeed", "website")}
@@ -905,6 +920,66 @@ export default function AdsFeed() {
               </Button>
             </DialogFooter>
           </form>
+        </DialogContent>
+      </Dialog>
+      {/* View Ad Dialog */}
+      <Dialog open={viewAdOpen} onOpenChange={(o) => (o ? setViewAdOpen(true) : (setViewAdOpen(false), setActiveAd(null)))}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>
+              {activeAd
+                ? language === "en"
+                  ? activeAd.titleEn
+                  : activeAd.titleAr
+                : ""}
+            </DialogTitle>
+            {activeAd && (
+              <DialogDescription>
+                {language === "en"
+                  ? activeAd.descriptionEn
+                  : activeAd.descriptionAr}
+              </DialogDescription>
+            )}
+          </DialogHeader>
+          {activeAd && (
+            <div className="space-y-6">
+              <div className="rounded-lg overflow-hidden">
+                {Array.isArray(activeAd.imageUrl) && activeAd.imageUrl.length > 0 ? (
+                  <ImageCarousel images={activeAd.imageUrl} />
+                ) : activeAd.imageUrl ? (
+                  <img
+                    src={activeAd.imageUrl as string}
+                    alt={language === "en" ? activeAd.titleEn : activeAd.titleAr}
+                    className="w-full max-h-[420px] object-contain"
+                  />
+                ) : (
+                  <div className="h-48 w-full bg-muted flex items-center justify-center">
+                    <span className="text-xs text-muted-foreground">
+                      {t("ads", "noImage") || "No image"}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-wrap items-center gap-3 text-sm">
+                <Badge variant="secondary">{t("publicFeed", "sponsored")}</Badge>
+                <div className="flex items-center gap-2">
+                  <Heart className="h-4 w-4" />
+                  <span>{activeAd.likesCount}</span>
+                </div>
+                <SocialLinks ad={activeAd} />
+                {activeAd.websiteUrl && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleWebsiteClick(activeAd)}
+                    className="gap-2">
+                    <ExternalLink className="h-4 w-4" />
+                    {t("publicFeed", "website")}
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
