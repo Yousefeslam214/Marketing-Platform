@@ -6,12 +6,14 @@ export function ImageCarousel({
   dataTestId,
   intervalMs = 3000,
   autoPlay = true,
+  isHovered = false,
 }: {
   images: string[];
   alt?: string;
   dataTestId?: string;
   intervalMs?: number;
   autoPlay?: boolean;
+  isHovered?: boolean;
 }) {
   const [index, setIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
@@ -85,7 +87,10 @@ export function ImageCarousel({
 
   return (
     <div
-      className="w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden relative"
+      className={`
+            ${isHovered ? "h-[350px]" : ""}
+      
+        w-full h-40 bg-muted rounded-lg mb-4 overflow-hidden relative`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
       {/*  Previous image (fades out) */}
@@ -94,7 +99,12 @@ export function ImageCarousel({
           <img
             src={images[prevIndex]}
             alt={alt}
-            className="h-auto max-h-full w-auto max-w-full object-contain transition-opacity duration-500 mx-auto"
+            className={`  
+              ${isHovered ? "h-[350px]" : "h-auto"}
+         max-h-full w-auto max-w-full 
+         object-contain transition-opacity
+          duration-500 mx-auto
+       `}
             // keep className unchanged per request; control visibility via inline style
             style={{ opacity: loaded ? 0 : 1, transition: "opacity 0.5s" }}
           />
@@ -105,7 +115,10 @@ export function ImageCarousel({
       <img
         src={images[index]}
         alt={alt}
-        className="h-auto max-h-full w-auto max-w-full object-contain transition-opacity duration-500 mx-auto"
+        className={`
+          ${isHovered ? "h-[350px]" : "h-auto"}
+           max-h-full w-auto max-w-full object-contain transition duration-500 ease-out mx-auto
+           hover:scale-150 origin-center`}
         // keep className unchanged per request; fade in when loaded
         // style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.5s" }}
       />

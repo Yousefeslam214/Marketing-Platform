@@ -41,7 +41,10 @@ import { TokenManager } from "@/lib/auth";
 
 // Memoized skeleton list component to avoid recreating placeholders on each render
 function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
-  const items = useMemo(() => Array.from({ length: numberOfItems }), [numberOfItems]);
+  const items = useMemo(
+    () => Array.from({ length: numberOfItems }),
+    [numberOfItems]
+  );
   return (
     <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
       {items.map((_, i) => (
@@ -410,7 +413,7 @@ export default function AdsFeed() {
     }
     setPage(1); // Reset to first page when changing city
   };
-  // console.debug("adsResponse", adsResponse?.data);
+  console.log("adsResponse", adsResponse?.data);
   const {
     data: pixelsData,
     isLoading: pixelsLoading,
@@ -637,7 +640,9 @@ export default function AdsFeed() {
                 </SelectItem>
               </SelectContent>
             </Select>
-            <Badge className="pt-1 sm:hidden md:hidden lg:flex" variant="secondary">
+            <Badge
+              className="pt-1 sm:hidden md:hidden lg:flex"
+              variant="secondary">
               {t("publicFeed", "title")}
             </Badge>
           </div>
@@ -666,8 +671,7 @@ export default function AdsFeed() {
                       onClick={() => {
                         setActiveAd(ad);
                         setViewAdOpen(true);
-                      }}
-                    >
+                      }}>
                       <CardContent className="p-0 flex flex-col h-full">
                         {/* Header */}
                         <div className="p-4 border-b">
@@ -705,7 +709,10 @@ export default function AdsFeed() {
                             {/* <AspectRatio ratio={4 / 3}> */}
                             {Array.isArray(ad.imageUrl) &&
                             ad.imageUrl.length > 0 ? (
-                              <ImageCarousel images={ad.imageUrl} />
+                              <ImageCarousel
+                                images={ad.imageUrl}
+                                isHovered={false}
+                              />
                             ) : ad.imageUrl ? (
                               <img
                                 src={ad.imageUrl as string}
@@ -729,7 +736,9 @@ export default function AdsFeed() {
                         {/* Actions */}
                         <div
                           className="px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto"
-                          onClick={(e) => e.stopPropagation()} /* prevent card click */
+                          onClick={(e) =>
+                            e.stopPropagation()
+                          } /* prevent card click */
                         >
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-1">
@@ -923,8 +932,12 @@ export default function AdsFeed() {
         </DialogContent>
       </Dialog>
       {/* View Ad Dialog */}
-      <Dialog open={viewAdOpen} onOpenChange={(o) => (o ? setViewAdOpen(true) : (setViewAdOpen(false), setActiveAd(null)))}>
-        <DialogContent className="max-w-3xl">
+      <Dialog
+        open={viewAdOpen}
+        onOpenChange={(o) =>
+          o ? setViewAdOpen(true) : (setViewAdOpen(false), setActiveAd(null))
+        }>
+        <DialogContent className="sm:max-w-4xl max-h-[85vh] overflow-auto ">
           <DialogHeader>
             <DialogTitle>
               {activeAd
@@ -944,13 +957,16 @@ export default function AdsFeed() {
           {activeAd && (
             <div className="space-y-6">
               <div className="rounded-lg overflow-hidden">
-                {Array.isArray(activeAd.imageUrl) && activeAd.imageUrl.length > 0 ? (
-                  <ImageCarousel images={activeAd.imageUrl} />
+                {Array.isArray(activeAd.imageUrl) &&
+                activeAd.imageUrl.length > 0 ? (
+                  <ImageCarousel images={activeAd.imageUrl} isHovered={true} />
                 ) : activeAd.imageUrl ? (
                   <img
                     src={activeAd.imageUrl as string}
-                    alt={language === "en" ? activeAd.titleEn : activeAd.titleAr}
-                    className="w-full max-h-[420px] object-contain"
+                    alt={
+                      language === "en" ? activeAd.titleEn : activeAd.titleAr
+                    }
+                    className="w-full max-h-[560px] object-contain"
                   />
                 ) : (
                   <div className="h-48 w-full bg-muted flex items-center justify-center">
@@ -961,7 +977,9 @@ export default function AdsFeed() {
                 )}
               </div>
               <div className="flex flex-wrap items-center gap-3 text-sm">
-                <Badge variant="secondary">{t("publicFeed", "sponsored")}</Badge>
+                <Badge variant="secondary">
+                  {t("publicFeed", "sponsored")}
+                </Badge>
                 <div className="flex items-center gap-2">
                   <Heart className="h-4 w-4" />
                   <span>{activeAd.likesCount}</span>
