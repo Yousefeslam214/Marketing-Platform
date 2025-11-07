@@ -38,7 +38,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         )}
 
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto max-h-[100vh]">
           {/* Mobile menu toggle */}
           {isMobile && (
             <div

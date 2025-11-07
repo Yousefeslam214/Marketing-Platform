@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DataPagination } from "@/components/ui/data-pagination";
 import { ImageCarousel } from "@/components/ui/image-carousel";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Dialog,
   DialogContent,
@@ -42,7 +43,7 @@ import { TokenManager } from "@/lib/auth";
 function SkeletonList() {
   const items = useMemo(() => [0, 1, 2], []);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+    <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
       {items.map((i) => (
         <Card key={i} className="animate-pulse">
           <CardContent className="p-6">
@@ -131,7 +132,7 @@ export default function AdsFeed() {
   //     window.location.href = "/ads/feed";
   //     return null;
   //   }
-  let adRtn;
+  // removed unused adRtn variable for cleanliness
   const {
     data: adsResponse,
     isLoading,
@@ -166,8 +167,6 @@ export default function AdsFeed() {
         throw new Error("Failed to fetch ads");
       }
       const rtn = await response.json();
-      console.log(rtn);
-      adRtn = rtn;
       return rtn;
     },
     retry: 1,
@@ -273,8 +272,7 @@ export default function AdsFeed() {
       toast({
         title: t("publicFeed", "reportSuccessTitle") || "Report sent",
         description:
-          t("publicFeed", "reportSuccessDesc") ||
-          "Thanks for letting us know.",
+          t("publicFeed", "reportSuccessDesc") || "Thanks for letting us know.",
       });
       closeReportDialog();
     } catch (err) {
@@ -282,8 +280,8 @@ export default function AdsFeed() {
         title: t("publicFeed", "reportErrorTitle") || "Submit failed",
         description:
           (err instanceof Error ? err.message : "") ||
-          (t("publicFeed", "reportErrorDesc") ||
-            "We couldn't send your report."),
+          t("publicFeed", "reportErrorDesc") ||
+          "We couldn't send your report.",
         variant: "destructive",
       });
       setReportSubmitting(false);
@@ -426,7 +424,7 @@ export default function AdsFeed() {
     }
     setPage(1); // Reset to first page when changing city
   };
-  console.log("adsResponse", adsResponse?.data, adRtn);
+  // console.debug("adsResponse", adsResponse?.data);
   const {
     data: pixelsData,
     isLoading: pixelsLoading,
@@ -606,18 +604,21 @@ export default function AdsFeed() {
               className=" w-full
             flex flex-col items-center
             ">
-              <div
-                className="w-full max-w-5xl grid  gap-6
-           
-             grid-cols-1 md:grid-cols-1 lg:grid-cols-2 
-            ">
+              <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                 {adsResponse?.data.map((ad) => (
                   <div key={ad.id} className="w-full">
-                    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-fit">
-                      <CardContent className="p-0">
+                    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
+                      <CardContent className="p-0 flex flex-col h-full">
                         {/* Header */}
                         <div className="p-4 border-b">
-                          <h2 className="text-lg font-semibold text-foreground">
+                          <h2
+                            className="text-lg font-semibold text-foreground"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 1,
+                              WebkitBoxOrient: "vertical" as any,
+                              overflow: "hidden",
+                            }}>
                             {language === "en" ? ad.titleEn : ad.titleAr}
                           </h2>
                           <p className="mt-1 text-sm text-muted-foreground">
@@ -626,31 +627,47 @@ export default function AdsFeed() {
                         </div>
 
                         {/* Content */}
-                        <div className="p-4 space-y-4">
-                          <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+                        <div className="p-4 flex flex-col gap-4 flex-1 justify-end">
+                          <p
+                            className="text-foreground leading-relaxed whitespace-pre-wrap"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 3,
+                              WebkitBoxOrient: "vertical" as any,
+                              overflow: "hidden",
+                            }}>
                             {language === "en"
                               ? ad.descriptionEn
                               : ad.descriptionAr}
                           </p>
 
-                          {Array.isArray(ad.imageUrl) &&
-                          ad.imageUrl.length > 0 ? (
-                            <ImageCarousel images={ad.imageUrl} />
-                          ) : ad.imageUrl ? (
-                            <img
-                              src={ad.imageUrl as string}
-                              alt={language === "en" ? ad.titleEn : ad.titleAr}
-                              className="w-full object-cover rounded-lg h-48 sm:h-56 md:h-64 lg:h-48 xl:h-64"
-                              loading="lazy"
-                            />
-                          ) : null}
+                          <div className="w-full rounded-lg overflow-hidden">
+                            {/* <AspectRatio ratio={4 / 3}> */}
+                            {Array.isArray(ad.imageUrl) &&
+                            ad.imageUrl.length > 0 ? (
+                              <ImageCarousel images={ad.imageUrl} />
+                            ) : ad.imageUrl ? (
+                              <img
+                                src={ad.imageUrl as string}
+                                alt={
+                                  language === "en" ? ad.titleEn : ad.titleAr
+                                }
+                                className="h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="h-full w-full bg-muted flex items-center justify-center">
+                                <span className="text-xs text-muted-foreground">
+                                  {t("ads", "noImage") || "No image"}
+                                </span>
+                              </div>
+                            )}
+                            {/* </AspectRatio> */}
+                          </div>
                         </div>
 
                         {/* Actions */}
-                        <div
-                          className="px-4 pb-4 border-t pt-3 flex items-center justify-between
-                        overflow-x-auto
-                        ">
+                        <div className="px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto">
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-1">
                               <Button
@@ -747,10 +764,14 @@ export default function AdsFeed() {
       </main>
 
       {/* Report Dialog */}
-      <Dialog open={reportOpen} onOpenChange={(o) => (o ? setReportOpen(true) : closeReportDialog())}>
+      <Dialog
+        open={reportOpen}
+        onOpenChange={(o) => (o ? setReportOpen(true) : closeReportDialog())}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{t("publicFeed", "reportThisAd") || "Report this ad"}</DialogTitle>
+            <DialogTitle>
+              {t("publicFeed", "reportThisAd") || "Report this ad"}
+            </DialogTitle>
             <DialogDescription>
               {t("publicFeed", "reportDialogDesc") ||
                 "Tell us what's wrong with this ad. We'll review it shortly."}
@@ -759,51 +780,71 @@ export default function AdsFeed() {
 
           <form onSubmit={handleReportSubmit} className="space-y-4">
             <div className="grid gap-2">
-              <Label htmlFor="report-email">{t("publicFeed", "emailLabel") || "Email"}</Label>
+              <Label htmlFor="report-email">
+                {t("publicFeed", "emailLabel") || "Email"}
+              </Label>
               <Input
                 id="report-email"
                 type="email"
                 value={reportEmail}
                 onChange={(e) => setReportEmail(e.target.value)}
-                placeholder={t("publicFeed", "emailPlaceholder") || "you@example.com"}
+                placeholder={
+                  t("publicFeed", "emailPlaceholder") || "you@example.com"
+                }
                 required
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="report-username">{t("publicFeed", "usernameLabel") || "Username"}</Label>
+              <Label htmlFor="report-username">
+                {t("publicFeed", "usernameLabel") || "Username"}
+              </Label>
               <Input
                 id="report-username"
                 value={reportUsername}
                 onChange={(e) => setReportUsername(e.target.value)}
-                placeholder={t("publicFeed", "usernamePlaceholder") || "JohnDoe"}
+                placeholder={
+                  t("publicFeed", "usernamePlaceholder") || "JohnDoe"
+                }
                 required
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="report-phone">{t("publicFeed", "phoneLabel") || "Phone number"}</Label>
+              <Label htmlFor="report-phone">
+                {t("publicFeed", "phoneLabel") || "Phone number"}
+              </Label>
               <Input
                 id="report-phone"
                 value={reportPhone}
                 onChange={(e) => setReportPhone(e.target.value)}
-                placeholder={t("publicFeed", "phonePlaceholder") || "01012345678"}
+                placeholder={
+                  t("publicFeed", "phonePlaceholder") || "01012345678"
+                }
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="report-desc">{t("publicFeed", "descriptionLabel") || "Description"}</Label>
+              <Label htmlFor="report-desc">
+                {t("publicFeed", "descriptionLabel") || "Description"}
+              </Label>
               <Textarea
                 id="report-desc"
                 value={reportDescription}
                 onChange={(e) => setReportDescription(e.target.value)}
-                placeholder={t("publicFeed", "descriptionPlaceholder") || "What is the issue?"}
+                placeholder={
+                  t("publicFeed", "descriptionPlaceholder") ||
+                  "What is the issue?"
+                }
                 required
               />
             </div>
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={closeReportDialog}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={closeReportDialog}>
                 {t("publicFeed", "cancel") || "Cancel"}
               </Button>
               <Button type="submit" disabled={reportSubmitting}>

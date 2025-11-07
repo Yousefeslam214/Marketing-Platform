@@ -68,7 +68,7 @@ import AdminPixels from "./pages/admin/pixels/pixels";
 import AdReports from "./pages/admin/AdReports";
 
 function Router() {
-    const [, setLocation] = useLocation();
+  const [, setLocation] = useLocation();
 
   const role = TokenManager.getRole();
   let auth = false;
@@ -148,9 +148,9 @@ function Router() {
       />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-  <Route path="/auth/google/callback" component={GoogleCallback} />
-  <Route path="/google/callback" component={GoogleCallback} />
-  <Route path="/google/failure" component={() => <GoogleFailure />} />
+      <Route path="/auth/google/callback" component={GoogleCallback} />
+      <Route path="/google/callback" component={GoogleCallback} />
+      <Route path="/google/failure" component={() => <GoogleFailure />} />
       <Route path="/api/auth/google/login" component={GoogleDirectAuth} />
 
       {/* Payment result pages */}
