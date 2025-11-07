@@ -53,7 +53,8 @@
     "impressionRatios": "Impression Ratios",
     "adReports": "Ad Reports",
     "pixels": "Pixels",
-    "FreeCredits": "Free Credits"
+    "FreeCredits": "Free Credits",
+    "seoSettings": "SEO Settings"
   },
   "layout": {
     "notifications": "Notifications",
@@ -560,7 +561,6 @@
   "userAds": {
     "continueToCredit": "Continue to credit assignment",
     "uploadPhotoToContinue": "Please upload a photo before continuing",
-
     "assignCredit": "Assign Credit",
     "assignCredits": "Assign Credits",
     "depromote": "Depromote",
@@ -813,7 +813,8 @@
     "sarLabel": "SAR",
     "currency": "Currency",
     "rate": "Rate",
-    "clicks": "Clicks"
+    "clicks": "Clicks",
+    "All advertisements in system": "All advertisements in system"
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -1148,7 +1149,9 @@
     "reportErrorTitle": "Submit failed",
     "reportErrorDesc": "We couldn't send your report.",
     "reportValidationTitle": "Missing information",
-    "reportValidationDesc": "Please fill required fields."
+    "reportValidationDesc": "Please fill required fields.",
+    "Search title": "Search title",
+    "Search description": "Search description"
   },
   "adminAdReports": {
     "title": "Ad Reports",
@@ -1628,6 +1631,23 @@
     "proposed": "Proposed",
     "delta": "Delta",
     "deltaNote": "Changes apply to new sign-ins according to your backend logic."
+  },
+  "adminSeo": {
+    "title": "SEO Settings",
+    "description": "Control the default SEO metadata for your app.",
+    "formTitle": "SEO Metadata",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "tagLineLabel": "Tag Line",
+    "save": "Save",
+    "saving": "Saving...",
+    "reset": "Reset",
+    "savedTitle": "Saved",
+    "savedDesc": "SEO settings updated successfully.",
+    "errorFetch": "Failed to fetch SEO settings",
+    "errorUpdateTitle": "Update failed",
+    "errorUpdateDesc": "Could not update SEO settings.",
+    "noSettings": "No SEO settings found."
   },
   "common": {
     "dashboard": "Dashboard",

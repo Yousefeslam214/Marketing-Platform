@@ -51,7 +51,7 @@ export default function AdDetail({ params }: AdDetailProps) {
     } else if (userRole === "admin") {
       setAdActivationStatus(Boolean(payload.active));
     }
-    setAdPromoteStatus(data.data.hasPromoted);
+    setAdPromoteStatus(Boolean((payload as any).hasPromoted));
   }, [data, userRole]);
 
   // Fetch user's payment history for this ad (or user-wide history)
@@ -320,26 +320,10 @@ export default function AdDetail({ params }: AdDetailProps) {
                 {ad.status === "approved" && (
                   <>
                     <Button
-                      onClick={() => setLocation(handlePurchase())}
+                      onClick={() => setLocation("/billing")}
                       data-testid="button-purchase-impressions">
                       <i className="fas fa-credit-card mx-2"></i>
                       {t("adDetail", "purchaseImpressions")}
-                    </Button>
-                    <Button
-                      onClick={() => promoteAdMutation.mutate()}
-                      disabled={promoteAdMutation.isPending}
-                      data-testid="button-promote-ad">
-                      {promoteAdMutation.isPending ? (
-                        <>
-                          <i className="fas fa-spinner fa-spin mx-2"></i>
-                          {t("adDetail", "promoting")}
-                        </>
-                      ) : (
-                        <>
-                          <i className="fas fa-bullhorn mx-2"></i>
-                          {t("adDetail", "promote")}
-                        </>
-                      )}
                     </Button>
                   </>
                 )}
@@ -434,10 +418,8 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
                       <i
-                        className={`fas ${
-                          adPromoteStatus
-                            ? "fa-play text-green-600"
-                            : "fa-pause text-gray-600"
+                        className={`fas fa-star  ${
+                          adPromoteStatus ? "text-green-600" : "text-gray-600"
                         } text-2xl mb-2`}></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
                         {t("adDetail", "Promote Status")}
@@ -512,7 +494,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                               </>
                             ) : (
                               <>
-                                <i className="fas fa-bullhorn mx-2"></i>
+                                <i className="fas fa-star mx-2"></i>
                                 {t("adDetail", "promote")}
                               </>
                             )}
@@ -578,10 +560,10 @@ export default function AdDetail({ params }: AdDetailProps) {
                       {/* Show user's current payment balance (if available) */}
                       <div className="ml-4">
                         <div className="text-sm text-muted-foreground">
-                          {t("adDetail", "Balance")}
+                          {t("adDetail", "balanceLabel")}
                         </div>
                         <div className="text-lg font-semibold">
-                          {paymentHistoryResponse?.data?.balance ?? 0}
+                          {(paymentHistoryResponse?.data as any)?.balance ?? 0}
                         </div>
                       </div>
                     </div>
@@ -614,7 +596,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                                 {ratios.map((r: any) => (
                                   <div
                                     key={r.id || r.currency}
-                                    className="flex items-center justify-between gap-2 p-2 bg-muted/20 rounded">
+                                    className="flex items-center justify-between gap-2 p-2 bg-muted/20 rounded ">
                                     <div className="flex items-center gap-2">
                                       <div className="text-sm font-medium">
                                         {(r.currency || "").toUpperCase()}
@@ -623,7 +605,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                                         {r.impressionsPerUnit}
                                       </div>
                                     </div>
-                                    <div>
+                                    <div className="flex items-center">
                                       {r.promoted ? (
                                         <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
                                           {t("adDetail", "Promoted") ||
@@ -648,7 +630,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                     </p>
                     <p className="text-sm text-muted-foreground">
                       <i className="fas fa-info-circle mx-2"></i>
-                      {t("adDetail", "promoteNote")}
+                      {t("userAds", "promoteNote")}
                     </p>
                   </div>
                 </CardContent>
@@ -731,9 +713,13 @@ export default function AdDetail({ params }: AdDetailProps) {
                       {adActivationStatus && (
                         <Badge
                           variant="outline"
-                          className="text-green-600 border-green-600">
+                          className="text-green-600 border-green-600
+                          flex items-center pt-1 
+                          ">
                           <i className="fas fa-play mx-1"></i>
-                          {t("adDetail", "active")}
+                          <div className="px-1 pt-0.5">
+                            {t("adDetail", "active")}
+                          </div>
                         </Badge>
                       )}
                     </div>
@@ -776,7 +762,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      {t("adDetail", "Created")}
+                      {t("adDetail", "created")}
                     </h4>
                     <p
                       className="text-foreground"
@@ -787,7 +773,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                   <div>
                     <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                      {t("adDetail", "Last Updated")}
+                      {t("adDetail", "lastUpdated")}
                     </h4>
                     <p
                       className="text-foreground"
@@ -858,56 +844,6 @@ export default function AdDetail({ params }: AdDetailProps) {
                   )}
                 </CardContent>
               </Card>
-              {/* Payment history and Impression Ratios */}
-              {/* <Card>
-                <CardHeader>
-                  <CardTitle>Payment History</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {paymentHistoryResponse?.data?.balance}
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Impression Ratios</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {isLoadingRatios ? (
-                    <div>Loading impression ratios…</div>
-                  ) : (
-                    (() => {
-                      const ratios = (impressionRatiosResponse?.data as any[]) || [];
-                      if (!ratios || ratios.length === 0) {
-                        return (
-                          <div className="text-sm text-muted-foreground">
-                            No impression ratios found.
-                          </div>
-                        );
-                      }
-                      return (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                          {ratios.map((r: any) => (
-                            <div
-                              key={r.id || r.currency}
-                              className="flex items-center justify-between gap-2 p-2 bg-muted/20 rounded">
-                              <div className="flex items-center gap-2">
-                                <div className="text-sm font-medium">{(r.currency || "").toUpperCase()}</div>
-                                <div className="text-xs text-muted-foreground">{r.impressionsPerUnit}</div>
-                              </div>
-                              <div>
-                                {r.promoted ? (
-                                  <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Promoted</span>
-                                ) : null}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      );
-                    })()
-                  )}
-                </CardContent>
-              </Card> */}
 
               <SocialLinks ad={ad} />
 

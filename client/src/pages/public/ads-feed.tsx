@@ -319,16 +319,7 @@ export default function AdsFeed() {
       {
         href: ad.youtubeLink,
         label: "YouTube",
-        svg: (
-          <svg
-            viewBox="0 0 24 24"
-            className="w-4 h-4"
-            fill="currentColor"
-            aria-hidden>
-            <path d="M10 15l5-3-5-3v6z" />
-            <path d="M21 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C15.7 4.8 12 4.8 12 4.8s-3.7 0-6.1.3c-.4.1-1.3.1-2.1.9C3.2 6.6 3 8 3 8S2.8 9.6 3 11.1c.2 1.5.8 2.9.8 2.9s.2 1.4.8 2c.8.8 1.8.8 2.3.9 1.7.2 7 .3 7 .3s3.7 0 6.1-.3c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.5 0-3c-.2-1.5-.8-2.9-.8-2.9z" />
-          </svg>
-        ),
+        svg: <i className="fab fa-youtube w-4 h-4" aria-hidden />,
       },
       {
         href: ad.tiktokLink,
@@ -372,15 +363,7 @@ export default function AdsFeed() {
       {
         href: ad.snapchatLink,
         label: "Snapchat",
-        svg: (
-          <svg
-            viewBox="0 0 24 24"
-            className="w-4 h-4"
-            fill="currentColor"
-            aria-hidden>
-            <path d="M12 2a5 5 0 0 0-5 5 7 7 0 0 0-2 5v2a2 2 0 0 0 2 2c1 0 1 1 1 1s1 .5 3 .5 3-.5 3-.5 0-1 1-1a2 2 0 0 0 2-2v-2a7 7 0 0 0-2-5 5 5 0 0 0-5-5z" />
-          </svg>
-        ),
+        svg: <i className="fab fa-snapchat-ghost w-4 h-4" aria-hidden />,
       },
     ];
 
@@ -470,7 +453,10 @@ export default function AdsFeed() {
   return (
     <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       {/* Header */}
-      <header className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header
+        className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4
+      
+      ">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-foreground">
@@ -489,7 +475,10 @@ export default function AdsFeed() {
               <SelectContent>
                 {locationOptions.map(
                   (option: { value: string; label: string }) => (
-                    <SelectItem key={option.value} value={option.value}>
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                      className="flex flex-col items-center justify-center ">
                       {option.label}
                     </SelectItem>
                   )
@@ -505,7 +494,7 @@ export default function AdsFeed() {
                 setTitleFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-40 md:w-48 lg:w-56 rounded-md border px-2 py-1 text-sm bg-background"
+              className="w-40 md:w-48 lg:w-56 rounded-md border px-2 py-2 text-sm bg-background"
               placeholder={t("publicFeed", "Search title")}
             />
 
@@ -517,7 +506,7 @@ export default function AdsFeed() {
                 setDescriptionFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-48 md:w-56 lg:w-64 rounded-md border px-2 py-1 text-sm bg-background"
+              className="w-48 md:w-56 lg:w-64 rounded-md border px-2 py-2 text-sm bg-background"
               placeholder={t("publicFeed", "Search description")}
             />
 
@@ -532,60 +521,122 @@ export default function AdsFeed() {
               <SelectTrigger className="w-40">
                 <SelectValue placeholder={t("ads", "targetAudienceLabel")} />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="any">
+              <SelectContent className="flex flex-col items-center justify-center">
+                <SelectItem
+                  value="any"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "targetAudiencePlaceholder")}
                 </SelectItem>
-                <SelectItem value="cars">{t("ads", "audienceCars")}</SelectItem>
-                <SelectItem value="realestate">
+                <SelectItem
+                  value="cars"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceCars")}
+                </SelectItem>
+                <SelectItem
+                  value="realestate"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceRealestate")}
                 </SelectItem>
-                <SelectItem value="devices">
+                <SelectItem
+                  value="devices"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceDevices")}
                 </SelectItem>
-                <SelectItem value="animals">
+                <SelectItem
+                  value="animals"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceAnimals")}
                 </SelectItem>
-                <SelectItem value="furniture">
+                <SelectItem
+                  value="furniture"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceFurniture")}
                 </SelectItem>
-                <SelectItem value="jobs">{t("ads", "audienceJobs")}</SelectItem>
-                <SelectItem value="services">
+                <SelectItem
+                  value="jobs"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceJobs")}
+                </SelectItem>
+                <SelectItem
+                  value="services"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceServices")}
                 </SelectItem>
-                <SelectItem value="fashion">
+                <SelectItem
+                  value="fashion"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceFashion")}
                 </SelectItem>
-                <SelectItem value="games">
+                <SelectItem
+                  value="games"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceGames")}
                 </SelectItem>
-                <SelectItem value="rarities">
+                <SelectItem
+                  value="rarities"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceRarities")}
                 </SelectItem>
-                <SelectItem value="art">{t("ads", "audienceArt")}</SelectItem>
-                <SelectItem value="trips">
+                <SelectItem
+                  value="art"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceArt")}
+                </SelectItem>
+                <SelectItem
+                  value="trips"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceTrips")}
                 </SelectItem>
-                <SelectItem value="food">{t("ads", "audienceFood")}</SelectItem>
-                <SelectItem value="gardens">
+                <SelectItem
+                  value="food"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceFood")}
+                </SelectItem>
+                <SelectItem
+                  value="gardens"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceGardens")}
                 </SelectItem>
-                <SelectItem value="occasions">
+                <SelectItem
+                  value="occasions"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceOccasions")}
                 </SelectItem>
-                <SelectItem value="tourism">
+                <SelectItem
+                  value="tourism"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceTourism")}
                 </SelectItem>
-                <SelectItem value="lost">{t("ads", "audienceLost")}</SelectItem>
-                <SelectItem value="coach">
+                <SelectItem
+                  value="lost"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceLost")}
+                </SelectItem>
+                <SelectItem
+                  value="coach"
+                  className="flex flex-col items-center justify-center">
                   {t("ads", "audienceCoach")}
                 </SelectItem>
-                <SelectItem value="code">{t("ads", "audienceCode")}</SelectItem>
-                <SelectItem value="fund">{t("ads", "audienceFund")}</SelectItem>
-                <SelectItem value="more">{t("ads", "audienceMore")}</SelectItem>
+                <SelectItem
+                  value="code"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceCode")}
+                </SelectItem>
+                <SelectItem
+                  value="fund"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceFund")}
+                </SelectItem>
+                <SelectItem
+                  value="more"
+                  className="flex flex-col items-center justify-center">
+                  {t("ads", "audienceMore")}
+                </SelectItem>
               </SelectContent>
             </Select>
-            <Badge variant="secondary">{t("publicFeed", "title")}</Badge>
+            <Badge className="pt-1" variant="secondary">
+              {t("publicFeed", "title")}
+            </Badge>
           </div>
         </div>
       </header>

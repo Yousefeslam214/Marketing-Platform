@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./contexts/auth-context";
 import { ThemeProvider } from "./contexts/theme-context";
+import { SeoProvider } from "./contexts/seo-context";
 import { AppLayout } from "./components/layout/app-layout";
 import Login from "@/pages/auth/login";
 import Signup from "@/pages/auth/signup";
@@ -66,6 +67,7 @@ import UploadPhoto from "./components/ads/create/upload-photo";
 import EditPhoto from "./components/ads/update/edit-photo";
 import AdminPixels from "./pages/admin/pixels/pixels";
 import AdReports from "./pages/admin/AdReports";
+import SeoSettings from "./pages/admin/SeoSettings";
 
 function Router() {
   const [, setLocation] = useLocation();
@@ -403,6 +405,14 @@ function Router() {
         )}
       />
       <Route
+        path="/admin/seo"
+        component={() => (
+          <AppLayout>
+            <SeoSettings />
+          </AppLayout>
+        )}
+      />
+      <Route
         path="/feed"
         component={() => (
           <AppLayout>
@@ -438,10 +448,12 @@ function App() {
       <LanguageProvider>
         <ThemeProvider>
           <AuthProvider>
-            <TooltipProvider>
-              <Router />
-              <Toaster />
-            </TooltipProvider>
+            <SeoProvider>
+              <TooltipProvider>
+                <Router />
+                <Toaster />
+              </TooltipProvider>
+            </SeoProvider>
           </AuthProvider>
         </ThemeProvider>
       </LanguageProvider>
