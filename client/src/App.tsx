@@ -68,6 +68,9 @@ import EditPhoto from "./components/ads/update/edit-photo";
 import AdminPixels from "./pages/admin/pixels/pixels";
 import AdReports from "./pages/admin/AdReports";
 import SeoSettings from "./pages/admin/SeoSettings";
+import GoogleAnalytics from "./analytics/GoogleAnalytics";
+import TikTokPixel from "./analytics/TikTokPixel";
+import MarketingLinksPage from "./pages/public/marketing-links";
 
 function Router() {
   const [, setLocation] = useLocation();
@@ -121,6 +124,14 @@ function Router() {
         component={() => (
           <PublicLayout>
             <LandingPage />
+          </PublicLayout>
+        )}
+      />
+      <Route
+        path="/marketing-links"
+        component={() => (
+          <PublicLayout>
+            <MarketingLinksPage />
           </PublicLayout>
         )}
       />
@@ -450,6 +461,10 @@ function App() {
           <AuthProvider>
             <SeoProvider>
               <TooltipProvider>
+                {/* GA4 page view tracker for SPA navigation */}
+                <GoogleAnalytics />
+                {/* TikTok Pixel tracker */}
+                <TikTokPixel />
                 <Router />
                 <Toaster />
               </TooltipProvider>

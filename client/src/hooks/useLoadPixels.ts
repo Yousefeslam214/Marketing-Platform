@@ -98,6 +98,16 @@ function loadTikTok(pixelId: string) {
   const key = `tiktok:${pixelId}`;
   if (loadedPixels.has(key)) return;
 
+  // If ttq already bootstrapped by another component/env snippet, just load instance and page.
+  if ((window as any).ttq && (window as any).ttq.load) {
+    try {
+      (window as any).ttq.load(pixelId);
+      (window as any).ttq.page();
+      loadedPixels.add(key);
+      return;
+    } catch (_) {}
+  }
+
   // Use TikTok SDK with query string sdkid when possible
   const src = `https://analytics.tiktok.com/i18n/pixel/sdk.js?sdkid=${encodeURIComponent(
     pixelId

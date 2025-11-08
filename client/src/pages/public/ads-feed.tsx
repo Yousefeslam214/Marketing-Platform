@@ -534,15 +534,12 @@ export default function AdsFeed() {
               }}>
               <SelectTrigger className="w-40">
                 <SelectValue
-                  placeholder={t("ads", "Select city") || "Select city"}
-                />
+                  placeholder={t("ads", "targetAudiencePlaceholder")}
+                  className="flex flex-col items-center justify-center ">
+                  {t("ads", "targetAudiencePlaceholder")}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="flex flex-col items-center justify-center">
-                <SelectItem
-                  value="all"
-                  className="flex flex-col items-center justify-center ">
-                  {t("ads", "allCities") || "All Cities"}
-                </SelectItem>
                 <SelectItem
                   value="any"
                   className="flex flex-col items-center justify-center">
@@ -680,10 +677,10 @@ export default function AdsFeed() {
             ">
               <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                 {adsResponse?.data.map((ad) => (
-                  <div key={ad.id} className="w-full">
+                  <div key={ad.id} className="w-full overflow-hidden">
                     <Card
                       className={
-                        `overflow-hidden transition-shadow duration-300 h-full flex flex-col cursor-pointer relative group ` +
+                        ` transition-shadow duration-300 h-full flex flex-col cursor-pointer relative group ` +
                         (ad.hasPromoted
                           ? "border-2 border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.3)]"
                           : "hover:shadow-md")
@@ -692,10 +689,19 @@ export default function AdsFeed() {
                         setActiveAd(ad);
                         setViewAdOpen(true);
                       }}>
-                      {/* Promoted corner ribbon */}
+                      {/* Promoted corner ribbon - RTL on left, LTR on right */}
                       {ad.hasPromoted && (
-                        <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden pointer-events-none">
-                          <div className="absolute -top-6 -left-6 rotate-[-45deg] bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg">
+                        <div
+                          className={`absolute  ${
+                            isRTL ? "left-1.5 -top-2" : "right-0 top-0"
+                          } w-24 h-24 pointer-events-none`}>
+                          <div
+                            className={
+                              `absolute bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg  ` +
+                              (isRTL
+                                ? "top-[10px] -left-[30px] rotate-[-45deg]"
+                                : "top-3.5 -right-8 rotate-[45deg]")
+                            }>
                             {t("publicFeed", "promoted") || "Promoted"}
                           </div>
                         </div>
@@ -1007,8 +1013,17 @@ export default function AdsFeed() {
                   </div>
                 )}
                 {activeAd.hasPromoted && (
-                  <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-6 -left-6 rotate-[-45deg] bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg">
+                  <div
+                    className={` absolute top-0 ${
+                      isRTL ? "left-0" : "right-0"
+                    } w-24 h-24 overflow-hidden pointer-events-none`}>
+                    <div
+                      className={
+                        `overflow-hidden absolute bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg ` +
+                        (isRTL
+                          ? "-top-6 -left-6 rotate-[-45deg]"
+                          : "-top-6 -right-6 rotate-[45deg]")
+                      }>
                       {t("publicFeed", "promoted") || "Promoted"}
                     </div>
                   </div>

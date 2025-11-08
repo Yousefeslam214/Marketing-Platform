@@ -50,6 +50,7 @@
     "appName": "OctopusAd",
     "appTagline": "Marketing Platform",
     "adsFeed": "Ads Feed",
+  "marketingLinks": "Marketing Links",
     "impressionRatios": "Impression Ratios",
     "adReports": "Ad Reports",
     "pixels": "Pixels",
@@ -1117,6 +1118,7 @@
   "publicFeed": {
     "title": "Public Feed",
     "sponsored": "Sponsored",
+    "promoted": "Promoted",
     "like": "Like",
     "share": "Share",
     "comment": "Comment",
@@ -1154,6 +1156,29 @@
     "reportValidationDesc": "Please fill required fields.",
     "Search title": "Search title",
     "Search description": "Search description"
+  },
+  "marketingLinks": {
+    "title": "Marketing Source Links",
+    "description": "Use these prebuilt links to share with marketers and track incoming traffic sources via the 'source' query parameter.",
+    "base": "Base",
+    "source": "Source",
+    "copy": "Copy",
+    "copied": "Copied",
+    "platforms": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "snapchat": "Snapchat",
+      "google_ads": "Google Ads",
+      "pinterest": "Pinterest",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter / X",
+      "reddit": "Reddit",
+      "quora": "Quora",
+      "bing": "Bing",
+      "youtube": "YouTube",
+      "shopify": "Shopify"
+    }
   },
   "adminAdReports": {
     "title": "Ad Reports",

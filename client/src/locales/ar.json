@@ -58,6 +58,7 @@
     "appName": "منصة اخطبوط",
     "appTagline": "منصة التسويق",
     "adsFeed": "الاعلانات العامة",
+  "marketingLinks": "روابط التسويق",
     "impressionRatios": "نسب مشاهدات",
     "adReports": "بلاغات الإعلانات",
     "pixels": "بكسلات",
@@ -1154,6 +1155,7 @@
   "publicFeed": {
     "title": "الاعلانات العامة",
     "sponsored": "إعلان مدفوع",
+    "promoted": " مُميز", 
     "like": "أعجبني",
     "share": "مشاركة",
     "comment": "تعليق",
@@ -1191,6 +1193,29 @@
     "reportValidationDesc": "يرجى تعبئة الحقول المطلوبة.",
     "Search title": "بحث العنوان",
     "Search description": "بحث الوصف"
+  },
+  "marketingLinks": {
+    "title": "روابط مصادر التسويق",
+    "description": "استخدم هذه الروابط الجاهزة لمشاركتها مع المسوقين وتتبع مصادر الزيارات عبر معامل 'source' في الرابط.",
+    "base": "الرابط الأساسي",
+    "source": "المصدر",
+    "copy": "نسخ",
+    "copied": "تم النسخ",
+    "platforms": {
+      "facebook": "فيسبوك",
+      "instagram": "إنستغرام",
+      "tiktok": "تيك توك",
+      "snapchat": "سناب شات",
+      "google_ads": "إعلانات جوجل",
+      "pinterest": "بينترست",
+      "linkedin": "لينكد إن",
+      "twitter": "تويتر / اكس",
+      "reddit": "ريدِت",
+      "quora": "كورا",
+      "bing": "بينغ",
+      "youtube": "يوتيوب",
+      "shopify": "شوبيفاي"
+    }
   },
   "adminAdReports": {
     "title": "بلاغات الإعلانات",
