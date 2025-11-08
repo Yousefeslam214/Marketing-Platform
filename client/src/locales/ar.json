@@ -384,9 +384,10 @@
     "youtubeLinkLabel": "رابط يوتيوب",
     "snapchatLinkLabel": "رابط سناب شات",
     "googleAdsLinkLabel": "رابط إعلانات جوجل",
-    "whatsappNumber": "رقم واتساب",
+  "whatsappNumber": "رقم واتساب",
+  "Select city": "اختر المدينة",
     "audienceCars": "سيارات",
-    "audienceRealestate": "عقارات",
+  
     "audienceDevices": "أجهزة",
     "audienceAnimals": "حيوانات",
     "audienceFurniture": "اثاث",

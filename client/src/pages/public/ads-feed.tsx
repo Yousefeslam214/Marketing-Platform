@@ -99,7 +99,7 @@ export default function AdsFeed() {
   const { toast } = useToast();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
-  const [targetCities, setTargetCities] = useState<string[]>(["riyadh"]);
+  const [targetCities, setTargetCities] = useState<string[]>([]);
   const [likedAds, setLikedAds] = useState<Set<string>>(new Set());
   const [reportOpen, setReportOpen] = useState(false);
   const [reportAdId, setReportAdId] = useState<string | null>(null);
@@ -162,7 +162,9 @@ export default function AdsFeed() {
       );
       url.searchParams.set("page", String(page));
       url.searchParams.set("limit", String(limit));
-      url.searchParams.set("targetCities", JSON.stringify(targetCities));
+      if (targetCities.length > 0) {
+        url.searchParams.set("targetCities", JSON.stringify(targetCities));
+      }
       if (titleFilter) url.searchParams.set("title", titleFilter);
       if (descriptionFilter)
         url.searchParams.set("description", descriptionFilter);
@@ -405,11 +407,8 @@ export default function AdsFeed() {
 
   const handleCityChange = (city: string) => {
     if (city === "all") {
-      // Expand 'all' to the list of available location values (exclude the 'all' token itself)
-      const allLocations = locationOptions
-        .map((o) => o.value)
-        .filter((v) => v && v !== "all");
-      setTargetCities(allLocations);
+      // Empty array means no city filter (fetch all cities)
+      setTargetCities([]);
     } else {
       setTargetCities([city]);
     }
@@ -478,9 +477,14 @@ export default function AdsFeed() {
               value={targetCities[0] || undefined}
               onValueChange={handleCityChange}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder="Select city" />
+                <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem
+                  value="all"
+                  className="flex flex-col items-center justify-center ">
+                  {t("ads", "allCities") || "All Cities"}
+                </SelectItem>
                 {locationOptions.map(
                   (option: { value: string; label: string }) => (
                     <SelectItem
@@ -527,9 +531,12 @@ export default function AdsFeed() {
                 setPage(1);
               }}>
               <SelectTrigger className="w-40">
-                <SelectValue placeholder={t("ads", "targetAudienceLabel")} />
+                <SelectValue placeholder={t("ads", "Select city") || "Select city"} />
               </SelectTrigger>
               <SelectContent className="flex flex-col items-center justify-center">
+                <SelectItem value="all" className="flex flex-col items-center justify-center ">
+                  {t("ads", "allCities") || "All Cities"}
+                </SelectItem>
                 <SelectItem
                   value="any"
                   className="flex flex-col items-center justify-center">
@@ -750,8 +757,10 @@ export default function AdsFeed() {
 
                         {/* Actions */}
                         <div
-                          className={`px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto ` +
-                            (ad.hasPromoted ? "bg-[#eff6ff]" : "")}
+                          className={
+                            `px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto ` +
+                            (ad.hasPromoted ? "" : "")
+                          }
                           onClick={(e) =>
                             e.stopPropagation()
                           } /* prevent card click */

@@ -402,8 +402,10 @@
     "uploading": "Uploading...",
     "changePhoto": "Change Photo",
     "supportedFormatsNote": "JPG, PNG up to 5MB",
-    "whatsappNumber": "WhatsApp Number"
+    "whatsappNumber": "WhatsApp Number",
+    "Select city": "Select city"
   },
+  
   "editPhoto": {
     "Edit Photos": "Edit Photos",
     "Manage, replace, or delete your ad photos": "Manage, replace, or delete your ad photos",
