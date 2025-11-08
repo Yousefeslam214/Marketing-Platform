@@ -17,6 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TokenManager } from "@/lib/auth";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import SocialLinks from "@/components/ad/social-links";
+import { Carousel } from "@/components/ui/carousel";
 
 interface AdDetailProps {
   params: { id: string };
@@ -857,11 +858,14 @@ export default function AdDetail({ params }: AdDetailProps) {
                     <div className="max-w-md mx-auto">
                       {ad.imageUrl && ad.imageUrl.length > 0 ? (
                         // Array.isArray(ad.imageUrl)
-                        <ImageCarousel
-                          images={ad?.imageUrl}
-                          alt={ad.titleEn || ad.titleAr}
-                          dataTestId={`ad-image-${ad.id}`}
-                        />
+                        <>
+                      
+                          <ImageCarousel
+                            images={ad?.imageUrl}
+                            alt={ad.titleEn || ad.titleAr}
+                            dataTestId={`ad-image-${ad.id}`}
+                          />
+                        </>
                       ) : (
                         <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
                           <div className="text-center text-muted-foreground">

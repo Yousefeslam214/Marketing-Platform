@@ -127,6 +127,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           icon: "fas fa-flag",
         },
         {
+          name: t("sidebar", "seoSettings") || "SEO Settings",
+          href: "/admin/seo",
+          icon: "fas fa-search",
+        },
+        {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
           icon: "fas fa-rss",

@@ -24,6 +24,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { TokenManager } from "@/lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { Header } from "@/components/layout/header";
+import Loading from "@/components/Loading";
 
 export interface Pixel {
   id: string;
@@ -207,7 +208,7 @@ export default function AdminPixels() {
           <main className="p-6">
             <div className="grid grid-cols-1 gap-4">
               {isLoading ? (
-                <div>{t("pixels", "Loading…")}</div>
+              <Loading />
               ) : (
                 pixels.map((p) => (
                   <Card key={p.id}>

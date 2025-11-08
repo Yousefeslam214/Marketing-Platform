@@ -423,7 +423,7 @@ export default function AdminDashboard() {
                         {t("AdminDashboard", "totalAds")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        All advertisements in system
+                        {t("AdminDashboard", "All advertisements in system")}
                       </p>
                     </div>
                     <div className="text-right">
@@ -498,7 +498,6 @@ export default function AdminDashboard() {
                         {systemOverview.totalClicks || 0}
                       </p>
                       <p className="text-xs text-blue-600">
-                        
                         {t("AdminDashboard", "clicks")}
                       </p>
                     </div>

@@ -477,7 +477,9 @@ export default function AdsFeed() {
               value={targetCities[0] || undefined}
               onValueChange={handleCityChange}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
+                <SelectValue
+                  placeholder={t("ads", "allCities") || "All Cities"}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem
@@ -531,10 +533,14 @@ export default function AdsFeed() {
                 setPage(1);
               }}>
               <SelectTrigger className="w-40">
-                <SelectValue placeholder={t("ads", "Select city") || "Select city"} />
+                <SelectValue
+                  placeholder={t("ads", "Select city") || "Select city"}
+                />
               </SelectTrigger>
               <SelectContent className="flex flex-col items-center justify-center">
-                <SelectItem value="all" className="flex flex-col items-center justify-center ">
+                <SelectItem
+                  value="all"
+                  className="flex flex-col items-center justify-center ">
                   {t("ads", "allCities") || "All Cities"}
                 </SelectItem>
                 <SelectItem

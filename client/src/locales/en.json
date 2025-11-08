@@ -405,7 +405,7 @@
     "whatsappNumber": "WhatsApp Number",
     "Select city": "Select city"
   },
-  
+
   "editPhoto": {
     "Edit Photos": "Edit Photos",
     "Manage, replace, or delete your ad photos": "Manage, replace, or delete your ad photos",
@@ -1379,16 +1379,16 @@
     "insufficientCreditsMessage": "Cannot activate ad: insufficient impression credits",
     "invalidCreditAmount": "Invalid Credit Amount",
     "enterValidCredit": "Please enter a valid credit amount",
-  "promote": "Promote",
-  "promoted": "Promoted",
-  "promoteSuccess": "Ad Promoted Successfully",
-  "promoteSuccessDescription": "Your ad has been promoted successfully.",
-  "failedToPromoteAd": "Failed to Promote Ad",
-  "depromote": "Depromote",
-  "depromoteSuccess": "Ad Depromoted",
-  "depromoteSuccessDescription": "Your ad has been moved back.",
-  "failedToDepromoteAd": "Failed to Depromote Ad",
-  "alreadyDepromoted": "Already depromoted",
+    "promote": "Promote",
+    "promoted": "Promoted",
+    "promoteSuccess": "Ad Promoted Successfully",
+    "promoteSuccessDescription": "Your ad has been promoted successfully.",
+    "failedToPromoteAd": "Failed to Promote Ad",
+    "depromote": "Depromote",
+    "depromoteSuccess": "Ad Depromoted",
+    "depromoteSuccessDescription": "Your ad has been moved back.",
+    "failedToDepromoteAd": "Failed to Depromote Ad",
+    "alreadyDepromoted": "Already depromoted",
     "uploadPhoto": {
       "header": {
         "title": "Upload Ad Photo",
