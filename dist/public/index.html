@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="h-full">
   <head>
+    <!-- Favicons: use root-relative paths for Vite (public/ is served at /) -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
     <meta charset="UTF-8" />
     <meta
       name="viewport"
@@ -18,9 +25,7 @@
       rel="stylesheet" />
 
     <!-- Open Graph tags -->
-    <meta
-      property="og:title"
-      content="Marketing & Advertising Platform" />
+    <meta property="og:title" content="Marketing & Advertising Platform" />
     <meta
       property="og:description"
       content="SMB-friendly advertising platform with bilingual support and simple onboarding" />
@@ -30,10 +35,23 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <script type="module" crossorigin src="/assets/index-D_4Gcx-4.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-ywHUhAhp.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-HNFNRWC5E4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-HNFNRWC5E4");
+    </script>
+    <script type="module" crossorigin src="/assets/index-BnTglLyb.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B8gljP5V.css">
   </head>
   <body class="h-full">
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>
