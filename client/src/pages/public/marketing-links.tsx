@@ -25,8 +25,6 @@ export default function MarketingLinksPage() {
   const { t, language, isRTL } = useLanguage();
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://octopusad.com";
-
   const items = useMemo(
     () =>
       PLATFORMS.map((p) => ({
@@ -36,7 +34,7 @@ export default function MarketingLinksPage() {
           p.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
         url: `https://octopusad.com/feed?source=${encodeURIComponent(p)}`,
       })),
-    [origin, t]
+    [t]
   );
 
   async function copy(text: string, key: string) {
@@ -59,8 +57,11 @@ export default function MarketingLinksPage() {
 
   return (
     <div className={`w-full ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="container max-w-5xl mx-auto p-6 space-y-6">
-        <div className="space-y-1">
+         <header
+        className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4
+        mb-8
+      ">
+    <div className="space-y-1">
           <h1 className="text-2xl font-bold text-foreground">
             {t("marketingLinks", "title") || "Marketing Source Links"}
           </h1>
@@ -68,10 +69,10 @@ export default function MarketingLinksPage() {
             {t("marketingLinks", "description") ||
               "Share these links with marketers to track the traffic source via the 'source' query parameter."}
           </p>
-          <Badge variant="secondary" className="mt-2">
-            {t("marketingLinks", "base") || "Base"}: {origin}
-          </Badge>
+       
         </div>
+      </header>
+    
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {items.map((it) => (
@@ -98,6 +99,6 @@ export default function MarketingLinksPage() {
           ))}
         </div>
       </div>
-    </div>
+   
   );
 }

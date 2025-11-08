@@ -130,9 +130,9 @@ function Router() {
       <Route
         path="/marketing-links"
         component={() => (
-          <PublicLayout>
+          <AppLayout>
             <MarketingLinksPage />
-          </PublicLayout>
+          </AppLayout>
         )}
       />
       <Route
