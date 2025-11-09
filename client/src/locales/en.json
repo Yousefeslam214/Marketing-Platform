@@ -863,10 +863,6 @@
         "icon": "CreditCard",
         "questions": [
           {
-            "question": "What are your pricing plans?",
-            "answer": "We offer flexible pricing plans starting from $29/month for small businesses up to custom enterprise solutions. All plans include our core advertising tools and analytics."
-          },
-          {
             "question": "How do I upgrade my plan?",
             "answer": "You can upgrade your plan at any time from your billing settings. The upgrade will be prorated based on your current billing cycle."
           },
