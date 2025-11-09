@@ -185,11 +185,6 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: "/feed",
           icon: "fas fa-rss",
         },
-        {
-          name: t("sidebar", "marketingLinks") || "Marketing Links",
-          href: "/marketing-links",
-          icon: "fas fa-link",
-        },
       ],
     });
   }
