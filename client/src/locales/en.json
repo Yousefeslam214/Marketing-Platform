@@ -50,7 +50,7 @@
     "appName": "OctopusAd",
     "appTagline": "Marketing Platform",
     "adsFeed": "Ads Feed",
-  "marketingLinks": "Marketing Links",
+    "marketingLinks": "Marketing Links",
     "impressionRatios": "Impression Ratios",
     "adReports": "Ad Reports",
     "pixels": "Pixels",
@@ -837,8 +837,8 @@
         "icon": "MessageCircle",
         "questions": [
           {
-            "question": "What is the Oktopoot Advertising Platform?",
-            "answer": "Oktopoot is an integrated digital marketing platform that simplifies advertising for your business. Instead of managing multiple ad platforms individually, our team of experts distributes your ad content across a wide network of digital channels to reach the largest possible audience of your potential customers."
+            "question": "What is the octopus Advertising Platform?",
+            "answer": "octopus is an integrated digital marketing platform that simplifies advertising for your business. Instead of managing multiple ad platforms individually, our team of experts distributes your ad content across a wide network of digital channels to reach the largest possible audience of your potential customers."
           },
           {
             "question": "Where will my ad appear?",
@@ -1321,7 +1321,7 @@
       "contact": "Talk to Sales"
     },
     "whyChoose": {
-      "title": "Why Choose Oktopoot Ads?",
+      "title": "Why Choose octopus Ads?",
       "points": [
         "Create and share your ads for free",
         "Our team promotes your ad professionally",
