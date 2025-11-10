@@ -327,7 +327,7 @@ export function AdEditor() {
                         <Input
                           type="tel"
                           inputMode="tel"
-                          placeholder="+9665X XXX XXXX"
+                          placeholder="05XXXXXXXX"
                           // pattern="^(\+9665|05)\d{8}$"
                           // title="Saudi mobile numbers: 05XXXXXXXX or +9665XXXXXXXX"
                           {...field}
