@@ -1176,7 +1176,7 @@
     "usernameLabel": "اسم المستخدم",
     "usernamePlaceholder": "JohnDoe",
     "phoneLabel": "رقم الهاتف",
-    "phonePlaceholder": "01012345678",
+    "phonePlaceholder": "5XXXXXXXX",
     "descriptionLabel": "الوصف",
     "descriptionPlaceholder": "ما هي المشكلة؟",
     "cancel": "إلغاء",

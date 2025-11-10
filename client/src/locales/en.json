@@ -1138,7 +1138,7 @@
     "usernameLabel": "Username",
     "usernamePlaceholder": "JohnDoe",
     "phoneLabel": "Phone number",
-    "phonePlaceholder": "01012345678",
+    "phonePlaceholder": "5XXXXXXXX",
     "descriptionLabel": "Description",
     "descriptionPlaceholder": "What is the issue?",
     "cancel": "Cancel",
