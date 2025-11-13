@@ -57,11 +57,11 @@ export default function MarketingLinksPage() {
 
   return (
     <div className={`w-full ${isRTL ? "rtl" : "ltr"}`}>
-         <header
+      <header
         className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4
         mb-8
       ">
-    <div className="space-y-1">
+        <div className="space-y-1">
           <h1 className="text-2xl font-bold text-foreground">
             {t("marketingLinks", "title") || "Marketing Source Links"}
           </h1>
@@ -69,36 +69,34 @@ export default function MarketingLinksPage() {
             {t("marketingLinks", "description") ||
               "Share these links with marketers to track the traffic source via the 'source' query parameter."}
           </p>
-       
         </div>
       </header>
-    
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {items.map((it) => (
-            <Card key={it.key} className="overflow-hidden">
-              <CardContent className="p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="font-medium text-foreground">{it.label}</div>
-                  <Badge>{t("marketingLinks", "source") || "Source"}: {it.key}</Badge>
-                </div>
-                <div className="flex gap-2">
-                  <Input readOnly value={it.url} className="text-xs" />
-                  <Button
-                    onClick={() => copy(it.url, it.key)}
-                    variant="default"
-                    className="whitespace-nowrap"
-                  >
-                    {copiedKey === it.key
-                      ? t("marketingLinks", "copied") || "Copied"
-                      : t("marketingLinks", "copy") || "Copy"}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {items.map((it) => (
+          <Card key={it.key} className="overflow-hidden">
+            <CardContent className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="font-medium text-foreground">{it.label}</div>
+                <Badge>
+                  {t("marketingLinks", "source") || "Source"}: {it.key}
+                </Badge>
+              </div>
+              <div className="flex gap-2">
+                <Input readOnly value={it.url} className="text-xs" />
+                <Button
+                  onClick={() => copy(it.url, it.key)}
+                  variant="default"
+                  className="whitespace-nowrap">
+                  {copiedKey === it.key
+                    ? t("marketingLinks", "copied") || "Copied"
+                    : t("marketingLinks", "copy") || "Copy"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-   
+    </div>
   );
 }

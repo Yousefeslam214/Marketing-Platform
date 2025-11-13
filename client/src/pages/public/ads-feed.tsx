@@ -930,9 +930,7 @@ export default function AdsFeed() {
                 id="report-phone"
                 value={reportPhone}
                 onChange={(e) => setReportPhone(e.target.value)}
-                placeholder={
-                  t("publicFeed", "phonePlaceholder") || "5XXXXXXXX"
-                }
+                placeholder={t("publicFeed", "phonePlaceholder") || "5XXXXXXXX"}
               />
             </div>
 

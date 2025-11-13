@@ -521,18 +521,38 @@ export default function Dashboard() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
+                      
                       <p className="text-sm font-medium text-foreground">
                         {t("dashboard", "currentBalance")}
                       </p>
+                      
                       <p className="text-xs text-muted-foreground">
                         {t("dashboard", "availableCredits")}
                       </p>
                     </div>
                     <div className="text-right">
                       <p
-                        className="text-lg font-bold text-foreground"
+                        className="flex row self-center items-center text-lg font-bold text-foreground"
                         data-testid="billing-balance">
                         {safeMetrics.creditsRemaining.toLocaleString()}
+                            <div className="mx-1" >
+                               <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="lucide lucide-saudi-riyal-icon lucide-saudi-riyal">
+                              <path d="m20 19.5-5.5 1.2" />
+                              <path d="M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2" />
+                              <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
+                              <path d="M20 10 4 13.5" />
+                            </svg>
+                            </div>
                       </p>
                       <p className="text-xs text-green-600">
                         {t("dashboard", "credits")}
