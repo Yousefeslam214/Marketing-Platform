@@ -23,31 +23,38 @@ const PublicFooter = () => {
               {t("landing", "footer.description")}
             </p>
 
-            <div
-              className={`flex   mt-2
-              
-              `}>
+            <div className={`flex mt-2`}>
               <a
-                href="#"
-                className="text-muted-foreground hover:text-primary transition-colors
-                mx-2
-                ">
-                <i className="fab fa-twitter"></i>
+                href="https://x.com/platform66736?s=21"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X (Twitter)"
+                className="text-muted-foreground hover:text-primary transition-colors mx-2">
+                <i className="fab fa-twitter" />
               </a>
               <a
-                href="#"
-                className=" mx-2 text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-facebook"></i>
+                href="https://www.facebook.com/share/1DzzZxn4jL/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="text-muted-foreground hover:text-primary transition-colors mx-2">
+                <i className="fab fa-facebook" />
               </a>
+              {/* <a
+                // href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="text-muted-foreground hover:text-primary transition-colors mx-2">
+                <i className="fab fa-linkedin" />
+              </a> */}
               <a
-                href="#"
-                className="  mx-2 text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="#"
-                className="mx-2 text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-instagram"></i>
+                href="https://www.instagram.com/octopusadsplatform?igsh=MTA0cWIydzBlc3docw%3D%3D&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="text-muted-foreground hover:text-primary transition-colors mx-2">
+                <i className="fab fa-instagram" />
               </a>
             </div>
           </div>
