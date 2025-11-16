@@ -28,10 +28,20 @@ const PublicFooter = () => {
                 href="https://x.com/platform66736?s=21"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="X (Twitter)"
+                aria-label="X"
                 className="text-muted-foreground hover:text-primary transition-colors mx-2">
-                <i className="fab fa-twitter" />
+                {/* X logo (replaces Twitter bird) - uses current text color via fill-current */}
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="w-5 h-5 fill-current"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g>
+                    <path d="M21.742 21.75l-7.563-11.179 7.056-8.321h-2.456l-5.691 6.714-4.54-6.714H2.359l7.29 10.776L2.25 21.75h2.456l6.035-7.118 4.818 7.118h6.191-.008zM7.739 3.818L18.81 20.182h-2.447L5.29 3.818h2.447z" />
+                  </g>
+                </svg>
               </a>
+
               <a
                 href="https://www.facebook.com/share/1DzzZxn4jL/?mibextid=wwXIfr"
                 target="_blank"
@@ -56,6 +66,8 @@ const PublicFooter = () => {
                 className="text-muted-foreground hover:text-primary transition-colors mx-2">
                 <i className="fab fa-instagram" />
               </a>
+
+              {/* X logo removed from standalone position (already used as link) */}
             </div>
           </div>
 
