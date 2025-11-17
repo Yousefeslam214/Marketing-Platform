@@ -155,6 +155,15 @@ function loadSnapchat(pixelId: string) {
   if (!pixelId) return;
   const key = `snapchat:${pixelId}`;
   if (loadedPixels.has(key)) return;
+  // Reuse global if already present (e.g., installed in index.html)
+  if ((window as any).snaptr) {
+    try {
+      (window as any).snaptr("init", pixelId);
+      (window as any).snaptr("track", "PAGE_VIEW");
+    } catch (e) {}
+    loadedPixels.add(key);
+    return;
+  }
 
   // Official snap pixel loader
   try {
