@@ -1109,7 +1109,26 @@
     "changesTitle": "Changes to Terms",
     "changesContent": "We reserve the right to modify these terms at any time. We will notify users of significant changes via email or platform notifications. Continued use after changes constitutes acceptance of new terms.",
     "legalContactTitle": "Legal Contact",
-    "legalContactContent": "For legal matters or questions about these terms, please contact our legal team:"
+    "legalContactContent": "For legal matters or questions about these terms, please contact our legal team:",
+    "banNoticeTitle": "Important Notice from OctopusAd",
+    "banNoticeIntro": "Advertising or selling any prohibited items on the platform is strictly forbidden. Anyone who advertises them or engages with them via replies or private messages will be permanently banned without prior warning.",
+    "banItemsTitle": "Prohibited items include:",
+    "banItem1": "Anything that violates the laws and regulations of the Kingdom of Saudi Arabia",
+    "banItem2": "Installments and banking products",
+    "banItem3": "Medicines and medical/health products",
+    "banItem4": "Network (pyramid) marketing",
+    "banItem5": "Weapons and their accessories",
+    "banItem6": "Sexual products",
+    "banItem7": "Stocks, currencies, and portfolio management",
+    "banItem8": "Laser and spying devices",
+    "banItem9": "Websites, electronic services, and memberships",
+    "banItem10": "Free or pirated/duplicated goods",
+    "banItem11": "Tobacco products",
+    "banItem12": "Products or services requiring a license without having it",
+    "banItem13": "Devices with security risks or that are not authorized",
+    "banItem14": "SIM cards and telecom services without a license",
+    "banItem15": "Selling or collecting data in a non-compliant manner",
+    "banFinalNote": "Bans are final and non-negotiable."
   },
   "publicFeed": {
     "title": "Public Feed",
@@ -1244,9 +1263,10 @@
           "title": "Advanced Analytics",
           "description": "Track performance with detailed insights and real-time reporting on all your campaigns."
         },
-        "multiPlatform": {
-          "title": "Multi-Platform Support",
-          "description": "Manage campaigns across Facebook, Instagram, Google, and more from one dashboard."
+
+        "marketingForYourAds": {
+          "title": "Marketing for Your Ads",
+          "description": "Your ads are promoted by our marketing team across all social media platforms to increase awareness, customers, and sales for your business."
         },
         "secure": {
           "title": "Enterprise Security",

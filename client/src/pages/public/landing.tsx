@@ -143,7 +143,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mx-2"></i>
-                  {t("landing", "hero.features.multiPlatform")}
+                  {t("landing", "hero.features.marketingForYourAds")}
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mx-2"></i>
@@ -231,8 +231,8 @@ export default function LandingPage() {
               },
               {
                 icon: "fas fa-globe",
-                titleKey: "features.items.multiPlatform.title",
-                descKey: "features.items.multiPlatform.description",
+                titleKey: "features.items.marketingForYourAds.title",
+                descKey: "features.items.marketingForYourAds.description",
               },
               {
                 icon: "fas fa-shield-alt",
