@@ -3,7 +3,16 @@ import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Shield, FileText, Lock, Eye, Globe, UserCheck, Scale, Ban } from "lucide-react";
+import {
+  Shield,
+  FileText,
+  Lock,
+  Eye,
+  Globe,
+  UserCheck,
+  Scale,
+  Ban,
+} from "lucide-react";
 
 export default function PrivacyTerms() {
   const { t, isRTL } = useLanguage();
@@ -122,9 +131,9 @@ export default function PrivacyTerms() {
             <Card className="border-0 shadow-lg bg-red-50 dark:bg-red-950/20">
               <CardContent className="p-6">
                 <div className="flex items-start gap-3 mb-3">
-                   <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/40 flex items-center justify-center text-red-600 dark:text-red-400">
-                    <Ban className="w-5 h-5" /> 
-                  </div> 
+                  <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/40 flex items-center justify-center text-red-600 dark:text-red-400">
+                    <Ban className="w-5 h-5" />
+                  </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1">
                       {t("privacyTerms", "banNoticeTitle")}
@@ -137,7 +146,10 @@ export default function PrivacyTerms() {
                 <h4 className="font-medium mb-2">
                   {t("privacyTerms", "banItemsTitle")}
                 </h4>
-                <ul className={`list-disc ${isRTL ? "pr-5" : "pl-5"} space-y-1 text-sm text-foreground`}>
+                <ul
+                  className={`list-disc ${
+                    isRTL ? "pr-5" : "pl-5"
+                  } space-y-1 text-sm text-foreground`}>
                   {bannedItems.map((it, idx) => (
                     <li key={idx}>{it}</li>
                   ))}
