@@ -144,7 +144,7 @@ export default function LandingPage() {
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mx-2"></i>
                   {t("landing", "hero.features.marketingForYourAds")}
-                </div>  
+                </div>   
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mx-2"></i>
                   {t("landing", "hero.features.analytics")}
