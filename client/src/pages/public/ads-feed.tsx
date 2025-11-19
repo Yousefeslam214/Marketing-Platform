@@ -76,6 +76,7 @@ interface Ad {
   instagramLink?: string | null;
   facebookLink?: string | null;
   snapchatLink?: string | null;
+  whatsappLink?: string | null;
   // promotion status
   hasPromoted?: boolean;
 }
@@ -374,6 +375,11 @@ export default function AdsFeed() {
         href: ad.snapchatLink,
         label: "Snapchat",
         svg: <i className="fab fa-snapchat-ghost w-4 h-4" aria-hidden />,
+      },
+      {
+        href: ad.whatsappLink,
+        label: "WhatsApp",
+        svg: <i className="fab fa-whatsapp w-4 h-4" aria-hidden />,
       },
     ];
 
