@@ -531,8 +531,9 @@ export function AdEditor() {
                           {locationOptions.map((city) => (
                             <div
                               key={city.value}
-                              className={`flex items-center space-x-2 p-2 border rounded-md transition-colors `}>
+                              className={`flex items-center space-x-2 p-2 border rounded-md transition-colors  `}>
                               <Checkbox
+                              className="mx-2"
                                 id={city.value}
                                 checked={
                                   isAllCitiesSelected ||

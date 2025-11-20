@@ -36,8 +36,8 @@ export default function UploadPhoto() {
   const adId = params?.adId;
   if (!adId) {
     toast({
-      title: "Invalid Ad",
-      description: "No Ad ID provided in the URL",
+      title: t("uploadPhoto", "invalidAd"),
+      description: t("uploadPhoto", "noAdIdProvided"),
       variant: "destructive",
     });
     setLocation("/campaigns");
@@ -82,16 +82,15 @@ export default function UploadPhoto() {
           return [...prev, photoUrl];
         });
         toast({
-          title: "Upload Successful",
-          description: "Your photo has been uploaded successfully.",
+          title: t("uploadPhoto", "uploadSuccess"),
+          description: t("uploadPhoto", "photoUploadedSuccess"),
         });
       }
     },
     onError: (error) => {
       toast({
-        title: "Upload Failed",
-        description:
-          error.message || "An error occurred while uploading your photo.",
+        title: t("uploadPhoto", "uploadFailed"),
+        description: error.message || t("uploadPhoto", "errorUploadingPhoto"),
         variant: "destructive",
       });
       // If upload fails, remove the preview
@@ -176,16 +175,15 @@ export default function UploadPhoto() {
         setEditedFiles(new Map());
 
         toast({
-          title: "Upload Successful",
-          description: "Your photos have been uploaded successfully.",
+          title: t("uploadPhoto", "uploadSuccess"),
+          description: t("uploadPhoto", "photosUploadedSuccess"),
         });
       }
     },
     onError: (error) => {
       toast({
-        title: "Upload Failed",
-        description:
-          error.message || "An error occurred while uploading your photos.",
+        title: t("uploadPhoto", "uploadFailed"),
+        description: error.message || t("uploadPhoto", "errorUploadingPhotos"),
         variant: "destructive",
       });
     },
@@ -308,8 +306,8 @@ export default function UploadPhoto() {
       setLocation(`/ads/${params.adId}/assign-credit`);
     } catch (e) {
       toast({
-        title: "Upload Failed",
-        description: "There was an error uploading your photos.",
+        title: t("uploadPhoto", "uploadFailed"),
+        description: t("uploadPhoto", "errorUploadingPhotosGeneric"),
         variant: "destructive",
       });
     } finally {
@@ -348,7 +346,7 @@ export default function UploadPhoto() {
                   {selectedPreviews.length > 0 && (
                     <div className="space-y-4">
                       <h4 className="font-medium">
-                        {t("uploadPhoto", "Staged Photos")}
+                        {t("uploadPhoto", "stagedPhotos")}
                       </h4>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {selectedPreviews.map((p, i) => (
@@ -362,13 +360,13 @@ export default function UploadPhoto() {
                             />
                             <div className="absolute top-2 right-2 flex flex-col gap-2">
                               <Button size="sm" onClick={() => startEditing(i)}>
-                                Edit
+                                {t("uploadPhoto", "edit")}
                               </Button>
                               <Button
                                 size="sm"
                                 variant="destructive"
                                 onClick={() => removeSelected(i)}>
-                                Remove
+                                {t("uploadPhoto", "remove")}
                               </Button>
                             </div>
                           </div>
@@ -383,7 +381,7 @@ export default function UploadPhoto() {
                   {editingIndex !== null && selectedPreviews[editingIndex] && (
                     <div className="mt-4 p-4 border rounded-lg bg-gray-50">
                       <h4 className="font-medium mb-2">
-                        {t("uploadPhoto", "Edit Photo")}
+                        {t("uploadPhoto", "editPhoto")}
                       </h4>
                       <div className="flex flex-col md:flex-row gap-4 items-start">
                         <div>
@@ -400,7 +398,7 @@ export default function UploadPhoto() {
 
                         <div className="flex-1">
                           <label className="block text-sm mb-2">
-                            {t("uploadPhoto", "Zoom")}
+                            {t("uploadPhoto", "zoom")}
                           </label>
                           <input
                             type="range"
@@ -413,7 +411,7 @@ export default function UploadPhoto() {
                           />
 
                           <label className="block text-sm mt-3 mb-2">
-                            {t("uploadPhoto", "Rotate")}
+                            {t("uploadPhoto", "rotate")}
                           </label>
                           <input
                             type="range"
@@ -427,12 +425,12 @@ export default function UploadPhoto() {
 
                           <div className="flex gap-2 mt-4">
                             <Button onClick={applyEdit}>
-                              {t("uploadPhoto", "Save")}
+                              {t("uploadPhoto", "save")}
                             </Button>
                             <Button
                               variant="outline"
                               onClick={() => setEditingIndex(null)}>
-                              {t("uploadPhoto", "Cancel")}
+                              {t("uploadPhoto", "cancel")}
                             </Button>
                           </div>
                         </div>
@@ -484,7 +482,7 @@ export default function UploadPhoto() {
                           <>
                             <i className="fas fa-upload mx-2"></i>
                             {photoPreview
-                              ? t("uploadPhoto", "upload more Photos")
+                              ? t("uploadPhoto", "uploadmorePhotos")
                               : t("uploadPhoto", "Choose Photo")}
                           </>
                         )}
@@ -548,7 +546,7 @@ export default function UploadPhoto() {
                       disabled={
                         uploadingPhoto || uploadPhotosMutation.isPending
                       }>
-                      Clear
+                      {t("uploadPhoto", "clear")}
                     </Button>
                     <Button
                       type="button"

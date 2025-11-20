@@ -443,6 +443,7 @@
     "photoRequired": "Photo Required",
     "uploadBeforeContinue": "Please upload a photo before continuing.",
     "choosePhoto": "Choose Photo",
+    "uploadmorePhotos": "Upload More Photos",
     "changePhoto": "Change Photo",
     "removePhoto": "Remove Photo",
     "supports": "Supports: JPG, PNG, GIF",
@@ -453,7 +454,23 @@
     "relateAudience": "Choose a photo that relates to your audience",
     "continue": "Continue",
     "skip": "Skip",
-    "preview": "Photo Preview"
+    "preview": "Photo Preview",
+    "invalidAd": "Invalid Ad",
+    "noAdIdProvided": "No Ad ID provided in the URL",
+    "photoUploadedSuccess": "Your photo has been uploaded successfully.",
+    "errorUploadingPhoto": "An error occurred while uploading your photo.",
+    "photosUploadedSuccess": "Your photos have been uploaded successfully.",
+    "errorUploadingPhotos": "An error occurred while uploading your photos.",
+    "errorUploadingPhotosGeneric": "There was an error uploading your photos.",
+    "stagedPhotos": "Staged Photos",
+    "edit": "Edit",
+    "remove": "Remove",
+    "editPhoto": "Edit Photo",
+    "zoom": "Zoom",
+    "rotate": "Rotate",
+    "save": "Save",
+    "cancel": "Cancel",
+    "clear": "Clear"
   },
 
   "pendingAds": {
@@ -559,7 +576,14 @@
     "overview": "Overview",
     "campaigns": "Campaigns",
     "demographics": "Demographics",
-    "performance": "Performance"
+    "performance": "Performance",
+    "socialMediaLinks": "Social Media Links",
+    "website": "Website",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "youtube": "YouTube",
+    "snapchat": "Snapchat"
   },
   "userAds": {
     "continueToCredit": "Continue to credit assignment",
@@ -613,7 +637,13 @@
     "250Credits": "250 Credits",
     "smallTestCampaign": "Good for a small test campaign",
     "mediumCampaign": "Medium campaign",
-    "largeCampaign": "Large campaign"
+    "largeCampaign": "Large campaign",
+    "creditAssignedSuccessfully": "Credit assigned successfully",
+    "creditsAssignedToAd": "credits have been assigned to your ad",
+    "noCreditsAvailable": "No credits available",
+    "needCreditsToAssign": "You need to add credits to your account before assigning them to an ad",
+    "failedToAssignCredit": "Failed to assign credit",
+    "pleaseTryAgain": "Please try again"
   },
   "userManagement": {
     "title": "User Management",
@@ -1624,7 +1654,19 @@
       "saving": "Saving...",
       "saveTargeting": "Save Targeting",
       "save": "Save",
-      "selectPlaceholder": "Select..."
+      "selectPlaceholder": "Select...",
+      "validation": {
+        "audienceRequired": "Target audience is required",
+        "minAge18": "Minimum age is 18",
+        "maxAge65": "Maximum age is 65",
+        "minLessThanMax": "Minimum age must be less than or equal to maximum age",
+        "selectOneGender": "Select at least one gender",
+        "selectOneInterest": "Select at least one interest",
+        "selectOneLanguage": "Select at least one language",
+        "selectOneLocation": "Select at least one location",
+        "selectOneDevice": "Select at least one device type",
+        "minDailyBudget": "Minimum daily budget is $10"
+      }
     },
     "card": {
       "buttons": {

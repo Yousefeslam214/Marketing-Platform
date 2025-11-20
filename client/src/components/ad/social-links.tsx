@@ -38,7 +38,7 @@ export default function SocialLinks({ ad }: Props) {
               data-testid="ad-website-link">
               <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg">
                 <i className="fab fa-website text-gray-800 dark:text-gray-200 text-lg"></i>
-                Website
+                {t("analytics", "website")}
               </div>
             </a>
           )}
@@ -52,7 +52,7 @@ export default function SocialLinks({ ad }: Props) {
               data-testid="ad-facebook-link">
               <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
                 <i className="fab fa-facebook text-blue-600 text-lg"></i>
-                Facebook
+                {t("analytics", "facebook")}
               </div>
             </a>
           )}
@@ -66,7 +66,7 @@ export default function SocialLinks({ ad }: Props) {
               data-testid="ad-instagram-link">
               <div className="flex items-center gap-2 p-3 bg-pink-50 dark:bg-pink-950/20 rounded-lg">
                 <i className="fab fa-instagram text-pink-600 text-lg"></i>
-                Instagram
+                {t("analytics", "instagram")}
               </div>
             </a>
           )}
@@ -80,7 +80,7 @@ export default function SocialLinks({ ad }: Props) {
               data-testid="ad-tiktok-link">
               <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg">
                 <i className="fab fa-tiktok text-gray-800 dark:text-gray-200 text-lg"></i>
-                TikTok
+                {t("analytics", "tiktok")}
               </div>
             </a>
           )}
@@ -94,7 +94,7 @@ export default function SocialLinks({ ad }: Props) {
               data-testid="ad-youtube-link">
               <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg">
                 <i className="fab fa-youtube text-red-600 text-lg"></i>
-                YouTube
+                {t("analytics", "youtube")}
               </div>
             </a>
           )}
@@ -108,7 +108,7 @@ export default function SocialLinks({ ad }: Props) {
               data-testid="ad-snapchat-link">
               <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg">
                 <i className="fab fa-snapchat text-yellow-500 text-lg"></i>
-                Snapchat
+                {t("analytics", "snapchat")}
               </div>
             </a>
           )}

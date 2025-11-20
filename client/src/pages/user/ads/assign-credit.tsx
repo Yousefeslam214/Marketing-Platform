@@ -74,9 +74,8 @@ export default function AssignCredit() {
   useEffect(() => {
     if (!isLoadingBalance && userBalance === 0) {
       toast({
-        title: "No credits available",
-        description:
-          "You need to add credits to your account before assigning them to an ad",
+        title: t("userAds", "noCreditsAvailable"),
+        description: t("userAds", "needCreditsToAssign"),
         variant: "destructive",
       });
       setLocation("/billing");
@@ -126,15 +125,15 @@ export default function AssignCredit() {
       queryClient.invalidateQueries({ queryKey: ["/api/billing"] });
 
       toast({
-        title: "Credit assigned successfully",
-        description: `${data.data?.credit} credits have been assigned to your ad`,
+        title: t("userAds", "creditAssignedSuccessfully"),
+        description: `${data.data?.credit} ${t("userAds", "creditsAssignedToAd")}`,
       });
       setLocation(`/campaigns/${params.adId}`);
     },
     onError: (error) => {
       toast({
-        title: "Failed to assign credit",
-        description: error.message || "Please try again",
+        title: t("userAds", "failedToAssignCredit"),
+        description: error.message || t("userAds", "pleaseTryAgain"),
         variant: "destructive",
       });
     },

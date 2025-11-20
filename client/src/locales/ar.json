@@ -374,7 +374,7 @@
     "websiteUrlLabel": "رابط الموقع",
     "websiteUrlPlaceholder": "https://example.com",
     "targetAudienceLabel": "الجمهور المستهدف",
-    "targetAudiencePlaceholder": "اختر الجمهور المستهدف",
+    "targetAudiencePlaceholder": "كل الأقسام",
     "targetCitiesLabel": "المدن المستهدفة",
     "allCities": "جميع المدن",
     "budgetTypeLabel": "نوع الاعلان",
@@ -448,6 +448,7 @@
     "photoRequired": "الصورة مطلوبة",
     "uploadBeforeContinue": "يرجى رفع صورة قبل المتابعة.",
     "choosePhoto": "اختيار صورة",
+    "uploadmorePhotos": "رفع المزيد من الصور",
     "changePhoto": "تغيير الصورة",
     "removePhoto": "إزالة الصورة",
     "supports": "يدعم: JPG, PNG, GIF",
@@ -458,7 +459,23 @@
     "relateAudience": "اختر صورة تناسب جمهورك",
     "continue": "متابعة",
     "skip": "تخطي",
-    "preview": "معاينة الصورة"
+    "preview": "معاينة الصورة",
+    "invalidAd": "إعلان غير صالح",
+    "noAdIdProvided": "لم يتم توفير معرف الإعلان في الرابط",
+    "photoUploadedSuccess": "تم رفع الصورة بنجاح.",
+    "errorUploadingPhoto": "حدث خطأ أثناء رفع الصورة.",
+    "photosUploadedSuccess": "تم رفع الصور بنجاح.",
+    "errorUploadingPhotos": "حدث خطأ أثناء رفع الصور.",
+    "errorUploadingPhotosGeneric": "حدث خطأ أثناء رفع صورك.",
+    "stagedPhotos": "الصور المرحلية",
+    "edit": "تعديل",
+    "remove": "إزالة",
+    "editPhoto": "تعديل الصورة",
+    "zoom": "تكبير",
+    "rotate": "تدوير",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "clear": "مسح"
   },
   "userAds": {
     "continueToCredit": "متابعة إلى تخصيص الرصيد",
@@ -514,7 +531,13 @@
     "250Credits": "250 أرصدة",
     "smallTestCampaign": "مناسبة لحملة اختبار صغيرة",
     "mediumCampaign": "حملة متوسطة",
-    "largeCampaign": "حملة كبيرة"
+    "largeCampaign": "حملة كبيرة",
+    "creditAssignedSuccessfully": "تم تخصيص الرصيد بنجاح",
+    "creditsAssignedToAd": "أرصدة تم تخصيصها لإعلانك",
+    "noCreditsAvailable": "لا توجد أرصدة متاحة",
+    "needCreditsToAssign": "تحتاج إلى إضافة أرصدة إلى حسابك قبل تخصيصها للإعلان",
+    "failedToAssignCredit": "فشل في تخصيص الرصيد",
+    "pleaseTryAgain": "يرجى المحاولة مرة أخرى"
   },
 
   "pendingAds": {
@@ -629,7 +652,14 @@
     "dateRange": "نطاق التاريخ",
     "filter": "تصفية",
     "metrics": "المقاييس",
-    "dimensions": "الأبعاد"
+    "dimensions": "الأبعاد",
+    "socialMediaLinks": "روابط التواصل الاجتماعي",
+    "website": "الموقع الإلكتروني",
+    "facebook": "فيسبوك",
+    "instagram": "انستجرام",
+    "tiktok": "تيك توك",
+    "youtube": "يوتيوب",
+    "snapchat": "سناب شات"
   },
   "userManagement": {
     "title": "إدارة المستخدمين",
@@ -1713,7 +1743,19 @@
       "saving": "\u062c\u0627\u0631\u064a \u0627\u0644\u062d\u0641\u0638...",
       "saveTargeting": "\u062d\u0641\u0638 \u0627\u0644\u0627\u0633\u062a\u0647\u062f\u0627\u0641",
       "save": "\u062d\u0641\u0638",
-      "selectPlaceholder": "\u0627\u062e\u062a\u0631..."
+      "selectPlaceholder": "\u0627\u062e\u062a\u0631...",
+      "validation": {
+        "audienceRequired": "الجمهور المستهدف مطلوب",
+        "minAge18": "الحد الأدنى للعمر هو 18",
+        "maxAge65": "الحد الأقصى للعمر هو 65",
+        "minLessThanMax": "يجب أن يكون الحد الأدنى للعمر أقل من أو يساوي الحد الأقصى",
+        "selectOneGender": "اختر جنس واحد على الأقل",
+        "selectOneInterest": "اختر اهتمام واحد على الأقل",
+        "selectOneLanguage": "اختر لغة واحدة على الأقل",
+        "selectOneLocation": "اختر موقع واحد على الأقل",
+        "selectOneDevice": "اختر نوع جهاز واحد على الأقل",
+        "minDailyBudget": "الحد الأدنى للميزانية اليومية هو 10 ر.س"
+      }
     },
     "card": {
       "buttons": {
