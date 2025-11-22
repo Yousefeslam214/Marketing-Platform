@@ -153,7 +153,7 @@ const PublicHeader = () => {
         <div
           className={`md:hidden transition-all duration-300 ease-in-out ${
             isMobileMenuOpen
-              ? "max-h-96 opacity-100 border-t"
+              ? "max-h-99 opacity-100 border-t"
               : "max-h-0 opacity-0 overflow-hidden"
           }`}>
           <div className="py-4 space-y-4">
@@ -198,6 +198,13 @@ const PublicHeader = () => {
                   {t("sidebar", "contact")}
                 </span>
               </Link>
+              <Link href="/feed">
+                 <span
+                  className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors cursor-pointer"
+                  onClick={() => setIsMobileMenuOpen(false)}>
+                {t("sidebar", "adsFeed")}
+                </span>
+            </Link>
             </div>
 
             {/* Mobile Auth Buttons */}

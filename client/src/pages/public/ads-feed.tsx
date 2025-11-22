@@ -795,7 +795,9 @@ export default function AdsFeed() {
                         {/* Actions */}
                         <div
                           className={
-                            `px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto ` +
+                            `px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto flex
+                            flex-col
+                            ` +
                             (ad.hasPromoted ? "" : "")
                           }
                           onClick={(e) =>
