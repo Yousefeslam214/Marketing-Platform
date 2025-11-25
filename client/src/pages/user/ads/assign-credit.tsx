@@ -126,7 +126,10 @@ export default function AssignCredit() {
 
       toast({
         title: t("userAds", "creditAssignedSuccessfully"),
-        description: `${data.data?.credit} ${t("userAds", "creditsAssignedToAd")}`,
+        description: `${data.data?.credit} ${t(
+          "userAds",
+          "creditsAssignedToAd"
+        )}`,
       });
       setLocation(`/campaigns/${params.adId}`);
     },

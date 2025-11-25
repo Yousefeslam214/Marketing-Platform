@@ -294,27 +294,85 @@ export const signupSchema = insertUserSchema
   });
 
 export const createAdSchema = insertAdSchema.extend({
+  titleEn: z
+    .string()
+    .min(1, "English title is required")
+    .max(200, "Title is too long"),
+  titleAr: z
+    .string()
+    .min(1, "Arabic title is required")
+    .max(200, "العنوان طويل جداً"),
+  descriptionEn: z
+    .string()
+    .min(10, "English description must be at least 10 characters")
+    .max(1000, "Description is too long"),
+  descriptionAr: z
+    .string()
+    .min(10, "Arabic description must be at least 10 characters")
+    .max(1000, "الوصف طويل جداً"),
   targetAudience: z.string().min(1, "Target audience is required"),
+  targetCities: z.array(z.string()).min(1, "Select at least one city"),
   budgetType: z.enum(["impressions", "clicks"]),
+  websiteUrl: z.string().url("Invalid website URL").or(z.literal("")),
   facebookLink: z
     .string()
-    .url("Invalid Facebook URL")
+    .refine(
+      (val) =>
+        !val ||
+        val === "" ||
+        /^https?:\/\/(www\.)?(facebook|fb)\.com\/.+/.test(val),
+      {
+        message: "Invalid Facebook URL",
+      }
+    )
     .optional()
     .or(z.literal("")),
   instagramLink: z
     .string()
-    .url("Invalid Instagram URL")
+    .refine(
+      (val) =>
+        !val ||
+        val === "" ||
+        /^https?:\/\/(www\.)?instagram\.com\/.+/.test(val),
+      {
+        message: "Invalid Instagram URL",
+      }
+    )
     .optional()
     .or(z.literal("")),
-  tiktokLink: z.string().url("Invalid TikTok URL").optional().or(z.literal("")),
+  tiktokLink: z
+    .string()
+    .refine(
+      (val) =>
+        !val || val === "" || /^https?:\/\/(www\.)?tiktok\.com\/.+/.test(val),
+      {
+        message: "Invalid TikTok URL",
+      }
+    )
+    .optional()
+    .or(z.literal("")),
   youtubeLink: z
     .string()
-    .url("Invalid YouTube URL")
+    .refine(
+      (val) =>
+        !val ||
+        val === "" ||
+        /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+/.test(val),
+      {
+        message: "Invalid YouTube URL",
+      }
+    )
     .optional()
     .or(z.literal("")),
   snapchatLink: z
     .string()
-    .url("Invalid Snapchat URL")
+    .refine(
+      (val) =>
+        !val || val === "" || /^https?:\/\/(www\.)?snapchat\.com\/.+/.test(val),
+      {
+        message: "Invalid Snapchat URL",
+      }
+    )
     .optional()
     .or(z.literal("")),
   googleAdsLink: z
@@ -322,7 +380,13 @@ export const createAdSchema = insertAdSchema.extend({
     .url("Invalid Google Ads URL")
     .optional()
     .or(z.literal("")),
-  phoneNumber: z.string().optional().or(z.literal("")),
+  phoneNumber: z
+    .string()
+    .refine((val) => !val || val === "" || /^[\d\s\+\-\(\)]+$/.test(val), {
+      message: "Invalid phone number format",
+    })
+    .optional()
+    .or(z.literal("")),
 });
 
 export const purchaseCreditsSchema = z.object({
