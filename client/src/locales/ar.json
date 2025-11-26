@@ -475,7 +475,9 @@
     "rotate": "تدوير",
     "save": "حفظ",
     "cancel": "إلغاء",
-    "clear": "مسح"
+    "clear": "مسح",
+    "No Photos Selected": "لم يتم اختيار صور",
+    "Please upload at least one photo for your ad": "يرجى رفع صورة واحدة على الأقل لإعلانك"
   },
   "userAds": {
     "continueToCredit": "متابعة إلى تخصيص الرصيد",
@@ -790,7 +792,9 @@
     "retryWithGoogle": "المحاولة عبر Google مرة أخرى",
     "contactSupport": "تواصل مع الدعم",
     "googleFailureNote": "إذا استمرت المشكلة، حاول طريقة تسجيل دخول أخرى أو تواصل مع الدعم.",
-    "error": "خطأ"
+    "error": "خطأ",
+    "orContinueWith": "أو متابعة بواسطة",
+    "continueWithGoogle": "متابعة بواسطة Google"
   },
   "pending": {
     "title": "قيد الانتظار",
@@ -1523,6 +1527,7 @@
     "socialMediaLinks": "روابط وسائل التواصل الاجتماعي",
     "adPreview": "معاينة الإعلان",
     "viewAnalytics": "عرض التحليلات",
+    "viewUserDetails": "عرض تفاصيل المستخدم",
     "purchaseImpressions": "شراء مشاهدات",
     "backToCampaigns": "العودة للحملات",
     "adNotFound": "الإعلان غير موجود",
@@ -1774,10 +1779,20 @@
     "Edit Photos": "تعديل الصور",
     "Manage, replace, or delete your ad photos": "إدارة، استبدال، أو حذف صور الإعلان الخاصة بك",
     "Your Ad Photos": "صور إعلانك",
-    "No photos uploaded yet.": "لا توجد صور مرفوعة بعد.",
+    "Nophotosuploadedyet": "لا توجد صور مرفوعة بعد.",
     "Edit": "تعديل",
     "Replace": "استبدال",
     "Delete": "حذف",
+    "Cannot Delete": "لا يمكن الحذف",
+    "You must have at least one photo for your ad.": "يجب أن يكون لديك صورة واحدة على الأقل لإعلانك.",
+    "Photo Deleted": "تم حذف الصورة",
+    "Photo removed.": "تم إزالة الصورة.",
+    "Error Deleting Photo": "خطأ في حذف الصورة",
+    "Could not delete photo": "لا يمكن حذف الصورة",
+    "Photos Uploaded": "تم رفع الصور",
+    "New photos added.": "تم إضافة صور جديدة.",
+    "Upload Failed": "فشل الرفع",
+    "Failed to upload photos": "فشل رفع الصور",
     "Add Photo": "إضافة صورة",
     "Done": "تم",
     "Edit Photo": "تعديل الصورة",

@@ -295,7 +295,14 @@ export default function UploadPhoto() {
   };
 
   const uploadAllSelected = async () => {
-    if (selectedFiles.length === 0) return;
+    if (selectedFiles.length === 0) {
+      toast({
+        title: t("uploadPhoto", "No Photos Selected"),
+        description: t("uploadPhoto", "Please upload at least one photo for your ad"),
+        variant: "destructive",
+      });
+      return;
+    }
     setUploadingPhoto(true);
     try {
       // Prepare files: prefer edited file for each index
@@ -548,7 +555,7 @@ export default function UploadPhoto() {
                       }>
                       {t("uploadPhoto", "clear")}
                     </Button>
-                    <Button
+                    {/* <Button
                       type="button"
                       variant="outline"
                       onClick={handleSkip}
@@ -556,7 +563,7 @@ export default function UploadPhoto() {
                         uploadingPhoto || uploadPhotoMutation.isPending
                       }>
                       {t("uploadPhoto", "Skip")}
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </CardContent>

@@ -140,8 +140,8 @@ export function AdCard({
                   {t("ads", "view") || "View"}
                 </Button>
                 <Link href={`/ads/${ad.id}/edit`} className="w-[50%]">
-                  {onEdit && (
-                    <Button
+                <Button
+                 
                       variant="outline"
                       size="sm"
                       // onClick={() => onEdit?.(ad.id)}
@@ -150,9 +150,9 @@ export function AdCard({
                       <i className="fas fa-edit mx-1"></i>
                       {t("ads", "edit") || "Edit"}
                     </Button>
-                  )}
+                
                 </Link>
-                {onAnalytics && (
+                {/* {onAnalytics && (
                   <Button
                     variant="outline"
                     size="sm"
@@ -162,7 +162,7 @@ export function AdCard({
                     <i className="fas fa-chart-bar mx-1"></i>
                     {t("ads", "analytics") || "Analytics"}
                   </Button>
-                )}
+                )} */}
               </div>
 
               {ad.status === "approved" && onPurchase && (

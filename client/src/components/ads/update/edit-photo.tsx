@@ -134,12 +134,15 @@ export default function EditPhoto() {
     },
     onSuccess: (_, photoUrl) => {
       setPhotoList((prev) => prev.filter((p) => p !== photoUrl));
-      toast({ title: "Photo Deleted", description: "Photo removed." });
+      toast({
+        title: t("editPhoto", "Photo Deleted"),
+        description: t("editPhoto", "Photo removed."),
+      });
     },
     onError: (err) => {
       toast({
-        title: "Error Deleting Photo",
-        description: err.message || "Could not delete photo",
+        title: t("editPhoto", "Error Deleting Photo"),
+        description: err.message || t("editPhoto", "Could not delete photo"),
         variant: "destructive",
       });
     },
@@ -168,13 +171,16 @@ export default function EditPhoto() {
       const photos = parsePhotoResponse(data);
       if (photos.length) {
         setPhotoList((prev) => [...prev, ...photos]);
-        toast({ title: "Photos Uploaded", description: "New photos added." });
+        toast({
+          title: t("editPhoto", "Photos Uploaded"),
+          description: t("editPhoto", "New photos added."),
+        });
       }
     },
     onError: (err) => {
       toast({
-        title: "Upload Failed",
-        description: err.message || "Failed to upload photos",
+        title: t("editPhoto", "Upload Failed"),
+        description: err.message || t("editPhoto", "Failed to upload photos"),
         variant: "destructive",
       });
     },
@@ -403,9 +409,17 @@ export default function EditPhoto() {
 
   const handleDelete = useCallback(
     (url: string) => {
+      if (photoList.length <= 1) {
+        toast({
+          title: "Cannot Delete",
+          description: "You must have at least one photo for your ad.",
+          variant: "destructive",
+        });
+        return;
+      }
       deletePhotoMutation.mutate(url);
     },
-    [deletePhotoMutation]
+    [deletePhotoMutation, photoList.length, toast]
   );
 
   const handleAddNewPhoto = useCallback(() => {
@@ -432,7 +446,6 @@ export default function EditPhoto() {
                 size="sm"
                 variant="secondary"
                 onClick={() => handleEditClick(url)}>
-                
                 {t("editPhoto", "Edit")}
               </Button>
               <Button
@@ -444,7 +457,8 @@ export default function EditPhoto() {
               <Button
                 size="sm"
                 variant="destructive"
-                onClick={() => handleDelete(url)}>
+                onClick={() => handleDelete(url)}
+                disabled={photoList.length <= 1}>
                 {t("editPhoto", "Delete")}
               </Button>
             </div>
@@ -467,7 +481,7 @@ export default function EditPhoto() {
           </label>
           <input
             type="range"
-            min={1}
+            min={0.8}
             max={2}
             step={0.01}
             value={editState.scale}
@@ -505,10 +519,10 @@ export default function EditPhoto() {
             disabled={
               updatePhotoMutation.isPending || uploadPhotosMutation.isPending
             }>
-            {t("uploadPhoto", "Save")}
+            {t("editPhoto", "Save")}
           </Button>
           <Button variant="outline" onClick={cancelEdit}>
-            {t("uploadPhoto", "Cancel")}
+            {t("editPhoto", "Cancel")}
           </Button>
         </div>
       </div>
@@ -586,7 +600,7 @@ export default function EditPhoto() {
 
                 {photoList.length === 0 ? (
                   <p className="text-muted-foreground">
-                    {t("editPhoto", "No photos uploaded yet.")}
+                    {t("editPhoto", "Nophotosuploadedyet")}
                   </p>
                 ) : (
                   photoGrid

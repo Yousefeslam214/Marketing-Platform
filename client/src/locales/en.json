@@ -411,10 +411,20 @@
     "Edit Photos": "Edit Photos",
     "Manage, replace, or delete your ad photos": "Manage, replace, or delete your ad photos",
     "Your Ad Photos": "Your Ad Photos",
-    "No photos uploaded yet.": "No photos uploaded yet.",
+    "Nophotosuploadedyet": "No photos uploaded yet.",
     "Edit": "Edit",
     "Replace": "Replace",
     "Delete": "Delete",
+    "Cannot Delete": "Cannot Delete",
+    "You must have at least one photo for your ad.": "You must have at least one photo for your ad.",
+    "Photo Deleted": "Photo Deleted",
+    "Photo removed.": "Photo removed.",
+    "Error Deleting Photo": "Error Deleting Photo",
+    "Could not delete photo": "Could not delete photo",
+    "Photos Uploaded": "Photos Uploaded",
+    "New photos added.": "New photos added.",
+    "Upload Failed": "Upload Failed",
+    "Failed to upload photos": "Failed to upload photos",
     "Add Photo": "Add Photo",
     "Done": "Done",
     "Edit Photo": "Edit Photo",
@@ -470,7 +480,9 @@
     "rotate": "Rotate",
     "save": "Save",
     "cancel": "Cancel",
-    "clear": "Clear"
+    "clear": "Clear",
+    "No Photos Selected": "No Photos Selected",
+    "Please upload at least one photo for your ad": "Please upload at least one photo for your ad"
   },
 
   "pendingAds": {
@@ -774,7 +786,9 @@
     "retryWithGoogle": "Retry with Google",
     "contactSupport": "Contact Support",
     "googleFailureNote": "If the problem persists, try another sign-in method or contact support.",
-    "error": "Error"
+    "error": "Error",
+    "orContinueWith": "Or continue with",
+    "continueWithGoogle": "Continue with Google"
   },
   "pending": {
     "title": "Pending",
@@ -1434,6 +1448,7 @@
     "socialMediaLinks": "Social Media Links",
     "adPreview": "Ad Preview",
     "viewAnalytics": "View Analytics",
+    "viewUserDetails": "View User Details",
     "purchaseImpressions": "Purchase Impressions",
     "backToCampaigns": "Back to Campaigns",
     "adNotFound": "Ad not found",

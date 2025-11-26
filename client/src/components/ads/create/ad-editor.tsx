@@ -327,9 +327,9 @@ export function AdEditor() {
                         <Input
                           type="tel"
                           inputMode="tel"
-                          placeholder="05XXXXXXXX"
+                          placeholder="966XXXXXXX"
                           // pattern="^(\+9665|05)\d{8}$"
-                          // title="Saudi mobile numbers: 05XXXXXXXX or +9665XXXXXXXX"
+                          // title="Saudi mobile numbers: 966XXXXXXX or +9665XXXXXXXX"
                           {...field}
                         />
                       </FormControl>
@@ -533,7 +533,7 @@ export function AdEditor() {
                               key={city.value}
                               className={`flex items-center space-x-2 p-2 border rounded-md transition-colors  `}>
                               <Checkbox
-                              className="mx-2"
+                                className="mx-2"
                                 id={city.value}
                                 checked={
                                   isAllCitiesSelected ||

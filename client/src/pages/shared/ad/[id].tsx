@@ -318,6 +318,15 @@ export default function AdDetail({ params }: AdDetailProps) {
             actions={
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
+                {userRole === "admin" && ad.userId && (
+                  <Button
+                    onClick={() => setLocation(`/admin/user-details/${ad.userId}`)}
+                    variant="outline"
+                    data-testid="button-view-user-details">
+                    <i className="fas fa-user mx-2"></i>
+                    {t("adDetail", "viewUserDetails") || "View User Details"}
+                  </Button>
+                )}
                 {ad.status === "approved" && (
                   <>
                     <Button

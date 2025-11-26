@@ -296,22 +296,22 @@ export const signupSchema = insertUserSchema
 export const createAdSchema = insertAdSchema.extend({
   titleEn: z
     .string()
-    // .min(1, "")
+    .min(1, "English title is required")
     .max(200, "Title is too long"),
   titleAr: z
     .string()
-    .min(1, "العنوان مطلوب")
+    .min(1, "Arabic title is required")
     .max(200, "العنوان طويل جداً"),
   descriptionEn: z
     .string()
-    // .min(1, "English description must be at least 10 characters")
+    .min(10, "English description must be at least 10 characters")
     .max(1000, "Description is too long"),
   descriptionAr: z
     .string()
-    .min(1, "الوصف مطلوب")
+    .min(10, "Arabic description must be at least 10 characters")
     .max(1000, "الوصف طويل جداً"),
-  targetAudience: z.string().min(1, "الجمهور المستهدف مطلوب"),
-  targetCities: z.array(z.string()).min(1, "اختر مدينة واحدة على الأقل"),
+  targetAudience: z.string().min(1, "Target audience is required"),
+  targetCities: z.array(z.string()).min(1, "Select at least one city"),
   budgetType: z.enum(["impressions", "clicks"]),
   websiteUrl: z.string().url("Invalid website URL").or(z.literal("")),
   facebookLink: z

@@ -165,7 +165,7 @@ export default function Login() {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
+                  {t("auth", "orContinueWith") || "Or continue with"}
                 </span>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function Login() {
               disabled={isLoading}
               data-testid="button-google-login">
               <i className={`fab fa-google ${isRTL ? "ml-2" : "mr-2"}`}></i>
-              Continue with Google
+              {t("auth", "continueWithGoogle") || "Continue with Google"}
             </Button>
           </div>
 
