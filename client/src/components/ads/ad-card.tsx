@@ -87,19 +87,20 @@ export function AdCard({
           </Badge>
         </div>
 
-        {ad.imageUrl && (
+        {((ad.imageUrl && ad.imageUrl.length > 0) || ad.youtubeVideo) && (
           <div className="w-full h-32 bg-muted rounded-lg mb-4 overflow-hidden">
             <ImageCarousel
-              images={Array.isArray(ad.imageUrl) ? ad.imageUrl : [ad.imageUrl]}
+              images={
+                Array.isArray(ad.imageUrl)
+                  ? ad.imageUrl
+                  : ad.imageUrl
+                    ? [ad.imageUrl]
+                    : []
+              }
+              videoUrl={ad.youtubeVideo}
               alt={title}
               dataTestId={`ad-image-${ad.id}`}
             />
-            {/* <img
-              src={ad.imageUrl}
-              alt={title}
-              className="w-full h-full object-cover"
-              data-testid={`ad-image-${ad.id}`}
-            /> */}
           </div>
         )}
         <div>
@@ -140,17 +141,17 @@ export function AdCard({
                   {t("ads", "view") || "View"}
                 </Button>
                 <Link href={`/ads/${ad.id}/edit`} className="w-[50%]">
-                <Button
-                 
-                      variant="outline"
-                      size="sm"
-                      // onClick={() => onEdit?.(ad.id)}
-                      className="w-full"
-                      data-testid={`button-edit-ad-${ad.id}`}>
-                      <i className="fas fa-edit mx-1"></i>
-                      {t("ads", "edit") || "Edit"}
-                    </Button>
-                
+                  <Button
+
+                    variant="outline"
+                    size="sm"
+                    // onClick={() => onEdit?.(ad.id)}
+                    className="w-full"
+                    data-testid={`button-edit-ad-${ad.id}`}>
+                    <i className="fas fa-edit mx-1"></i>
+                    {t("ads", "edit") || "Edit"}
+                  </Button>
+
                 </Link>
                 {/* {onAnalytics && (
                   <Button

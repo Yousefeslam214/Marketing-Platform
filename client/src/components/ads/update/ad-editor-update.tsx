@@ -81,6 +81,7 @@ export function AdEditor({
       instagramLink: existingData?.instagramLink || "",
       tiktokLink: existingData?.tiktokLink || "",
       youtubeLink: existingData?.youtubeLink || "",
+      youtubeVideo: existingData?.youtubeVideo || "",
       snapchatLink: existingData?.snapchatLink || "",
       googleAdsLink: existingData?.googleAdsLink || "",
     },
@@ -104,6 +105,7 @@ export function AdEditor({
         instagramLink: existingData.instagramLink || "",
         tiktokLink: existingData.tiktokLink || "",
         youtubeLink: existingData.youtubeLink || "",
+        youtubeVideo: existingData.youtubeVideo || "",
         snapchatLink: existingData.snapchatLink || "",
         googleAdsLink: existingData.googleAdsLink || "",
       });
@@ -184,12 +186,13 @@ export function AdEditor({
       targetCities: Array.isArray((data as any).targetCities)
         ? (data as any).targetCities
         : (data as any).targetCities
-        ? [(data as any).targetCities]
-        : [],
+          ? [(data as any).targetCities]
+          : [],
       facebookLink: data.facebookLink,
       instagramLink: data.instagramLink,
       tiktokLink: data.tiktokLink,
       youtubeLink: data.youtubeLink,
+      youtubeVideo: data.youtubeVideo,
       snapchatLink: data.snapchatLink,
       googleAdsLink: data.googleAdsLink,
       phoneNumber: data.phoneNumber || "",
@@ -309,6 +312,23 @@ export function AdEditor({
                           type="url"
                           placeholder={t("ads", "websiteUrlPlaceholder")}
                           data-testid="input-target-url"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="youtubeVideo"
+                  render={({ field }: { field: any }) => (
+                    <FormItem>
+                      <FormLabel>{t("ads", "youtubeVideoLabel")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://youtube.com/watch?v=..."
                           {...field}
                         />
                       </FormControl>

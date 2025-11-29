@@ -384,12 +384,12 @@
     "instagramLinkLabel": "رابط إنستغرام",
     "tiktokLinkLabel": "رابط تيك توك",
     "youtubeLinkLabel": "رابط يوتيوب",
+    "youtubeVideoLabel": "فيديو يوتيوب",
     "snapchatLinkLabel": "رابط سناب شات",
     "googleAdsLinkLabel": "رابط إعلانات جوجل",
     "whatsappNumber": "رقم واتساب",
     "Select city": "اختر المدينة",
     "audienceCars": "سيارات",
-
     "audienceDevices": "أجهزة",
     "audienceAnimals": "حيوانات",
     "audienceFurniture": "اثاث",
@@ -482,7 +482,6 @@
   "userAds": {
     "continueToCredit": "متابعة إلى تخصيص الرصيد",
     "uploadPhotoToContinue": "يرجى رفع صورة قبل المتابعة",
-
     "assignCredit": "تخصيص الرصيد",
     "assignCredits": "تخصيص الأرصدة",
     "depromote": "إلغاء التميز",
@@ -507,7 +506,6 @@
     "creditAmount": "مبلغ الأرصدة",
     "creditsDetermineImpressions": "الأرصدة تحدد عدد المشاهدات التي سيحصل عليها إعلانك.",
     "maximumAvailableCredits": "الحد الأقصى للأرصدة المتاحة",
-
     "maximumAvailable": "الحد الأقصى للأرصدة المتاحة ",
     "assignCreditDescription": "حدد عدد الأرصدة التي ترغب في تخصيصها لحملتك الإعلانية. يمكنك تعديل هذا لاحقًا.",
     "useAllAvailableCredits": "استخدام جميع الأرصدة المتاحة",
@@ -528,7 +526,6 @@
     "adCreationFailed": "فشل في إنشاء الإعلان",
     "adCreationFailedDescription": "حدث خطأ أثناء إنشاء إعلانك. يرجى المحاولة مرة أخرى.",
     "tryAgain": "حاول مرة أخرى",
-
     "100Credits": "100 أرصدة",
     "250Credits": "250 أرصدة",
     "smallTestCampaign": "مناسبة لحملة اختبار صغيرة",
@@ -541,7 +538,6 @@
     "failedToAssignCredit": "فشل في تخصيص الرصيد",
     "pleaseTryAgain": "يرجى المحاولة مرة أخرى"
   },
-
   "pendingAds": {
     "title": "الإعلانات المعلقة",
     "description": "إعلاناتك في انتظار المراجعة والموافقة",
@@ -1433,7 +1429,6 @@
   "adDetail": {
     "continueToCredit": "متابعة إلى تخصيص الرصيد",
     "uploadPhotoToContinue": "يرجى رفع صورة قبل المتابعة",
-
     "assignCredit": "تخصيص الرصيد",
     "assignCredits": "تخصيص الأرصدة",
     "depromote": "إلغاء التميز",
@@ -1458,7 +1453,6 @@
     "creditAmount": "مبلغ الأرصدة",
     "creditsDetermineImpressions": "الأرصدة تحدد عدد المشاهدات التي سيحصل عليها إعلانك.",
     "maximumAvailableCredits": "الحد الأقصى للأرصدة المتاحة",
-
     "maximumAvailable": "الحد الأقصى للأرصدة المتاحة ",
     "assignCreditDescription": "حدد عدد الأرصدة التي ترغب في تخصيصها لحملتك الإعلانية. يمكنك تعديل هذا لاحقًا.",
     "useAllAvailableCredits": "استخدام جميع الأرصدة المتاحة",
@@ -1479,7 +1473,6 @@
     "adCreationFailed": "فشل في إنشاء الإعلان",
     "adCreationFailedDescription": "حدث خطأ أثناء إنشاء إعلانك. يرجى المحاولة مرة أخرى.",
     "tryAgain": "حاول مرة أخرى",
-
     "100Credits": "100 أرصدة",
     "250Credits": "250 أرصدة",
     "smallTestCampaign": "مناسبة لحملة اختبار صغيرة",
@@ -1549,7 +1542,6 @@
     "promoteSuccess": "تم ترقية الإعلان بنجاح",
     "promoteSuccessDescription": "تمت ترقية إعلانك بنجاح.",
     "failedToPromoteAd": "فشل في ترقية الإعلان",
-
     "depromoteSuccess": "تم إلغاء تمييز الإعلان",
     "depromoteSuccessDescription": "تمت إعادة إعلانك إلى وضعه السابق.",
     "failedToDepromoteAd": "فشل في إلغاء التمييز",
@@ -1801,7 +1793,6 @@
     "Save": "حفظ",
     "Cancel": "إلغاء"
   },
-
   "pixels": {
     "title": "بكسلات",
     "description": "إدارة بكسلات التسويق المستخدمة للتتبع والتحليلات.",

@@ -377,6 +377,7 @@
     "instagramLinkLabel": "Instagram Link",
     "tiktokLinkLabel": "TikTok Link",
     "youtubeLinkLabel": "YouTube Link",
+    "youtubeVideoLabel": "YouTube Video",
     "snapchatLinkLabel": "Snapchat Link",
     "googleAdsLinkLabel": "Google Ads Link",
     "audienceCars": "Cars",
@@ -406,7 +407,6 @@
     "whatsappNumber": "WhatsApp Number",
     "Select city": "Select city"
   },
-
   "editPhoto": {
     "Edit Photos": "Edit Photos",
     "Manage, replace, or delete your ad photos": "Manage, replace, or delete your ad photos",
@@ -484,7 +484,6 @@
     "No Photos Selected": "No Photos Selected",
     "Please upload at least one photo for your ad": "Please upload at least one photo for your ad"
   },
-
   "pendingAds": {
     "title": "Pending Ads",
     "description": "Your ads waiting for review before approval or rejection",
@@ -644,7 +643,6 @@
     "adCreationFailed": "Failed to create ad",
     "adCreationFailedDescription": "An error occurred while creating your ad. Please try again.",
     "tryAgain": "Try again",
-
     "100Credits": "100 Credits",
     "250Credits": "250 Credits",
     "smallTestCampaign": "Good for a small test campaign",
@@ -1307,7 +1305,6 @@
           "title": "Advanced Analytics",
           "description": "Track performance with detailed insights and real-time reporting on all your campaigns."
         },
-
         "marketingForYourAds": {
           "title": "Marketing for Your Ads",
           "description": "Your ads are promoted by our marketing team across all social media platforms to increase awareness, customers, and sales for your business."

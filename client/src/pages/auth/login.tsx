@@ -21,10 +21,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
+import { useTheme } from "@/hooks/use-theme";
 import { getErrorMessage } from "@/lib/errorUtils";
 
 export default function Login() {
   const { isRTL, t } = useLanguage();
+  const { theme } = useTheme();
   const [, setLocation] = useLocation();
   const { login, loginWithGoogle, isLoading } = useAuth();
   const { toast } = useToast();
@@ -74,14 +76,13 @@ export default function Login() {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center bg-background px-4 ${
-        isRTL ? "rtl" : "ltr"
-      }`}>
+      className={`min-h-screen flex items-center justify-center bg-background px-4 ${isRTL ? "rtl" : "ltr"
+        }`}>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex items-center justify-between flex-col mb-4">
             <div className="flex items-center gap-2">
-              <img src="/logo.webp" alt="Logo" className="h-11" />
+              <img src={theme === "dark" ? "/white.png" : "/logo.png"} alt="Logo" className="h-11" />
               {/* <CardTitle className="text-2xl">
               </CardTitle> */}
             </div>
@@ -146,9 +147,8 @@ export default function Login() {
                 {isLoading ? (
                   <>
                     <i
-                      className={`fas fa-spinner fa-spin ${
-                        isRTL ? "ml-2" : "mr-2"
-                      }`}></i>
+                      className={`fas fa-spinner fa-spin ${isRTL ? "ml-2" : "mr-2"
+                        }`}></i>
                     {t("auth", "signingIn") || "Signing in..."}
                   </>
                 ) : (

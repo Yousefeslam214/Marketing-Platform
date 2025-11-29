@@ -6,7 +6,8 @@ export type AdData = {
   descriptionEn: string;
   descriptionAr: string;
   websiteUrl: string;
-  imageUrl: string[];
+  imageUrl: string | string[] | null;
+  youtubeVideo?: string | null;
   status: string;
   targetAudience: string;
   budgetType: string;

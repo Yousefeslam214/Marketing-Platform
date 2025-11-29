@@ -6,9 +6,11 @@ import { LanguageToggle } from "@/components/ui/language-toggle";
 import { useEffect, useState } from "react";
 import { TokenManager } from "@/lib/auth";
 import MetaPixel from "@/components/analytics/MetaPixel";
+import { useTheme } from "@/hooks/use-theme";
 
 const PublicHeader = () => {
   const { isRTL, t } = useLanguage();
+  const { theme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [authorizeUser, setAuthorizeUser] = useState(false);
 
@@ -34,18 +36,17 @@ const PublicHeader = () => {
               className="flex items-center space-x-2"
               onClick={() => (location.href = "/")}>
               <img
-                src="/logo.webp"
+                src={theme === "dark" ? "/white.png" : "/logo.png"}
                 alt="Logo"
-                className="w-20 h-8 sm:w-[100px] sm:h-10"
+                className=" h-8 sm:w-[100px] sm:h-10"
               />
             </button>
           </div>
 
           {/* Desktop Navigation */}
           <div
-            className={`hidden lg:flex items-center space-x-6 ${
-              isRTL ? "space-x-reverse" : ""
-            }`}>
+            className={`hidden lg:flex items-center space-x-6 ${isRTL ? "space-x-reverse" : ""
+              }`}>
             <a
               href="/#features"
               className="text-sm font-medium hover:text-primary transition-colors">
@@ -126,23 +127,20 @@ const PublicHeader = () => {
               aria-label="Toggle menu">
               <div className="w-6 h-6 flex flex-col justify-center items-center">
                 <span
-                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                    isMobileMenuOpen
-                      ? "rotate-45 translate-y-1"
-                      : "-translate-y-0.5"
-                  }`}
+                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
+                    ? "rotate-45 translate-y-1"
+                    : "-translate-y-0.5"
+                    }`}
                 />
                 <span
-                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
-                    isMobileMenuOpen ? "opacity-0" : "opacity-100"
-                  }`}
+                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isMobileMenuOpen ? "opacity-0" : "opacity-100"
+                    }`}
                 />
                 <span
-                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                    isMobileMenuOpen
-                      ? "-rotate-45 -translate-y-1"
-                      : "translate-y-0.5"
-                  }`}
+                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
+                    ? "-rotate-45 -translate-y-1"
+                    : "translate-y-0.5"
+                    }`}
                 />
               </div>
             </Button>
@@ -151,11 +149,10 @@ const PublicHeader = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            isMobileMenuOpen
-              ? "max-h-99 opacity-100 border-t"
-              : "max-h-0 opacity-0 overflow-hidden"
-          }`}>
+          className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen
+            ? "max-h-99 opacity-100 border-t"
+            : "max-h-0 opacity-0 overflow-hidden"
+            }`}>
           <div className="py-4 space-y-4">
             {/* Mobile Navigation Links */}
             <div className="space-y-3">
@@ -199,12 +196,12 @@ const PublicHeader = () => {
                 </span>
               </Link>
               <Link href="/feed">
-                 <span
+                <span
                   className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors cursor-pointer"
                   onClick={() => setIsMobileMenuOpen(false)}>
-                {t("sidebar", "adsFeed")}
+                  {t("sidebar", "adsFeed")}
                 </span>
-            </Link>
+              </Link>
             </div>
 
             {/* Mobile Auth Buttons */}

@@ -406,20 +406,18 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
                       <i
-                        className={`fas ${
-                          adActivationStatus
-                            ? "fa-play text-green-600"
-                            : "fa-pause text-gray-600"
-                        } text-2xl mb-2`}></i>
+                        className={`fas ${adActivationStatus
+                          ? "fa-play text-green-600"
+                          : "fa-pause text-gray-600"
+                          } text-2xl mb-2`}></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
                         {t("adDetail", "status")}
                       </h4>
                       <p
-                        className={`text-lg font-bold ${
-                          adActivationStatus
-                            ? "text-green-600"
-                            : "text-gray-600"
-                        }`}>
+                        className={`text-lg font-bold ${adActivationStatus
+                          ? "text-green-600"
+                          : "text-gray-600"
+                          }`}>
                         {adActivationStatus
                           ? t("adDetail", "active")
                           : t("adDetail", "inactive")}
@@ -428,16 +426,14 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
                       <i
-                        className={`fas fa-star  ${
-                          adPromoteStatus ? "text-green-600" : "text-gray-600"
-                        } text-2xl mb-2`}></i>
+                        className={`fas fa-star  ${adPromoteStatus ? "text-green-600" : "text-gray-600"
+                          } text-2xl mb-2`}></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
                         {t("adDetail", "Promote Status")}
                       </h4>
                       <p
-                        className={`text-lg font-bold ${
-                          ad.hasPromoted ? "text-green-600" : "text-gray-600"
-                        }`}>
+                        className={`text-lg font-bold ${ad.hasPromoted ? "text-green-600" : "text-gray-600"
+                          }`}>
                         {adPromoteStatus
                           ? t("adDetail", "active")
                           : t("adDetail", "inactive")}
@@ -636,7 +632,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                                         <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
                                           {t("adDetail", "Promoted") ||
                                             "Promoted"}
-                                          
+
                                         </span>
                                       ) : null}
                                     </div>
@@ -770,7 +766,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                       className="text-foreground"
                       data-testid="ad-target-cities">
                       {Array.isArray(ad.targetCities) &&
-                      ad.targetCities.length > 0
+                        ad.targetCities.length > 0
                         ? ad.targetCities.join(", ")
                         : "N/A"}
                     </p>
@@ -882,12 +878,20 @@ export default function AdDetail({ params }: AdDetailProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="max-w-md mx-auto">
-                      {ad.imageUrl && ad.imageUrl.length > 0 ? (
+                      {(ad.imageUrl && ad.imageUrl.length > 0) ||
+                        ad.youtubeVideo ? (
                         // Array.isArray(ad.imageUrl)
                         <>
                           <ImageCarousel
-                            images={ad?.imageUrl}
-                            alt={ad.titleEn || ad.titleAr}
+                            images={
+                              Array.isArray(ad.imageUrl)
+                                ? ad.imageUrl
+                                : ad.imageUrl
+                                  ? [ad.imageUrl]
+                                  : []
+                            }
+                            videoUrl={ad.youtubeVideo}
+                            isHovered={false}
                             dataTestId={`ad-image-${ad.id}`}
                           />
                         </>

@@ -52,6 +52,7 @@ export function AdEditor() {
       instagramLink: "",
       tiktokLink: "",
       youtubeLink: "",
+      youtubeVideo: "",
       snapchatLink: "",
       googleAdsLink: "",
     },
@@ -290,6 +291,25 @@ export function AdEditor() {
                           type="url"
                           placeholder="https://youtube.com/channel/yourchannel"
                           data-testid="input-youtube-link"
+                          {...field} // field is of type { field: any }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="youtubeVideo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("ads", "youtubeVideoLabel")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://youtube.com/watch?v=..."
+                          data-testid="input-youtube-video"
                           {...field} // field is of type { field: any }
                         />
                       </FormControl>

@@ -1,10 +1,12 @@
 import { useLanguage } from "@/hooks/use-language";
+import { useTheme } from "@/hooks/use-theme";
 import React from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
 const PublicFooter = () => {
   const { t } = useLanguage();
+  const { theme } = useTheme();
   return (
     <footer
       id="contact"
@@ -16,7 +18,7 @@ const PublicFooter = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <img src="/logo.webp" alt="Logo" className="w-[100px] h-10" />
+              <img src={theme === "dark" ? "/white.png" : "/logo.png"} alt="Logo" className=" h-10" />
             </div>
             <p className="text-muted-foreground">
               {/* use nested key via dot-path since TranslationKey expects simple keys; getTranslation supports dot-paths */}

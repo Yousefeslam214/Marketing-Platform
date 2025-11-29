@@ -76,10 +76,18 @@ export default function AdsIndex() {
                     </div>
 
                     <div className="min-h-38">
-                      {ad.imageUrl && ad.imageUrl.length > 0 ? (
+                      {(ad.imageUrl && ad.imageUrl.length > 0) ||
+                        ad.youtubeVideo ? (
                         // Array.isArray(ad.imageUrl)
                         <ImageCarousel
-                          images={ad.imageUrl}
+                          images={
+                            Array.isArray(ad.imageUrl)
+                              ? ad.imageUrl
+                              : ad.imageUrl
+                                ? [ad.imageUrl]
+                                : []
+                          }
+                          videoUrl={ad.youtubeVideo}
                           alt={ad.titleEn || ad.titleAr}
                           dataTestId={`ad-image-${ad.id}`}
                         />

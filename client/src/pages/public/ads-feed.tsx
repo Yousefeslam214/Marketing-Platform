@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLanguage } from "@/hooks/use-language";
+import { useTheme } from "@/hooks/use-theme";
 import { useToast } from "@/hooks/use-toast";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -73,6 +74,7 @@ interface Ad {
   // optional social links
   tiktokLink?: string | null;
   youtubeLink?: string | null;
+  youtubeVideo?: string | null;
   instagramLink?: string | null;
   facebookLink?: string | null;
   snapchatLink?: string | null;
@@ -98,6 +100,7 @@ interface AdsFeedResponse {
 
 export default function AdsFeed() {
   const { t, language, isRTL } = useLanguage();
+  const { theme } = useTheme();
   const { toast } = useToast();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
@@ -183,8 +186,6 @@ export default function AdsFeed() {
     },
     retry: 1,
   });
-  const whatsappLink = adsResponse?.phoneNumber || "";
-  console.log("adsResponse", whatsappLink);
   const handleLike = async (adId: string) => {
     try {
       const response = await fetch(
@@ -495,7 +496,7 @@ export default function AdsFeed() {
               {/* {" "} */}
               {/* {t("sidebar", "appName")} */}
             </h1>
-            {/* <img src="/logo.webp" alt="Logo" className="w-20 h-8" /> */}
+            {/* <img src={theme === "dark" ? "/white.png" : "/logo.png"} alt="Logo" className="w-20 h-8" /> */}
           </div>
           <div className="flex items-center gap-2 md:gap-4 overflow-x-auto px-2">
             <Select
@@ -717,9 +718,8 @@ export default function AdsFeed() {
                       {/* Promoted corner ribbon - RTL on left, LTR on right */}
                       {ad.hasPromoted && (
                         <div
-                          className={`absolute  ${
-                            isRTL ? "left-1.5 -top-2" : "right-0 top-0"
-                          } w-24 h-24 pointer-events-none`}>
+                          className={`absolute  ${isRTL ? "left-1.5 -top-2" : "right-0 top-0"
+                            } w-24 h-24 pointer-events-none`}>
                           <div
                             className={
                               `absolute bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg  ` +
@@ -752,7 +752,7 @@ export default function AdsFeed() {
                         {/* Content */}
                         <div className="p-4 flex flex-col gap-4 flex-1 justify-end">
                           <p
-                            className="text-foreground leading-relaxed whitespace-pre-wrap"
+                            className="text-foreground leading-relaxed whitespace-pre-wrap min-h-[52px]"
                             style={{
                               display: "-webkit-box",
                               WebkitLineClamp: 3,
@@ -766,13 +766,21 @@ export default function AdsFeed() {
 
                           <div className="w-full rounded-lg overflow-hidden">
                             {/* <AspectRatio ratio={4 / 3}> */}
-                            {Array.isArray(ad.imageUrl) &&
-                            ad.imageUrl.length > 0 ? (
+                            {(Array.isArray(ad.imageUrl) &&
+                              ad.imageUrl.length > 0) ||
+                              ad.youtubeVideo ? (
                               <ImageCarousel
-                                images={ad.imageUrl}
+                                images={
+                                  Array.isArray(ad.imageUrl)
+                                    ? ad.imageUrl
+                                    : ad.imageUrl
+                                      ? [ad.imageUrl]
+                                      : []
+                                }
+                                videoUrl={ad.youtubeVideo}
                                 isHovered={false}
                               />
-                            ) : ad.imageUrl ? (
+                            ) : ad.imageUrl && !Array.isArray(ad.imageUrl) ? (
                               <img
                                 src={ad.imageUrl as string}
                                 alt={
@@ -797,7 +805,7 @@ export default function AdsFeed() {
                           className={
                             `px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto flex
                             flex-col
-                            ` +
+                           min-h-[105px] ` +
                             (ad.hasPromoted ? "" : "")
                           }
                           onClick={(e) =>
@@ -811,13 +819,11 @@ export default function AdsFeed() {
                                 size="sm"
                                 onClick={() => handleLike(ad.id)}
                                 disabled={likedAds.has(ad.id)}
-                                className={`gap-2 ${
-                                  likedAds.has(ad.id) ? "text-red-500" : ""
-                                }`}>
+                                className={`gap-2 ${likedAds.has(ad.id) ? "text-red-500" : ""
+                                  }`}>
                                 <Heart
-                                  className={`h-4 w-4 ${
-                                    likedAds.has(ad.id) ? "fill-current" : ""
-                                  }`}
+                                  className={`h-4 w-4 ${likedAds.has(ad.id) ? "fill-current" : ""
+                                    }`}
                                 />
                                 {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
                               </Button>
@@ -1020,7 +1026,7 @@ export default function AdsFeed() {
             <div className="space-y-6">
               <div className="rounded-lg overflow-hidden relative">
                 {Array.isArray(activeAd.imageUrl) &&
-                activeAd.imageUrl.length > 0 ? (
+                  activeAd.imageUrl.length > 0 ? (
                   <ImageCarousel images={activeAd.imageUrl} isHovered={true} />
                 ) : activeAd.imageUrl ? (
                   <img
@@ -1039,9 +1045,8 @@ export default function AdsFeed() {
                 )}
                 {activeAd.hasPromoted && (
                   <div
-                    className={` absolute top-0 ${
-                      isRTL ? "left-0" : "right-0"
-                    } w-24 h-24 overflow-hidden pointer-events-none`}>
+                    className={` absolute top-0 ${isRTL ? "left-0" : "right-0"
+                      } w-24 h-24 overflow-hidden pointer-events-none`}>
                     <div
                       className={
                         `overflow-hidden absolute bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg ` +

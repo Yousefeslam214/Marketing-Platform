@@ -74,6 +74,7 @@ export const ads = pgTable("ads", {
   facebookLink: text("facebook_link"),
   tiktokLink: text("tiktok_link"),
   youtubeLink: text("youtube_link"),
+  youtubeVideo: text("youtube_video"),
   googleAdsLink: text("google_ads_link"),
   instagramLink: text("instagram_link"),
   snapchatLink: text("snapchat_link"),
@@ -298,18 +299,12 @@ export const createAdSchema = insertAdSchema.extend({
     .string()
     // .min(1, "")
     .max(200, "Title is too long"),
-  titleAr: z
-    .string()
-    .min(1, "العنوان مطلوب")
-    .max(200, "العنوان طويل جداً"),
+  titleAr: z.string().min(1, "العنوان مطلوب").max(200, "العنوان طويل جداً"),
   descriptionEn: z
     .string()
     // .min(1, "English description must be at least 10 characters")
     .max(1000, "Description is too long"),
-  descriptionAr: z
-    .string()
-    .min(1, "الوصف مطلوب")
-    .max(1000, "الوصف طويل جداً"),
+  descriptionAr: z.string().min(1, "الوصف مطلوب").max(1000, "الوصف طويل جداً"),
   targetAudience: z.string().min(1, "الجمهور المستهدف مطلوب"),
   targetCities: z.array(z.string()).min(1, "اختر مدينة واحدة على الأقل"),
   budgetType: z.enum(["impressions", "clicks"]),
@@ -360,6 +355,19 @@ export const createAdSchema = insertAdSchema.extend({
         /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+/.test(val),
       {
         message: "Invalid YouTube URL",
+      }
+    )
+    .optional()
+    .or(z.literal("")),
+  youtubeVideo: z
+    .string()
+    .refine(
+      (val) =>
+        !val ||
+        val === "" ||
+        /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+/.test(val),
+      {
+        message: "Invalid YouTube Video URL",
       }
     )
     .optional()

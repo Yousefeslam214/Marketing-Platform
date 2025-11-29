@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, type SignupData } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage } from "@/hooks/use-language";
+import { useTheme } from "@/hooks/use-theme";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -29,6 +30,7 @@ export default function Signup() {
   const [, setLocation] = useLocation();
   const { signup, loginWithGoogle, isLoading } = useAuth();
   const { t, isRTL } = useLanguage();
+  const { theme } = useTheme();
   const { toast } = useToast();
 
   const form = useForm<SignupData>({
@@ -82,9 +84,8 @@ export default function Signup() {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center bg-background px-4 ${
-        isRTL ? "rtl" : "ltr"
-      }`}>
+      className={`min-h-screen flex items-center justify-center bg-background px-4 ${isRTL ? "rtl" : "ltr"
+        }`}>
       <Card className="w-full max-w-md">
         {/* <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -100,7 +101,7 @@ export default function Signup() {
         <CardHeader className="text-center">
           <div className="flex items-center justify-between flex-col mb-4">
             <div className="flex items-center gap-2">
-              <img src="/logo.webp" alt="Logo" className="h-11" />
+              <img src={theme === "dark" ? "/white.png" : "/logo.png"} alt="Logo" className="h-11" />
               {/* <CardTitle className="text-2xl">
                       </CardTitle> */}
             </div>
