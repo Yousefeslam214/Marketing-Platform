@@ -28,7 +28,15 @@
     "impressionActivity": "Ad viewed",
     "conversionActivity": "Conversion",
     "unknownActivity": "Activity",
-    "justNow": "Just now"
+    "justNow": "Just now",
+    "conversionRate": "Conversion Rate",
+    "totalSpent": "Total Spent",
+    "activeAds": "Active Ads",
+    "pendingAds": "Pending Ads",
+    "rejectedAds": "Rejected Ads",
+    "adPerformance": "Ad Performance",
+    "campaignOverview": "Campaign Overview",
+    "quickActions": "Quick Actions"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -173,7 +181,8 @@
       "goHome": "Go Home",
       "support": "Need help? Contact our support team",
       "thankYou": "Thank you for your payment",
-      "confirmationSent": "Confirmation email sent to your registered email address"
+      "confirmationSent": "Confirmation email sent to your registered email address",
+      "gotoads": "Go to Ads"
     },
     "failed": {
       "title": "Payment Failed",
@@ -405,7 +414,8 @@
     "changePhoto": "Change Photo",
     "supportedFormatsNote": "JPG, PNG up to 5MB",
     "whatsappNumber": "WhatsApp Number",
-    "Select city": "Select city"
+    "Select city": "Select city",
+    "uploadPhotoButton": "Upload Photo"
   },
   "editPhoto": {
     "Edit Photos": "Edit Photos",
@@ -482,7 +492,21 @@
     "cancel": "Cancel",
     "clear": "Clear",
     "No Photos Selected": "No Photos Selected",
-    "Please upload at least one photo for your ad": "Please upload at least one photo for your ad"
+    "Please upload at least one photo for your ad": "Please upload at least one photo for your ad",
+    "Upload a Photo": "Upload a Photo",
+    "Ensure your photo is less than 1MB in size": "Ensure your photo is less than 1MB in size",
+    "Please upload a photo for your ad": "Please upload a photo for your ad",
+    "Upload Ad Photo": "Upload Ad Photo",
+    "Please upload a photo for your ad.": "Please upload a photo for your ad.",
+    "Upload Photo": "Upload Photo",
+    "Good Lighting": "Good Lighting",
+    "Avoid Text": "Avoid Text",
+    "Relate to Your Audience": "Relate to Your Audience",
+    "Photo Guidelines": "Photo Guidelines",
+    "Choose Photo": "Choose Photo",
+    "Continue": "Continue",
+    "Skip for Now": "Skip for Now",
+    "Skip": "Skip"
   },
   "pendingAds": {
     "title": "Pending Ads",
@@ -594,7 +618,19 @@
     "instagram": "Instagram",
     "tiktok": "TikTok",
     "youtube": "YouTube",
-    "snapchat": "Snapchat"
+    "snapchat": "Snapchat",
+    "audience": "Audience",
+    "conversions": "Conversions",
+    "revenue": "Revenue",
+    "costs": "Costs",
+    "trends": "Trends",
+    "comparison": "Comparison",
+    "reports": "Reports",
+    "export": "Export",
+    "dateRange": "Date Range",
+    "filter": "Filter",
+    "metrics": "Metrics",
+    "dimensions": "Dimensions"
   },
   "userAds": {
     "continueToCredit": "Continue to credit assignment",
@@ -794,7 +830,13 @@
     "pendingApprovals": "Pending Approvals",
     "review": "Review",
     "approve": "Approve",
-    "reject": "Reject"
+    "reject": "Reject",
+    "view": "View",
+    "details": "Details",
+    "submittedAt": "Submitted At",
+    "submittedBy": "Submitted By",
+    "priority": "Priority",
+    "category": "Category"
   },
   "queue": {
     "title": "Queue",
@@ -802,7 +844,15 @@
     "marketingQueue": "Marketing Queue",
     "scheduled": "Scheduled",
     "processing": "Processing",
-    "completed": "Completed"
+    "completed": "Completed",
+    "position": "Position",
+    "estimatedTime": "Estimated Time",
+    "status": "Status",
+    "waiting": "Waiting",
+    "priority": "Priority",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
   },
   "AllAds": {
     "title": "All Ads",
@@ -810,7 +860,18 @@
     "marketingQueue": "Marketing Queue",
     "scheduled": "Scheduled",
     "processing": "Processing",
-    "completed": "Completed"
+    "completed": "Completed",
+    "filters": "Filters",
+    "search": "Search",
+    "sortBy": "Sort By",
+    "filterBy": "Filter By",
+    "showAll": "Show All",
+    "showActive": "Show Active",
+    "showInactive": "Show Inactive",
+    "bulkActions": "Bulk Actions",
+    "selectAll": "Select All",
+    "export": "Export",
+    "import": "Import"
   },
   "AdminDashboard": {
     "title": "Admin Dashboard",
@@ -1089,7 +1150,8 @@
     "question3": "Can I get a refund for unused credits?",
     "answer3": "Yes, we offer refunds for unused credits within 30 days of purchase. Contact support for assistance.",
     "question4": "Do you offer technical support?",
-    "answer4": "Yes, we provide comprehensive technical support via email, chat, and phone for all users."
+    "answer4": "Yes, we provide comprehensive technical support via email, chat, and phone for all users.",
+    "english": "English"
   },
   "privacyTerms": {
     "title": "Privacy Policy & Terms of Service",
@@ -1401,8 +1463,30 @@
     }
   },
   "adDetail": {
-    "title": "Ad Campaign Details",
-    "description": "Ad campaign details and performance",
+    "title": "Ad Details",
+    "description": "View and manage ad details",
+    "backToAds": "Back to Ads",
+    "creditAssignedSuccess": "Credit assigned successfully",
+    "failedToAssignCredit": "Failed to assign credit",
+    "pleaseRetryLater": "Please retry later",
+    "failedToActivateAd": "Failed to activate ad",
+    "adActivatedSuccess": "Ad activated successfully",
+    "campaignActiveMessage": "Your campaign is now active",
+    "insufficientCreditsMessage": "Insufficient credits",
+    "adDeactivatedSuccess": "Ad deactivated successfully",
+    "campaignDeactivatedMessage": "Your campaign is now inactive",
+    "promoteSuccess": "Ad Promoted",
+    "promoteSuccessDescription": "Ad promoted successfully",
+    "failedToPromoteAd": "Failed to promote ad",
+    "alreadyDepromoted": "Already depromoted",
+    "failedToDepromoteAd": "Failed to depromote ad",
+    "depromoteSuccess": "Ad Depromoted",
+    "depromoteSuccessDescription": "Ad depromoted successfully",
+    "invalidCreditAmount": "Invalid credit amount",
+    "enterValidCredit": "Please enter a valid credit amount",
+    "failedToLoadMetrics": "Failed to load metrics",
+    "viewUserDetails": "View User Details",
+    "purchaseImpressions": "Purchase Impressions",
     "performanceOverview": "Performance Overview",
     "impressionsCredit": "Impressions Credit",
     "amountSpent": "Amount Spent",
@@ -1410,288 +1494,11 @@
     "status": "Status",
     "active": "Active",
     "inactive": "Inactive",
+    "Promote Status": "Promote Status",
     "campaignManagement": "Campaign Management",
     "assignCredits": "Assign Credits",
-    "Promote Status": "Promote Status",
-    "impressionRatios": "Impression Ratios",
-    "loadingImpressionRatios": "Loading impression ratios…",
-    "noImpressionRatiosFound": "No impression ratios found.",
-    "balanceLabel": "Balance",
-    "assignCredit": "Assign Credit",
     "assigning": "Assigning...",
-    "activateCampaign": "Activate Campaign",
-    "activating": "Activating...",
-    "deactivateCampaign": "Deactivate Campaign",
-    "deactivating": "Deactivating...",
-    "creditAssignInfo": "Assign credits to this campaign before activation. Each credit represents impression capacity for your ads.",
-    "adContent": "Ad Content",
-    "englishTitle": "English Title",
-    "arabicTitle": "Arabic Title",
-    "englishDescription": "English Description",
-    "arabicDescription": "Arabic Description",
-    "websiteUrl": "Website URL",
-    "campaignDetails": "Campaign Details",
-    "campaignStatus": "Campaign Status",
-    "targetAudience": "Target Audience",
-    "targetCities": "Target Cities",
-    "budgetType": "Budget Type",
-    "created": "Created",
-    "lastUpdated": "Last Updated",
-    "approvedBy": "Approved By",
-    "publishToken": "Publish Token",
-    "pageId": "Page ID",
-    "postIdOnPlatform": "Post ID on Platform",
-    "rejectionReason": "Rejection Reason",
-    "socialMediaLinks": "Social Media Links",
-    "adPreview": "Ad Preview",
-    "viewAnalytics": "View Analytics",
-    "viewUserDetails": "View User Details",
-    "purchaseImpressions": "Purchase Impressions",
-    "backToCampaigns": "Back to Campaigns",
-    "adNotFound": "Ad not found",
-    "failedToLoadMetrics": "Failed to load metrics",
-    "pleaseRetryLater": "Please try again later.",
-    "creditAssignedSuccess": "Credit Assigned Successfully",
-    "creditsAssignedMessage": "credit(s) assigned to ad campaign",
-    "failedToAssignCredit": "Failed to Assign Credit",
-    "adActivatedSuccess": "Ad Activated Successfully",
-    "campaignActiveMessage": "Your ad campaign is now active and running",
-    "adDeactivatedSuccess": "Ad Deactivated",
-    "campaignDeactivatedMessage": "Your ad campaign has been paused",
-    "failedToActivateAd": "Failed to Activate Ad",
-    "insufficientCreditsMessage": "Cannot activate ad: insufficient impression credits",
-    "invalidCreditAmount": "Invalid Credit Amount",
-    "enterValidCredit": "Please enter a valid credit amount",
-    "promote": "Promote",
-    "promoted": "Promoted",
-    "promoteSuccess": "Ad Promoted Successfully",
-    "promoteSuccessDescription": "Your ad has been promoted successfully.",
-    "failedToPromoteAd": "Failed to Promote Ad",
-    "depromote": "Depromote",
-    "depromoteSuccess": "Ad Depromoted",
-    "depromoteSuccessDescription": "Your ad has been moved back.",
-    "failedToDepromoteAd": "Failed to Depromote Ad",
-    "alreadyDepromoted": "Already depromoted",
-    "uploadPhoto": {
-      "header": {
-        "title": "Upload Ad Photo",
-        "description": "Add an eye-catching photo to your advertisement"
-      },
-      "card": {
-        "title": "Upload Your Ad Photo",
-        "description": "Add a compelling image to make your ad more attractive and engaging."
-      },
-      "preview": {
-        "alt": "Ad preview"
-      },
-      "uploadArea": {
-        "title": "Upload your ad photo",
-        "description": "Choose a high-quality image that represents your ad",
-        "fileSupport": "Supports JPG, PNG up to 5MB"
-      },
-      "guidelines": {
-        "title": "Photo Guidelines:",
-        "highRes": "Use high-resolution images (minimum 800x600px)",
-        "goodLighting": "Ensure good lighting and clear visibility",
-        "avoidText": "Avoid text-heavy images",
-        "relateToAudience": "Use images that relate to your target audience"
-      },
-      "buttons": {
-        "remove": "Remove",
-        "uploading": "Uploading...",
-        "choose": "Choose Photo",
-        "change": "Change Photo",
-        "continue": "Continue to Credit Assignment",
-        "skip": "Skip Photo"
-      },
-      "success": {
-        "title": "Photo uploaded successfully",
-        "description": "Your ad photo has been uploaded"
-      },
-      "errors": {
-        "title": "Upload Failed",
-        "invalidAdId": "Invalid Ad ID",
-        "tryAgain": "Unable to find the ad ID. Please try again.",
-        "uploadFailed": "Failed to upload photo",
-        "invalidFileType": "Invalid file type",
-        "selectImage": "Please select an image file",
-        "fileTooLarge": "File size must be less than {size}",
-        "currentSize": "Current size: {size}",
-        "photoRequired": "Photo required",
-        "uploadBeforeContinue": "Please upload a photo before continuing"
-      }
-    },
-    "editor": {
-      "card": {
-        "title": "Ad Information"
-      },
-      "form": {
-        "titleEn": "Ad Title (English)",
-        "titleEnPlaceholder": "Enter ad title...",
-        "titleAr": "Ad Title (Arabic)",
-        "titleArPlaceholder": "أدخل عنوان الإعلان...",
-        "descriptionEn": "Description (English)",
-        "descriptionEnPlaceholder": "Enter ad description...",
-        "descriptionAr": "Description (Arabic)",
-        "descriptionArPlaceholder": "أدخل وصف الإعلان...",
-        "websiteUrl": "Website URL",
-        "websiteUrlPlaceholder": "https://example.com",
-        "socialMediaLinks": "Social Media Links (Optional)",
-        "facebookLink": "Facebook Link",
-        "facebookPlaceholder": "https://facebook.com/yourpage",
-        "targetAudience": "Target Audience",
-        "selectAudience": "Select audience",
-        "audienceOptions": {
-          "general": "General Audience",
-          "tech": "Tech Professionals",
-          "business": "Business Owners",
-          "students": "Students"
-        },
-        "budgetType": "Budget Type",
-        "selectBudgetType": "Select budget type",
-        "budgetOptions": {
-          "impressions": "Pay per 1000 impressions",
-          "clicks": "Pay per click"
-        },
-        "targetCities": "Target Cities"
-      },
-      "buttons": {
-        "cancel": "Cancel",
-        "saving": "Saving...",
-        "saveDraft": "Save Draft"
-      },
-      "success": {
-        "title": "Ad created successfully",
-        "description": "Your ad has been created and saved as draft"
-      },
-      "warning": {
-        "title": "Warning",
-        "description": "Ad created but unable to upload photo. Please try uploading later."
-      },
-      "error": {
-        "title": "Failed to create ad",
-        "description": "Please try again"
-      }
-    },
-    "editorUpdate": {
-      "card": {
-        "title": "Update Ad Information"
-      },
-      "form": {
-        "titleEn": "Ad Title (English)",
-        "titleEnPlaceholder": "Enter ad title...",
-        "adPhoto": "Ad Photo"
-      },
-      "buttons": {
-        "remove": "Remove",
-        "updating": "Updating Ad...",
-        "updateAd": "Update Ad"
-      },
-      "photoUpload": {
-        "success": {
-          "title": "Photo uploaded successfully",
-          "description": "Your ad photo has been uploaded"
-        },
-        "error": {
-          "title": "Failed to upload photo",
-          "description": "Please try again"
-        }
-      },
-      "validation": {
-        "invalidFileType": "Invalid file type",
-        "selectImage": "Please select an image file",
-        "fileTooLarge": "File too large",
-        "fileSizeLimit": "Please select an image smaller than 5MB"
-      },
-      "success": {
-        "title": "Ad updated successfully",
-        "description": "Your ad has been updated"
-      },
-      "error": {
-        "title": "Failed to update ad",
-        "description": "Please try again"
-      }
-    },
-    "form": {
-      "title": "Targeting & Budget",
-      "primaryAudience": "Primary Audience",
-      "selectPrimaryAudience": "Select primary audience",
-      "audienceOptions": {
-        "general": "General Audience",
-        "youngAdults": "Young Adults (18-30)",
-        "professionals": "Working Professionals",
-        "businessOwners": "Business Owners",
-        "students": "Students",
-        "parents": "Parents",
-        "seniors": "Seniors (50+)"
-      },
-      "budgetType": "Budget Type",
-      "selectBudgetType": "Select budget type",
-      "budgetOptions": {
-        "impressions": "Pay per 1000 impressions",
-        "clicks": "Pay per click"
-      },
-      "ageRange": "Age Range",
-      "minAgePlaceholder": "Min age",
-      "maxAgePlaceholder": "Max age",
-      "gender": "Gender",
-      "genders": {
-        "male": "Male",
-        "female": "Female",
-        "all": "All"
-      },
-      "languages": "Languages",
-      "languageOptions": {
-        "en": "English",
-        "ar": "Arabic",
-        "both": "Both"
-      },
-      "interests": "Interests",
-      "technology": "Technology",
-      "business": "Business",
-      "finance": "Finance",
-      "health": "Health",
-      "fitness": "Fitness",
-      "food": "Food",
-      "travel": "Travel",
-      "education": "Education",
-      "entertainment": "Entertainment",
-      "shopping": "Shopping",
-      "automotive": "Automotive",
-      "realEstate": "Real Estate",
-      "locations": "Locations",
-      "dailyBudget": "Daily Budget",
-      "approxImpressions": "Approximately {count} impressions per day",
-      "basedOnCPC": "Based on estimated cost per click",
-      "saving": "Saving...",
-      "saveTargeting": "Save Targeting",
-      "save": "Save",
-      "selectPlaceholder": "Select...",
-      "validation": {
-        "audienceRequired": "Target audience is required",
-        "minAge18": "Minimum age is 18",
-        "maxAge65": "Maximum age is 65",
-        "minLessThanMax": "Minimum age must be less than or equal to maximum age",
-        "selectOneGender": "Select at least one gender",
-        "selectOneInterest": "Select at least one interest",
-        "selectOneLanguage": "Select at least one language",
-        "selectOneLocation": "Select at least one location",
-        "selectOneDevice": "Select at least one device type",
-        "minDailyBudget": "Minimum daily budget is $10"
-      }
-    },
-    "card": {
-      "buttons": {
-        "view": "View",
-        "edit": "Edit",
-        "analytics": "Analytics",
-        "purchaseImpressions": "Purchase Impressions",
-        "viewPublicAd": "View Public Ad",
-        "approve": "Approve",
-        "reject": "Reject"
-      },
-      "rejectionReason": "Rejection Reason:"
-    }
+    "assignCredit": "Assign Credit"
   },
   "pixels": {
     "title": "Pixels",
@@ -1759,5 +1566,11 @@
   "common": {
     "dashboard": "Dashboard",
     "contactSupport": "Contact Support"
+  },
+  "error": {
+    "title": "Error",
+    "message": "An error occurred",
+    "retry": "Retry",
+    "home": "Home"
   }
 }

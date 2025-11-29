@@ -329,7 +329,8 @@
         "resolution": "استخدم صوراً عالية الدقة (800x600 بكسل كحد أدنى)",
         "lighting": "تأكد من الإضاءة الجيدة والوضوح",
         "textHeavy": "تجنب الصور التي تحتوي على نصوص كثيرة",
-        "relevance": "استخدم صوراً تتعلق بجمهورك المستهدف"
+        "relevance": "استخدم صوراً تتعلق بجمهورك المستهدف",
+        "max1mb": "لا تقم بتحميل صور أكبر من 1 ميجابايت"
       },
       "invalidFileType": "نوع ملف غير صحيح",
       "selectImageFile": "يرجى اختيار ملف صورة",
@@ -344,7 +345,9 @@
       "uploadFailed": "فشل في رفع الصورة",
       "supportedFormats": "يدعم JPG، PNG حتى 5 ميجابايت",
       "dragAndDrop": "رفع صورة إعلانك",
-      "chooseHighQuality": "اختر صورة عالية الجودة تمثل إعلانك"
+      "chooseHighQuality": "اختر صورة عالية الجودة تمثل إعلانك",
+      "currentFileSize": "حجم الملف الحالي: {size} ميجابايت",
+      "fileSelected": "تم اختيار الملف"
     },
     "photoUploaded": "تم رفع الصورة بنجاح",
     "photoUploadDescription": "تم رفع صورة إعلانك",
@@ -657,7 +660,10 @@
     "instagram": "انستجرام",
     "tiktok": "تيك توك",
     "youtube": "يوتيوب",
-    "snapchat": "سناب شات"
+    "snapchat": "سناب شات",
+    "description": "تحليلات تفصيلية لحملاتك",
+    "campaigns": "الحملات",
+    "demographics": "التركيبة السكانية"
   },
   "userManagement": {
     "title": "إدارة المستخدمين",
@@ -802,7 +808,9 @@
     "submittedAt": "تاريخ التقديم",
     "submittedBy": "مقدم من",
     "priority": "الأولوية",
-    "category": "الفئة"
+    "category": "الفئة",
+    "pendingApprovals": "الموافقات المعلقة",
+    "review": "مراجعة"
   },
   "queue": {
     "title": "قائمة الانتظار",
@@ -815,7 +823,10 @@
     "priority": "الأولوية",
     "high": "عالية",
     "medium": "متوسطة",
-    "low": "منخفضة"
+    "low": "منخفضة",
+    "marketingQueue": "قائمة انتظار التسويق",
+    "scheduled": "مجدول",
+    "completed": "مكتمل"
   },
   "AllAds": {
     "title": "جميع الإعلانات",
@@ -830,7 +841,11 @@
     "bulkActions": "الإجراءات المجمعة",
     "selectAll": "تحديد الكل",
     "export": "تصدير",
-    "import": "استيراد"
+    "import": "استيراد",
+    "marketingQueue": "قائمة انتظار التسويق",
+    "scheduled": "مجدول",
+    "processing": "قيد المعالجة",
+    "completed": "مكتمل"
   },
   "AdminDashboard": {
     "title": "لوحة تحكم الإدارة",
@@ -1115,7 +1130,8 @@
     "question3": "هل يمكنني استرداد الأموال للنقاط غير المستخدمة؟",
     "answer3": "نعم، نقدم استرداد للنقاط غير المستخدمة خلال 30 يوماً من الشراء. اتصل بالدعم للمساعدة.",
     "question4": "هل تقدمون الدعم التقني؟",
-    "answer4": "نعم، نقدم دعماً تقنياً شاملاً عبر البريد الإلكتروني والدردشة والهاتف لجميع المستخدمين."
+    "answer4": "نعم، نقدم دعماً تقنياً شاملاً عبر البريد الإلكتروني والدردشة والهاتف لجميع المستخدمين.",
+    "arabic": "العربية"
   },
   "privacyTerms": {
     "title": "سياسة الخصوصية وشروط الخدمة",
@@ -1687,60 +1703,60 @@
       }
     },
     "form": {
-      "title": "\u0627\u0644\u0627\u0633\u062a\u0647\u062f\u0627\u0641 \u0648\u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
-      "primaryAudience": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629",
-      "selectPrimaryAudience": "\u0627\u062e\u062a\u0631 \u0627\u0644\u062c\u0645\u0647\u0648\u0631",
+      "title": "الاستهداف والميزانية",
+      "primaryAudience": "الجمهور الرئيسية",
+      "selectPrimaryAudience": "اختر الجمهور",
       "audienceOptions": {
-        "general": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0627\u0644\u0639\u0627\u0645",
-        "youngAdults": "\u0634\u0628\u0627\u0628 \u0635\u063a\u064a\u0631\u0629 (18-30)",
-        "professionals": "\u0627\u0644\u0645\u062d\u062a\u0631\u0641\u064a\u0646",
-        "businessOwners": "\u0623\u0635\u062d\u0627\u0628 \u0627\u0644\u0623\u0639\u0645\u0627\u0644",
-        "students": "\u0627\u0644\u0637\u0644\u0627\u0628",
-        "parents": "\u0627\u0644\u0623\u0648\u0627\u0644\u0627\u0646",
-        "seniors": "\u0627\u0644\u0633\u0646\u064a\u0648\u0631\u0633 (50+)"
+        "general": "الجمهور العام",
+        "youngAdults": "شباب صغيرة (18-30)",
+        "professionals": "المحترفين",
+        "businessOwners": "أصحاب الأعمال",
+        "students": "الطلاب",
+        "parents": "الأوالان",
+        "seniors": "السنيورس (50+)"
       },
-      "budgetType": "\u0646\u0648\u0639 \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
-      "selectBudgetType": "\u0627\u062e\u062a\u0631 \u0646\u0648\u0639 \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629",
+      "budgetType": "نوع الميزانية",
+      "selectBudgetType": "اختر نوع الميزانية",
       "budgetOptions": {
-        "impressions": "\u0627\u0644\u062f\u0641\u0639 \u0645\u0642\u0627\u0628\u0644 1000 \u0638\u0647\u0648\u0631",
-        "clicks": "\u0627\u0644\u062f\u0641\u0639 \u0645\u0642\u0627\u0628\u0644 \u0627\u0644\u0646\u0642\u0631\u0629"
+        "impressions": "الدفع مقابل 1000 ظهور",
+        "clicks": "الدفع مقابل النقرة"
       },
-      "ageRange": "\u0645\u062f\u0629 \u0627\u0644\u0639\u0645\u0631",
-      "minAgePlaceholder": "\u0623\u062f\u0646\u0649 \u0627\u0644\u0639\u0645\u0631",
-      "maxAgePlaceholder": "\u0623\u0642\u0635\u0649 \u0627\u0644\u0639\u0645\u0631",
-      "gender": "\u0627\u0644\u062c\u0646\u0633",
+      "ageRange": "مدة العمر",
+      "minAgePlaceholder": "أدنى العمر",
+      "maxAgePlaceholder": "أقصى العمر",
+      "gender": "الجنس",
       "genders": {
-        "male": "\u0630\u0643\u0631",
-        "female": "\u0623\u0646\u062b\u0649",
-        "all": "\u0627\u0644\u062c\u0645\u064a\u0639"
+        "male": "ذكر",
+        "female": "أنثى",
+        "all": "الجميع"
       },
-      "languages": "\u0627\u0644\u0644\u063a\u0627\u062a",
+      "languages": "اللغات",
       "languageOptions": {
         "en": "English",
         "ar": "Arabic",
         "both": "Both"
       },
-      "interests": "\u0627\u0644\u0627\u0647\u062a\u0645\u0627\u0645\u0627\u062a",
-      "technology": "\u0627\u0644\u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627",
-      "business": "\u0623\u0635\u062d\u0627\u0628",
-      "finance": "\u0627\u0644\u0645\u0627\u0644\u064a\u0627\u062a",
-      "health": "\u0627\u0644\u0635\u062d\u0629",
-      "fitness": "\u0627\u0644\u0644\u0627\u0631\u064a\u0628",
-      "food": "\u0627\u0644\u0637\u0639\u0627\u0645",
-      "travel": "\u0627\u0644\u0633\u0641\u0631",
-      "education": "\u0627\u0644\u062a\u0639\u0644\u064a\u0645",
-      "entertainment": "\u0627\u0644\u062a\u0631\u0641\u064a\u0647",
-      "shopping": "\u0627\u0644\u062a\u0633\u0648\u0642",
-      "automotive": "\u0627\u0644\u0645\u0648\u0627\u0635\u0644\u0627\u062a",
-      "realEstate": "\u0627\u0644\u0639\u0639\u0627\u0631",
-      "locations": "\u0627\u0644\u0645\u0648\u0627\u0642\u0639",
-      "dailyBudget": "\u0627\u0644\u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u064a\u0648\u0645\u064a\u0629",
-      "approxImpressions": "\u062a\u0642\u0631\u064a\u0628\u0627 \u062d\u0648\u0627\u0644\u064a \u0627\u0644\u0623\u0646\u0637\u0628\u0627\u0639 \u0644\u0643\u0644 {count} \u064a\u0648\u0645",
-      "basedOnCPC": "\u0628\u0627\u0644\u0627\u0633\u062a\u0646\u0627\u062f \u0639\u0644\u0649 \u062a\u0643\u0644\u0641\u0629 \u0627\u0644\u0646\u0642\u0631",
-      "saving": "\u062c\u0627\u0631\u064a \u0627\u0644\u062d\u0641\u0638...",
-      "saveTargeting": "\u062d\u0641\u0638 \u0627\u0644\u0627\u0633\u062a\u0647\u062f\u0627\u0641",
-      "save": "\u062d\u0641\u0638",
-      "selectPlaceholder": "\u0627\u062e\u062a\u0631...",
+      "interests": "الاهتمامات",
+      "technology": "التكنولوجيا",
+      "business": "أصحاب",
+      "finance": "الماليات",
+      "health": "الصحة",
+      "fitness": "اللاريب",
+      "food": "الطعام",
+      "travel": "السفر",
+      "education": "التعليم",
+      "entertainment": "الترفيه",
+      "shopping": "التسوق",
+      "automotive": "المواصلات",
+      "realEstate": "الععار",
+      "locations": "المواقع",
+      "dailyBudget": "البداية اليومية",
+      "approxImpressions": "تقريبا حوالي الأنطباع لكل {count} يوم",
+      "basedOnCPC": "بالاستناد على تكلفة النقر",
+      "saving": "جاري الحفظ...",
+      "saveTargeting": "حفظ الاستهداف",
+      "save": "حفظ",
+      "selectPlaceholder": "اختر...",
       "validation": {
         "audienceRequired": "الجمهور المستهدف مطلوب",
         "minAge18": "الحد الأدنى للعمر هو 18",
