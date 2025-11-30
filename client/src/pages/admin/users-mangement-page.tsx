@@ -53,9 +53,11 @@ export default function AdminUsers() {
     url: `${VITE_API_BASE_URL}/api/users?page=${page}&limit=${effectiveLimit}`,
   });
 
+
   // const mockUsers = usersData;
 
   const mockUsers = usersData?.data;
+  console.log("mockUsers:", mockUsers);
   // Show loading indicator while fetching users
   if (isLoading) {
     return (
@@ -127,8 +129,8 @@ export default function AdminUsers() {
   const filteredUsers = (mockUsers as User[] | undefined)?.filter(
     (user: User) => {
       const matchesSearch =
-        user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase());
+        user?.username?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+        user?.email?.toLowerCase().includes(searchQuery?.toLowerCase());
       const matchesRole = roleFilter === "all" || user.role === roleFilter;
       return matchesSearch && matchesRole;
     }
@@ -217,7 +219,7 @@ export default function AdminUsers() {
                     <Avatar>
                       <AvatarImage src="" alt={userData.username} />
                       <AvatarFallback>
-                        {userData.username.slice(0, 2).toUpperCase()}
+                        {userData.username?.slice(0, 2).toUpperCase() || userData.email?.slice(0, 2).toUpperCase() }
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
