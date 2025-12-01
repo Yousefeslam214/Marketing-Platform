@@ -1,7 +1,7 @@
 // language-context.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-export type Language = "en" | "ar";
+export type Language =  "ar" | "en";
 
 interface LanguageContextType {
   language: Language;

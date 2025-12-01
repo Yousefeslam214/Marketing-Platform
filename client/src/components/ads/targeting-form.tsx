@@ -90,7 +90,7 @@ export function TargetingForm({
       ageRange: { min: 18, max: 65 },
       genders: [],
       interests: [],
-      languages: ["en"],
+      languages: ["ar"],
       locations: [],
       devices: [],
       budgetType: "impressions",

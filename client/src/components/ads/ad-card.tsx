@@ -25,7 +25,7 @@ interface AdCardProps {
 
 export function AdCard({
   ad,
-  language = "en",
+  language = "ar",
   onView,
   onEdit,
   onAnalytics,
