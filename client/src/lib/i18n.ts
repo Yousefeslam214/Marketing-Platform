@@ -2,7 +2,7 @@
 import enTranslations from "@/locales/en.json";
 import arTranslations from "@/locales/ar.json";
 
-export type Language = "en" | "ar";
+export type Language = "ar" | "en" ;
 
 // Import JSON files as translation objects
 const translations = {
