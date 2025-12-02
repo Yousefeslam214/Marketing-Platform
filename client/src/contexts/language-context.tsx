@@ -14,16 +14,20 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>(() => {
-    const stored = localStorage.getItem("language");
-    return stored === "ar" || stored === "en" ? stored : "en";
-  });
-
+  const [language, setLanguage] = useState<Language>("ar");
+  // const [language, setLanguage] = useState<Language>(() => {
+  //   const stored = localStorage.getItem("language");
+  //   return stored === "ar" || stored === "en" ? stored : "en";
+  // });
+if( language !== "ar" && language !== "en") {
+  setLanguage("ar");
+}
   useEffect(() => {
     const html = document.documentElement;
     html.setAttribute("lang", language);
     html.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
-    localStorage.setItem("language", language);
+
+  if (!localStorage.getItem("language")) localStorage.setItem("language", "ar");
 
     // Dispatch custom event for other components to listen
     window.dispatchEvent(
