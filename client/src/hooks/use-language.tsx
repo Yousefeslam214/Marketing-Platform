@@ -2,17 +2,16 @@ import { useState, useEffect } from "react";
 import { getTranslation, type Language } from "@/lib/i18n";
 
 export function useLanguage() {
-  const [language, setLanguage] = useState<Language>("ar");
-  // const [language, setLanguage] = useState<Language>(() => {
-  //   const stored = localStorage.getItem("language");
-  //   return stored === "ar" || stored === "en" ? stored : "en";
-  // });
+  const [language, setLanguage] = useState<Language>(() => {
+    const stored = localStorage.getItem("language");
+    return stored === "ar" || stored === "en" ? stored : "ar";
+  });
 
   useEffect(() => {
     const html = document.documentElement;
     html.setAttribute("lang", language);
     html.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
-  if (!localStorage.getItem("language")) localStorage.setItem("language", "ar");
+    localStorage.setItem("language", language);
 
     // Dispatch custom event for other components to listen
     window.dispatchEvent(
