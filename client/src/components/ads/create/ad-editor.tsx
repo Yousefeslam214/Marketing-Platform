@@ -119,24 +119,6 @@ export function AdEditor() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name="titleEn"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t("ads", "titleEnPlaceholder")}
-                        data-testid="input-title-en"
-                        {...field} // field is of type { field: any }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="titleAr"
                 render={({ field }) => (
                   <FormItem>
@@ -153,21 +135,16 @@ export function AdEditor() {
                   </FormItem>
                 )}
               />
-            </div>
-
-            {/* Description Fields */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name="descriptionEn"
+                name="titleEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
+                    <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder={t("ads", "descriptionEnPlaceholder")}
-                        className="h-24 resize-none"
-                        data-testid="textarea-description-en"
+                      <Input
+                        placeholder={t("ads", "titleEnPlaceholder")}
+                        data-testid="input-title-en"
                         {...field} // field is of type { field: any }
                       />
                     </FormControl>
@@ -175,7 +152,10 @@ export function AdEditor() {
                   </FormItem>
                 )}
               />
+            </div>
 
+            {/* Description Fields */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="descriptionAr"
@@ -188,6 +168,24 @@ export function AdEditor() {
                         dir="rtl"
                         className="h-24 resize-none"
                         data-testid="textarea-description-ar"
+                        {...field} // field is of type { field: any }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="descriptionEn"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder={t("ads", "descriptionEnPlaceholder")}
+                        className="h-24 resize-none"
+                        data-testid="textarea-description-en"
                         {...field} // field is of type { field: any }
                       />
                     </FormControl>

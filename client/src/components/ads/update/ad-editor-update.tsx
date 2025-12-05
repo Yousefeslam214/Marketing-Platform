@@ -186,8 +186,8 @@ export function AdEditor({
       targetCities: Array.isArray((data as any).targetCities)
         ? (data as any).targetCities
         : (data as any).targetCities
-          ? [(data as any).targetCities]
-          : [],
+        ? [(data as any).targetCities]
+        : [],
       facebookLink: data.facebookLink,
       instagramLink: data.instagramLink,
       tiktokLink: data.tiktokLink,
@@ -219,24 +219,6 @@ export function AdEditor({
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="titleEn"
-                    render={({ field }: { field: any }) => (
-                      <FormItem>
-                        <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder={t("ads", "titleArPlaceholder")}
-                            data-testid="input-title-en"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
                     name="titleAr"
                     render={({ field }: { field: any }) => (
                       <FormItem>
@@ -256,21 +238,16 @@ export function AdEditor({
                       </FormItem>
                     )}
                   />
-                </div>
-
-                {/* Description Fields */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="descriptionEn"
+                    name="titleEn"
                     render={({ field }: { field: any }) => (
                       <FormItem>
-                        <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
+                        <FormLabel>{t("ads", "titleEnLabel")}</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder={t("ads", "descriptionEnPlaceholder")}
-                            className="h-24 resize-none"
-                            data-testid="textarea-description-en"
+                          <Input
+                            placeholder={t("ads", "titleArPlaceholder")}
+                            data-testid="input-title-en"
                             {...field}
                           />
                         </FormControl>
@@ -278,7 +255,10 @@ export function AdEditor({
                       </FormItem>
                     )}
                   />
+                </div>
 
+                {/* Description Fields */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="descriptionAr"
@@ -291,6 +271,24 @@ export function AdEditor({
                             dir="rtl"
                             className="h-24 resize-none"
                             data-testid="textarea-description-ar"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="descriptionEn"
+                    render={({ field }: { field: any }) => (
+                      <FormItem>
+                        <FormLabel>{t("ads", "descriptionEnLabel")}</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder={t("ads", "descriptionEnPlaceholder")}
+                            className="h-24 resize-none"
+                            data-testid="textarea-description-en"
                             {...field}
                           />
                         </FormControl>
