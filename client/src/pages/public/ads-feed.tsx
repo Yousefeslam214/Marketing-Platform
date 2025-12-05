@@ -47,9 +47,9 @@ function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
     [numberOfItems]
   );
   return (
-    <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+    <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
       {items.map((_, i) => (
-        <Card key={i} className="animate-pulse">
+        <Card key={i} className="animate-pulse break-inside-avoid">
           <CardContent className="p-6">
             <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
             <div className="h-48 bg-muted rounded mb-4"></div>
@@ -701,9 +701,9 @@ export default function AdsFeed() {
               className=" w-full
             flex flex-col items-center
             ">
-              <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+              <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
                 {adsResponse?.data.map((ad) => (
-                  <div key={ad.id} className="w-full overflow-hidden">
+                  <div key={ad.id} className="w-full overflow-hidden break-inside-avoid">
                     <Card
                       className={
                         ` transition-shadow duration-300 flex flex-col cursor-pointer relative group ` +
@@ -801,7 +801,7 @@ export default function AdsFeed() {
 
                         {/* Actions */}
                         <div
-                          className="px-4 pb-4 border-t pt-3 flex flex-col items-center justify-between min-h-[105px]"
+                          className="px-4 pb-4 border-t pt-3 flex flex-col items-center min-h-[75px] justify-center space-y-2"
                           onClick={(e) =>
                             e.stopPropagation()
                           } /* prevent card click */

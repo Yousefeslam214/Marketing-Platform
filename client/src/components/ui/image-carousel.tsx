@@ -36,14 +36,14 @@ export function ImageCarousel({
   // Nothing to show
   if (!imageUrl && !videoId) return null;
 
-  // Dynamic height based on isHovered prop
-  const heightClass = isHovered ? "h-auto max-h-[400px]" : "h-48";
+  // Dynamic height based on isHovered prop - auto height to fit full image
+  const heightClass = isHovered ? "max-h-[500px]" : "min-h-[200px] max-h-[350px]";
 
   // Show video if no image but video exists
   if (!imageUrl && videoId) {
     return (
       <div
-        className={`w-full ${heightClass} bg-muted rounded-lg overflow-hidden ${className}`}
+        className={`w-full h-64 bg-muted rounded-lg overflow-hidden ${className}`}
         data-testid={dataTestId}
       >
         <iframe
@@ -72,7 +72,7 @@ export function ImageCarousel({
         </div>
       )}
 
-      {/* Single image */}
+      {/* Single image - object-contain to show full image */}
       <img
         src={imageUrl!}
         alt={alt || "Ad image"}
@@ -81,7 +81,7 @@ export function ImageCarousel({
           setLoaded(true);
           setError(true);
         }}
-        className={`w-full h-full object-cover transition-opacity duration-300 ${
+        className={`w-full h-full object-contain transition-opacity duration-300 ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
       />
