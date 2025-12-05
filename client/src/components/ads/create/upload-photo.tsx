@@ -193,46 +193,49 @@ export default function UploadPhoto() {
     const files = Array.from(event.target.files || []);
     if (files.length === 0) return;
 
-    // Validate and accept files for staged upload
-    const validFiles: File[] = [];
-    for (const file of files) {
-      if (!file.type.startsWith("image/")) {
-        toast({
-          title: t("uploadPhoto", "Invalid file type"),
-          description: t("uploadPhoto", "Please select an image file"),
-          variant: "destructive",
-        });
-        continue;
-      }
-      const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
-      if (file.size > maxSizeInBytes) {
-        const sizeStr = (file.size / 1024 / 1024).toFixed(2);
-        const raw = t(
-          "uploadPhoto",
-          "Please select an image smaller than 1MB. Current size: {size}MB"
-        );
-        toast({
-          title: t("uploadPhoto", "File too large"),
-          description: raw.replace("{size}", sizeStr),
-          variant: "destructive",
-        });
-        continue;
-      }
-      validFiles.push(file);
+    // Only allow one photo - take the first file
+    const file = files[0];
+    
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: t("uploadPhoto", "Invalid file type"),
+        description: t("uploadPhoto", "Please select an image file"),
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
+    if (file.size > maxSizeInBytes) {
+      const sizeStr = (file.size / 1024 / 1024).toFixed(2);
+      const raw = t(
+        "uploadPhoto",
+        "Please select an image smaller than 1MB. Current size: {size}MB"
+      );
+      toast({
+        title: t("uploadPhoto", "File too large"),
+        description: raw.replace("{size}", sizeStr),
+        variant: "destructive",
+      });
+      return;
     }
 
-    if (validFiles.length === 0) return;
+    // Clear any existing previews first (only one photo allowed)
+    selectedPreviews.forEach((p) => {
+      if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+    });
+    photoPreview.forEach((p) => {
+      if (p && p.startsWith("blob:")) URL.revokeObjectURL(p);
+    });
 
-    // Create previews and stage files for editing/upload
-    const newPreviews = validFiles.map((f) => URL.createObjectURL(f));
-    setSelectedFiles((prev) => [...prev, ...validFiles]);
-    setSelectedPreviews((prev) => [...prev, ...newPreviews]);
-    // Append staged previews to the main photoPreview array so multiple previews are kept
-    setPhotoPreview((prev) => [...prev, ...newPreviews]);
-    // If only one file was added, open editor for it
-    if (validFiles.length === 1) {
-      setEditingIndex((prev) => (prev === null ? selectedFiles.length : prev));
-    }
+    // Create preview for the single file
+    const preview = URL.createObjectURL(file);
+    setSelectedFiles([file]);
+    setSelectedPreviews([preview]);
+    setPhotoPreview([preview]);
+    setEditedFiles(new Map());
+    // Open editor for the single file
+    setEditingIndex(0);
   };
 
   const startEditing = (index: number) => {
@@ -488,8 +491,8 @@ export default function UploadPhoto() {
                         ) : (
                           <>
                             <i className="fas fa-upload mx-2"></i>
-                            {photoPreview
-                              ? t("uploadPhoto", "uploadmorePhotos")
+                            {photoPreview.length > 0
+                              ? t("uploadPhoto", "Replace Photo")
                               : t("uploadPhoto", "Choose Photo")}
                           </>
                         )}

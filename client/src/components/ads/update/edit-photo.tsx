@@ -32,7 +32,7 @@ export default function EditPhoto() {
   const { toast } = useToast();
   const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const editorRef = useRef<AvatarEditor>(null);
+  const editorRef = useRef<any>(null);
 
   const navState = useMemo(() => (window.history.state as any) || {}, []);
   const initialImgData = useMemo(() => navState?.imgData || [], [navState]);
@@ -255,56 +255,46 @@ export default function EditPhoto() {
       const files = Array.from(e.target.files || []);
       if (files.length === 0) return;
 
-      // Replace flow
+      // Only allow one photo
+      const file = files[0];
+      if (!file || !validateFile(file)) return;
+
+      const preview = URL.createObjectURL(file);
+      cleanupBlobUrl(editState.preview);
+
+      // Replace flow - always replace since only one photo allowed
       if (selectedUrl) {
-        const file = files[0];
-        if (!file || !validateFile(file)) return;
-
-        const preview = URL.createObjectURL(file);
-        cleanupBlobUrl(editState.preview);
-
         setEditState((prev) => ({
           ...prev,
           preview,
           file,
           isBlob: true,
+          isAdd: false,
         }));
-        setIsEditing(true);
-        return;
-      }
-
-      // Add flow - single file with editor
-      if (files.length === 1) {
-        const file = files[0];
-        if (!file || !validateFile(file)) return;
-
-        const preview = URL.createObjectURL(file);
-        cleanupBlobUrl(editState.preview);
-
+      } else {
+        // Add flow - but will replace existing since only one allowed
         setEditState({
           preview,
           file,
           isBlob: true,
-          isAdd: true,
+          isAdd: photoList.length === 0, // Only add if no photos exist
           scale: 1,
           rotate: 0,
         });
-        setIsEditing(true);
-        return;
+        if (photoList.length > 0) {
+          // If photo exists, set it as selected for replacement
+          setSelectedUrl(photoList[0]);
+          setEditState((prev) => ({ ...prev, isAdd: false }));
+        }
       }
-
-      // Bulk upload without editor
-      const validFiles = files.filter((file) => validateFile(file));
-      if (validFiles.length > 0) {
-        uploadPhotosMutation.mutate(validFiles);
-      }
+      setIsEditing(true);
     },
     [
       selectedUrl,
       validateFile,
-      uploadPhotosMutation,
       editState.preview,
       cleanupBlobUrl,
+      photoList,
     ]
   );
 
@@ -454,19 +444,12 @@ export default function EditPhoto() {
                 onClick={() => handleReplaceClick(url)}>
                 {t("editPhoto", "Replace")}
               </Button>
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={() => handleDelete(url)}
-                disabled={photoList.length <= 1}>
-                {t("editPhoto", "Delete")}
-              </Button>
             </div>
           </div>
         ))}
       </div>
     ),
-    [photoList, handleEditClick, handleReplaceClick, handleDelete]
+    [photoList, handleEditClick, handleReplaceClick, t]
   );
 
   // Memoized editor controls - ONLY show when actively editing
@@ -595,7 +578,6 @@ export default function EditPhoto() {
                   onChange={handleFileChange}
                   className="hidden"
                   accept="image/*"
-                  multiple
                 />
 
                 {photoList.length === 0 ? (
@@ -610,10 +592,12 @@ export default function EditPhoto() {
                 {editorSection}
 
                 <div className="mt-6 flex justify-between">
-                  <Button onClick={handleAddNewPhoto}>
-                    <i className="fas fa-plus mx-2"></i>
-                    {t("editPhoto", "Add Photo")}
-                  </Button>
+                  {photoList.length === 0 && (
+                    <Button onClick={handleAddNewPhoto}>
+                      <i className="fas fa-plus mx-2"></i>
+                      {t("editPhoto", "Add Photo")}
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     onClick={() => setLocation(`/campaigns/${adId}`)}>

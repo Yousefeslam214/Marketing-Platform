@@ -706,7 +706,7 @@ export default function AdsFeed() {
                   <div key={ad.id} className="w-full overflow-hidden">
                     <Card
                       className={
-                        ` transition-shadow duration-300 h-full flex flex-col cursor-pointer relative group ` +
+                        ` transition-shadow duration-300 flex flex-col cursor-pointer relative group ` +
                         (ad.hasPromoted
                           ? "border-2 border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.3)]"
                           : "hover:shadow-md")
@@ -731,7 +731,7 @@ export default function AdsFeed() {
                           </div>
                         </div>
                       )}
-                      <CardContent className="p-0 flex flex-col h-full">
+                      <CardContent className="p-0 flex flex-col">
                         {/* Header */}
                         <div className="p-4 border-b">
                           <h2
@@ -750,7 +750,7 @@ export default function AdsFeed() {
                         </div>
 
                         {/* Content */}
-                        <div className="p-4 flex flex-col gap-4 flex-1 justify-end">
+                        <div className="p-4 flex flex-col gap-4">
                           <p
                             className="text-foreground leading-relaxed whitespace-pre-wrap min-h-[52px]"
                             style={{
@@ -778,7 +778,6 @@ export default function AdsFeed() {
                                       : []
                                 }
                                 videoUrl={ad.youtubeVideo}
-                                isHovered={false}
                               />
                             ) : ad.imageUrl && !Array.isArray(ad.imageUrl) ? (
                               <img
@@ -786,11 +785,11 @@ export default function AdsFeed() {
                                 alt={
                                   language === "en" ? ad.titleEn : ad.titleAr
                                 }
-                                className="h-full w-full object-cover"
+                                className="w-full h-48 object-cover rounded-lg"
                                 loading="lazy"
                               />
                             ) : (
-                              <div className="h-full w-full bg-muted flex items-center justify-center">
+                              <div className="w-full h-48 bg-muted flex items-center justify-center rounded-lg">
                                 <span className="text-xs text-muted-foreground">
                                   {t("ads", "noImage") || "No image"}
                                 </span>
@@ -802,12 +801,7 @@ export default function AdsFeed() {
 
                         {/* Actions */}
                         <div
-                          className={
-                            `px-4 pb-4 border-t pt-3 flex items-center justify-between mt-auto flex
-                            flex-col
-                           min-h-[105px] ` +
-                            (ad.hasPromoted ? "" : "")
-                          }
+                          className="px-4 pb-4 border-t pt-3 flex flex-col items-center justify-between min-h-[105px]"
                           onClick={(e) =>
                             e.stopPropagation()
                           } /* prevent card click */
