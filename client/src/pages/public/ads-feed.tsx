@@ -742,7 +742,7 @@ export default function AdsFeed() {
                               WebkitBoxOrient: "vertical" as any,
                               overflow: "hidden",
                             }}>
-                            {language === "en" ? ad.titleEn : ad.titleAr}
+                            {language === "en" ? ad.titleEn || ad.titleAr : ad.titleAr || ad.titleEn}
                           </h2>
                           <p className="mt-1 text-sm text-muted-foreground">
                             {t("publicFeed", "sponsored")}
@@ -760,8 +760,8 @@ export default function AdsFeed() {
                               overflow: "hidden",
                             }}>
                             {language === "en"
-                              ? ad.descriptionEn
-                              : ad.descriptionAr}
+                              ? ad.descriptionEn || ad.descriptionAr
+                              : ad.descriptionAr || ad.descriptionEn}
                           </p>
 
                           <div className="w-full rounded-lg overflow-hidden">

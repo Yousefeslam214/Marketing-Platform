@@ -195,7 +195,7 @@ export default function UploadPhoto() {
 
     // Only allow one photo - take the first file
     const file = files[0];
-    
+
     if (!file.type.startsWith("image/")) {
       toast({
         title: t("uploadPhoto", "Invalid file type"),
@@ -204,7 +204,7 @@ export default function UploadPhoto() {
       });
       return;
     }
-    
+
     const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
     if (file.size > maxSizeInBytes) {
       const sizeStr = (file.size / 1024 / 1024).toFixed(2);
@@ -301,7 +301,10 @@ export default function UploadPhoto() {
     if (selectedFiles.length === 0) {
       toast({
         title: t("uploadPhoto", "No Photos Selected"),
-        description: t("uploadPhoto", "Please upload at least one photo for your ad"),
+        description: t(
+          "uploadPhoto",
+          "Please upload at least one photo for your ad"
+        ),
         variant: "destructive",
       });
       return;
@@ -412,9 +415,9 @@ export default function UploadPhoto() {
                           </label>
                           <input
                             type="range"
-                            min={1}
+                            min={0.3}
                             max={2}
-                            step={0.01}
+                            step={0.05}
                             value={scale}
                             onChange={(e) => setScale(Number(e.target.value))}
                             className="w-full"

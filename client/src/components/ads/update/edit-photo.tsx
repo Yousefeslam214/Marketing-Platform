@@ -289,13 +289,7 @@ export default function EditPhoto() {
       }
       setIsEditing(true);
     },
-    [
-      selectedUrl,
-      validateFile,
-      editState.preview,
-      cleanupBlobUrl,
-      photoList,
-    ]
+    [selectedUrl, validateFile, editState.preview, cleanupBlobUrl, photoList]
   );
 
   const applyEditAndReplace = useCallback(async () => {
@@ -464,9 +458,9 @@ export default function EditPhoto() {
           </label>
           <input
             type="range"
-            min={0.8}
+            min={0.3}
             max={2}
-            step={0.01}
+            step={0.05}
             value={editState.scale}
             onChange={(e) =>
               setEditState((prev) => ({
