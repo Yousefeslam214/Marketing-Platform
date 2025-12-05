@@ -32,6 +32,7 @@ export default function AdminFreeCredits() {
           },
         }
       );
+      console.log("Fetched free credits setting:", res);
       if (!res.ok)
         throw new Error(
           t("adminFreeCredits", "errorFetch") ||
@@ -41,6 +42,7 @@ export default function AdminFreeCredits() {
     },
     staleTime: 60_000,
   });
+  console.log("Free credits setting data:", data);
 
   const currentAmount = useMemo(() => {
     const payload = data as any;
@@ -78,6 +80,7 @@ export default function AdminFreeCredits() {
           body: JSON.stringify({ credits: amount }),
         }
       );
+      console.log("Update free credits response:", res);
       if (!res.ok) {
         const txt = await res.text();
         throw new Error(txt || "Failed to update free credits setting");
