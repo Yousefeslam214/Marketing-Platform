@@ -1,12 +1,14 @@
 // language-context.tsx
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { getTranslation } from "@/lib/i18n";
 
-export type Language =  "ar" | "en";
+export type Language = "ar" | "en";
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   toggleLanguage: () => void;
+  t: (section: string, key: string) => string;
   dir: "ltr" | "rtl";
   isRTL: boolean;
 }
@@ -40,8 +42,15 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       setLanguage("en");
       localStorage.setItem("language", "en");
     }
-    window.location.reload();
+    // window.location.reload();
   };
+
+  const t = useCallback(
+    (section: string, key: string): string => {
+      return getTranslation(language, section, key);
+    },
+    [language]
+  );
 
   return (
     <LanguageContext.Provider
@@ -49,6 +58,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         language,
         setLanguage,
         toggleLanguage,
+        t,
         dir: language === "ar" ? "rtl" : "ltr",
         isRTL: language === "ar",
       }}>
