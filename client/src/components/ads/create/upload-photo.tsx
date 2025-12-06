@@ -392,7 +392,7 @@ export default function UploadPhoto() {
 
                   {/* Avatar editor modal/area */}
                   {editingIndex !== null && selectedPreviews[editingIndex] && (
-                    <div className="mt-4 p-4 border rounded-lg bg-gray-50">
+                    <div className="mt-4 p-4 border rounded-lg ">
                       <h4 className="font-medium mb-2">
                         {t("uploadPhoto", "editPhoto")}
                       </h4>

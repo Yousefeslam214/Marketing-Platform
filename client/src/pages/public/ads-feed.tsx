@@ -744,15 +744,15 @@ export default function AdsFeed() {
                             }}>
                             {language === "en" ? ad.titleEn || ad.titleAr : ad.titleAr || ad.titleEn}
                           </h2>
-                          <p className="mt-1 text-sm text-muted-foreground">
+                          {/* <p className="mt-1 text-sm text-muted-foreground">
                             {t("publicFeed", "sponsored")}
-                          </p>
+                          </p> */}
                         </div>
 
                         {/* Content */}
                         <div className="p-4 flex flex-col gap-4">
                           <p
-                            className="text-foreground leading-relaxed whitespace-pre-wrap min-h-[52px]"
+                            className="text-foreground leading-relaxed whitespace-pre-wrap"
                             style={{
                               display: "-webkit-box",
                               WebkitLineClamp: 3,
@@ -1054,9 +1054,9 @@ export default function AdsFeed() {
                 )}
               </div>
               <div className="flex flex-wrap items-center gap-3 text-sm">
-                <Badge variant="secondary">
+                {/* <Badge variant="secondary">
                   {t("publicFeed", "sponsored")}
-                </Badge>
+                </Badge> */}
                 <div className="flex items-center gap-2">
                   <Heart className="h-4 w-4" />
                   <span>{activeAd.likesCount}</span>

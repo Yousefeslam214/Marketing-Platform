@@ -521,7 +521,7 @@ export default function EditPhoto() {
     if (!isEditing || !editState.preview) return null;
 
     return (
-      <div className="mt-4 p-4 border rounded-lg bg-gray-50">
+      <div className="mt-4 p-4 border rounded-lg">
         <h4 className="font-medium mb-2">{t("editPhoto", "Edit Photo")}</h4>
         <div className="flex flex-col md:flex-row gap-4 items-start">
           <div>
