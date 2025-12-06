@@ -48,9 +48,11 @@ interface AnalyticsData {
   };
   source: SourceData[];
   financials: {
-    totalBudgetCredits: number;
-    spentAmount: number;
-    remainingCredits: number;
+    totalBudgetImpressions: number;
+    usedImpressions: number;
+    remainingImpressions: number;
+    totalBudgetCost: number;
+    totalCostSpent: number;
     costPerImpression: number;
     currency: string;
   };
@@ -116,9 +118,9 @@ export default function AdAnalytics() {
     url: `${VITE_API_BASE_URL}/api/users/ad/${adId}/analytics-full-details`,
     enabled: !!adId,
   });
-  
+
   const analytics: AnalyticsData | undefined =
-  analyticsResponse?.data?.analytics;
+    analyticsResponse?.data?.analytics;
   console.log(analytics);
 
   // Filter daily breakdown to show only last 14 days with data
@@ -207,7 +209,9 @@ export default function AdAnalytics() {
             "View detailed analytics for your ad"
           }
           actions={
-            <Button variant="outline" onClick={() => setLocation(`/campaigns/${adId}`)}>
+            <Button
+              variant="outline"
+              onClick={() => setLocation(`/campaigns/${adId}`)}>
               <i className={`fas fa-arrow-left ${isRTL ? "ml-2" : "mr-2"}`}></i>
               {t("analytics", "backToAd") || "Back to Ad"}
             </Button>
@@ -215,7 +219,7 @@ export default function AdAnalytics() {
         />
         <main className="p-6 space-y-6">
           {/* Overview Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <Card>
               <CardContent className="p-4 text-center">
                 <i className="fas fa-eye text-primary text-2xl mb-2"></i>
@@ -272,18 +276,6 @@ export default function AdAnalytics() {
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <i className="fas fa-coins text-purple-600 text-2xl mb-2"></i>
-                <div className="text-2xl font-bold text-purple-600">
-                  {analytics.financials.costPerImpression.toFixed(3)}{" "}
-                  {analytics.financials.currency.toUpperCase()}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {t("analytics", "costPerImpression") || "Cost/Impression"}
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Financial Overview */}
@@ -299,29 +291,63 @@ export default function AdAnalytics() {
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-piggy-bank text-green-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-green-600">
-                    {analytics.financials.totalBudgetCredits.toLocaleString()}
+                    {analytics.financials.totalBudgetImpressions.toLocaleString()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
-                    {t("analytics", "totalBudget") || "Total Budget Credits"}
+                    {t("analytics", "totalBudget") ||
+                      "Total Budget Impressions"}
                   </div>
                 </div>
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-credit-card text-orange-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-orange-600">
-                    {analytics.financials.spentAmount.toLocaleString()}{" "}
-                    {analytics.financials.currency.toUpperCase()}
+                    {analytics.financials.usedImpressions.toLocaleString()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
-                    {t("analytics", "spentAmount") || "Spent Amount"}
+                    {t("analytics", "usedImpressions") || "Used Impressions"}
                   </div>
                 </div>
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-wallet text-blue-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-blue-600">
-                    {analytics.financials.remainingCredits.toLocaleString()}
+                    {analytics.financials.remainingImpressions.toLocaleString()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
-                    {t("analytics", "remainingCredits") || "Remaining Credits"}
+                    {t("analytics", "remainingImpressions") ||
+                      "Remaining Impressions"}
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                <div className="text-center p-4 bg-muted rounded-lg">
+                  <i className="fas fa-money-bill-wave text-green-600 text-2xl mb-2"></i>
+                  <div className="text-3xl font-bold text-green-600">
+                    {analytics.financials.totalBudgetCost.toLocaleString()}{" "}
+                    {analytics.financials.currency.toUpperCase()}
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    {t("analytics", "totalBudgetRemaining") ||
+                      "Total Budget Remaining"}
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-muted rounded-lg">
+                  <i className="fas fa-receipt text-orange-600 text-2xl mb-2"></i>
+                  <div className="text-3xl font-bold text-orange-600">
+                    {analytics.financials.totalCostSpent.toLocaleString()}{" "}
+                    {analytics.financials.currency.toUpperCase()}
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    {t("analytics", "totalCostSpent") || "Total Cost Spent"}
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-muted rounded-lg">
+                  <i className="fas fa-coins text-purple-600 text-2xl mb-2"></i>
+                  <div className="text-3xl font-bold text-purple-600">
+                    {analytics.financials.costPerImpression.toFixed(3)}{" "}
+                    {analytics.financials.currency.toUpperCase()}
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    {t("analytics", "costPerImpression") || "Cost/Impression"}
                   </div>
                 </div>
               </div>
