@@ -70,6 +70,36 @@ const COLORS = [
   "#06B6D4",
 ];
 
+// Helper function to get icon for each source type
+const getSourceIcon = (type: string): { icon: string; color: string } => {
+  const sourceType = type.toLowerCase().replace(/[_\s]/g, "");
+  switch (sourceType) {
+    case "web":
+    case "website":
+      return { icon: "", color: "text-blue-500" };
+    case "facebook":
+      return { icon: "fa-facebook", color: "text-blue-600" };
+    case "instagram":
+      return { icon: "fa-instagram", color: "text-pink-500" };
+    case "tiktok":
+      return { icon: "fa-tiktok", color: "text-black dark:text-white" };
+    case "snapchat":
+      return { icon: "fa-snapchat", color: "text-yellow-400" };
+    case "youtube":
+      return { icon: "fa-youtube", color: "text-red-600" };
+    case "googleads":
+    case "google_ads":
+      return { icon: "fa-google", color: "text-blue-500" };
+    case "twitter":
+    case "x":
+      return { icon: "fa-x-twitter", color: "text-black dark:text-white" };
+    case "linkedin":
+      return { icon: "fa-linkedin", color: "text-blue-700" };
+    default:
+      return { icon: "fa-link", color: "text-gray-500" };
+  }
+};
+
 export default function AdAnalytics() {
   const [, setLocation] = useLocation();
   const [match, params] = useRoute("/campaigns/:id/analytics");
@@ -86,9 +116,10 @@ export default function AdAnalytics() {
     url: `${VITE_API_BASE_URL}/api/users/ad/${adId}/analytics-full-details`,
     enabled: !!adId,
   });
-
+  
   const analytics: AnalyticsData | undefined =
-    analyticsResponse?.data?.analytics;
+  analyticsResponse?.data?.analytics;
+  console.log(analytics);
 
   // Filter daily breakdown to show only last 14 days with data
   const filteredDailyData =
@@ -176,9 +207,9 @@ export default function AdAnalytics() {
             "View detailed analytics for your ad"
           }
           actions={
-            <Button variant="outline" onClick={() => setLocation("/campaigns")}>
+            <Button variant="outline" onClick={() => setLocation(`/campaigns/${adId}`)}>
               <i className={`fas fa-arrow-left ${isRTL ? "ml-2" : "mr-2"}`}></i>
-              {t("analytics", "backToAds") || "Back to Ads"}
+              {t("analytics", "backToAd") || "Back to Ad"}
             </Button>
           }
         />
@@ -187,6 +218,8 @@ export default function AdAnalytics() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <Card>
               <CardContent className="p-4 text-center">
+                <i className="fas fa-eye text-primary text-2xl mb-2"></i>
+
                 <div className="text-2xl font-bold text-primary">
                   {analytics.totalImpressions.toLocaleString()}
                 </div>
@@ -197,6 +230,7 @@ export default function AdAnalytics() {
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
+                <i className="fas fa-mouse-pointer text-green-600 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-green-600">
                   {analytics.totalClicks.toLocaleString()}
                 </div>
@@ -207,6 +241,7 @@ export default function AdAnalytics() {
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
+                <i className="fas fa-percentage text-orange-600 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-orange-600">
                   {analytics.clickThroughRate.toFixed(2)}%
                 </div>
@@ -217,6 +252,7 @@ export default function AdAnalytics() {
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
+                <i className="fas fa-globe text-blue-600 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-blue-600">
                   {analytics.websiteClicks.toLocaleString()}
                 </div>
@@ -227,6 +263,7 @@ export default function AdAnalytics() {
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
+                <i className="fas fa-heart text-red-500 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-red-500">
                   {analytics.likesCount.toLocaleString()}
                 </div>
@@ -237,6 +274,7 @@ export default function AdAnalytics() {
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
+                <i className="fas fa-coins text-purple-600 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-purple-600">
                   {analytics.financials.costPerImpression.toFixed(3)}{" "}
                   {analytics.financials.currency.toUpperCase()}
@@ -259,6 +297,7 @@ export default function AdAnalytics() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-muted rounded-lg">
+                  <i className="fas fa-piggy-bank text-green-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-green-600">
                     {analytics.financials.totalBudgetCredits.toLocaleString()}
                   </div>
@@ -267,6 +306,7 @@ export default function AdAnalytics() {
                   </div>
                 </div>
                 <div className="text-center p-4 bg-muted rounded-lg">
+                  <i className="fas fa-credit-card text-orange-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-orange-600">
                     {analytics.financials.spentAmount.toLocaleString()}{" "}
                     {analytics.financials.currency.toUpperCase()}
@@ -276,6 +316,7 @@ export default function AdAnalytics() {
                   </div>
                 </div>
                 <div className="text-center p-4 bg-muted rounded-lg">
+                  <i className="fas fa-wallet text-blue-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-blue-600">
                     {analytics.financials.remainingCredits.toLocaleString()}
                   </div>
@@ -334,6 +375,7 @@ export default function AdAnalytics() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-4 border rounded-lg">
+                  <i className="fas fa-eye text-primary text-xl mb-2"></i>
                   <div className="flex items-center justify-center gap-2">
                     <span
                       className={`text-2xl font-bold ${
@@ -363,6 +405,7 @@ export default function AdAnalytics() {
                   </div>
                 </div>
                 <div className="text-center p-4 border rounded-lg">
+                  <i className="fas fa-mouse-pointer text-primary text-xl mb-2"></i>
                   <div className="flex items-center justify-center gap-2">
                     <span
                       className={`text-2xl font-bold ${
@@ -390,6 +433,7 @@ export default function AdAnalytics() {
                   </div>
                 </div>
                 <div className="text-center p-4 border rounded-lg">
+                  <i className="fas fa-percentage text-primary text-xl mb-2"></i>
                   <div className="flex items-center justify-center gap-2">
                     <span
                       className={`text-2xl font-bold ${
@@ -469,27 +513,26 @@ export default function AdAnalytics() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {allSourcesData.map((source, index) => (
-                    <div
-                      key={source.type}
-                      className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-3 h-3 rounded-full"
-                          style={{
-                            backgroundColor: COLORS[index % COLORS.length],
-                          }}></div>
-                        <span className="font-medium capitalize">
-                          {source.type.replace("_", " ")}
-                        </span>
+                  {allSourcesData.map((source, index) => {
+                    const { icon, color } = getSourceIcon(source.type);
+                    return (
+                      <div
+                        key={source.type}
+                        className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <i className={`fab ${icon} ${color} text-lg`}></i>
+                          <span className="font-medium capitalize">
+                            {source.type.replace("_", " ")}
+                          </span>
+                        </div>
+                        <Badge
+                          variant={source.views > 0 ? "default" : "secondary"}>
+                          {source.views.toLocaleString()}{" "}
+                          {t("analytics", "views") || "views"}
+                        </Badge>
                       </div>
-                      <Badge
-                        variant={source.views > 0 ? "default" : "secondary"}>
-                        {source.views.toLocaleString()}{" "}
-                        {t("analytics", "views") || "views"}
-                      </Badge>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>

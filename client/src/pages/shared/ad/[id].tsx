@@ -327,6 +327,21 @@ export default function AdDetail({ params }: AdDetailProps) {
                     {t("adDetail", "viewUserDetails") || "View User Details"}
                   </Button>
                 )}
+                 {/* <Button
+                      onClick={() => setLocation("/billing")}
+                      data-testid="button-purchase-impressions">
+                      <i className="fas fa-credit-card mx-2"></i>
+                      {t("adDetail", "purchaseImpressions")}
+                    </Button> */}
+                    <Button
+                  variant="outline"
+                  size="sm"
+                  // className="min-w-[100%]"
+                  onClick={() => setLocation(`/campaigns/${ad.id}/analytics`)}
+                  data-testid={`button-analytics-${ad.id}`}>
+                  {t("ads", "analytics")}
+                </Button>
+                
                 {ad.status === "approved" && (
                   <>
                     <Button

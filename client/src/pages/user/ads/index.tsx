@@ -104,7 +104,7 @@ export default function AdsIndex() {
                     </div>
                     <div
                       className="grid grid-cols-4 gap-4 text-sm text-muted-foreground
-                    mx-2
+                    mx-2 my-4 
                     ">
                       <div className="!flex !flex-col !items-center">
                         <div className="text-xs">
