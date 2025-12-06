@@ -19,6 +19,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  Legend,
 } from "recharts";
 
 interface DailyBreakdown {
@@ -493,13 +494,13 @@ export default function AdAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <i className="fas fa-globe text-primary"></i>
+                  <i className="fas fa-chart-pie text-primary"></i>
                   {t("analytics", "trafficSources") || "Traffic Sources"}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {activeSourcesData.length > 0 ? (
-                  <div className="h-64">
+                  <div className="h-72">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -507,24 +508,73 @@ export default function AdAnalytics() {
                           dataKey="views"
                           nameKey="type"
                           cx="50%"
-                          cy="50%"
+                          cy="45%"
+                          innerRadius={40}
                           outerRadius={80}
-                          label={({ type, views }) => `${type}: ${views}`}>
-                          {activeSourcesData.map((_, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={COLORS[index % COLORS.length]}
-                            />
-                          ))}
+                          paddingAngle={2}
+                          // label={({ type, percent }) =>
+                          //   `${type}: ${(percent * 100).toFixed(0)}%`
+                          // }
+                          labelLine={{ stroke: "#888", strokeWidth: 1 }}>
+                          {activeSourcesData.map((source, index) => {
+                            const { color } = getSourceIcon(source.type);
+                            const fillColor = color.includes("blue-600")
+                              ? "#2563EB"
+                              : color.includes("pink")
+                              ? "#EC4899"
+                              : color.includes("red")
+                              ? "#DC2626"
+                              : color.includes("yellow")
+                              ? "#EAB308"
+                              : COLORS[index % COLORS.length];
+                            return (
+                              <Cell
+                                key={`cell-${index}`}
+                                fill={fillColor}
+                                // stroke="#fff"
+                                strokeWidth={2}
+                              />
+                            );
+                          })}
                         </Pie>
-                        <Tooltip />
+                        <Tooltip
+                          formatter={(value: number, name: string) => [
+                            `${value} ${t("analytics", "views") || "views"}`,
+                            name,
+                          ]}
+                          contentStyle={{
+                            backgroundColor: "hsl(var(--card))",
+                            border: "1px solid hsl(var(--border))",
+                            borderRadius: "8px",
+                            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                          }}
+                        />
+                        <Legend
+                          layout="horizontal"
+                          verticalAlign="bottom"
+                          align="center"
+                          iconType="circle"
+                          iconSize={10}
+                          formatter={(value: string) => (
+                            <span
+                              className="text-sm
+                             text-foreground capitalize
+                            m-2
+                            ">
+                              {value.replace("_", " ")}
+                            </span>
+                          )}
+                        />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
                 ) : (
-                  <div className="h-64 flex items-center justify-center text-muted-foreground">
-                    {t("analytics", "noSourceData") ||
-                      "No source data available yet"}
+                  <div className="h-72 flex flex-col items-center justify-center text-muted-foreground">
+                    <i className="fas fa-chart-pie text-4xl mb-3 opacity-30"></i>
+                    <p>
+                      {t("analytics", "noSourceData") ||
+                        "No source data available yet"}
+                    </p>
                   </div>
                 )}
               </CardContent>
