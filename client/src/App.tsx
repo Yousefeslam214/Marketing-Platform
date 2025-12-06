@@ -17,6 +17,7 @@ import Dashboard from "@/pages/user/dashboard";
 import AdsIndex from "@/pages/user/ads/index";
 import NewAd from "@/pages/user/ads/new";
 import EditAd from "@/pages/user/ads/edit";
+import AdAnalytics from "@/pages/user/ads/analytics";
 // import UploadPhoto from "@/pages/user/ads/upload-photo";
 import AssignCredit from "@/pages/user/ads/assign-credit";
 import Billing from "@/pages/user/billing";
@@ -294,6 +295,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <AssignCredit />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/campaigns/:id/analytics"
+        component={() => (
+          <AppLayout>
+            <AdAnalytics />
           </AppLayout>
         )}
       />

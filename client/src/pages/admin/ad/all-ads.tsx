@@ -103,6 +103,7 @@ export default function AllAds() {
                   <i className="fas fa-plus mx-2"></i>
                   {isRTL ? "إنشاء إعلان جديد" : "Create New Ad"}
                 </Button>
+                
               </div>
             </div>
           )}

@@ -77,15 +77,15 @@ export default function AdsIndex() {
 
                     <div className="min-h-38">
                       {(ad.imageUrl && ad.imageUrl.length > 0) ||
-                        ad.youtubeVideo ? (
+                      ad.youtubeVideo ? (
                         // Array.isArray(ad.imageUrl)
                         <ImageCarousel
                           images={
                             Array.isArray(ad.imageUrl)
                               ? ad.imageUrl
                               : ad.imageUrl
-                                ? [ad.imageUrl]
-                                : []
+                              ? [ad.imageUrl]
+                              : []
                           }
                           videoUrl={ad.youtubeVideo}
                           alt={ad.titleEn || ad.titleAr}
@@ -143,22 +143,34 @@ export default function AdsIndex() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 mt-4">
+                    <div
+                      className="flex items-center
+                     gap-2 mt-4 flex-col">
+                      <div className="w-full text-center font-medium space-x-2 flex gap-2 ">
+                        <Button
+                          variant="outline"
+                          className="w-full"
+                          size="sm"
+                          onClick={() => setLocation(`/campaigns/${ad.id}`)}
+                          data-testid={`button-view-ad-${ad.id}`}>
+                          {t("ads", "view")}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full"
+                          onClick={() => setLocation(editAdPath(ad.id))}
+                          data-testid={`button-edit-${ad.id}`}>
+                          {t("ads", "edit")}
+                        </Button>
+                      </div>
                       <Button
                         variant="outline"
-                        className="min-w-[50%]"
                         size="sm"
-                        onClick={() => setLocation(`/campaigns/${ad.id}`)}
-                        data-testid={`button-view-ad-${ad.id}`}>
-                        {t("ads", "view")}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="min-w-[50%]"
-                        onClick={() => setLocation(editAdPath(ad.id))}
-                        data-testid={`button-edit-${ad.id}`}>
-                        {t("ads", "edit")}
+                        className="min-w-[100%]"
+                        onClick={() => setLocation(`/campaigns/${ad.id}/analytics`)}
+                        data-testid={`button-analytics-${ad.id}`}>
+                        {t("ads", "analytics")}
                       </Button>
                     </div>
                   </CardContent>

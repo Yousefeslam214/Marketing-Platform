@@ -1,5 +1,5 @@
 // components/ads/ad-card.tsx
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,8 @@ export function AdCard({
   isLoading = false,
 }: AdCardProps) {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
+  
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "published":
@@ -94,8 +96,8 @@ export function AdCard({
                 Array.isArray(ad.imageUrl)
                   ? ad.imageUrl
                   : ad.imageUrl
-                    ? [ad.imageUrl]
-                    : []
+                  ? [ad.imageUrl]
+                  : []
               }
               videoUrl={ad.youtubeVideo}
               alt={title}
@@ -129,30 +131,39 @@ export function AdCard({
 
           {showActions && (
             <>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-col">
+                <div className="w-full text-center font-medium space-x-2 flex gap-2  flex-row">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onView?.(ad.id)}
+                    // onClick={() => onView?.(ad.id)}
+                    className="flex-1"
+                    data-testid={`button-view-ad-${ad.id}`}>
+                    <i className="fas fa-eye mx-1"></i>
+                    {t("ads", "view") || "View"}
+                  </Button>
+
+                  <Link href={`/ads/${ad.id}/edit`} className="w-[50%]">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      // onClick={() => onEdit?.(ad.id)}
+                      className="w-full"
+                      data-testid={`button-edit-ad-${ad.id}`}>
+                      <i className="fas fa-edit mx-1"></i>
+                      {t("ads", "edit") || "Edit"}
+                    </Button>
+                  </Link>
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onView?.(ad.id)}
-                  // onClick={() => onView?.(ad.id)}
-                  className="flex-1"
-                  data-testid={`button-view-ad-${ad.id}`}>
-                  <i className="fas fa-eye mx-1"></i>
-                  {t("ads", "view") || "View"}
+                  className="min-w-[100%]"
+                  onClick={() => setLocation(`/campaigns/${ad.id}/analytics`)}
+                  data-testid={`button-analytics-${ad.id}`}>
+                  {t("ads", "analytics")}
                 </Button>
-                <Link href={`/ads/${ad.id}/edit`} className="w-[50%]">
-                  <Button
-
-                    variant="outline"
-                    size="sm"
-                    // onClick={() => onEdit?.(ad.id)}
-                    className="w-full"
-                    data-testid={`button-edit-ad-${ad.id}`}>
-                    <i className="fas fa-edit mx-1"></i>
-                    {t("ads", "edit") || "Edit"}
-                  </Button>
-
-                </Link>
                 {/* {onAnalytics && (
                   <Button
                     variant="outline"
@@ -167,16 +178,18 @@ export function AdCard({
               </div>
 
               {ad.status === "approved" && onPurchase && (
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={() => onPurchase(ad.id)}
-                  className="w-full mt-3"
-                  data-testid={`button-purchase-ad-${ad.id}`}>
-                  <i className="fas fa-credit-card mx-1"></i>
-                  {t("adDetail", "purchaseImpressions") ||
-                    "Purchase Impressions"}
-                </Button>
+                <>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => onPurchase(ad.id)}
+                    className="w-full mt-3"
+                    data-testid={`button-purchase-ad-${ad.id}`}>
+                    <i className="fas fa-credit-card mx-1"></i>
+                    {t("adDetail", "purchaseImpressions") ||
+                      "Purchase Impressions"}
+                  </Button>
+                </>
               )}
 
               {ad.status === "published" && (
