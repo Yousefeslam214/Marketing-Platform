@@ -120,9 +120,10 @@ export default function AdAnalytics() {
     enabled: !!adId,
   });
 
-  const analytics: AnalyticsData | undefined =
-    analyticsResponse?.data?.analytics;
-  console.log(analytics);
+  // Safely extract analytics data with proper null checks
+  const analytics: AnalyticsData | undefined = 
+    (analyticsResponse as any)?.data?.analytics || 
+    (analyticsResponse as any)?.analytics;
 
   // Filter daily breakdown to show only last 14 days with data
   const filteredDailyData =
@@ -169,7 +170,7 @@ export default function AdAnalytics() {
     );
   }
 
-  if (error || !analytics) {
+  if (error || !analytics || !analytics.financials || !analytics.performance) {
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
         <div className="flex-1 overflow-auto">
@@ -226,7 +227,7 @@ export default function AdAnalytics() {
                 <i className="fas fa-eye text-primary text-2xl mb-2"></i>
 
                 <div className="text-2xl font-bold text-primary">
-                  {analytics.totalImpressions.toLocaleString()}
+                  {(analytics.totalImpressions ?? 0).toLocaleString()}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   {t("analytics", "totalImpressions") || "Total Impressions"}
@@ -237,7 +238,7 @@ export default function AdAnalytics() {
               <CardContent className="p-4 text-center">
                 <i className="fas fa-mouse-pointer text-green-600 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-green-600">
-                  {analytics.totalClicks.toLocaleString()}
+                  {(analytics.totalClicks ?? 0).toLocaleString()}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   {t("analytics", "totalClicks") || "Total Clicks"}
@@ -248,7 +249,7 @@ export default function AdAnalytics() {
               <CardContent className="p-4 text-center">
                 <i className="fas fa-percentage text-orange-600 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-orange-600">
-                  {analytics.clickThroughRate.toFixed(2)}%
+                  {(analytics.clickThroughRate ?? 0).toFixed(2)}%
                 </div>
                 <div className="text-sm text-muted-foreground">
                   {t("analytics", "ctr") || "Click Through Rate"}
@@ -259,7 +260,7 @@ export default function AdAnalytics() {
               <CardContent className="p-4 text-center">
                 <i className="fas fa-globe text-blue-600 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-blue-600">
-                  {analytics.websiteClicks.toLocaleString()}
+                  {(analytics.websiteClicks ?? 0).toLocaleString()}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   {t("analytics", "websiteClicks") || "Website Clicks"}
@@ -270,7 +271,7 @@ export default function AdAnalytics() {
               <CardContent className="p-4 text-center">
                 <i className="fas fa-heart text-red-500 text-2xl mb-2"></i>
                 <div className="text-2xl font-bold text-red-500">
-                  {analytics.likesCount.toLocaleString()}
+                  {(analytics.likesCount ?? 0).toLocaleString()}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   {t("analytics", "likes") || "Likes"}
