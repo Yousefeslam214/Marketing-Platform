@@ -37,7 +37,7 @@ export function ImageCarousel({
   if (!imageUrl && !videoId) return null;
 
   // Dynamic height based on isHovered prop - auto height to fit full image
-  const heightClass = isHovered ? "max-h-[500px]" : "min-h-[200px] max-h-[350px]";
+  const heightClass = isHovered ? "max-h-[500px]" : "";
 
   // Show video if no image but video exists
   if (!imageUrl && videoId) {

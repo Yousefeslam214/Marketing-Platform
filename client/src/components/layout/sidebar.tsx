@@ -20,6 +20,7 @@ import {
   userBillingPath,
   adminBillingPath,
   campaignsPath,
+  newCampaignsPath,
 } from "@/lib/paths";
 import { TokenManager } from "@/lib/auth";
 interface NavigationItem {
@@ -363,6 +364,21 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             )}
           </div>
         </div>
+
+        {/* Create New Ad Button */}
+        {role === "user" && (
+          <div className="px-4 pt-4">
+            <Link href={newCampaignsPath()}>
+              <Button 
+                className="w-full" 
+                data-testid="sidebar-create-ad"
+              >
+                <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                {t("sidebar", "createNewAd") || t("dashboard", "createNewAd")}
+              </Button>
+            </Link>
+          </div>
+        )}
 
         {/* Navigation */}
         <nav className="flex-1 p-4">

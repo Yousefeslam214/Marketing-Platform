@@ -40,6 +40,7 @@ export default function Dashboard() {
 
   type ActivityItem = {
     id: string;
+    adId: string;
     type: string;
     adTitle: string;
     createdAt: string;
@@ -395,131 +396,135 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[15vh] ">
             {/* Recent Activity */}
-            <Card>
-              <CardContent className="p-6">
+            <Card className="h-fit">
+              <CardContent className="p-6  ">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
                   {t("dashboard", "recentActivity")}
                 </h3>
-                {activity.length > 0 ? (
-                  <div
-                    className="space-y-3
-                  overflow-y-auto max-h-32
-                  ">
-                    {activity.map((item: any) => {
-                      const getActivityIcon = (type: string) => {
-                        switch (type) {
-                          case "click":
-                            return "fas fa-mouse-pointer text-blue-500";
-                          case "impression":
-                            return "fas fa-eye text-green-500";
-                          case "conversion":
-                            return "fas fa-check-circle text-purple-500";
-                          default:
-                            return "fas fa-activity text-gray-500";
-                        }
-                      };
+                <div className="max-h-[15vh] overflow-y-auto">
+                  {activity.length > 0 ? (
+                    <div className="space-y-3  ">
+                      {activity.map((item: any) => {
+                        const getActivityIcon = (type: string) => {
+                          switch (type) {
+                            case "click":
+                              return "fas fa-mouse-pointer text-blue-500";
+                            case "impression":
+                              return "fas fa-eye text-green-500";
+                            case "conversion":
+                              return "fas fa-check-circle text-purple-500";
+                            default:
+                              return "fas fa-activity text-gray-500";
+                          }
+                        };
 
-                      const getActivityText = (type: string) => {
-                        switch (type) {
-                          case "click":
-                            return (
-                              t("dashboard", "clickActivity") || "Ad clicked"
-                            );
-                          case "impression":
-                            return (
-                              t("dashboard", "impressionActivity") ||
-                              "Ad viewed"
-                            );
-                          case "conversion":
-                            return (
-                              t("dashboard", "conversionActivity") ||
-                              "Conversion"
-                            );
-                          default:
-                            return (
-                              t("dashboard", "unknownActivity") || "Activity"
-                            );
-                        }
-                      };
+                        const getActivityText = (type: string) => {
+                          switch (type) {
+                            case "click":
+                              return (
+                                t("dashboard", "clickActivity") || "Ad clicked"
+                              );
+                            case "impression":
+                              return (
+                                t("dashboard", "impressionActivity") ||
+                                "Ad viewed"
+                              );
+                            case "conversion":
+                              return (
+                                t("dashboard", "conversionActivity") ||
+                                "Conversion"
+                              );
+                            default:
+                              return (
+                                t("dashboard", "unknownActivity") || "Activity"
+                              );
+                          }
+                        };
 
-                      const formatTime = (dateString: string) => {
-                        const date = new Date(dateString);
-                        const now = new Date();
-                        const diffInMinutes = Math.floor(
-                          (now.getTime() - date.getTime()) / (1000 * 60)
-                        );
+                        const formatTime = (dateString: string) => {
+                          const date = new Date(dateString);
+                          const now = new Date();
+                          const diffInMinutes = Math.floor(
+                            (now.getTime() - date.getTime()) / (1000 * 60)
+                          );
 
-                        if (diffInMinutes < 1)
-                          return t("dashboard", "justNow") || "Just now";
-                        if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-                        if (diffInMinutes < 1440)
-                          return `${Math.floor(diffInMinutes / 60)}h ago`;
-                        return date.toLocaleDateString();
-                      };
+                          if (diffInMinutes < 1)
+                            return t("dashboard", "justNow") || "Just now";
+                          if (diffInMinutes < 60)
+                            return `${diffInMinutes}m ago`;
+                          if (diffInMinutes < 1440)
+                            return `${Math.floor(diffInMinutes / 60)}h ago`;
+                          return date.toLocaleDateString();
+                        };
 
-                      return (
-                        <div
-                          key={item.id}
-                          className={`flex items-center p-3 border rounded-lg hover:bg-muted/50 transition-colors ${
-                            isRTL ? "space-x-reverse" : ""
-                          }`}
-                          style={{ gap: "12px" }}>
-                          <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
-                            <i
-                              className={`${getActivityIcon(
-                                item.type
-                              )} text-xs`}></i>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium">
-                              {getActivityText(item.type)}
-                            </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {item.adTitle}
-                            </p>
-                          </div>
-                          <div className="flex flex-col items-end">
-                            <span className="text-xs text-muted-foreground">
-                              {formatTime(item.createdAt)}
-                            </span>
-                            <div className="flex items-center gap-1 mt-1">
-                              <Badge variant="outline" className="text-xs">
-                                {item.type}
-                              </Badge>
-                              {item.source ? (
-                                <Badge
-                                  variant="secondary"
-                                  className="text-xs capitalize">
-                                  {item.source}
+                        return (
+                          <div
+                            key={item.id}
+                            onClick={() => item.adId && setLocation(`/campaigns/${item.adId}`)}
+                            className={`flex items-center p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer ${
+                              isRTL ? "space-x-reverse" : ""
+                            }`}
+                            style={{ gap: "12px" }}>
+                            <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                              <i
+                                className={`${getActivityIcon(
+                                  item.type
+                                )} text-xs`}></i>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium">
+                                {getActivityText(item.type)}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate">
+                                {item.adTitle}
+                              </p>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <span className="text-xs text-muted-foreground">
+                                {formatTime(item.createdAt)}
+                              </span>
+                              <div className="flex items-center gap-1 mt-1">
+                                <Badge variant="outline" className="text-xs">
+                                  {item.type}
                                 </Badge>
-                              ) : null}
+                                {item.source ? (
+                                  <Badge
+                                    variant="secondary"
+                                    className="text-xs capitalize">
+                                    {item.source}
+                                  </Badge>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <i className="fas fa-history text-4xl text-muted-foreground mb-4"></i>
-                    <p className="text-sm text-muted-foreground">
-                      {t("dashboard", "noRecentActivity")}
-                    </p>
-                  </div>
-                )}
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <i className="fas fa-history text-4xl text-muted-foreground mb-4"></i>
+                      <p className="text-sm text-muted-foreground">
+                        {t("dashboard", "noRecentActivity")}
+                      </p>
+                    </div>
+                  )}
+                </div>{" "}
               </CardContent>
             </Card>
 
             {/* Billing Overview */}
-            <Card className="h-fit">
-              <CardContent className="p-6 ">
+            <Card className=" h-full">
+              <CardContent className="p-6 h-full flex flex-col justify-between ">
                 <h3 className="text-lg font-semibold text-foreground mb-6">
                   {t("dashboard", "billingOverview")}
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                <div className="space-y-4 h-full">
+                  <div
+                    className="flex items-center justify-between p-4 bg-muted/50 rounded-lg
+                  
+                  ">
                     <div>
                       <p className="text-sm font-medium text-foreground">
                         {t("dashboard", "currentBalance")}
@@ -579,13 +584,16 @@ export default function Dashboard() {
                     </div>
                   </div> */}
 
+<div className="mt-auto ">
+
                   <Button
-                    className="w-full"
+                    className="w-full mt-4"
                     onClick={handlePurchaseCredits}
                     data-testid="button-purchase-credits">
                     <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
                     {t("dashboard", "purchaseMoreCredits")}
                   </Button>
+                      </div>
                 </div>
               </CardContent>
             </Card>

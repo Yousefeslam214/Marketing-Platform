@@ -63,7 +63,8 @@
     "adReports": "Ad Reports",
     "pixels": "Pixels",
     "FreeCredits": "Free Credits",
-    "seoSettings": "SEO Settings"
+    "seoSettings": "SEO Settings",
+    "createNewAd": "Create New Ad"
   },
   "layout": {
     "notifications": "Notifications",

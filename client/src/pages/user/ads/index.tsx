@@ -143,33 +143,34 @@ export default function AdsIndex() {
                       </div>
                     </div>
 
-                    <div
-                      className="flex items-center
-                     gap-2 mt-4 flex-col">
-                      <div className="w-full text-center font-medium space-x-2 flex gap-2 ">
+                    <div className="flex flex-col gap-2 mt-4">
+                      <div className="grid grid-cols-2 gap-2">
                         <Button
                           variant="outline"
-                          className="w-full"
                           size="sm"
                           onClick={() => setLocation(`/campaigns/${ad.id}`)}
                           data-testid={`button-view-ad-${ad.id}`}>
+                          <i className={`fas fa-eye ${isRTL ? "ml-2" : "mr-2"}`}></i>
                           {t("ads", "view")}
                         </Button>
                         <Button
                           variant="outline"
                           size="sm"
-                          className="w-full"
                           onClick={() => setLocation(editAdPath(ad.id))}
                           data-testid={`button-edit-${ad.id}`}>
+                          <i className={`fas fa-edit ${isRTL ? "ml-2" : "mr-2"}`}></i>
                           {t("ads", "edit")}
                         </Button>
                       </div>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="min-w-[100%]"
-                        onClick={() => setLocation(`/campaigns/${ad.id}/analytics`)}
+                        className="w-full"
+                        onClick={() =>
+                          setLocation(`/campaigns/${ad.id}/analytics`)
+                        }
                         data-testid={`button-analytics-${ad.id}`}>
+                        <i className={`fas fa-chart-line ${isRTL ? "ml-2" : "mr-2"}`}></i>
                         {t("ads", "analytics")}
                       </Button>
                     </div>
