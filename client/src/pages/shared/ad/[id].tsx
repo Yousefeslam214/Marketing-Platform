@@ -361,7 +361,7 @@ export default function AdDetail({ params }: AdDetailProps) {
         {isLoading ? (
           <Loading />
         ) : ad ? (
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Performance Overview */}
               <Card className="lg:col-span-2">

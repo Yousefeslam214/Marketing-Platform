@@ -559,7 +559,7 @@ export default function EditPhoto() {
             "Manage, replace, or delete your ad photos"
           )}
         />
-        <main className="p-6">
+        <main className="p-6 mt-24">
           <div className="max-w-3xl mx-auto">
             <Card>
               <CardHeader>

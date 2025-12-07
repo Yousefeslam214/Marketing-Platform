@@ -114,7 +114,7 @@ export default function AdminDashboard() {
             description={t("AdminDashboard", "description")}
           />
 
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <Loading />
           </main>
         </div>
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
             description={t("AdminDashboard", "description")}
           />
 
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <ErrorState
               message={getErrorMessage(error)}
               onRetry={() => refetch && refetch()}
@@ -175,7 +175,7 @@ export default function AdminDashboard() {
           }
         />
 
-        <main className="p-6">
+        <main className="p-6 mt-24">
           {/* Admin Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card>

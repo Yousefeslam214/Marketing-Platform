@@ -163,7 +163,7 @@ export default function AssignCredit() {
           description={t("userAds", "assignCreditDescription")}
         />
 
-        <main className="p-6">
+        <main className="p-6 mt-24">
           <div className="max-w-2xl mx-auto">
             {isLoadingBalance ? (
               <Card>

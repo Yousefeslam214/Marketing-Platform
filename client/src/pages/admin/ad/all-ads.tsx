@@ -54,7 +54,7 @@ export default function AllAds() {
             </div>
           }
         />
-        <main className="p-6">
+        <main className="p-6 mt-24">
           {isLoading ? (
             <div className="min-h-[74vh]">
               <Loading />

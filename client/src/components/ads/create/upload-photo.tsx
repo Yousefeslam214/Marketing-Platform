@@ -341,7 +341,7 @@ export default function UploadPhoto() {
           description={t("uploadPhoto", "Please upload a photo for your ad")}
         />
 
-        <main className="p-6">
+        <main className="p-6 mt-24">
           <div className="max-w-2xl mx-auto">
             <Card>
               <CardHeader>

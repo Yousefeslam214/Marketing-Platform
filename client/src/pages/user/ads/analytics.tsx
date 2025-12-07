@@ -160,7 +160,7 @@ export default function AdAnalytics() {
               "View detailed analytics for your ad"
             }
           />
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
             </div>
@@ -181,7 +181,7 @@ export default function AdAnalytics() {
               "View detailed analytics for your ad"
             }
           />
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <div className="text-center py-12">
               <i className="fas fa-exclamation-circle text-4xl text-destructive mb-4"></i>
               <h3 className="text-xl font-semibold text-foreground mb-2">

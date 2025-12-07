@@ -205,7 +205,7 @@ export default function AdminPixels() {
               </div>
             }
           />
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <div className="grid grid-cols-1 gap-4">
               {isLoading ? (
                 <Loading />

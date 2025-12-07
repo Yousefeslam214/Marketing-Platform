@@ -15,15 +15,23 @@ export function Header({ title, description, actions }: HeaderProps) {
     <>
       <MetaPixel />
       <header
-        className="bg-card border-b border-border px-6 py-4
+        className="bg-card border-b border-border 
+        px-6
+         py-4
       h-[97px]
+      fixed
+      w-fill-available
+      w-[-webkit-fill-available]
+      z-50
+
       
       "
         data-testid="page-header">
         <div
           className={` items-center justify-between 
         flex flex-row
-        `}>
+        `}
+        >
           <div className={isRTL ? "text-right" : "text-left"}>
             <h2
               className="text-2xl font-bold text-foreground"
@@ -40,7 +48,7 @@ export function Header({ title, description, actions }: HeaderProps) {
           </div>
           {actions && (
             <div
-              className={`flex items-center gap-4 ${
+              className={`flex  items-center gap-4 ${
                 isRTL ? "flex-row-reverse" : "flex-row"
               }`}
               data-testid="page-actions">

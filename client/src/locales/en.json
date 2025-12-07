@@ -1267,6 +1267,7 @@
   },
   "publicFeed": {
     "title": "Public Feed",
+    "description": "Browse and discover the latest ads from our community",
     "sponsored": "Sponsored",
     "promoted": "Promoted",
     "like": "Like",
@@ -1305,7 +1306,8 @@
     "reportValidationTitle": "Missing information",
     "reportValidationDesc": "Please fill required fields.",
     "Search title": "Search title",
-    "Search description": "Search description"
+    "Search description": "Search description",
+    "clearFilters": "Clear"
   },
   "marketingLinks": {
     "title": "Marketing Source Links",

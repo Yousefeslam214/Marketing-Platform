@@ -33,20 +33,22 @@ export default function Contact() {
       } flex flex-col`}
       dir={isRTL ? "rtl" : "ltr"}>
       {isUserContact ? (
+        <>
         <div className="w-full bg-background">
-          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex-1 overflow-auto max-h-[100vh] mb-6">
-              <Header
-                title={t("contact", "title")}
-                description={t("contact", "subtitle")}
-              />
-            </div>
+          {/* <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6"> */}
+          <div className="flex-1 overflow-auto max-h-[100vh] mb-6">
+            <Header
+              title={t("contact", "title")}
+              description={t("contact", "subtitle")}
+            />
           </div>
+          {/* </div> */}
         </div>
+         </>
       ) : (
         <>
           {/* Hero Section for Public Route */}
-          <section className="relative py-20 overflow-hidden">
+          <section className="relative py-20 overflow-hidden ">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
             <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
               <div className="text-center space-y-4 mb-16">
@@ -66,8 +68,8 @@ export default function Contact() {
         </>
       )}
 
-      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 mt-5">
-        <div className="max-w-7xl mx-auto">
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-6 mt-24">
+        <div className="container ">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-stretch">
             {/* Contact Information */}
             <div className="space-y-8 w-full">

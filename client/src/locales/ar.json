@@ -1247,6 +1247,7 @@
   },
   "publicFeed": {
     "title": "الاعلانات العامة",
+    "description": "تصفح واكتشف أحدث الإعلانات من مجتمعنا",
     "sponsored": "إعلان مدفوع",
     "promoted": " مُميز",
     "like": "أعجبني",
@@ -1285,7 +1286,8 @@
     "reportValidationTitle": "بيانات ناقصة",
     "reportValidationDesc": "يرجى تعبئة الحقول المطلوبة.",
     "Search title": "بحث العنوان",
-    "Search description": "بحث الوصف"
+    "Search description": "بحث الوصف",
+    "clearFilters": "مسح"
   },
   "marketingLinks": {
     "title": "روابط مصادر التسويق",

@@ -67,7 +67,7 @@ export default function AdminUsers() {
             description={t("userManagement", "description")}
           />
 
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <Loading />
           </main>
         </div>
@@ -96,7 +96,7 @@ export default function AdminUsers() {
             description={t("userManagement", "description")}
           />
 
-          <main className="p-6">
+          <main className="p-6 mt-24">
             <ErrorState
               message={getErrorMessage(error)}
               onRetry={() => refetch && refetch()}
@@ -154,7 +154,7 @@ export default function AdminUsers() {
           description={t("userManagement", "description")}
         />
 
-        <main className="p-6">
+        <main className="p-6 mt-24">
           {/* Filters */}
           <div className="flex items-center gap-4 mb-6">
             <div className="flex-1 max-w-sm">

@@ -76,8 +76,8 @@ export default function FAQ() {
   ];
 
   return (
-    <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto max-h-[100vh]">
+    <div className={`flex bg-background ${isRTL ? "rtl" : "ltr"}`}>
+      <div className="flex-1 ">
         {isUserFaq ? (
           <Header
             title={t("faq", "title")}
@@ -87,7 +87,7 @@ export default function FAQ() {
           <>
             {/* Hero Section */}
             <section
-              className="relative py-20 overflow-hidden
+              className="relative py-20 overflow-auto
       w-full
         flex flex-col items-center
       ">
@@ -113,8 +113,8 @@ export default function FAQ() {
         )}
         {/* FAQ Content */}
         <section
-          className="py-5 w-full
-      flex flex-col items-center ">
+          className="py-5 w-full overflow-auto
+      flex flex-col items-center mt-24 ">
           <div className="container">
             <div className="max-w-4xl mx-auto">
               <div className="grid gap-8">
