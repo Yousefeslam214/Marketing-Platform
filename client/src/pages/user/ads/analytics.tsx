@@ -293,7 +293,7 @@ export default function AdAnalytics() {
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-piggy-bank text-green-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-green-600">
-                    {analytics.financials.totalBudgetImpressions.toLocaleString()}
+                    {(analytics.financials?.totalBudgetImpressions ?? 0).toLocaleString()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
                     {t("analytics", "totalBudget") ||
@@ -303,7 +303,7 @@ export default function AdAnalytics() {
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-credit-card text-orange-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-orange-600">
-                    {analytics.financials.usedImpressions.toLocaleString()}
+                    {(analytics.financials?.usedImpressions ?? 0).toLocaleString()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
                     {t("analytics", "usedImpressions") || "Used Impressions"}
@@ -312,7 +312,7 @@ export default function AdAnalytics() {
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-wallet text-blue-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-blue-600">
-                    {analytics.financials.remainingImpressions.toLocaleString()}
+                    {(analytics.financials?.remainingImpressions ?? 0).toLocaleString()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
                     {t("analytics", "remainingImpressions") ||
@@ -324,8 +324,8 @@ export default function AdAnalytics() {
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-money-bill-wave text-green-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-green-600">
-                    {analytics.financials.totalBudgetCost.toLocaleString()}{" "}
-                    {analytics.financials.currency.toUpperCase()}
+                    {(analytics.financials?.totalBudgetCost ?? 0).toLocaleString()}{" "}
+                    {(analytics.financials?.currency ?? "").toUpperCase()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
                     {t("analytics", "totalBudgetRemaining") ||
@@ -335,8 +335,8 @@ export default function AdAnalytics() {
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-receipt text-orange-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-orange-600">
-                    {analytics.financials.totalCostSpent.toLocaleString()}{" "}
-                    {analytics.financials.currency.toUpperCase()}
+                    {(analytics.financials?.totalCostSpent ?? 0).toLocaleString()}{" "}
+                    {(analytics.financials?.currency ?? "").toUpperCase()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
                     {t("analytics", "totalCostSpent") || "Total Cost Spent"}
@@ -345,8 +345,8 @@ export default function AdAnalytics() {
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <i className="fas fa-coins text-purple-600 text-2xl mb-2"></i>
                   <div className="text-3xl font-bold text-purple-600">
-                    {analytics.financials.costPerImpression.toFixed(3)}{" "}
-                    {analytics.financials.currency.toUpperCase()}
+                    {(analytics.financials?.costPerImpression ?? 0).toFixed(3)}{" "}
+                    {(analytics.financials?.currency ?? "").toUpperCase()}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
                     {t("analytics", "costPerImpression") || "Cost/Impression"}
@@ -407,23 +407,18 @@ export default function AdAnalytics() {
                   <div className="flex items-center justify-center gap-2">
                     <span
                       className={`text-2xl font-bold ${
-                        analytics.performance.growthMetrics.impressionGrowth >=
-                        0
+                        (analytics.performance?.growthMetrics?.impressionGrowth ?? 0) >= 0
                           ? "text-green-600"
                           : "text-red-600"
                       }`}>
-                      {analytics.performance.growthMetrics.impressionGrowth >= 0
+                      {(analytics.performance?.growthMetrics?.impressionGrowth ?? 0) >= 0
                         ? "+"
                         : ""}
-                      {analytics.performance.growthMetrics.impressionGrowth.toFixed(
-                        1
-                      )}
-                      %
+                      {(analytics.performance?.growthMetrics?.impressionGrowth ?? 0).toFixed(1)}%
                     </span>
                     <i
                       className={`fas ${
-                        analytics.performance.growthMetrics.impressionGrowth >=
-                        0
+                        (analytics.performance?.growthMetrics?.impressionGrowth ?? 0) >= 0
                           ? "fa-arrow-up text-green-600"
                           : "fa-arrow-down text-red-600"
                       }`}></i>
@@ -437,21 +432,18 @@ export default function AdAnalytics() {
                   <div className="flex items-center justify-center gap-2">
                     <span
                       className={`text-2xl font-bold ${
-                        analytics.performance.growthMetrics.clickGrowth >= 0
+                        (analytics.performance?.growthMetrics?.clickGrowth ?? 0) >= 0
                           ? "text-green-600"
                           : "text-red-600"
                       }`}>
-                      {analytics.performance.growthMetrics.clickGrowth >= 0
+                      {(analytics.performance?.growthMetrics?.clickGrowth ?? 0) >= 0
                         ? "+"
                         : ""}
-                      {analytics.performance.growthMetrics.clickGrowth.toFixed(
-                        1
-                      )}
-                      %
+                      {(analytics.performance?.growthMetrics?.clickGrowth ?? 0).toFixed(1)}%
                     </span>
                     <i
                       className={`fas ${
-                        analytics.performance.growthMetrics.clickGrowth >= 0
+                        (analytics.performance?.growthMetrics?.clickGrowth ?? 0) >= 0
                           ? "fa-arrow-up text-green-600"
                           : "fa-arrow-down text-red-600"
                       }`}></i>
@@ -465,19 +457,18 @@ export default function AdAnalytics() {
                   <div className="flex items-center justify-center gap-2">
                     <span
                       className={`text-2xl font-bold ${
-                        analytics.performance.growthMetrics.ctrGrowth >= 0
+                        (analytics.performance?.growthMetrics?.ctrGrowth ?? 0) >= 0
                           ? "text-green-600"
                           : "text-red-600"
                       }`}>
-                      {analytics.performance.growthMetrics.ctrGrowth >= 0
+                      {(analytics.performance?.growthMetrics?.ctrGrowth ?? 0) >= 0
                         ? "+"
                         : ""}
-                      {analytics.performance.growthMetrics.ctrGrowth.toFixed(1)}
-                      %
+                      {(analytics.performance?.growthMetrics?.ctrGrowth ?? 0).toFixed(1)}%
                     </span>
                     <i
                       className={`fas ${
-                        analytics.performance.growthMetrics.ctrGrowth >= 0
+                        (analytics.performance?.growthMetrics?.ctrGrowth ?? 0) >= 0
                           ? "fa-arrow-up text-green-600"
                           : "fa-arrow-down text-red-600"
                       }`}></i>
