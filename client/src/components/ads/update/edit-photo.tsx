@@ -551,7 +551,7 @@ export default function EditPhoto() {
 
   return (
     <div className="flex h-screen bg-background">
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("editPhoto", "Edit Photos")}
           description={t(

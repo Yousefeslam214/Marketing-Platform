@@ -102,7 +102,7 @@ export default function Analytics() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("analytics", "title")}
           description={t("analytics", "description")}
@@ -118,10 +118,18 @@ export default function Analytics() {
                 <SelectValue placeholder="Select time range" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="24hours">{t("analytics", "last24Hours")}</SelectItem>
-                <SelectItem value="7days">{t("analytics", "last7Days")}</SelectItem>
-                <SelectItem value="30days">{t("analytics", "last30Days")}</SelectItem>
-                <SelectItem value="90days">{t("analytics", "last90Days")}</SelectItem>
+                <SelectItem value="24hours">
+                  {t("analytics", "last24Hours")}
+                </SelectItem>
+                <SelectItem value="7days">
+                  {t("analytics", "last7Days")}
+                </SelectItem>
+                <SelectItem value="30days">
+                  {t("analytics", "last30Days")}
+                </SelectItem>
+                <SelectItem value="90days">
+                  {t("analytics", "last90Days")}
+                </SelectItem>
               </SelectContent>
             </Select>
 
@@ -253,9 +261,7 @@ export default function Analytics() {
             {/* Top Performing Ads */}
             <Card>
               <CardHeader>
-                <CardTitle>
-                  {t("analytics", "topPerformingAds")}
-                </CardTitle>
+                <CardTitle>{t("analytics", "topPerformingAds")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">

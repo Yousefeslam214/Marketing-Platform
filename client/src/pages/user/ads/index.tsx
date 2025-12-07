@@ -34,7 +34,7 @@ export default function AdsIndex() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("ads", "title")}
           description={t("ads", "description")}
@@ -150,7 +150,10 @@ export default function AdsIndex() {
                           size="sm"
                           onClick={() => setLocation(`/campaigns/${ad.id}`)}
                           data-testid={`button-view-ad-${ad.id}`}>
-                          <i className={`fas fa-eye ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                          <i
+                            className={`fas fa-eye ${
+                              isRTL ? "ml-2" : "mr-2"
+                            }`}></i>
                           {t("ads", "view")}
                         </Button>
                         <Button
@@ -158,7 +161,10 @@ export default function AdsIndex() {
                           size="sm"
                           onClick={() => setLocation(editAdPath(ad.id))}
                           data-testid={`button-edit-${ad.id}`}>
-                          <i className={`fas fa-edit ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                          <i
+                            className={`fas fa-edit ${
+                              isRTL ? "ml-2" : "mr-2"
+                            }`}></i>
                           {t("ads", "edit")}
                         </Button>
                       </div>
@@ -170,7 +176,10 @@ export default function AdsIndex() {
                           setLocation(`/campaigns/${ad.id}/analytics`)
                         }
                         data-testid={`button-analytics-${ad.id}`}>
-                        <i className={`fas fa-chart-line ${isRTL ? "ml-2" : "mr-2"}`}></i>
+                        <i
+                          className={`fas fa-chart-line ${
+                            isRTL ? "ml-2" : "mr-2"
+                          }`}></i>
                         {t("ads", "analytics")}
                       </Button>
                     </div>

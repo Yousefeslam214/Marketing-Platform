@@ -19,7 +19,7 @@ export default function PrivacyTerms() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("privacyTerms", "title")}
           description={t("privacyTerms", "subtitle")}

@@ -195,7 +195,7 @@ export default function AdminPixels() {
   return (
     <div className="">
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[100vh]">
           <Header
             title={t("pixels", "title")}
             description={t("pixels", "description")}
@@ -208,7 +208,7 @@ export default function AdminPixels() {
           <main className="p-6">
             <div className="grid grid-cols-1 gap-4">
               {isLoading ? (
-              <Loading />
+                <Loading />
               ) : (
                 pixels.map((p) => (
                   <Card key={p.id}>

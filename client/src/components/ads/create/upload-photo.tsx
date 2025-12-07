@@ -335,7 +335,7 @@ export default function UploadPhoto() {
 
   return (
     <div className="flex h-screen bg-background">
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("uploadPhoto", "Upload Ad Photo")}
           description={t("uploadPhoto", "Please upload a photo for your ad")}

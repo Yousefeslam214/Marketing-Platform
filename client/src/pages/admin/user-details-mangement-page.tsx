@@ -205,7 +205,7 @@ export default function UserDetails() {
   if (isLoading) {
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[100vh]">
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
           </div>
@@ -217,7 +217,7 @@ export default function UserDetails() {
   if (error) {
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[100vh]">
           <div className="text-center py-12">
             <p className="text-destructive">
               {t("userDetails", "errorLoadingUser")}
@@ -234,7 +234,7 @@ export default function UserDetails() {
   if (!user) return null;
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("userDetails", "title")}
           description={t("userDetails", "description")}

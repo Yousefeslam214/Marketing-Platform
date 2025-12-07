@@ -35,7 +35,7 @@ export default function Contact() {
       {isUserContact ? (
         <div className="w-full bg-background">
           <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex-1 overflow-auto mb-6">
+            <div className="flex-1 overflow-auto max-h-[100vh] mb-6">
               <Header
                 title={t("contact", "title")}
                 description={t("contact", "subtitle")}

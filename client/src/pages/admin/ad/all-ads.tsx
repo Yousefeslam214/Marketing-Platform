@@ -41,7 +41,7 @@ export default function AllAds() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("allAds", "title")}
           description={t("allAds", "description")}
@@ -103,7 +103,6 @@ export default function AllAds() {
                   <i className="fas fa-plus mx-2"></i>
                   {isRTL ? "إنشاء إعلان جديد" : "Create New Ad"}
                 </Button>
-                
               </div>
             </div>
           )}

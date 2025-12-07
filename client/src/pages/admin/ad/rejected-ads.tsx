@@ -27,7 +27,6 @@ export default function RejectedAds() {
     url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}&status=rejected`,
   });
 
-  
   if (error) {
     return (
       <div className="flex flex-center justify-center h-screen bg-background">
@@ -47,7 +46,7 @@ export default function RejectedAds() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("rejectedAds", "title")}
           description={t("rejectedAds", "description")}

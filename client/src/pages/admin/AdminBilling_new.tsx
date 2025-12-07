@@ -76,8 +76,6 @@ export default function AdminBilling() {
   };
   const paymentItems = billingData?.items || [];
 
- 
-
   const retryPaymentMutation = {
     mutate: (paymentId: string) => {
       toast({
@@ -90,7 +88,7 @@ export default function AdminBilling() {
 
   return (
     <div className="flex h-screen bg-background">
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("adminBilling", "title")}
           description={t("adminBilling", "description")}

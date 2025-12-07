@@ -108,7 +108,7 @@ export default function AdminDashboard() {
   if (isLoading) {
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[100vh]">
           <Header
             title={t("AdminDashboard", "title")}
             description={t("AdminDashboard", "description")}
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
 
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[100vh]">
           <Header
             title={t("AdminDashboard", "title")}
             description={t("AdminDashboard", "description")}
@@ -158,7 +158,7 @@ export default function AdminDashboard() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("AdminDashboard", "title")}
           description={t("AdminDashboard", "description")}

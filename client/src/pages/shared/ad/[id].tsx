@@ -306,7 +306,7 @@ export default function AdDetail({ params }: AdDetailProps) {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto flex flex-col">
+      <div className="flex-1 overflow-auto max-h-[100vh] flex flex-col">
         <div className="sticky top-0 z-10 bg-card">
           <Header
             title={
@@ -320,20 +320,22 @@ export default function AdDetail({ params }: AdDetailProps) {
                 <Badge className={getStatusColor(ad.status)}>{ad.status}</Badge>
                 {userRole === "admin" && ad.userId && (
                   <Button
-                    onClick={() => setLocation(`/admin/user-details/${ad.userId}`)}
+                    onClick={() =>
+                      setLocation(`/admin/user-details/${ad.userId}`)
+                    }
                     variant="outline"
                     data-testid="button-view-user-details">
                     <i className="fas fa-user mx-2"></i>
                     {t("adDetail", "viewUserDetails") || "View User Details"}
                   </Button>
                 )}
-                 {/* <Button
+                {/* <Button
                       onClick={() => setLocation("/billing")}
                       data-testid="button-purchase-impressions">
                       <i className="fas fa-credit-card mx-2"></i>
                       {t("adDetail", "purchaseImpressions")}
                     </Button> */}
-                    <Button
+                <Button
                   variant="outline"
                   size="sm"
                   // className="min-w-[100%]"
@@ -341,7 +343,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                   data-testid={`button-analytics-${ad.id}`}>
                   {t("ads", "analytics")}
                 </Button>
-                
+
                 {ad.status === "approved" && (
                   <>
                     <Button
@@ -421,18 +423,20 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
                       <i
-                        className={`fas ${adActivationStatus
-                          ? "fa-play text-green-600"
-                          : "fa-pause text-gray-600"
-                          } text-2xl mb-2`}></i>
+                        className={`fas ${
+                          adActivationStatus
+                            ? "fa-play text-green-600"
+                            : "fa-pause text-gray-600"
+                        } text-2xl mb-2`}></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
                         {t("adDetail", "status")}
                       </h4>
                       <p
-                        className={`text-lg font-bold ${adActivationStatus
-                          ? "text-green-600"
-                          : "text-gray-600"
-                          }`}>
+                        className={`text-lg font-bold ${
+                          adActivationStatus
+                            ? "text-green-600"
+                            : "text-gray-600"
+                        }`}>
                         {adActivationStatus
                           ? t("adDetail", "active")
                           : t("adDetail", "inactive")}
@@ -441,14 +445,16 @@ export default function AdDetail({ params }: AdDetailProps) {
 
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-lg">
                       <i
-                        className={`fas fa-star  ${adPromoteStatus ? "text-green-600" : "text-gray-600"
-                          } text-2xl mb-2`}></i>
+                        className={`fas fa-star  ${
+                          adPromoteStatus ? "text-green-600" : "text-gray-600"
+                        } text-2xl mb-2`}></i>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
                         {t("adDetail", "Promote Status")}
                       </h4>
                       <p
-                        className={`text-lg font-bold ${ad.hasPromoted ? "text-green-600" : "text-gray-600"
-                          }`}>
+                        className={`text-lg font-bold ${
+                          ad.hasPromoted ? "text-green-600" : "text-gray-600"
+                        }`}>
                         {adPromoteStatus
                           ? t("adDetail", "active")
                           : t("adDetail", "inactive")}
@@ -647,7 +653,6 @@ export default function AdDetail({ params }: AdDetailProps) {
                                         <span className="inline-block text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
                                           {t("adDetail", "Promoted") ||
                                             "Promoted"}
-
                                         </span>
                                       ) : null}
                                     </div>
@@ -781,7 +786,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                       className="text-foreground"
                       data-testid="ad-target-cities">
                       {Array.isArray(ad.targetCities) &&
-                        ad.targetCities.length > 0
+                      ad.targetCities.length > 0
                         ? ad.targetCities.join(", ")
                         : "N/A"}
                     </p>
@@ -894,7 +899,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                   <CardContent>
                     <div className="max-w-md mx-auto">
                       {(ad.imageUrl && ad.imageUrl.length > 0) ||
-                        ad.youtubeVideo ? (
+                      ad.youtubeVideo ? (
                         // Array.isArray(ad.imageUrl)
                         <>
                           <ImageCarousel
@@ -902,8 +907,8 @@ export default function AdDetail({ params }: AdDetailProps) {
                               Array.isArray(ad.imageUrl)
                                 ? ad.imageUrl
                                 : ad.imageUrl
-                                  ? [ad.imageUrl]
-                                  : []
+                                ? [ad.imageUrl]
+                                : []
                             }
                             videoUrl={ad.youtubeVideo}
                             isHovered={false}

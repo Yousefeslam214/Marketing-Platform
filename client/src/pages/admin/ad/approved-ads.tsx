@@ -51,7 +51,7 @@ export default function ApprovedAds() {
   }
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("approvedAds", "title")}
           description={t("approvedAds", "description")}

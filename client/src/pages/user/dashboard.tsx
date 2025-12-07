@@ -155,7 +155,7 @@ export default function Dashboard() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("dashboard", "title")}
           description={t("dashboard", "description")}
@@ -462,7 +462,10 @@ export default function Dashboard() {
                         return (
                           <div
                             key={item.id}
-                            onClick={() => item.adId && setLocation(`/campaigns/${item.adId}`)}
+                            onClick={() =>
+                              item.adId &&
+                              setLocation(`/campaigns/${item.adId}`)
+                            }
                             className={`flex items-center p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer ${
                               isRTL ? "space-x-reverse" : ""
                             }`}
@@ -584,16 +587,18 @@ export default function Dashboard() {
                     </div>
                   </div> */}
 
-<div className="mt-auto ">
-
-                  <Button
-                    className="w-full mt-4"
-                    onClick={handlePurchaseCredits}
-                    data-testid="button-purchase-credits">
-                    <i className={`fas fa-plus ${isRTL ? "ml-2" : "mx-2"}`}></i>
-                    {t("dashboard", "purchaseMoreCredits")}
-                  </Button>
-                      </div>
+                  <div className="mt-auto ">
+                    <Button
+                      className="w-full mt-4"
+                      onClick={handlePurchaseCredits}
+                      data-testid="button-purchase-credits">
+                      <i
+                        className={`fas fa-plus ${
+                          isRTL ? "ml-2" : "mx-2"
+                        }`}></i>
+                      {t("dashboard", "purchaseMoreCredits")}
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

@@ -53,7 +53,6 @@ export default function AdminUsers() {
     url: `${VITE_API_BASE_URL}/api/users?page=${page}&limit=${effectiveLimit}`,
   });
 
-
   // const mockUsers = usersData;
 
   const mockUsers = usersData?.data;
@@ -62,7 +61,7 @@ export default function AdminUsers() {
   if (isLoading) {
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[100vh]">
           <Header
             title={t("userManagement", "title")}
             description={t("userManagement", "description")}
@@ -91,7 +90,7 @@ export default function AdminUsers() {
 
     return (
       <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[100vh]">
           <Header
             title={t("userManagement", "title")}
             description={t("userManagement", "description")}
@@ -149,7 +148,7 @@ export default function AdminUsers() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("userManagement", "title")}
           description={t("userManagement", "description")}
@@ -219,7 +218,8 @@ export default function AdminUsers() {
                     <Avatar>
                       <AvatarImage src="" alt={userData.username} />
                       <AvatarFallback>
-                        {userData.username?.slice(0, 2).toUpperCase() || userData.email?.slice(0, 2).toUpperCase() }
+                        {userData.username?.slice(0, 2).toUpperCase() ||
+                          userData.email?.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">

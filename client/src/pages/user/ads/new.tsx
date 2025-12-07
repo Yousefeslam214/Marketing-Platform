@@ -23,7 +23,7 @@ export default function NewAd() {
           description={t("ads", "newAd.description")}
         />
 
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto max-h-[100vh] p-6">
           <div className="max-w-4xl mx-auto h-full">
             <AdEditor />
           </div>

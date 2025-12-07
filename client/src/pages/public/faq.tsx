@@ -77,7 +77,7 @@ export default function FAQ() {
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto max-h-[100vh]">
         {isUserFaq ? (
           <Header
             title={t("faq", "title")}
