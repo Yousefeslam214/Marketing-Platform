@@ -16,7 +16,7 @@ export default function AdsIndex() {
   const { t, isRTL } = useLanguage();
 
   const [page, setPage] = useState<string>("1");
-  const [limit, setLimit] = useState<string>("5");
+  const [limit, setLimit] = useState<string>("20");
 
   const { data: ads, isLoading } = useApiQuery({
     key: ["/api/ads/user", page, limit],
@@ -51,141 +51,154 @@ export default function AdsIndex() {
               <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
             </div>
           ) : safeAds.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
-              {safeAds.map((ad: any) => (
-                <Card
-                  key={ad.id}
-                  className="cursor-pointer hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1 min-w-0">
-                        <h3
-                          className="font-semibold text-foreground truncate"
-                          data-testid={`ad-title-${ad.id}`}>
-                          {ad.titleEn || ad.titleAr || t("ads", "title")}
-                        </h3>
-                        <p className="text-sm text-muted-foreground truncate">
-                          {ad.descriptionEn || ad.descriptionAr || "-"}
-                        </p>
+            // grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6
+            <div className="  flex flex-col w-[80%] justify-center 
+            items-center mx-auto
+            
+            gap-6
+              ">
+              <div
+                className="
+                  w-full
+                  columns-1 md:columns-2
+                  space-y-4">
+                {safeAds.map((ad: any) => (
+                  <Card
+                    key={ad.id}
+                    className="cursor-pointer hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1 min-w-0">
+                          <h3
+                            className="font-semibold text-foreground truncate"
+                            data-testid={`ad-title-${ad.id}`}>
+                            {ad.titleEn || ad.titleAr || t("ads", "title")}
+                          </h3>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {ad.descriptionEn || ad.descriptionAr || "-"}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge className={getStatusColor(ad.status)}>
+                            {ad.status}
+                          </Badge>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Badge className={getStatusColor(ad.status)}>
-                          {ad.status}
-                        </Badge>
-                      </div>
-                    </div>
 
-                    <div className="min-h-38">
-                      {(ad.imageUrl && ad.imageUrl.length > 0) ||
-                      ad.youtubeVideo ? (
-                        // Array.isArray(ad.imageUrl)
-                        <ImageCarousel
-                          images={
-                            Array.isArray(ad.imageUrl)
-                              ? ad.imageUrl
-                              : ad.imageUrl
-                              ? [ad.imageUrl]
-                              : []
-                          }
-                          videoUrl={ad.youtubeVideo}
-                          alt={ad.titleEn || ad.titleAr}
-                          dataTestId={`ad-image-${ad.id}`}
-                        />
-                      ) : (
-                        <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
-                          <div className="text-center text-muted-foreground">
-                            <i className="fas fa-image text-2xl mb-2 block"></i>
-                            <div className="text-sm">
-                              {t("ads", "noImage") || "No image"}
+                      <div className="min-h-38">
+                        {(ad.imageUrl && ad.imageUrl.length > 0) ||
+                        ad.youtubeVideo ? (
+                          // Array.isArray(ad.imageUrl)
+                          <ImageCarousel
+                            images={
+                              Array.isArray(ad.imageUrl)
+                                ? ad.imageUrl
+                                : ad.imageUrl
+                                ? [ad.imageUrl]
+                                : []
+                            }
+                            videoUrl={ad.youtubeVideo}
+                            alt={ad.titleEn || ad.titleAr}
+                            dataTestId={`ad-image-${ad.id}`}
+                          />
+                        ) : (
+                          <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
+                            <div className="text-center text-muted-foreground">
+                              <i className="fas fa-image text-2xl mb-2 block"></i>
+                              <div className="text-sm">
+                                {t("ads", "noImage") || "No image"}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                    <div
-                      className="grid grid-cols-4 gap-4 text-sm text-muted-foreground
+                        )}
+                      </div>
+                      <div
+                        className="grid grid-cols-4 gap-4 text-sm text-muted-foreground
                     mx-2 my-4 
                     ">
-                      <div className="!flex !flex-col !items-center">
-                        <div className="text-xs">
-                          {t("ads", "impressions") || "Impressions"}
+                        <div className="!flex !flex-col !items-center">
+                          <div className="text-xs">
+                            {t("ads", "impressions") || "Impressions"}
+                          </div>
+                          <div className="font-medium">
+                            {ad.impressionsCredit?.toLocaleString?.() ??
+                              ad.totalImpressions ??
+                              0}
+                          </div>
                         </div>
-                        <div className="font-medium">
-                          {ad.impressionsCredit?.toLocaleString?.() ??
-                            ad.totalImpressions ??
-                            0}
+                        <div className="!flex !flex-col !items-center">
+                          <div className="text-xs">
+                            {t("ads", "spent") || "Spent"} SAR
+                          </div>
+                          <div className="font-medium">
+                            {/* {t("ads", "riyal") || "riyal"}{" "} */}
+                            {ad.spended?.toLocaleString?.() ?? 0}
+                          </div>
+                        </div>
+                        <div className="!flex !flex-col !items-center">
+                          <div className="text-xs">
+                            {t("ads", "likes") || "Likes"}
+                          </div>
+                          <div className="font-medium">
+                            {ad.likesCount ?? 0}
+                          </div>
+                        </div>
+                        <div className="!flex !flex-col !items-center">
+                          <div className="text-xs">
+                            {t("ads", "websiteClicks") || "Website Clicks"}
+                          </div>
+                          <div className="font-medium">
+                            {Array.isArray(ad.websiteClicks)
+                              ? ad.websiteClicks.join(", ")
+                              : ad.websiteClicks || "0"}
+                          </div>
                         </div>
                       </div>
-                      <div className="!flex !flex-col !items-center">
-                        <div className="text-xs">
-                          {t("ads", "spent") || "Spent"} SAR
-                        </div>
-                        <div className="font-medium">
-                          {/* {t("ads", "riyal") || "riyal"}{" "} */}
-                          {ad.spended?.toLocaleString?.() ?? 0}
-                        </div>
-                      </div>
-                      <div className="!flex !flex-col !items-center">
-                        <div className="text-xs">
-                          {t("ads", "likes") || "Likes"}
-                        </div>
-                        <div className="font-medium">{ad.likesCount ?? 0}</div>
-                      </div>
-                      <div className="!flex !flex-col !items-center">
-                        <div className="text-xs">
-                          {t("ads", "websiteClicks") || "Website Clicks"}
-                        </div>
-                        <div className="font-medium">
-                          {Array.isArray(ad.websiteClicks)
-                            ? ad.websiteClicks.join(", ")
-                            : ad.websiteClicks || "0"}
-                        </div>
-                      </div>
-                    </div>
 
-                    <div className="flex flex-col gap-2 mt-4">
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="flex flex-col gap-2 mt-4">
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setLocation(`/campaigns/${ad.id}`)}
+                            data-testid={`button-view-ad-${ad.id}`}>
+                            <i
+                              className={`fas fa-eye ${
+                                isRTL ? "ml-2" : "mr-2"
+                              }`}></i>
+                            {t("ads", "view")}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setLocation(editAdPath(ad.id))}
+                            data-testid={`button-edit-${ad.id}`}>
+                            <i
+                              className={`fas fa-edit ${
+                                isRTL ? "ml-2" : "mr-2"
+                              }`}></i>
+                            {t("ads", "edit")}
+                          </Button>
+                        </div>
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => setLocation(`/campaigns/${ad.id}`)}
-                          data-testid={`button-view-ad-${ad.id}`}>
+                          className="w-full"
+                          onClick={() =>
+                            setLocation(`/campaigns/${ad.id}/analytics`)
+                          }
+                          data-testid={`button-analytics-${ad.id}`}>
                           <i
-                            className={`fas fa-eye ${
+                            className={`fas fa-chart-line ${
                               isRTL ? "ml-2" : "mr-2"
                             }`}></i>
-                          {t("ads", "view")}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setLocation(editAdPath(ad.id))}
-                          data-testid={`button-edit-${ad.id}`}>
-                          <i
-                            className={`fas fa-edit ${
-                              isRTL ? "ml-2" : "mr-2"
-                            }`}></i>
-                          {t("ads", "edit")}
+                          {t("ads", "analytics")}
                         </Button>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          setLocation(`/campaigns/${ad.id}/analytics`)
-                        }
-                        data-testid={`button-analytics-${ad.id}`}>
-                        <i
-                          className={`fas fa-chart-line ${
-                            isRTL ? "ml-2" : "mr-2"
-                          }`}></i>
-                        {t("ads", "analytics")}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="text-center py-12">

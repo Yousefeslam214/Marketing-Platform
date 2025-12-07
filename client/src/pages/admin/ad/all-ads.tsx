@@ -56,11 +56,11 @@ export default function AllAds() {
         />
         <main className="p-6 mt-24">
           {isLoading ? (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] ">
               <Loading />
             </div>
           ) : error ? (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] mt-24">
               <ErrorState
                 title="Failed to load metrics"
                 message={(error as Error)?.message || "Please try again later."}
@@ -70,7 +70,7 @@ export default function AllAds() {
               />
             </div>
           ) : allAds.length > 0 ? (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] ">
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                 {allAds.map((ad: AdData) => (
                   <div key={ad.id} className="relative">
@@ -88,7 +88,7 @@ export default function AllAds() {
               </div>
             </div>
           ) : (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] mt-24">
               <div className="text-center py-12">
                 <i className="fas fa-ad text-6xl text-muted-foreground mb-6"></i>
                 <h3 className="text-xl font-semibold text-foreground mb-2">

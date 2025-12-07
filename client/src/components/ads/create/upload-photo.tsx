@@ -358,9 +358,9 @@ export default function UploadPhoto() {
                   {/* Staged thumbnails + edit controls */}
                   {selectedPreviews.length > 0 && (
                     <div className="space-y-4">
-                      <h4 className="font-medium">
+                      {/* <h4 className="font-medium">
                         {t("uploadPhoto", "stagedPhotos")}
-                      </h4>
+                      </h4> */}
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {selectedPreviews.map((p, i) => (
                           <div
@@ -372,9 +372,9 @@ export default function UploadPhoto() {
                               className="w-full h-28 object-cover"
                             />
                             <div className="absolute top-2 right-2 flex flex-col gap-2">
-                              <Button size="sm" onClick={() => startEditing(i)}>
+                              {/* <Button size="sm" onClick={() => startEditing(i)}>
                                 {t("uploadPhoto", "edit")}
-                              </Button>
+                              </Button> */}
                               <Button
                                 size="sm"
                                 variant="destructive"
@@ -391,7 +391,7 @@ export default function UploadPhoto() {
                   )}
 
                   {/* Avatar editor modal/area */}
-                  {editingIndex !== null && selectedPreviews[editingIndex] && (
+                  {/* {editingIndex !== null && selectedPreviews[editingIndex] && (
                     <div className="mt-4 p-4 border rounded-lg ">
                       <h4 className="font-medium mb-2">
                         {t("uploadPhoto", "editPhoto")}
@@ -404,8 +404,8 @@ export default function UploadPhoto() {
                             width={320}
                             height={200}
                             border={40}
-                            scale={scale}
-                            rotate={rotate}
+                            scale={1}
+                            rotate={0}
                           />
                         </div>
 
@@ -438,7 +438,7 @@ export default function UploadPhoto() {
 
                           <div className="flex gap-2 mt-4">
                             <Button onClick={applyEdit}>
-                              {t("uploadPhoto", "save")}
+                              {t("uploadPhoto", "applyEdit")}
                             </Button>
                             <Button
                               variant="outline"
@@ -449,7 +449,7 @@ export default function UploadPhoto() {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {/* Upload Area */}
                   <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">

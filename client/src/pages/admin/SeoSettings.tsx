@@ -131,7 +131,7 @@ export default function SeoSettings() {
           }
         />
 
-        <main className="p-6 space-y-6">
+        <main className="p-6 space-y-6 mt-24">
           <Card>
             <CardHeader>
               <CardTitle>

@@ -138,7 +138,7 @@ export default function AdminFreeCredits() {
           description={t("adminFreeCredits", "description")}
         />
 
-        <main className="p-6 space-y-6">
+        <main className="p-6 space-y-6 mt-24">
           <Card>
             <CardHeader>
               <CardTitle>{t("adminFreeCredits", "currentSetting")}</CardTitle>

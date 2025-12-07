@@ -54,7 +54,7 @@ export default function RejectedAds() {
 
         <main className="p-6 ">
           {isLoading ? (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] mt-24">
               <Loading />
             </div>
           ) : rejectedAds.length > 0 ? (
@@ -71,7 +71,7 @@ export default function RejectedAds() {
               </div>
             </div>
           ) : (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] mt-24">
               <div className="text-center py-12">
                 <i className="fas fa-times-circle text-6xl text-red-500 mb-6"></i>
                 <h3 className="text-xl font-semibold text-foreground mb-2">

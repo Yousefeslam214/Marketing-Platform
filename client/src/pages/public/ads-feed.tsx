@@ -48,7 +48,10 @@ function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
     [numberOfItems]
   );
   return (
-    <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+    <div
+      className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2
+    mt-24
+    ">
       {items.map((_, i) => (
         <Card key={i} className="animate-pulse">
           <CardContent className="p-6">
@@ -886,7 +889,7 @@ export default function AdsFeed() {
                     pageSize={limit.toString()}
                     onPageSizeChange={handlePageSizeChange}
                     showPageSizeSelector
-                    pageSizeOptions={[ 6, 12, 18, 24]}
+                    pageSizeOptions={[6, 12, 18, 24]}
                     showInfo
                     className="mt-4"
                   />

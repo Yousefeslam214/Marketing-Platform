@@ -60,7 +60,7 @@ export default function AdminPixels() {
     return json.data || [];
   };
 
-  const { data: pixels = [], isLoading } = useQuery({
+  const { data: pixels = [], isLoading, error, isError } = useQuery({
     queryKey: ["admin", "pixels"],
     queryFn: fetchPixels,
     staleTime: 1000 * 60 * 5,
@@ -209,6 +209,41 @@ export default function AdminPixels() {
             <div className="grid grid-cols-1 gap-4">
               {isLoading ? (
                 <Loading />
+              ) : isError ? (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+                    <i className="fas fa-exclamation-triangle text-4xl text-destructive mb-4"></i>
+                    <h3 className="text-lg font-medium text-destructive mb-2">
+                      {t("pixels", "errorLoading")}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {error?.message || t("pixels", "unknownError")}
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => qc.invalidateQueries({ queryKey: ["admin", "pixels"] })}
+                    >
+                      <i className="fas fa-refresh mr-2"></i>
+                      {t("pixels", "retry")}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : pixels.length === 0 ? (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+                    <i className="fas fa-puzzle-piece text-4xl text-muted-foreground mb-4"></i>
+                    <h3 className="text-lg font-medium mb-2">
+                      {t("pixels", "noPixels")}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {t("pixels", "noPixelsDesc")}
+                    </p>
+                    <Button onClick={openCreate}>
+                      <i className="fas fa-plus mr-2"></i>
+                      {t("pixels", "create")}
+                    </Button>
+                  </CardContent>
+                </Card>
               ) : (
                 pixels.map((p) => (
                   <Card key={p.id}>

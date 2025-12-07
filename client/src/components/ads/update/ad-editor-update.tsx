@@ -202,7 +202,7 @@ export function AdEditor({
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full mt-24">
       <Card className="w-full">
         <CardHeader>
           <CardTitle>{t("ads", "updateAdTitle")}</CardTitle>

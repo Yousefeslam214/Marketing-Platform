@@ -96,7 +96,7 @@ export default function AdminBilling() {
           description={t("adminBilling", "description")}
         />
 
-        <main className="p-6 space-y-6">
+        <main className="p-6 space-y-6 mt-24">
           {/* Dashboard Overview */}
           <Card>
             <CardHeader>

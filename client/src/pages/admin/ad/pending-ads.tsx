@@ -91,11 +91,11 @@ export default function PendingAds() {
 
         <main className="p-6 mt-24">
           {isLoading ? (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] ">
               <Loading />
             </div>
           ) : pendingAds.length > 0 ? (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] ">
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                 {pendingAds.map((ad: AdData) => (
                   <AdCard
@@ -114,7 +114,7 @@ export default function PendingAds() {
               </div>
             </div>
           ) : (
-            <div className="min-h-[74vh]">
+            <div className="min-h-[74vh] mt-24">
               <div className="text-center py-12">
                 <i className="fas fa-hourglass-half text-6xl text-yellow-500 mb-6"></i>
                 <h3 className="text-xl font-semibold text-foreground mb-2">

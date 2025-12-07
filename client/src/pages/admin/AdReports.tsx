@@ -181,7 +181,7 @@ export default function AdReports() {
           description={t("adminAdReports", "description")}
         />
 
-        <main className="p-6 space-y-6">
+        <main className="p-6 space-y-6 mt-24">
           <Card>
             <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>{t("adminAdReports", "title")}</CardTitle>
