@@ -16,7 +16,7 @@ export function Header({ title, description, actions }: HeaderProps) {
       <MetaPixel />
       <header
         className="bg-card border-b border-border 
-        px-6
+        px-6 mx-1
          py-4
       h-[97px]
       fixed
@@ -30,8 +30,7 @@ export function Header({ title, description, actions }: HeaderProps) {
         <div
           className={` items-center justify-between 
         flex flex-row
-        `}
-        >
+        `}>
           <div className={isRTL ? "text-right" : "text-left"}>
             <h2
               className="text-2xl font-bold text-foreground"
