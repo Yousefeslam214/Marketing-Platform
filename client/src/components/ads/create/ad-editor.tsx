@@ -108,7 +108,7 @@ export function AdEditor() {
   };
 
   return (
-    <Card className="h-full overflow-auto mt-24">
+    <Card className="mt-24">
       <CardHeader>
         <CardTitle>{t("ads", "newAd.title")}</CardTitle>
       </CardHeader>

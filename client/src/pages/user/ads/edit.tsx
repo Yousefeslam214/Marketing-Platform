@@ -14,7 +14,7 @@ import { AdEditor } from "@/components/ads/update/ad-editor-update";
 export default function UpdateAd() {
   const [, setLocation] = useLocation();
   const [match, params] = useRoute("/ads/:adId/edit");
-  const { t, isRTL } = useLanguage();
+  const { t } = useLanguage();
 
   // Check auth and route validity
   const isAuthenticated = !!TokenManager.getAccessToken();
@@ -58,44 +58,38 @@ export default function UpdateAd() {
 
   if (error || !adData?.success) {
     return (
-      <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="flex-1 ">
-          <Header
-            title={t("ads", "updateAd.title")}
-            description={t("ads", "updateAd.description")}
-          />
-          <main className="p-6 h-full">
-            <div className="max-w-4xl mx-auto">
-              <ErrorState
-                title={t("ads", "updateAd.failedToLoad")}
-                message={t("ads", "updateAd.failedToLoad")}
-              />
-            </div>
-          </main>
+      <>
+        <Header
+          title={t("ads", "updateAd.title")}
+          description={t("ads", "updateAd.description")}
+        />
+        <div className="p-6">
+          <div className="max-w-4xl mx-auto">
+            <ErrorState
+              title={t("ads", "updateAd.failedToLoad")}
+              message={t("ads", "updateAd.failedToLoad")}
+            />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div
-      className={`flex flex-col min-h-screen bg-background ${
-        isRTL ? "rtl" : "ltr"
-      }`}
-    >
+    <>
       <Header
         title={t("ads", "updateAd.title")}
-    description={t("ads", "updateAd.description")}
-  />
-  <main className="flex-1 p-6">
-    <div className="max-w-4xl mx-auto">
-      <AdEditor
-        adId={params?.adId || ""}
-        existingData={adData.data}
-        isUpdate={true}
+        description={t("ads", "updateAd.description")}
       />
-    </div>
-  </main>
-</div>
+      <div className="p-6">
+        <div className="max-w-4xl mx-auto">
+          <AdEditor
+            adId={params?.adId || ""}
+            existingData={adData.data}
+            isUpdate={true}
+          />
+        </div>
+      </div>
+    </>
   );
 }

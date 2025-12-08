@@ -207,7 +207,7 @@ export function AdEditor({
         <CardHeader>
           <CardTitle>{t("ads", "updateAdTitle")}</CardTitle>
         </CardHeader>
-        <CardContent className="overflow-auto">
+        <CardContent>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
