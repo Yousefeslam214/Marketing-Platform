@@ -72,7 +72,8 @@
     "settings": "الإعدادات",
     "logout": "تسجيل الخروج",
     "search": "بحث...",
-    "menu": "القائمة"
+    "menu": "القائمة",
+    "filters": "الفلاتر"
   },
   "profile": {
     "title": "ملفي الشخصي",
@@ -1288,7 +1289,9 @@
     "reportValidationDesc": "يرجى تعبئة الحقول المطلوبة.",
     "Search title": "بحث العنوان",
     "Search description": "بحث الوصف",
-    "clearFilters": "مسح"
+    "clearFilters": "مسح",
+    "filters": "الفلاتر",
+    "apply": "تطبيق"
   },
   "marketingLinks": {
     "title": "روابط مصادر التسويق",

@@ -72,7 +72,8 @@
     "settings": "Settings",
     "logout": "Logout",
     "search": "Search...",
-    "menu": "Menu"
+    "menu": "Menu",
+    "filters": "Filters"
   },
   "profile": {
     "title": "My Profile",
@@ -1308,7 +1309,9 @@
     "reportValidationDesc": "Please fill required fields.",
     "Search title": "Search title",
     "Search description": "Search description",
-    "clearFilters": "Clear"
+    "clearFilters": "Clear",
+    "filters": "Filters",
+    "apply": "Apply"
   },
   "marketingLinks": {
     "title": "Marketing Source Links",

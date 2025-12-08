@@ -40,6 +40,7 @@ import { useState, useMemo } from "react";
 import useLoadPixels, { Pixel } from "@/hooks/useLoadPixels";
 import { TokenManager } from "@/lib/auth";
 import { Header } from "@/components/layout/header";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Memoized skeleton list component to avoid recreating placeholders on each render
 function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
@@ -106,6 +107,7 @@ export default function AdsFeed() {
   const { t, language, isRTL } = useLanguage();
   const { theme } = useTheme();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(24);
   const [targetCities, setTargetCities] = useState<string[]>([]);
@@ -120,6 +122,8 @@ export default function AdsFeed() {
   // Dialog state for viewing full ad details
   const [viewAdOpen, setViewAdOpen] = useState(false);
   const [activeAd, setActiveAd] = useState<Ad | null>(null);
+  // Mobile filters toggle
+  const [showFilters, setShowFilters] = useState(false);
 
   // Optional filters: read from URL query params so links can control filtering
   // Initialize filters from URL params once
@@ -493,42 +497,240 @@ export default function AdsFeed() {
         title={t("publicFeed", "title")}
         description={t("publicFeed", "description")}
         actions={
-          <div className="flex flex-wrap items-center gap-3">
-            {/* City Filter */}
-            <div className="relative">
-              <i
-                className={`fas fa-map-marker-alt absolute ${
-                  isRTL ? "right-3" : "left-3"
-                } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
-              <Select
-                value={targetCities[0] || undefined}
-                onValueChange={handleCityChange}>
-                <SelectTrigger className={`w-36 ${isRTL ? "pr-8" : "pl-8"}`}>
-                  <SelectValue
-                    placeholder={t("ads", "allCities") || "All Cities"}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">
-                    {t("ads", "allCities") || "All Cities"}
-                  </SelectItem>
-                  {locationOptions.map(
-                    (option: { value: string; label: string }) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className=""
+          >
+            {/* Mobile: Toggle button */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="md:hidden flex items-center gap-2"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <i className={`fas fa-filter`}></i>
+              {t("publicFeed", "filters") || "Filters"}
+              {(titleFilter || descriptionFilter || audienceFilter || targetCities.length > 0) && (
+                <span className="w-2 h-2 bg-primary rounded-full"></span>
+              )}
+            </Button>
 
-            {/* Search Input */}
-            <div className="relative">
-              <i
-                className={`fas fa-search absolute ${
-                  isRTL ? "right-3" : "left-3"
-                } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
+            {/* Desktop: Always show filters */}
+            <div className="hidden md:flex flex-wrap items-center gap-3">
+              {/* City Filter */}
+              <div className="relative">
+                <i
+                  className={`fas fa-map-marker-alt absolute ${
+                    isRTL ? "right-3" : "left-3"
+                  } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
+                <Select
+                  value={targetCities[0] || undefined}
+                  onValueChange={handleCityChange}>
+                  <SelectTrigger className={`w-36 ${isRTL ? "pr-8" : "pl-8"}`}>
+                    <SelectValue
+                      placeholder={t("ads", "allCities") || "All Cities"}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">
+                      {t("ads", "allCities") || "All Cities"}
+                    </SelectItem>
+                    {locationOptions.map(
+                      (option: { value: string; label: string }) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Search Input */}
+              <div className="relative">
+                <i
+                  className={`fas fa-search absolute ${
+                    isRTL ? "right-3" : "left-3"
+                  } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
+                <Input
+                  type="text"
+                  value={titleFilter}
+                  onChange={(e) => {
+                    setTitleFilter(e.target.value);
+                    setPage(1);
+                  }}
+                  className={`w-44 h-9 ${isRTL ? "pr-8" : "pl-8"}`}
+                  placeholder={
+                    t("publicFeed", "Search title") || "Search title..."
+                  }
+                />
+              </div>
+              <div className="relative">
+                <i
+                  className={`fas fa-search absolute ${
+                    isRTL ? "right-3" : "left-3"
+                  } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
+                <Input
+                  type="text"
+                  value={descriptionFilter}
+                  onChange={(e) => {
+                    setDescriptionFilter(e.target.value);
+                    setPage(1);
+                  }}
+                  className={`w-44 h-9 ${isRTL ? "pr-8" : "pl-8"}`}
+                  placeholder={
+                    t("publicFeed", "Search description") ||
+                    "Search description..."
+                  }
+                />
+              </div>
+
+              {/* Audience Filter */}
+              <div className="relative">
+                <i
+                  className={`fas fa-users absolute ${
+                    isRTL ? "right-3" : "left-3"
+                  } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
+                <Select
+                  value={audienceFilter || undefined}
+                  onValueChange={(v) => {
+                    setAudienceFilter(v === "any" ? "" : v);
+                    setPage(1);
+                  }}>
+                  <SelectTrigger className={`w-40 ${isRTL ? "pr-8" : "pl-8"}`}>
+                    <SelectValue
+                      placeholder={t("ads", "targetAudiencePlaceholder")}
+                    />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-64">
+                    <SelectItem value="any">
+                      {t("ads", "targetAudiencePlaceholder")}
+                    </SelectItem>
+                    <SelectItem value="cars">
+                      {t("ads", "audienceCars")}
+                    </SelectItem>
+                    <SelectItem value="realestate">
+                      {t("ads", "audienceRealestate")}
+                    </SelectItem>
+                    <SelectItem value="devices">
+                      {t("ads", "audienceDevices")}
+                    </SelectItem>
+                    <SelectItem value="animals">
+                      {t("ads", "audienceAnimals")}
+                    </SelectItem>
+                    <SelectItem value="furniture">
+                      {t("ads", "audienceFurniture")}
+                    </SelectItem>
+                    <SelectItem value="jobs">
+                      {t("ads", "audienceJobs")}
+                    </SelectItem>
+                    <SelectItem value="services">
+                      {t("ads", "audienceServices")}
+                    </SelectItem>
+                    <SelectItem value="fashion">
+                      {t("ads", "audienceFashion")}
+                    </SelectItem>
+                    <SelectItem value="games">
+                      {t("ads", "audienceGames")}
+                    </SelectItem>
+                    <SelectItem value="rarities">
+                      {t("ads", "audienceRarities")}
+                    </SelectItem>
+                    <SelectItem value="art">{t("ads", "audienceArt")}</SelectItem>
+                    <SelectItem value="trips">
+                      {t("ads", "audienceTrips")}
+                    </SelectItem>
+                    <SelectItem value="food">
+                      {t("ads", "audienceFood")}
+                    </SelectItem>
+                    <SelectItem value="gardens">
+                      {t("ads", "audienceGardens")}
+                    </SelectItem>
+                    <SelectItem value="occasions">
+                      {t("ads", "audienceOccasions")}
+                    </SelectItem>
+                    <SelectItem value="tourism">
+                      {t("ads", "audienceTourism")}
+                    </SelectItem>
+                    <SelectItem value="lost">
+                      {t("ads", "audienceLost")}
+                    </SelectItem>
+                    <SelectItem value="coach">
+                      {t("ads", "audienceCoach")}
+                    </SelectItem>
+                    <SelectItem value="code">
+                      {t("ads", "audienceCode")}
+                    </SelectItem>
+                    <SelectItem value="fund">
+                      {t("ads", "audienceFund")}
+                    </SelectItem>
+                    <SelectItem value="more">
+                      {t("ads", "audienceMore")}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Clear Filters Button */}
+              {(titleFilter ||
+                descriptionFilter ||
+                audienceFilter ||
+                targetCities.length > 0) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setTitleFilter("");
+                    setDescriptionFilter("");
+                    setAudienceFilter("");
+                    setTargetCities([]);
+                    setPage(1);
+                  }}
+                  className="text-muted-foreground hover:text-foreground">
+                  <i className={`fas fa-times ${isRTL ? "ml-1" : "mr-1"}`}></i>
+                  {t("publicFeed", "clearFilters") || "Clear"}
+                </Button>
+              )}
+            </div>
+          </div>
+        }
+      />
+
+      {/* Mobile Filters Panel */}
+      {showFilters && (
+        <div className="md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-10">
+          {/* City Filter */}
+          <div className="relative">
+            <label className="text-xs text-muted-foreground mb-1 block">
+              {t("ads", "allCities") || "City"}
+            </label>
+            <Select
+              value={targetCities[0] || undefined}
+              onValueChange={handleCityChange}>
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={t("ads", "allCities") || "All Cities"}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">
+                  {t("ads", "allCities") || "All Cities"}
+                </SelectItem>
+                {locationOptions.map(
+                  (option: { value: string; label: string }) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  )
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Search Inputs */}
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">
+                {t("publicFeed", "Search title") || "Title"}
+              </label>
               <Input
                 type="text"
                 value={titleFilter}
@@ -536,17 +738,14 @@ export default function AdsFeed() {
                   setTitleFilter(e.target.value);
                   setPage(1);
                 }}
-                className={`w-44 h-9 ${isRTL ? "pr-8" : "pl-8"}`}
-                placeholder={
-                  t("publicFeed", "Search title") || "Search title..."
-                }
+                className="w-full h-9"
+                placeholder={t("publicFeed", "Search title") || "Search..."}
               />
             </div>
-            <div className="relative">
-              <i
-                className={`fas fa-search absolute ${
-                  isRTL ? "right-3" : "left-3"
-                } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">
+                {t("publicFeed", "Search description") || "Description"}
+              </label>
               <Input
                 type="text"
                 value={descriptionFilter}
@@ -554,124 +753,80 @@ export default function AdsFeed() {
                   setDescriptionFilter(e.target.value);
                   setPage(1);
                 }}
-                className={`w-44 h-9 ${isRTL ? "pr-8" : "pl-8"}`}
-                placeholder={
-                  t("publicFeed", "Search description") ||
-                  "Search description..."
-                }
+                className="w-full h-9"
+                placeholder={t("publicFeed", "Search description") || "Search..."}
               />
             </div>
-
-            {/* Audience Filter */}
-            <div className="relative">
-              <i
-                className={`fas fa-users absolute ${
-                  isRTL ? "right-3" : "left-3"
-                } top-1/2 -translate-y-1/2 text-muted-foreground text-xs`}></i>
-              <Select
-                value={audienceFilter || undefined}
-                onValueChange={(v) => {
-                  setAudienceFilter(v === "any" ? "" : v);
-                  setPage(1);
-                }}>
-                <SelectTrigger className={`w-40 ${isRTL ? "pr-8" : "pl-8"}`}>
-                  <SelectValue
-                    placeholder={t("ads", "targetAudiencePlaceholder")}
-                  />
-                </SelectTrigger>
-                <SelectContent className="max-h-64">
-                  <SelectItem value="any">
-                    {t("ads", "targetAudiencePlaceholder")}
-                  </SelectItem>
-                  <SelectItem value="cars">
-                    {t("ads", "audienceCars")}
-                  </SelectItem>
-                  <SelectItem value="realestate">
-                    {t("ads", "audienceRealestate")}
-                  </SelectItem>
-                  <SelectItem value="devices">
-                    {t("ads", "audienceDevices")}
-                  </SelectItem>
-                  <SelectItem value="animals">
-                    {t("ads", "audienceAnimals")}
-                  </SelectItem>
-                  <SelectItem value="furniture">
-                    {t("ads", "audienceFurniture")}
-                  </SelectItem>
-                  <SelectItem value="jobs">
-                    {t("ads", "audienceJobs")}
-                  </SelectItem>
-                  <SelectItem value="services">
-                    {t("ads", "audienceServices")}
-                  </SelectItem>
-                  <SelectItem value="fashion">
-                    {t("ads", "audienceFashion")}
-                  </SelectItem>
-                  <SelectItem value="games">
-                    {t("ads", "audienceGames")}
-                  </SelectItem>
-                  <SelectItem value="rarities">
-                    {t("ads", "audienceRarities")}
-                  </SelectItem>
-                  <SelectItem value="art">{t("ads", "audienceArt")}</SelectItem>
-                  <SelectItem value="trips">
-                    {t("ads", "audienceTrips")}
-                  </SelectItem>
-                  <SelectItem value="food">
-                    {t("ads", "audienceFood")}
-                  </SelectItem>
-                  <SelectItem value="gardens">
-                    {t("ads", "audienceGardens")}
-                  </SelectItem>
-                  <SelectItem value="occasions">
-                    {t("ads", "audienceOccasions")}
-                  </SelectItem>
-                  <SelectItem value="tourism">
-                    {t("ads", "audienceTourism")}
-                  </SelectItem>
-                  <SelectItem value="lost">
-                    {t("ads", "audienceLost")}
-                  </SelectItem>
-                  <SelectItem value="coach">
-                    {t("ads", "audienceCoach")}
-                  </SelectItem>
-                  <SelectItem value="code">
-                    {t("ads", "audienceCode")}
-                  </SelectItem>
-                  <SelectItem value="fund">
-                    {t("ads", "audienceFund")}
-                  </SelectItem>
-                  <SelectItem value="more">
-                    {t("ads", "audienceMore")}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Clear Filters Button */}
-            {(titleFilter ||
-              descriptionFilter ||
-              audienceFilter ||
-              targetCities.length > 0) && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setTitleFilter("");
-                  setDescriptionFilter("");
-                  setAudienceFilter("");
-                  setTargetCities([]);
-                  setPage(1);
-                }}
-                className="text-muted-foreground hover:text-foreground">
-                <i className={`fas fa-times ${isRTL ? "ml-1" : "mr-1"}`}></i>
-                {t("publicFeed", "clearFilters") || "Clear"}
-              </Button>
-            )}
           </div>
-        }
-      />
-      {/* </header> */}
+
+          {/* Audience Filter */}
+          <div>
+            <label className="text-xs text-muted-foreground mb-1 block">
+              {t("ads", "targetAudienceLabel") || "Audience"}
+            </label>
+            <Select
+              value={audienceFilter || undefined}
+              onValueChange={(v) => {
+                setAudienceFilter(v === "any" ? "" : v);
+                setPage(1);
+              }}>
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={t("ads", "targetAudiencePlaceholder")}
+                />
+              </SelectTrigger>
+              <SelectContent className="max-h-64">
+                <SelectItem value="any">
+                  {t("ads", "targetAudiencePlaceholder")}
+                </SelectItem>
+                <SelectItem value="cars">{t("ads", "audienceCars")}</SelectItem>
+                <SelectItem value="realestate">{t("ads", "audienceRealestate")}</SelectItem>
+                <SelectItem value="devices">{t("ads", "audienceDevices")}</SelectItem>
+                <SelectItem value="animals">{t("ads", "audienceAnimals")}</SelectItem>
+                <SelectItem value="furniture">{t("ads", "audienceFurniture")}</SelectItem>
+                <SelectItem value="jobs">{t("ads", "audienceJobs")}</SelectItem>
+                <SelectItem value="services">{t("ads", "audienceServices")}</SelectItem>
+                <SelectItem value="fashion">{t("ads", "audienceFashion")}</SelectItem>
+                <SelectItem value="games">{t("ads", "audienceGames")}</SelectItem>
+                <SelectItem value="more">{t("ads", "audienceMore")}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1"
+              onClick={() => {
+                setTitleFilter("");
+                setDescriptionFilter("");
+                setAudienceFilter("");
+                setTargetCities([]);
+                setPage(1);
+              }}>
+              <i className={`fas fa-times ${isRTL ? "ml-1" : "mr-1"}`}></i>
+              {t("publicFeed", "clearFilters") || "Clear"}
+            </Button>
+            <Button
+              size="sm"
+              className="flex-1"
+              onClick={() => setShowFilters(false)}>
+              <i className={`fas fa-check ${isRTL ? "ml-1" : "mr-1"}`}></i>
+              {t("publicFeed", "apply") || "Apply"}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Overlay for mobile filters */}
+      {showFilters && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/30 z-30 top-[97px]"
+          onClick={() => setShowFilters(false)}
+        />
+      )}
 
       {/* Main Content */}
       <main
