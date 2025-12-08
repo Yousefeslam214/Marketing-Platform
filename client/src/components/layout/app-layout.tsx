@@ -12,7 +12,7 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   const { isLoading } = useAuth();
-  const { isRTL } = useLanguage();
+  const { isRTL, t } = useLanguage();
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -42,7 +42,9 @@ export function AppLayout({ children }: AppLayoutProps) {
           {/* Mobile menu toggle */}
           {isMobile && (
             <div
-              className={`sticky top-0 z-30 bg-background/95 backdrop-blur border-b px-4 py-3 ${
+              className={`sticky top-0 z-30 bg-background/95 backdrop-blur border-b px-4 py-3 
+                bg-card
+                ${
                 isRTL ? "text-right" : "text-left"
               }`}>
               <Button
@@ -53,12 +55,12 @@ export function AppLayout({ children }: AppLayoutProps) {
                 }}
                 className="md:hidden">
                 <i className={`fas fa-bars ${isRTL ? "ml-2" : "mx-2"}`}></i>
-                Menu
+                {t("layout", "menu")}
               </Button>
-              <span className="text-xs text-muted-foreground ml-2">
+              {/* <span className="text-xs text-muted-foreground ml-2">
                 Mobile: {isMobile ? "Yes" : "No"} | Sidebar:{" "}
                 {sidebarOpen ? "Open" : "Closed"}
-              </span>
+              </span> */}
             </div>
           )}
           <div className={`px-6 ${isRTL}`}>{children}</div>

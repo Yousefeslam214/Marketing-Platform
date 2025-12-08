@@ -337,7 +337,7 @@ export default function Dashboard() {
                 <h3 className="text-lg font-semibold text-foreground mb-6">
                   {t("dashboard", "topPerformingAds")}
                 </h3>
-                <div className="space-y-4 h-[11rem]">
+                <div className="space-y-4 h-[11rem] overflow-auto">
                   {topAds.length > 0 ? (
                     topAds.slice(0, 3).map((ad: any) => (
                       <div

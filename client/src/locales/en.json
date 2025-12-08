@@ -71,7 +71,8 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "search": "Search..."
+    "search": "Search...",
+    "menu": "Menu"
   },
   "profile": {
     "title": "My Profile",

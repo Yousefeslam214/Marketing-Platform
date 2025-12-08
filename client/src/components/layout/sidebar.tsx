@@ -324,7 +324,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
       {/* Mobile overlay */}
       {isMobile && isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-[55] md:hidden"
           onClick={onClose}
         />
       )}
@@ -333,13 +333,13 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
       <div
         className={`${isMobile
           ? `fixed top-0 ${isRTL ? "right-0" : "left-0"
-          } h-full w-64 bg-card flex flex-col shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${isOpen
+          } h-full w-64 bg-card flex flex-col shadow-lg z-[60] transform transition-transform duration-300 ease-in-out ${isOpen
             ? "translate-x-0"
             : isRTL
               ? "translate-x-full"
               : "-translate-x-full"
           }`
-          : "w-64 bg-card flex flex-col shadow-lg z-50"
+          : "w-64 bg-card flex flex-col shadow-lg z-[60]"
           }`}
         style={{ position: isMobile ? "fixed" : "relative" }}
         dir={isRTL ? "rtl" : "ltr"}

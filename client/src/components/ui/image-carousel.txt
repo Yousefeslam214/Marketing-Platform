@@ -1,0 +1,168 @@
+import { useState, useRef, useEffect } from "react";
+
+function getYoutubeId(url: string) {
+  const regExp =
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+}
+
+interface ImageCarouselProps {
+  images: string[];
+  videoUrl?: string | null;
+  alt?: string;
+  dataTestId?: string;
+  className?: string;
+  isHovered?: boolean;
+}
+
+export function ImageCarousel({
+  images,
+  videoUrl,
+  alt,
+  dataTestId,
+  className = "",
+  isHovered = false,
+}: ImageCarouselProps) {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Only use the first image
+  const imageUrl = Array.isArray(images) && images.length > 0 ? images[0] : null;
+  
+  // Check for video
+  const videoId = videoUrl ? getYoutubeId(videoUrl) : null;
+
+  // Nothing to show
+  if (!imageUrl && !videoId) return null;
+
+  // Handle image load to get natural dimensions
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    setImageDimensions({
+      width: img.naturalWidth,
+      height: img.naturalHeight,
+    });
+    setLoaded(true);
+  };
+
+  // Calculate aspect ratio for video container based on image dimensions
+  const aspectRatio = imageDimensions 
+    ? `${imageDimensions.width} / ${imageDimensions.height}` 
+    : "16 / 9";
+
+  // Dynamic height based on isHovered prop
+  const heightClass = isHovered ? "max-h-[500px]" : "";
+
+  // If only video exists (no image), show video with default 16:9 aspect ratio
+  if (!imageUrl && videoId) {
+    return (
+      <div
+        className={`w-full bg-muted rounded-lg overflow-hidden ${className}`}
+        data-testid={dataTestId}
+        style={{ aspectRatio: "16 / 9" }}
+      >
+        <iframe
+          width="100%"
+          height="100%"
+          src={`https://www.youtube.com/embed/${videoId}`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full h-full"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      className={`w-full ${heightClass} bg-muted rounded-lg overflow-hidden relative ${className}`}
+      data-testid={dataTestId}
+    >
+      {/* Loading spinner */}
+      {!loaded && !error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted z-10">
+          <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
+        </div>
+      )}
+
+      {/* Image container - always rendered to get dimensions */}
+      <div className={`w-full h-full ${showVideo && videoId ? "hidden" : "block"}`}>
+        <img
+          src={imageUrl!}
+          alt={alt || "Ad image"}
+          onLoad={handleImageLoad}
+          onError={() => {
+            setLoaded(true);
+            setError(true);
+          }}
+          className={`w-full h-full object-contain transition-opacity duration-300 ${
+            loaded ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      </div>
+
+      {/* Video container - uses same dimensions as image */}
+      {showVideo && videoId && imageDimensions && (
+        <div 
+          className="w-full h-full"
+          style={{ aspectRatio }}
+        >
+          <iframe
+            width="100%"
+            height="100%"
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full"
+          />
+        </div>
+      )}
+
+      {/* Play button overlay - show when video available and not playing */}
+      {videoId && !showVideo && loaded && !error && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowVideo(true);
+          }}
+          className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors cursor-pointer group"
+          aria-label="Play video"
+        >
+          <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+            <i className="fas fa-play text-white text-xl ml-1" />
+          </div>
+        </button>
+      )}
+
+      {/* Close video button */}
+      {showVideo && videoId && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowVideo(false);
+          }}
+          className="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-colors"
+          aria-label="Close video"
+        >
+          <i className="fas fa-times text-white text-sm" />
+        </button>
+      )}
+
+      {/* Error fallback */}
+      {error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted">
+          <i className="fas fa-image text-2xl text-muted-foreground" />
+        </div>
+      )}
+    </div>
+  );
+}

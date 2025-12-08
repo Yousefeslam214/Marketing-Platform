@@ -219,7 +219,7 @@ export default function AdAnalytics() {
             </Button>
           }
         />
-        <main className="p-6 space-y-6">
+        <main className="p-6 space-y-6 mt-24">
           {/* Overview Stats */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <Card>
