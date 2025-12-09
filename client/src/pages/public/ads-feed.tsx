@@ -699,7 +699,7 @@ export default function AdsFeed() {
 
       {/* Mobile Filters Panel */}
       {showFilters && (
-        <div className="md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-10">
+        <div className="md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-[70]">
           {/* City Filter */}
           <div className="relative">
             <label className="text-xs text-muted-foreground mb-1 block">
@@ -842,7 +842,7 @@ export default function AdsFeed() {
       {/* Overlay for mobile filters */}
       {showFilters && (
         <div
-          className="md:hidden fixed inset-0 bg-black/30 z-30 top-[97px]"
+          className="md:hidden fixed inset-0 bg-black/30 z-[65] top-[97px]"
           onClick={() => setShowFilters(false)}
         />
       )}
