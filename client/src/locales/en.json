@@ -1269,7 +1269,7 @@
   },
   "publicFeed": {
     "title": "Public Feed",
-    "description": "Browse and discover the latest ads from our community",
+    "description": "Browse and discover the latest ads from our clients",
     "sponsored": "Sponsored",
     "promoted": "Promoted",
     "like": "Like",
@@ -1479,6 +1479,54 @@
       "subtitle": "Join thousands of businesses already growing with our platform.",
       "getStarted": "Start Free Trial",
       "contact": "Talk to Sales"
+    },
+    "videoDemo": {
+      "badge": "Video Demo",
+      "title": "See Octopus Ads in Action",
+      "subtitle": "Watch how easy it is to create and launch your advertising campaigns with our platform"
+    },
+    "simpleExplanation": {
+      "title": "Advertising Made Simple",
+      "subtitle": "Let your ads reach the world while you focus on your business. We handle the rest!",
+      "benefits": {
+        "easy": {
+          "title": "Super Easy to Use",
+          "description": "No complicated setup. No technical skills needed. Just upload your ad and you're ready to go. It's really that simple!"
+        },
+        "team": {
+          "title": "Our Team Works for You",
+          "description": "Once you upload your ad, our expert team takes over. We promote your ad professionally across all platforms so you don't have to worry about anything."
+        },
+        "reach": {
+          "title": "Reach People Everywhere",
+          "description": "Your ad will be seen by thousands of potential customers across multiple platforms. More eyes on your business means more sales!"
+        },
+        "affordable": {
+          "title": "Affordable for Everyone",
+          "description": "No hidden fees. No surprises. Pay only for what you use. Start with as little or as much as you want."
+        }
+      },
+      "stepsTitle": "How Does It Work?",
+      "steps": {
+        "step1": {
+          "title": "Add Credits to Your Account",
+          "description": "Purchase credits to get started. Think of credits as fuel for your ads - more credits mean more people see your ad!"
+        },
+        "step2": {
+          "title": "Upload Your Ad",
+          "description": "Simply upload your ad image or video. Tell us what you're selling or promoting. That's it!"
+        },
+        "step3": {
+          "title": "Choose Your Audience",
+          "description": "Pick who should see your ad. Want to reach people in a specific city? A certain age group? We've got you covered."
+        },
+        "step4": {
+          "title": "Relax! We Handle Everything Else",
+          "description": "Our marketing team promotes your ad across social media and our network. You just watch the results come in!"
+        }
+      },
+      "cta": "Start Advertising Today",
+      "ctaSubtext": "Join thousands of businesses growing with Octopus Ads"
     },
     "whyChoose": {
       "title": "Why Choose Octopus Ads?",

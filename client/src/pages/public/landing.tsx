@@ -144,7 +144,7 @@ export default function LandingPage() {
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mx-2"></i>
                   {t("landing", "hero.features.marketingForYourAds")}
-                </div>   
+                </div>
                 <div className="flex items-center">
                   <i className="fas fa-check-circle text-green-500 mx-2"></i>
                   {t("landing", "hero.features.analytics")}
@@ -205,72 +205,284 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-12 sm:py-16 md:py-20 bg-muted/50">
-        <div className="container px-4 sm:px-6 lg:px-8">
+      {/* Video Demo Section */}
+      <section
+        id="video-demo"
+        className="py-12 sm:py-16 md:py-20 lg:py-24 bg-muted/50 w-full">
+        <div className="container px-4 sm:px-6 lg:px-8 max-w-[1000px] mx-auto">
           <div className="text-center space-y-4 mb-12 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-              {t("landing", "features.title")}
+            <Badge variant="default" className="mb-4">
+              <i className="fas fa-play-circle mx-2"></i>
+              {t("landing", "videoDemo.badge")}
+            </Badge>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold">
+              {t("landing", "videoDemo.title")}
             </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t("landing", "features.subtitle")}
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
+              {t("landing", "videoDemo.subtitle")}
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              {
-                icon: "fas fa-rocket",
-                titleKey: "features.items.easySetup.title",
-                descKey: "features.items.easySetup.description",
-              },
-              {
-                icon: "fas fa-chart-bar",
-                titleKey: "features.items.analytics.title",
-                descKey: "features.items.analytics.description",
-              },
-              {
-                icon: "fas fa-globe",
-                titleKey: "features.items.marketingForYourAds.title",
-                descKey: "features.items.marketingForYourAds.description",
-              },
-              {
-                icon: "fas fa-shield-alt",
-                titleKey: "features.items.secure.title",
-                descKey: "features.items.secure.description",
-              },
-              {
-                icon: "fas fa-clock",
-                titleKey: "features.items.realTime.title",
-                descKey: "features.items.realTime.description",
-              },
-              {
-                icon: "fas fa-headset",
-                titleKey: "features.items.support.title",
-                descKey: "features.items.support.description",
-              },
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <i className={`${feature.icon} text-primary text-xl`}></i>
-                  </div>
-                  <CardTitle className="text-xl">
-                    {t("landing", feature.titleKey as any)}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">
-                    {t("landing", feature.descKey as any)}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="w-full max-w-[1400px] mx-auto">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-muted aspect-video hover:shadow-3xl transition-shadow duration-300">
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/gwBP6M3l5LI"
+                title="Octopus Ads Platform"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </section>
+
+      {/* How It Works - Simple Explanation */}
+      <section className="py-12 sm:py-16 md:py-20">
+        <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Main Message */}
+            <div className="text-center space-y-6 mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+                {t("landing", "simpleExplanation.title")}
+              </h2>
+              <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed">
+                {t("landing", "simpleExplanation.subtitle")}
+              </p>
+            </div>
+
+            {/* Key Benefits Grid */}
+            <div className="grid md:grid-cols-2 gap-8 mb-16">
+              <Card className="border-2 hover:border-primary transition-colors">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                    <i className="fas fa-rocket text-primary text-2xl"></i>
+                  </div>
+                  <h3 className="text-xl font-bold mb-4">
+                    {t("landing", "simpleExplanation.benefits.easy.title")}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {t(
+                      "landing",
+                      "simpleExplanation.benefits.easy.description"
+                    )}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 hover:border-primary transition-colors">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+                    <i className="fas fa-users text-green-500 text-2xl"></i>
+                  </div>
+                  <h3 className="text-xl font-bold mb-4">
+                    {t("landing", "simpleExplanation.benefits.team.title")}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {t(
+                      "landing",
+                      "simpleExplanation.benefits.team.description"
+                    )}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 hover:border-primary transition-colors">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mb-6">
+                    <i className="fas fa-globe text-blue-500 text-2xl"></i>
+                  </div>
+                  <h3 className="text-xl font-bold mb-4">
+                    {t("landing", "simpleExplanation.benefits.reach.title")}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {t(
+                      "landing",
+                      "simpleExplanation.benefits.reach.description"
+                    )}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 hover:border-primary transition-colors">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mb-6">
+                    <i className="fas fa-wallet text-orange-500 text-2xl"></i>
+                  </div>
+                  <h3 className="text-xl font-bold mb-4">
+                    {t(
+                      "landing",
+                      "simpleExplanation.benefits.affordable.title"
+                    )}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {t(
+                      "landing",
+                      "simpleExplanation.benefits.affordable.description"
+                    )}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Simple Steps */}
+            <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 sm:p-12">
+              <h3 className="text-2xl sm:text-3xl font-bold text-center mb-12">
+                {t("landing", "simpleExplanation.stepsTitle")}
+              </h3>
+
+              <div className="space-y-8">
+                {/* <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl flex-shrink-0">
+                    1
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold mb-2">
+                      {t("landing", "simpleExplanation.steps.step1.title")}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t(
+                        "landing",
+                        "simpleExplanation.steps.step1.description"
+                      )}
+                    </p>
+                  </div>
+                </div> */}
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl flex-shrink-0">
+                    1
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold mb-2">
+                      {t("landing", "simpleExplanation.steps.step2.title")}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t(
+                        "landing",
+                        "simpleExplanation.steps.step2.description"
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl flex-shrink-0">
+                    2
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold mb-2">
+                      {t("landing", "simpleExplanation.steps.step3.title")}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t(
+                        "landing",
+                        "simpleExplanation.steps.step3.description"
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                    <i className="fas fa-check"></i>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold mb-2">
+                      {t("landing", "simpleExplanation.steps.step4.title")}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t(
+                        "landing",
+                        "simpleExplanation.steps.step4.description"
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA in steps section */}
+              <div className="mt-12 text-center">
+                <Link href="/signup">
+                  <Button size="lg" className="text-lg px-8">
+                    <i className="fas fa-rocket mx-2"></i>
+                    {t("landing", "simpleExplanation.cta")}
+                  </Button>
+                </Link>
+                <p className="mt-4 text-sm text-muted-foreground">
+                  {t("landing", "simpleExplanation.ctaSubtext")}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="text-center space-y-4 mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+            {t("landing", "features.title")}
+          </h2>
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+            {t("landing", "features.subtitle")}
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {[
+            {
+              icon: "fas fa-rocket",
+              titleKey: "features.items.easySetup.title",
+              descKey: "features.items.easySetup.description",
+            },
+            {
+              icon: "fas fa-chart-bar",
+              titleKey: "features.items.analytics.title",
+              descKey: "features.items.analytics.description",
+            },
+            {
+              icon: "fas fa-globe",
+              titleKey: "features.items.marketingForYourAds.title",
+              descKey: "features.items.marketingForYourAds.description",
+            },
+            {
+              icon: "fas fa-shield-alt",
+              titleKey: "features.items.secure.title",
+              descKey: "features.items.secure.description",
+            },
+            {
+              icon: "fas fa-clock",
+              titleKey: "features.items.realTime.title",
+              descKey: "features.items.realTime.description",
+            },
+            {
+              icon: "fas fa-headset",
+              titleKey: "features.items.support.title",
+              descKey: "features.items.support.description",
+            },
+          ].map((feature, index) => (
+            <Card
+              key={index}
+              className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <i className={`${feature.icon} text-primary text-xl`}></i>
+                </div>
+                <CardTitle className="text-xl">
+                  {t("landing", feature.titleKey as any)}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-base">
+                  {t("landing", feature.descKey as any)}
+                </CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
 
       {/* Why Choose Section */}
       <WhyChooseSection />
@@ -470,7 +682,8 @@ export default function LandingPage() {
         className="py-12 sm:py-16 md:py-20 bg-primary w-full
       flex flex-col align-center 
       ">
-        <div className="container px-4 sm:px-6 lg:px-8
+        <div
+          className="container px-4 sm:px-6 lg:px-8
         m-auto
         ">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center text-primary-foreground">
