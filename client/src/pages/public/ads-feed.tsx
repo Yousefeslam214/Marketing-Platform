@@ -497,18 +497,19 @@ export default function AdsFeed() {
         title={t("publicFeed", "title")}
         description={t("publicFeed", "description")}
         actions={
-          <div className=""
-          >
+          <div className="">
             {/* Mobile: Toggle button */}
             <Button
               variant="outline"
               size="sm"
               className="md:hidden flex items-center gap-2"
-              onClick={() => setShowFilters(!showFilters)}
-            >
+              onClick={() => setShowFilters(!showFilters)}>
               <i className={`fas fa-filter`}></i>
               {t("publicFeed", "filters") || "Filters"}
-              {(titleFilter || descriptionFilter || audienceFilter || targetCities.length > 0) && (
+              {(titleFilter ||
+                descriptionFilter ||
+                audienceFilter ||
+                targetCities.length > 0) && (
                 <span className="w-2 h-2 bg-primary rounded-full"></span>
               )}
             </Button>
@@ -634,7 +635,9 @@ export default function AdsFeed() {
                     <SelectItem value="rarities">
                       {t("ads", "audienceRarities")}
                     </SelectItem>
-                    <SelectItem value="art">{t("ads", "audienceArt")}</SelectItem>
+                    <SelectItem value="art">
+                      {t("ads", "audienceArt")}
+                    </SelectItem>
                     <SelectItem value="trips">
                       {t("ads", "audienceTrips")}
                     </SelectItem>
@@ -754,7 +757,9 @@ export default function AdsFeed() {
                   setPage(1);
                 }}
                 className="w-full h-9"
-                placeholder={t("publicFeed", "Search description") || "Search..."}
+                placeholder={
+                  t("publicFeed", "Search description") || "Search..."
+                }
               />
             </div>
           </div>
@@ -780,14 +785,28 @@ export default function AdsFeed() {
                   {t("ads", "targetAudiencePlaceholder")}
                 </SelectItem>
                 <SelectItem value="cars">{t("ads", "audienceCars")}</SelectItem>
-                <SelectItem value="realestate">{t("ads", "audienceRealestate")}</SelectItem>
-                <SelectItem value="devices">{t("ads", "audienceDevices")}</SelectItem>
-                <SelectItem value="animals">{t("ads", "audienceAnimals")}</SelectItem>
-                <SelectItem value="furniture">{t("ads", "audienceFurniture")}</SelectItem>
+                <SelectItem value="realestate">
+                  {t("ads", "audienceRealestate")}
+                </SelectItem>
+                <SelectItem value="devices">
+                  {t("ads", "audienceDevices")}
+                </SelectItem>
+                <SelectItem value="animals">
+                  {t("ads", "audienceAnimals")}
+                </SelectItem>
+                <SelectItem value="furniture">
+                  {t("ads", "audienceFurniture")}
+                </SelectItem>
                 <SelectItem value="jobs">{t("ads", "audienceJobs")}</SelectItem>
-                <SelectItem value="services">{t("ads", "audienceServices")}</SelectItem>
-                <SelectItem value="fashion">{t("ads", "audienceFashion")}</SelectItem>
-                <SelectItem value="games">{t("ads", "audienceGames")}</SelectItem>
+                <SelectItem value="services">
+                  {t("ads", "audienceServices")}
+                </SelectItem>
+                <SelectItem value="fashion">
+                  {t("ads", "audienceFashion")}
+                </SelectItem>
+                <SelectItem value="games">
+                  {t("ads", "audienceGames")}
+                </SelectItem>
                 <SelectItem value="more">{t("ads", "audienceMore")}</SelectItem>
               </SelectContent>
             </Select>
@@ -822,7 +841,7 @@ export default function AdsFeed() {
 
       {/* Overlay for mobile filters */}
       {showFilters && (
-        <div 
+        <div
           className="md:hidden fixed inset-0 bg-black/30 z-30 top-[97px]"
           onClick={() => setShowFilters(false)}
         />

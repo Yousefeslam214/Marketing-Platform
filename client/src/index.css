@@ -83,8 +83,6 @@
     font-family: var(--font-sans);
   }
 
-  
-
   .sidebar-nav a:hover {
     background-color: hsl(var(--accent));
     color: hsl(var(--accent-foreground));

@@ -52,7 +52,8 @@ export default function AdsIndex() {
             </div>
           ) : safeAds.length > 0 ? (
             // grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6
-            <div className="  flex flex-col w-[80%] justify-center 
+            <div
+              className="  flex flex-col w-[80%] justify-center 
             items-center mx-auto
             
             gap-6

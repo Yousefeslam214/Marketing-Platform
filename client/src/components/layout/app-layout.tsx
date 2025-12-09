@@ -44,9 +44,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             <div
               className={`sticky top-0 z-30 bg-background/95 backdrop-blur border-b px-4 py-3 
                 bg-card
-                ${
-                isRTL ? "text-right" : "text-left"
-              }`}>
+                ${isRTL ? "text-right" : "text-left"}`}>
               <Button
                 variant="ghost"
                 size="sm"

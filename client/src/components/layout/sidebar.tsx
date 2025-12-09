@@ -206,19 +206,22 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         <div key={item.name}>
           <button
             onClick={() => toggleExpanded(item.name)}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 ${isActive
-              ? "active bg-primary text-primary-foreground border-primary"
-              : "hover:bg-accent hover:text-accent-foreground border-transparent"
-              } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${isSubItem ? "ml-4" : ""
-              }`}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 ${
+              isActive
+                ? "active bg-primary text-primary-foreground border-primary"
+                : "hover:bg-accent hover:text-accent-foreground border-transparent"
+            } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
+              isSubItem ? "ml-4" : ""
+            }`}
             style={{
               fontWeight: isActive ? "bold" : "normal",
               boxShadow: isActive ? "0 2px 8px 0 rgba(0,0,0,0.08)" : undefined,
             }}
             data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, "-")}`}>
             <i
-              className={`${item.icon} w-4 h-4 ${isRTL ? "order-last" : "order-first"
-                }`}></i>
+              className={`${item.icon} w-4 h-4 ${
+                isRTL ? "order-last" : "order-first"
+              }`}></i>
             <span className="flex-1 flex">{item.name}</span>
             {item.badge && (
               <Badge
@@ -228,9 +231,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               </Badge>
             )}
             <i
-              className={`fas fa-chevron-${isExpanded ? "up" : "down"
-                } w-2 h-3 transition-transform ${isRTL ? "order-first" : "order-last"
-                }`}></i>
+              className={`fas fa-chevron-${
+                isExpanded ? "up" : "down"
+              } w-2 h-3 transition-transform ${
+                isRTL ? "order-first" : "order-last"
+              }`}></i>
           </button>
 
           {isExpanded && (
@@ -238,11 +243,13 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               {item.subItems?.map((subItem) => (
                 <Link key={subItem.href} href={subItem.href}>
                   <div
-                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${location === subItem.href
-                      ? "active bg-primary text-primary-foreground border-primary"
-                      : "hover:bg-accent hover:text-accent-foreground border-transparent"
-                      } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${isRTL ? "mx-4" : "ml-4"
-                      }`}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
+                      location === subItem.href
+                        ? "active bg-primary text-primary-foreground border-primary"
+                        : "hover:bg-accent hover:text-accent-foreground border-transparent"
+                    } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
+                      isRTL ? "mx-4" : "ml-4"
+                    }`}
                     style={{
                       fontWeight: location === subItem.href ? "bold" : "normal",
                       boxShadow:
@@ -254,8 +261,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                       .toLowerCase()
                       .replace(/\s+/g, "-")}`}>
                     <i
-                      className={`${subItem.icon} w-4 h-4 ${isRTL ? "order-last" : "order-first"
-                        }`}></i>
+                      className={`${subItem.icon} w-4 h-4 ${
+                        isRTL ? "order-last" : "order-first"
+                      }`}></i>
                     <span className="flex-1 flex">{subItem.name}</span>
                     {subItem.badge && (
                       <Badge
@@ -276,11 +284,13 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     return (
       <Link key={item.href} href={item.href}>
         <div
-          className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${location === item.href
-            ? "active bg-primary text-primary-foreground border-primary"
-            : "hover:bg-accent hover:text-accent-foreground border-transparent"
-            } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${isSubItem ? "ml-4" : ""
-            }`}
+          className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
+            location === item.href
+              ? "active bg-primary text-primary-foreground border-primary"
+              : "hover:bg-accent hover:text-accent-foreground border-transparent"
+          } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
+            isSubItem ? "ml-4" : ""
+          }`}
           style={{
             fontWeight: location === item.href ? "bold" : "normal",
             boxShadow:
@@ -290,8 +300,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           }}
           data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, "-")}`}>
           <i
-            className={`${item.icon} w-4 h-4 ${isRTL ? "order-last" : "order-first"
-              }`}></i>
+            className={`${item.icon} w-4 h-4 ${
+              isRTL ? "order-last" : "order-first"
+            }`}></i>
           <span className="flex-1 flex">{item.name}</span>
           {item.badge && (
             <Badge
@@ -331,16 +342,19 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
       {/* Sidebar */}
       <div
-        className={`${isMobile
-          ? `fixed top-0 ${isRTL ? "right-0" : "left-0"
-          } h-full w-64 bg-card flex flex-col shadow-lg z-[60] transform transition-transform duration-300 ease-in-out ${isOpen
-            ? "translate-x-0"
-            : isRTL
-              ? "translate-x-full"
-              : "-translate-x-full"
-          }`
-          : "w-64 bg-card flex flex-col shadow-lg z-[60]"
-          }`}
+        className={`${
+          isMobile
+            ? `fixed top-0 ${
+                isRTL ? "right-0" : "left-0"
+              } h-full w-64 bg-card flex flex-col shadow-lg z-[60] transform transition-transform duration-300 ease-in-out ${
+                isOpen
+                  ? "translate-x-0"
+                  : isRTL
+                  ? "translate-x-full"
+                  : "-translate-x-full"
+              }`
+            : "w-64 bg-card flex flex-col shadow-lg z-[60]"
+        }`}
         style={{ position: isMobile ? "fixed" : "relative" }}
         dir={isRTL ? "rtl" : "ltr"}
         data-testid="sidebar">
@@ -348,7 +362,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         <div className="p-6 border-b border-border flex flex-col bg-primary/10">
           <div className="flex flex-row items-center gap-3 justify-between">
             <div className="flex flex-row items-center gap-3 w-full justify-center">
-              <img src={theme === "dark" ? "/white.png" : "/logo.png"} alt="Logo" className="h-12" />
+              <img
+                src={theme === "dark" ? "/white.png" : "/logo.png"}
+                alt="Logo"
+                className="h-12"
+              />
               <div className={isRTL ? "text-right" : ""}></div>
             </div>
 
@@ -369,10 +387,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         {role === "user" && (
           <div className="px-4 pt-4">
             <Link href={newCampaignsPath()}>
-              <Button 
-                className="w-full" 
-                data-testid="sidebar-create-ad"
-              >
+              <Button className="w-full" data-testid="sidebar-create-ad">
                 <i className={`fas fa-plus ${isRTL ? "ml-2" : "mr-2"}`}></i>
                 {t("sidebar", "createNewAd") || t("dashboard", "createNewAd")}
               </Button>
@@ -397,8 +412,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-border bg-primary/5">
           <div
-            className={`flex items-center gap-3 mb-3 ${isRTL ? "flex-row-reverse" : ""
-              }`}>
+            className={`flex items-center gap-3 mb-3 ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}>
             <Link href="/profile">
               <Avatar className="w-8 h-8 ring-2 ring-primary cursor-pointer">
                 <AvatarImage src="" alt="User avatar" />
@@ -408,8 +424,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               </Avatar>
             </Link>
             <div
-              className={`flex-1 min-w-0 ${isRTL ? "text-right" : "text-left"
-                }`}>
+              className={`flex-1 min-w-0 ${
+                isRTL ? "text-right" : "text-left"
+              }`}>
               <p
                 className="text-sm font-bold text-primary truncate"
                 data-testid="user-name">
@@ -421,8 +438,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             </div>
           </div>
           <div
-            className={`flex items-center gap-2 ${isRTL ? "flex-row-reverse" : ""
-              }`}>
+            className={`flex items-center gap-2 ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}>
             <ThemeToggle />
             <LanguageToggle />
             <Button

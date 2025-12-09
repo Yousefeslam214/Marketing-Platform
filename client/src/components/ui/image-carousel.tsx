@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 function getYoutubeId(url: string) {
-  const regExp =
-    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 }
@@ -27,12 +26,16 @@ export function ImageCarousel({
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [imageDimensions, setImageDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Only use the first image
-  const imageUrl = Array.isArray(images) && images.length > 0 ? images[0] : null;
-  
+  const imageUrl =
+    Array.isArray(images) && images.length > 0 ? images[0] : null;
+
   // Check for video
   const videoId = videoUrl ? getYoutubeId(videoUrl) : null;
 
@@ -62,8 +65,8 @@ export function ImageCarousel({
   };
 
   // Calculate aspect ratio from image dimensions
-  const aspectRatio = imageDimensions 
-    ? `${imageDimensions.width} / ${imageDimensions.height}` 
+  const aspectRatio = imageDimensions
+    ? `${imageDimensions.width} / ${imageDimensions.height}`
     : "16 / 9";
 
   // Navigate to next/prev slide
@@ -85,8 +88,7 @@ export function ImageCarousel({
       ref={containerRef}
       className={`w-full ${heightClass} bg-muted rounded-lg overflow-hidden relative ${className}`}
       data-testid={dataTestId}
-      style={imageDimensions ? { aspectRatio } : undefined}
-    >
+      style={imageDimensions ? { aspectRatio } : undefined}>
       {/* Loading spinner - only for images */}
       {currentSlide.type === "image" && !loaded && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted z-10">
@@ -132,7 +134,9 @@ export function ImageCarousel({
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="w-full h-full"
-            style={imageDimensions ? { aspectRatio } : { aspectRatio: "16 / 9" }}
+            style={
+              imageDimensions ? { aspectRatio } : { aspectRatio: "16 / 9" }
+            }
           />
         </div>
       )}
@@ -144,8 +148,7 @@ export function ImageCarousel({
           <button
             onClick={goToPrev}
             className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors z-20"
-            aria-label="Previous"
-          >
+            aria-label="Previous">
             <i className="fas fa-chevron-left text-white text-sm" />
           </button>
 
@@ -153,8 +156,7 @@ export function ImageCarousel({
           <button
             onClick={goToNext}
             className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors z-20"
-            aria-label="Next"
-          >
+            aria-label="Next">
             <i className="fas fa-chevron-right text-white text-sm" />
           </button>
         </>
@@ -173,13 +175,16 @@ export function ImageCarousel({
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all 
                 pt-[3px]
                 ${
-                index === activeIndex
-                  ? "bg-primary text-primary-foreground scale-110"
-                  : "bg-black/50 text-white hover:bg-black/70"
-              }`}
-              aria-label={slide.type === "image" ? "View image" : "View video"}
-            >
-              <i className={`fas ${slide.type === "image" ? "fa-image" : "fa-play"} text-xs`} />
+                  index === activeIndex
+                    ? "bg-primary text-primary-foreground scale-110"
+                    : "bg-black/50 text-white hover:bg-black/70"
+                }`}
+              aria-label={slide.type === "image" ? "View image" : "View video"}>
+              <i
+                className={`fas ${
+                  slide.type === "image" ? "fa-image" : "fa-play"
+                } text-xs`}
+              />
             </button>
           ))}
         </div>

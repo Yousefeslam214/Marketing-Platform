@@ -60,7 +60,12 @@ export default function AdminPixels() {
     return json.data || [];
   };
 
-  const { data: pixels = [], isLoading, error, isError } = useQuery({
+  const {
+    data: pixels = [],
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
     queryKey: ["admin", "pixels"],
     queryFn: fetchPixels,
     staleTime: 1000 * 60 * 5,
@@ -219,10 +224,11 @@ export default function AdminPixels() {
                     <p className="text-sm text-muted-foreground mb-4">
                       {error?.message || t("pixels", "unknownError")}
                     </p>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => qc.invalidateQueries({ queryKey: ["admin", "pixels"] })}
-                    >
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        qc.invalidateQueries({ queryKey: ["admin", "pixels"] })
+                      }>
                       <i className="fas fa-refresh mr-2"></i>
                       {t("pixels", "retry")}
                     </Button>

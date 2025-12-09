@@ -179,7 +179,13 @@ export default function EditPhoto() {
       if (fileInputRef.current) fileInputRef.current.value = "";
       resetSelection();
     },
-    [selectedUrl, validateFile, updatePhotoMutation, uploadPhotosMutation, resetSelection]
+    [
+      selectedUrl,
+      validateFile,
+      updatePhotoMutation,
+      uploadPhotosMutation,
+      resetSelection,
+    ]
   );
 
   const handleAddNewPhoto = useCallback(() => {
@@ -216,7 +222,13 @@ export default function EditPhoto() {
         ))}
       </div>
     ),
-    [photoList, handleReplaceClick, t, updatePhotoMutation.isPending, selectedUrl]
+    [
+      photoList,
+      handleReplaceClick,
+      t,
+      updatePhotoMutation.isPending,
+      selectedUrl,
+    ]
   );
 
   return (
@@ -224,10 +236,7 @@ export default function EditPhoto() {
       <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
           title={t("editPhoto", "Edit Photos")}
-          description={t(
-            "editPhoto",
-            "Manage or replace your ad photo"
-          )}
+          description={t("editPhoto", "Manage or replace your ad photo")}
         />
         <main className="p-6 mt-24">
           <div className="max-w-3xl mx-auto">
@@ -254,7 +263,7 @@ export default function EditPhoto() {
 
                 <div className="mt-6 flex justify-between">
                   {photoList.length === 0 && (
-                    <Button 
+                    <Button
                       onClick={handleAddNewPhoto}
                       disabled={uploadPhotosMutation.isPending}>
                       <i className="fas fa-plus mx-2"></i>

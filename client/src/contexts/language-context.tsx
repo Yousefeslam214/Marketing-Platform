@@ -1,5 +1,11 @@
 // language-context.tsx
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { getTranslation } from "@/lib/i18n";
 
 export type Language = "ar" | "en";
