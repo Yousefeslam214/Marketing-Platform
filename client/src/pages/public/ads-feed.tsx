@@ -497,7 +497,7 @@ export default function AdsFeed() {
         title={t("publicFeed", "title")}
         description={t("publicFeed", "description")}
         actions={
-          <div className="">
+          <div className="overflow-x-auto flex max-h-[70px]">
             {/* Mobile: Toggle button */}
             <Button
               variant="outline"
@@ -699,7 +699,9 @@ export default function AdsFeed() {
 
       {/* Mobile Filters Panel */}
       {showFilters && (
-        <div className="md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-[70]">
+        <div className={`md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-[70]
+        ${language === "ar" ? "ml-3" : "mr-3"}
+        `}>
           {/* City Filter */}
           <div className="relative">
             <label className="text-xs text-muted-foreground mb-1 block">

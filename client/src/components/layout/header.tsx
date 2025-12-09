@@ -16,7 +16,7 @@ export function Header({ title, description, actions }: HeaderProps) {
       <MetaPixel />
       <header
         className="bg-card border-b border-border 
-        px-6 mx-1
+        px-6 mx-3
          py-4
       h-[97px]
       fixed
