@@ -65,6 +65,7 @@ export default function Dashboard() {
   });
 
   console.log("Dashboard Data:", dashboardData);
+  console.log("Dashboard Data:", dashboardData?.data);
   // Check for token in URL parameters and auto-authenticate
   useEffect(() => {
     // Only run token detection logic if we're on the dashboard page
@@ -471,6 +472,7 @@ export default function Dashboard() {
                             }`}
                             style={{ gap: "12px" }}>
                             <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                              {" "}
                               <i
                                 className={`${getActivityIcon(
                                   item.type
@@ -481,7 +483,7 @@ export default function Dashboard() {
                                 {getActivityText(item.type)}
                               </p>
                               <p className="text-xs text-muted-foreground truncate">
-                                {item.adTitle}
+                                {item?.titleAr || item?.titleEn}
                               </p>
                             </div>
                             <div className="flex flex-col items-end">
