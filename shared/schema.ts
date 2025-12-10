@@ -308,7 +308,7 @@ export const createAdSchema = insertAdSchema.extend({
   targetAudience: z.string().min(1, "الجمهور المستهدف مطلوب"),
   targetCities: z.array(z.string()).min(1, "اختر مدينة واحدة على الأقل"),
   budgetType: z.enum(["impressions", "clicks"]),
-  websiteUrl: z.string().url("Invalid website URL").or(z.literal("")),
+  websiteUrl: z.string().url("برجاء ادخال لينك لويبسايت صحيح"),
   facebookLink: z
     .string()
     .refine(
