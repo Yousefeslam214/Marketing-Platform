@@ -130,6 +130,7 @@ export default function LandingPage() {
                 <Button
                   variant="outline"
                   size="lg"
+                  onClick={() => document.getElementById("video-demo")?.scrollIntoView({ behavior: "smooth" })}
                   className="w-full sm:w-auto">
                   <i className="fas fa-video mx-2"></i>
                   {t("landing", "hero.watchDemo")}
