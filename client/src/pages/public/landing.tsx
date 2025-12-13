@@ -9,11 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense, useCallback, useMemo } from "react";
 import { Check, AlertCircle, RefreshCw } from "lucide-react";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import WhyChooseSection from "@/components/landing/WhyChooseSection";
+import { YouTubeLite } from "@/components/landing/YouTubeLite";
+
+// Lazy load heavy components
+const WhyChooseSection = lazy(() => import("@/components/landing/WhyChooseSection"));
 
 export default function LandingPage() {
   const { isRTL, t } = useLanguage();
@@ -22,75 +25,45 @@ export default function LandingPage() {
   const [pricingError, setPricingError] = useState(false);
 
   // Fetch impression ratios from API
+  const fetchPricingData = useCallback(async () => {
+    try {
+      setPricingLoading(true);
+      setPricingError(false);
+
+      const response = await fetch(
+        `${VITE_API_BASE_URL}/api/users/impression-ratios`
+      );
+      const data = await response.json();
+
+      if (data.success) {
+        // Find SAR pricing data
+        const sarData = data.data.find(
+          (item: any) => item.currency === "sar"
+        );
+        setPricingData(sarData);
+      } else {
+        setPricingError(true);
+      }
+    } catch (error) {
+      toast({
+        title: t("landing", "fetchErrorTitle"),
+        description:
+          (error instanceof Error ? error.message : "") ||
+          t("landing", "fetchErrorDesc"),
+      });
+      setPricingError(true);
+    } finally {
+      setPricingLoading(false);
+    }
+  }, [t]);
+
   useEffect(() => {
-    const fetchPricingData = async () => {
-      try {
-        setPricingLoading(true);
-        setPricingError(false);
-
-        const response = await fetch(
-          `${VITE_API_BASE_URL}/api/users/impression-ratios`
-        );
-        const data = await response.json();
-
-        if (data.success) {
-          // Find SAR pricing data
-          const sarData = data.data.find(
-            (item: any) => item.currency === "sar"
-          );
-          setPricingData(sarData);
-        } else {
-          setPricingError(true);
-        }
-      } catch (error) {
-        toast({
-          title: t("landing", "fetchErrorTitle"),
-          description:
-            (error instanceof Error ? error.message : "") ||
-            t("landing", "fetchErrorDesc"),
-        });
-        setPricingError(true);
-      } finally {
-        setPricingLoading(false);
-      }
-    };
-
     fetchPricingData();
-  }, []);
+  }, [fetchPricingData]);
 
-  const retryFetchPricing = () => {
-    const fetchPricingData = async () => {
-      try {
-        setPricingLoading(true);
-        setPricingError(false);
-
-        const response = await fetch(
-          `${VITE_API_BASE_URL}/api/users/impression-ratios`
-        );
-        const data = await response.json();
-
-        if (data.success) {
-          const sarData = data.data.find(
-            (item: any) => item.currency === "sar"
-          );
-          setPricingData(sarData);
-        } else {
-          setPricingError(true);
-        }
-      } catch (error) {
-        setPricingError(true);
-        toast({
-          title: t("landing", "fetchErrorTitle"),
-          description:
-            (error instanceof Error ? error.message : "") ||
-            t("landing", "fetchErrorDesc"),
-        });
-      } finally {
-        setPricingLoading(false);
-      }
-    };
+  const retryFetchPricing = useCallback(() => {
     fetchPricingData();
-  };
+  }, [fetchPricingData]);
 
   //   localStorage.clear();
 
@@ -226,13 +199,9 @@ export default function LandingPage() {
 
           <div className="w-full max-w-[1400px] mx-auto">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-muted aspect-video hover:shadow-3xl transition-shadow duration-300">
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/gwBP6M3l5LI"
+              <YouTubeLite
+                videoId="gwBP6M3l5LI"
                 title="Octopus Ads Platform"
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                loading="lazy"
               />
             </div>
           </div>
@@ -486,7 +455,13 @@ export default function LandingPage() {
       </div>
 
       {/* Why Choose Section */}
-      <WhyChooseSection />
+      <Suspense fallback={
+        <div className="py-12 sm:py-16 md:py-20 flex justify-center items-center">
+          <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      }>
+        <WhyChooseSection />
+      </Suspense>
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-12 sm:py-16 md:py-20">

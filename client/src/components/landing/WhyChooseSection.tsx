@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check, Star, Users, Target, Megaphone } from "lucide-react";
 
-export default function WhyChooseSection() {
+function WhyChooseSection() {
   const { t, isRTL } = useLanguage();
 
   // Icons for each point
@@ -93,3 +94,5 @@ export default function WhyChooseSection() {
     </section>
   );
 }
+
+export default memo(WhyChooseSection);
