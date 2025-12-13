@@ -77,6 +77,7 @@ export const handleApprove = async (
 
 export const handleReject = async (
   id: string,
+  reason: string,
   isRTL: boolean,
   refetch: () => void
 ) => {
@@ -103,6 +104,7 @@ export const handleReject = async (
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ reason }),
       }
     );
 

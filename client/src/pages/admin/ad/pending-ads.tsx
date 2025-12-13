@@ -10,12 +10,15 @@ import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { handleApprove, handleReject } from "@/lib/helper-ad";
+import { RejectDialog } from "@/components/ads/reject-dialog";
 
 export default function PendingAds() {
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
   const [loadingActions, setLoadingActions] = useState<Set<string>>(new Set());
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [selectedAdId, setSelectedAdId] = useState<string | null>(null);
 
   const { handleViewAd } = useAdNavigation();
 
@@ -47,13 +50,23 @@ export default function PendingAds() {
 
   // Enhanced reject handler with loading state
   const handleRejectWithLoading = async (adId: string) => {
-    setLoadingActions((prev) => new Set(prev).add(`reject-${adId}`));
+    setSelectedAdId(adId);
+    setRejectDialogOpen(true);
+  };
+
+  // Handle confirm reject with reason
+  const handleConfirmReject = async (reason: string) => {
+    if (!selectedAdId) return;
+
+    setLoadingActions((prev) => new Set(prev).add(`reject-${selectedAdId}`));
     try {
-      await handleReject(adId, isRTL, refetch);
+      await handleReject(selectedAdId, reason, isRTL, refetch);
+      setRejectDialogOpen(false);
+      setSelectedAdId(null);
     } finally {
       setLoadingActions((prev) => {
         const newSet = new Set(prev);
-        newSet.delete(`reject-${adId}`);
+        newSet.delete(`reject-${selectedAdId}`);
         return newSet;
       });
     }
@@ -127,7 +140,7 @@ export default function PendingAds() {
             </div>
           )}
 
-          {ads?.pagination && (
+          {ads?.pagination ? (
             <DataPagination
               pagination={ads?.pagination}
               currentPage={page}
@@ -139,8 +152,16 @@ export default function PendingAds() {
               showInfo={true}
               className="mt-6"
             />
-          )}
+          ) : null}
         </main>
+
+        {/* Reject Dialog */}
+        <RejectDialog
+          open={rejectDialogOpen}
+          onOpenChange={setRejectDialogOpen}
+          onConfirm={handleConfirmReject}
+          isLoading={selectedAdId ? loadingActions.has(`reject-${selectedAdId}`) : false}
+        />
       </div>
     </div>
   );
