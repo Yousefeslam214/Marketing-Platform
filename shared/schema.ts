@@ -390,8 +390,8 @@ export const createAdSchema = insertAdSchema.extend({
     .or(z.literal("")),
   phoneNumber: z
     .string()
-    .refine((val) => !val || val === "" || /^[\d\s\+\-\(\)]+$/.test(val), {
-      message: "Invalid phone number format",
+    .refine((val) => !val || val === "" || /^\+966[\d\s\-\(\)]+$/.test(val), {
+      message: "Invalid phone format . phone number should start with +966",
     })
     .optional()
     .or(z.literal("")),
