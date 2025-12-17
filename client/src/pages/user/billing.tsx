@@ -146,6 +146,84 @@ export default function Billing() {
         />
 
         <main className="p-4 sm:p-6 space-y-6 mt-24">
+          {/* Packages Explanation */}
+          <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800">
+            <CardContent className="p-6">
+              <div className="space-y-6">
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-2">
+                    الباقات هي أساس نشر إعلانك على كل المنصات
+                  </h3>
+                  <p className="text-blue-700 dark:text-blue-300">
+                    نقوم بنشر صفحة إعلانات المميزة إلى حملات ممولة نقوم بها بشكل دوري
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-3 flex items-center gap-2">
+                    <i className="fas fa-map-marker-alt text-blue-600"></i>
+                    أين يظهر إعلاني؟
+                  </h4>
+                  <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+                    <li className="flex items-center gap-2">
+                      <i className="fas fa-star text-yellow-500"></i>
+                      ترتيب متقدم في الصفحة
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <i className="fas fa-bullhorn text-blue-600"></i>
+                      يتم التسويق للصفحة عبر شبكة أخطبوط الإعلانية (تيك توك، إنستغرام، إكس، وسناب شات وغيرها)
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-green-200 dark:border-green-700">
+                  <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
+                    <i className="fas fa-check-circle text-green-600"></i>
+                    المميزات
+                  </h4>
+                  <ul className="space-y-2 text-sm text-green-800 dark:text-green-200">
+                    <li className="flex items-center gap-2">
+                      <i className="fas fa-eye text-green-600"></i>
+                      أولوية في الظهور أمام الزوار
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <i className="fas fa-clock text-green-600"></i>
+                      بقاء الإعلان فترة أطول حتى اكتمال العدد المشاهدات
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <i className="fas fa-headset text-green-600"></i>
+                      دعم فني عبر الواتساب لتعديل الإعلان
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <i className="fas fa-crown text-green-600"></i>
+                      تميز إعلانك أن يكون بالقائمة التميز في صفحة الإعلانات المميزة
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <i className="fas fa-chart-line text-green-600"></i>
+                      صفحة تحليلات وتقارير مباشرة لإعلاناتك
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
+                  <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center gap-2">
+                    <i className="fas fa-lightbulb text-purple-600"></i>
+                    كيف نضمن لك المشاهدات ومصادر نشرنا؟
+                  </h4>
+                  <p className="text-sm text-purple-800 dark:text-purple-200 leading-relaxed">
+                    في أخطبوط نحن لا ننشر إعلانك بشكل عشوائي. نحن نقوم بإطلاق حملات ممولة ضخمة ومدفوعة على منصات التواصل الاجتماعي العالمية (TikTok, Snapchat, Google, X) لجلب آلاف الزوار النشطين يومياً إلى منصة أخطبوط حيث يظهر إعلانك أمامهم مباشرة.
+                  </p>
+                  <div className="mt-3 p-3 bg-purple-100 dark:bg-purple-900/30 rounded-md border border-purple-300 dark:border-purple-600">
+                    <p className="text-sm font-medium text-purple-900 dark:text-purple-100 flex items-center gap-2">
+                      <i className="fas fa-shopping-cart text-purple-600"></i>
+                      نحن نشتري الزوار.. لكي يرى الجميع إعلانك
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Current Balance */}
           <Card>
             <CardHeader>
