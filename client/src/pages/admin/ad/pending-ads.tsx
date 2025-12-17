@@ -117,9 +117,10 @@ export default function PendingAds() {
             </div>
           ) : pendingAds.length > 0 ? (
             <div className="min-h-[74vh] ">
-              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="columns-1 md:columns-2 gap-6">
                 {pendingAds.map((ad: AdData) => (
-                  <AdCard
+                  <div key={ad.id} className="mb-6 break-inside-avoid">
+                    <AdCard
                     key={ad.id}
                     ad={ad}
                     language={isRTL ? "ar" : "en"}
@@ -132,6 +133,7 @@ export default function PendingAds() {
                       loadingActions.has(`reject-${ad.id}`)
                     }
                   />
+                  </div>
                 ))}
               </div>
             </div>

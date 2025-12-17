@@ -63,10 +63,10 @@ export function AdCard({
   return (
     <Card
       className="cursor-pointer hover:shadow-lg transition-shadow min-w-[350px]
-      h-full flex flex-col justify-between
+      flex flex-col
       "
       data-testid={`ad-card-${ad.id}`}>
-      <CardContent className="p-6 flex flex-col justify-between h-full">
+      <CardContent className="p-6 flex flex-col">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
             <h3
