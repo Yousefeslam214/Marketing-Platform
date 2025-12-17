@@ -69,8 +69,7 @@ export default function AdsIndex() {
               <div
                 className="
                   w-full
-                  columns-1 md:columns-2
-                  space-y-4">
+                  grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                 {safeAds.map((ad: any) => (
                   <Card
                     key={ad.id}
