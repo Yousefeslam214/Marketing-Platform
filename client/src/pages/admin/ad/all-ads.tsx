@@ -12,14 +12,22 @@ import { useState } from "react";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
+import { DeleteAdDialog } from "@/components/ads/delete-ad-dialog";
 
 export default function AllAds() {
   const [, setLocation] = useLocation();
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [adToDelete, setAdToDelete] = useState<string | null>(null);
 
   const { handleCreateAd, handleViewAd, handleEditAd } = useAdNavigation();
+
+  const handleDeleteAd = (adId: string) => {
+    setAdToDelete(adId);
+    setDeleteDialogOpen(true);
+  };
 
   const {
     data: ads,
@@ -79,6 +87,7 @@ export default function AllAds() {
                       language={isRTL ? "ar" : "en"}
                       onView={handleViewAd}
                       onEdit={handleEditAd}
+                      onDelete={handleDeleteAd}
                       showActions={true}
                     />
                     {/* Status Badge */}
@@ -119,6 +128,12 @@ export default function AllAds() {
               className="mt-6"
             />
           )}
+
+          <DeleteAdDialog
+            adId={adToDelete}
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+          />
         </main>
       </div>
     </div>

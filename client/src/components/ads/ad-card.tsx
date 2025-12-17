@@ -20,6 +20,7 @@ interface AdCardProps {
   showActions?: boolean;
   onApprove?: (id: string) => void;
   onReject?: (id: string) => void;
+  onDelete?: (id: string) => void;
   isLoading?: boolean;
 }
 
@@ -33,6 +34,7 @@ export function AdCard({
   showActions = true,
   onApprove,
   onReject,
+  onDelete,
   isLoading = false,
 }: AdCardProps) {
   const { t } = useLanguage();
@@ -164,6 +166,17 @@ export function AdCard({
                   data-testid={`button-analytics-${ad.id}`}>
                   {t("ads", "analytics")}
                 </Button>
+                {onDelete && (
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="min-w-[100%]"
+                    onClick={() => onDelete(ad.id)}
+                    data-testid={`button-delete-ad-${ad.id}`}>
+                    <i className="fas fa-trash mx-1"></i>
+                    {t("ads", "delete") || "Delete"}
+                  </Button>
+                )}
                 {/* {onAnalytics && (
                   <Button
                     variant="outline"
