@@ -79,9 +79,9 @@ export default function AllAds() {
             </div>
           ) : allAds.length > 0 ? (
             <div className="min-h-[74vh] ">
-              <div className="columns-1 md:columns-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                 {allAds.map((ad: AdData) => (
-                  <div key={ad.id} className="relative mb-6 break-inside-avoid">
+                  <div key={ad.id} className="relative">
                     <AdCard
                       ad={ad}
                       language={isRTL ? "ar" : "en"}

@@ -72,8 +72,7 @@ export default function AdsIndex() {
                   columns-1 md:columns-2
                   space-y-4">
                 {safeAds.map((ad: any) => (
-                  <div key={ad.id} className="mb-6 break-inside-avoid">
-                    <Card
+                  <Card
                     key={ad.id}
                     className="cursor-pointer hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
@@ -218,7 +217,6 @@ export default function AdsIndex() {
                       </div>
                     </CardContent>
                   </Card>
-                  </div>
                 ))}
               </div>
             </div>
