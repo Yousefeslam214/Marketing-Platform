@@ -870,7 +870,7 @@ export default function AdsFeed() {
                   <div key={ad.id} className="w-full overflow-hidden">
                     <Card
                       className={
-                        ` transition-shadow duration-300 flex flex-col cursor-pointer relative group ` +
+                        ` transition-shadow duration-300 flex flex-col cursor-pointer relative group rounded-t-lg ` +
                         (ad.hasPromoted
                           ? "border-2 border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.3)]"
                           : "hover:shadow-md")
