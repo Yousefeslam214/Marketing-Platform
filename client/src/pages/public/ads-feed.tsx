@@ -898,9 +898,9 @@ export default function AdsFeed() {
                       )}
                       <CardContent className="p-0 flex flex-col h-full">
                         {/* Header */}
-                        <div className="p-4 border-b">
+                        <div className="p-4 border-b bg-blue-600 text-white">
                           <h2
-                            className="text-lg font-semibold text-foreground"
+                            className="text-lg font-semibold text-white"
                             style={{
                               display: "-webkit-box",
                               WebkitLineClamp: 1,
@@ -1020,12 +1020,11 @@ export default function AdsFeed() {
                           </div>
                           {ad.websiteUrl && (
                             <Button
-                              variant="outline"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleWebsiteClick(ad);
                               }}
-                              className="gap-2">
+                              className="gap-2 bg-blue-600 hover:bg-blue-700 text-white border-blue-600">
                               <ExternalLink className="h-4 w-4" />
                               {t("publicFeed", "website")}
                             </Button>
