@@ -49,16 +49,20 @@ function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
     [numberOfItems]
   );
   return (
-    <div
-      className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2
-    mt-24
-    ">
+    <div className="w-full max-w-5xl columns-1 md:columns-2 lg:columns-2 gap-6 mt-24">
       {items.map((_, i) => (
-        <Card key={i} className="animate-pulse">
-          <CardContent className="p-6">
-            <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
-            <div className="h-48 bg-muted rounded mb-4"></div>
-            <div className="h-3 bg-muted rounded w-1/2"></div>
+        <Card key={i} className="animate-pulse mb-6 break-inside-avoid">
+          <CardContent className="p-0 flex flex-col">
+            <div className="p-4 border-b">
+              <div className="h-6 bg-muted rounded w-3/4 mb-2"></div>
+            </div>
+            <div className="p-4 flex flex-col gap-4">
+              <div className="h-16 bg-muted rounded"></div>
+              <div className="h-24 bg-muted rounded"></div>
+            </div>
+            <div className="px-4 pb-4 border-t pt-3">
+              <div className="h-8 bg-muted rounded w-full"></div>
+            </div>
           </CardContent>
         </Card>
       ))}
@@ -865,12 +869,12 @@ export default function AdsFeed() {
             flex flex-col items-center
             mt-24
             ">
-              <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
+              <div className="w-full max-w-5xl columns-1 md:columns-2 lg:columns-2 gap-6">
                 {adsResponse?.data.map((ad) => (
-                  <div key={ad.id} className="w-full overflow-hidden">
+                  <div key={ad.id} className="w-full">
                     <Card
                       className={
-                        ` transition-shadow duration-300 flex flex-col cursor-pointer relative group ` +
+                        ` transition-shadow duration-300 flex flex-col cursor-pointer relative group mb-6 break-inside-avoid ` +
                         (ad.hasPromoted
                           ? "border-2 border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.3)]"
                           : "hover:shadow-md")
@@ -896,7 +900,7 @@ export default function AdsFeed() {
                           </div>
                         </div>
                       )}
-                      <CardContent className="p-0 flex flex-col h-full">
+                      <CardContent className="p-0 flex flex-col">
                         {/* Header */}
                         <div className="p-4 border-b">
                           <h2
@@ -917,7 +921,7 @@ export default function AdsFeed() {
                         </div>
 
                         {/* Content */}
-                        <div className="p-4 flex flex-col gap-4 flex-1 justify-end">
+                        <div className="p-4 flex flex-col gap-4">
                           <p
                             className="text-foreground leading-relaxed whitespace-pre-wrap"
                             style={{
@@ -932,7 +936,6 @@ export default function AdsFeed() {
                           </p>
 
                           <div className="w-full rounded-lg overflow-hidden">
-                            {/* <AspectRatio ratio={4 / 3}> */}
                             {(Array.isArray(ad.imageUrl) &&
                               ad.imageUrl.length > 0) ||
                             ad.youtubeVideo ? (
@@ -953,26 +956,24 @@ export default function AdsFeed() {
                                 alt={
                                   language === "en" ? ad.titleEn : ad.titleAr
                                 }
-                                className="h-full w-full object-cover"
+                                className="w-full object-cover rounded-lg"
                                 loading="lazy"
                               />
                             ) : (
-                              <div className="h-full w-full bg-muted flex items-center justify-center">
+                              <div className="w-full h-48 bg-muted flex items-center justify-center rounded-lg">
                                 <span className="text-xs text-muted-foreground">
                                   {t("ads", "noImage") || "No image"}
                                 </span>
                               </div>
                             )}
-                            {/* </AspectRatio> */}
                           </div>
                         </div>
 
                         {/* Actions */}
                         <div
                           className={
-                            `px-4 pb-4 border-t pt-3 flex items-center mt-auto flex
-                            flex-col
-                         ` + (ad.hasPromoted ? "" : "")
+                            `px-4 pb-4 border-t pt-3 flex flex-col gap-3 ` +
+                            (ad.hasPromoted ? "" : "")
                           }
                           onClick={(e) =>
                             e.stopPropagation()
