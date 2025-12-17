@@ -10,6 +10,7 @@ import { useState } from "react";
 import { editAdPath } from "@/lib/paths";
 import DataPagination from "@/components/ui/data-pagination";
 import { ImageCarousel } from "@/components/ui/image-carousel";
+import { DeleteAdDialog } from "@/components/ads/delete-ad-dialog";
 
 export default function AdsIndex() {
   const [, setLocation] = useLocation();
@@ -17,6 +18,8 @@ export default function AdsIndex() {
 
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("20");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [adToDelete, setAdToDelete] = useState<string | null>(null);
 
   const { data: ads, isLoading } = useApiQuery({
     key: ["/api/ads/user", page, limit],
@@ -24,6 +27,11 @@ export default function AdsIndex() {
   });
   // Type-safe ads array
   const safeAds = (ads?.data as any[]) || [];
+
+  const handleDeleteAd = (adId: string) => {
+    setAdToDelete(adId);
+    setDeleteDialogOpen(true);
+  };
 
   console.log(safeAds);
   console.log("index.tsx");
@@ -157,7 +165,7 @@ export default function AdsIndex() {
                       </div>
 
                       <div className="flex flex-col gap-2 mt-4">
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-3 gap-2">
                           <Button
                             variant="outline"
                             size="sm"
@@ -179,6 +187,17 @@ export default function AdsIndex() {
                                 isRTL ? "ml-2" : "mr-2"
                               }`}></i>
                             {t("ads", "edit")}
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleDeleteAd(ad.id)}
+                            data-testid={`button-delete-${ad.id}`}>
+                            <i
+                              className={`fas fa-trash ${
+                                isRTL ? "ml-2" : "mr-2"
+                              }`}></i>
+                            {t("ads", "delete")}
                           </Button>
                         </div>
                         <Button
@@ -233,6 +252,12 @@ export default function AdsIndex() {
             isLoading={isLoading}
           />
         )}
+
+        <DeleteAdDialog
+          adId={adToDelete}
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+        />
       </div>
     </div>
   );
