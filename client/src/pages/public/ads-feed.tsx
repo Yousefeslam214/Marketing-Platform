@@ -898,7 +898,7 @@ export default function AdsFeed() {
                       )}
                       <CardContent className="p-0 flex flex-col h-full">
                         {/* Header */}
-                        <div className="p-4 border-b bg-blue-600 text-white">
+                        <div className="p-4 border-b bg-blue-600 text-white rounded-t-lg">
                           <h2
                             className="text-lg font-semibold text-white"
                             style={{
