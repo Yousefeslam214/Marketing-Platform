@@ -9,13 +9,21 @@ import { useState } from "react";
 import { ErrorState } from "@/components/Error";
 import Loading from "@/components/Loading";
 import { useApiQuery } from "@/hooks/useApiQuery";
+import { DeleteAdDialog } from "@/components/ads/delete-ad-dialog";
 
 export default function RejectedAds() {
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [adToDelete, setAdToDelete] = useState<string | null>(null);
 
   const { handleViewAd } = useAdNavigation();
+
+  const handleDeleteAd = (adId: string) => {
+    setAdToDelete(adId);
+    setDeleteDialogOpen(true);
+  };
 
   const {
     data: ads,
@@ -66,6 +74,7 @@ export default function RejectedAds() {
                     ad={ad}
                     language={isRTL ? "ar" : "en"}
                     onView={handleViewAd}
+                    onDelete={handleDeleteAd}
                   />
                 ))}
               </div>
@@ -98,6 +107,12 @@ export default function RejectedAds() {
             />
           )}
         </main>
+
+        <DeleteAdDialog
+          adId={adToDelete}
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+        />
       </div>
     </div>
   );

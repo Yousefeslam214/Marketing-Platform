@@ -11,6 +11,7 @@ import { ErrorState } from "@/components/Error";
 import { useApiQuery } from "@/hooks/useApiQuery";
 import { handleApprove, handleReject } from "@/lib/helper-ad";
 import { RejectDialog } from "@/components/ads/reject-dialog";
+import { DeleteAdDialog } from "@/components/ads/delete-ad-dialog";
 
 export default function PendingAds() {
   const { t, isRTL } = useLanguage();
@@ -19,8 +20,15 @@ export default function PendingAds() {
   const [loadingActions, setLoadingActions] = useState<Set<string>>(new Set());
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [selectedAdId, setSelectedAdId] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [adToDelete, setAdToDelete] = useState<string | null>(null);
 
   const { handleViewAd } = useAdNavigation();
+
+  const handleDeleteAd = (adId: string) => {
+    setAdToDelete(adId);
+    setDeleteDialogOpen(true);
+  };
 
   const {
     data: ads,
@@ -118,6 +126,7 @@ export default function PendingAds() {
                     onView={handleViewAd}
                     onApprove={() => handleApproveWithLoading(ad.id)}
                     onReject={() => handleRejectWithLoading(ad.id)}
+                    onDelete={handleDeleteAd}
                     isLoading={
                       loadingActions.has(`approve-${ad.id}`) ||
                       loadingActions.has(`reject-${ad.id}`)
@@ -161,6 +170,12 @@ export default function PendingAds() {
           onOpenChange={setRejectDialogOpen}
           onConfirm={handleConfirmReject}
           isLoading={selectedAdId ? loadingActions.has(`reject-${selectedAdId}`) : false}
+        />
+
+        <DeleteAdDialog
+          adId={adToDelete}
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
         />
       </div>
     </div>
