@@ -95,7 +95,7 @@ const getSourceIcon = (type: string): { icon: string; color: string } => {
       return { icon: "fa-google", color: "text-blue-500" };
     case "twitter":
     case "x":
-      return { icon: "fa-x-twitter", color: "text-black dark:text-white" };
+      return { icon: "fa-twitter", color: "text-black dark:text-white" };
     case "linkedin":
       return { icon: "fa-linkedin", color: "text-blue-700" };
     default:
