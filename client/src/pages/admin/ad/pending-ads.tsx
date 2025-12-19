@@ -112,27 +112,29 @@ export default function PendingAds() {
 
         <main className="p-6 mt-24">
           {isLoading ? (
-            <div className="min-h-[74vh] ">
+            <div className="min-h-[74vh]">
               <Loading />
             </div>
           ) : pendingAds.length > 0 ? (
-            <div className="min-h-[74vh] ">
-              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
-                {pendingAds.map((ad: AdData) => (
-                  <AdCard
-                    key={ad.id}
-                    ad={ad}
-                    language={isRTL ? "ar" : "en"}
-                    onView={handleViewAd}
-                    onApprove={() => handleApproveWithLoading(ad.id)}
-                    onReject={() => handleRejectWithLoading(ad.id)}
-                    onDelete={handleDeleteAd}
-                    isLoading={
-                      loadingActions.has(`approve-${ad.id}`) ||
-                      loadingActions.has(`reject-${ad.id}`)
-                    }
-                  />
-                ))}
+            <div className="min-h-[74vh]">
+              <div className="flex flex-col w-full max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {pendingAds.map((ad: AdData) => (
+                    <AdCard
+                      key={ad.id}
+                      ad={ad}
+                      language={isRTL ? "ar" : "en"}
+                      onView={handleViewAd}
+                      onApprove={() => handleApproveWithLoading(ad.id)}
+                      onReject={() => handleRejectWithLoading(ad.id)}
+                      onDelete={handleDeleteAd}
+                      isLoading={
+                        loadingActions.has(`approve-${ad.id}`) ||
+                        loadingActions.has(`reject-${ad.id}`)
+                      }
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           ) : (
@@ -149,19 +151,20 @@ export default function PendingAds() {
             </div>
           )}
 
-          {ads?.pagination ? (
-            <DataPagination
-              pagination={ads?.pagination}
-              currentPage={page}
-              onPageChange={setPage}
-              pageSize={limit}
-              onPageSizeChange={setLimit}
-              showPageSizeSelector={true}
-              pageSizeOptions={[5, 10, 20, 50]}
-              showInfo={true}
-              className="mt-6"
-            />
-          ) : null}
+          {ads?.pagination && (
+            <div className="flex justify-center mt-6">
+              <DataPagination
+                pagination={ads.pagination}
+                currentPage={page}
+                onPageChange={setPage}
+                pageSize={limit}
+                onPageSizeChange={setLimit}
+                showPageSizeSelector={true}
+                pageSizeOptions={[5, 10, 20, 50]}
+                showInfo={true}
+              />
+            </div>
+          )}
         </main>
 
         {/* Reject Dialog */}
@@ -169,7 +172,9 @@ export default function PendingAds() {
           open={rejectDialogOpen}
           onOpenChange={setRejectDialogOpen}
           onConfirm={handleConfirmReject}
-          isLoading={selectedAdId ? loadingActions.has(`reject-${selectedAdId}`) : false}
+          isLoading={
+            selectedAdId ? loadingActions.has(`reject-${selectedAdId}`) : false
+          }
         />
 
         <DeleteAdDialog
