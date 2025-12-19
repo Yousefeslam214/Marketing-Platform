@@ -62,11 +62,11 @@ export default function AdsIndex() {
             <div className="w-full flex flex-col items-center space-y-8">
               {/* Ads List */}
               <div className="w-full flex flex-col items-center mt-24">
-                <div className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2">
+                <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
                   {safeAds.map((ad: any) => (
                     <Card
                       key={ad.id}
-                      className="cursor-pointer hover:shadow-lg transition-shadow break-inside-avoid flex flex-col h-fit">
+                      className="cursor-pointer hover:shadow-lg transition-shadow break-inside-avoid flex flex-col h-fit w-full overflow-hidden">
                       <CardContent className="p-0 flex flex-col">
                         {/* Header with title and status */}
                         <div className="p-4 border-b flex items-start justify-between">
