@@ -14,7 +14,7 @@ import GoogleCallback from "@/pages/auth/google-callback";
 import GoogleDirectAuth from "@/pages/auth/google-direct-auth";
 import GoogleFailure from "@/pages/auth/google-failure";
 import Dashboard from "@/pages/user/dashboard";
-import AdsIndex from "@/pages/user/ads/index";
+import AdsIndex from "@/pages/user/ads/campains";
 import NewAd from "@/pages/user/ads/new";
 import EditAd from "@/pages/user/ads/edit";
 import AdAnalytics from "@/pages/user/ads/analytics";
