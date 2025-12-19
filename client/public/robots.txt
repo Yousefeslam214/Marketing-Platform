@@ -1,0 +1,29 @@
+# Octopus Ads - Robots.txt
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Disallow admin pages from search engine indexing
+Disallow: /admin/
+
+# Disallow payment result pages
+Disallow: /payment-success
+Disallow: /payment-failed
+Disallow: /payment-cancel
+
+# Disallow auth pages (already indexed in sitemap but not needed in search results)
+Disallow: /forgot-password
+
+# Allow important public pages
+Allow: /ads-feed
+Allow: /contact
+Allow: /faq
+Allow: /privacy-terms
+Allow: /marketing-links
+
+# Sitemap location
+Sitemap: https://octopusad.com/sitemap.xml
+
+# Crawl delay (optional - helps prevent server overload)
+Crawl-delay: 1
