@@ -33,7 +33,7 @@ import { locationOptions } from "../targeting-form";
 export function AdEditor() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
 
   const form = useForm<CreateAdData>({
@@ -108,7 +108,9 @@ export function AdEditor() {
   };
 
   return (
-    <Card className="mt-24">
+    <Card
+      className={`mt-24 ${isRTL ? "rtl text-right" : "ltr"}`}
+      dir={isRTL ? "rtl" : "ltr"}>
       <CardHeader>
         <CardTitle>{t("ads", "newAd.title")}</CardTitle>
       </CardHeader>
@@ -517,7 +519,7 @@ export function AdEditor() {
                       <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
                       <div className="space-y-4">
                         {/* All Cities Option */}
-                        <div className="flex items-center space-x-2 p-3 border rounded-lg bg-muted/50">
+                        <div className="flex items-center gap-2 p-3 border rounded-lg bg-muted/50">
                           <Checkbox
                             id="all-cities"
                             checked={isAllCitiesSelected}
@@ -547,7 +549,7 @@ export function AdEditor() {
                           {locationOptions.map((city) => (
                             <div
                               key={city.value}
-                              className={`flex items-center space-x-2 p-2 border rounded-md transition-colors  `}>
+                              className={`flex items-center gap-2 p-2 border rounded-md transition-colors`}>
                               <Checkbox
                                 className="mx-2"
                                 id={city.value}

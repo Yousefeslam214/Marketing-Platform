@@ -62,7 +62,7 @@ export function AdEditor({
   console.log("imageData:", imgData);
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const queryClient = useQueryClient();
 
   const form = useForm<CreateAdData>({
@@ -202,7 +202,9 @@ export function AdEditor({
   };
 
   return (
-    <div className="flex flex-col w-full mt-24">
+    <div
+      className={`flex flex-col w-full mt-24 ${isRTL ? "rtl text-right" : "ltr"}`}
+      dir={isRTL ? "rtl" : "ltr"}>
       <Card className="w-full">
         <CardHeader>
           <CardTitle>{t("ads", "updateAdTitle")}</CardTitle>
@@ -445,7 +447,7 @@ export function AdEditor({
                         <FormLabel>{t("ads", "targetCitiesLabel")}</FormLabel>
                         <div className="space-y-4">
                           {/* All Cities Option */}
-                          <div className="flex items-center space-x-2 p-3 border rounded-lg bg-muted/50">
+                          <div className="flex items-center gap-2 p-3 border rounded-lg bg-muted/50">
                             <Checkbox
                               id="all-cities"
                               checked={isAllCitiesSelected}
@@ -475,7 +477,7 @@ export function AdEditor({
                             {locationOptions.map((city) => (
                               <div
                                 key={city.value}
-                                className="flex items-center p-2 border rounded-md transition-colors hover:bg-muted/50">
+                                className="flex items-center gap-2 p-2 border rounded-md transition-colors hover:bg-muted/50">
                                 <Checkbox
                                   id={city.value}
                                   checked={selectedCities.includes(city.value)}
