@@ -53,7 +53,7 @@ export default function AdsIndex() {
             </Button>
           }
         />
-        <main className="p-6 min-h-[78vh] mt-24">
+        <main className="p-6 min-h-[78vh]">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>

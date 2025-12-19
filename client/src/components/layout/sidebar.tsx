@@ -353,9 +353,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                   ? "translate-x-full"
                   : "-translate-x-full"
               }`
-            : "w-64 bg-card flex flex-col shadow-lg z-[60]"
+            : "w-64 bg-card flex flex-col shadow-lg z-[60] sticky top-0 self-start h-screen"
         }`}
-        style={{ position: isMobile ? "fixed" : "relative" }}
+        style={{ position: isMobile ? "fixed" : "sticky" }}
         dir={isRTL ? "rtl" : "ltr"}
         data-testid="sidebar">
         {/* Sidebar Header */}
