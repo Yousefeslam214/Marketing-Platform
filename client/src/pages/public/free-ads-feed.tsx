@@ -39,7 +39,6 @@ import {
 import { useState, useMemo } from "react";
 import useLoadPixels, { Pixel } from "@/hooks/useLoadPixels";
 import { TokenManager } from "@/lib/auth";
-import { Header } from "@/components/layout/header";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // Memoized skeleton list component to avoid recreating placeholders on each render
@@ -498,10 +497,17 @@ export default function FreeAdsFeed() {
 
   return (
     <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <Header
-        title={t("publicFeed", "title")}
-        description={t("publicFeed", "description")}
-        actions={
+      {/* Filters Header */}
+      <div className="bg-card border-b border-border px-6 py-4 mx-3 mt-3">
+        <div className={`flex items-center justify-between flex-row`}>
+          <div className={isRTL ? "text-right" : "text-left"}>
+            <h2 className="text-2xl font-bold text-foreground">
+              {t("publicFeed", "title")}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {t("publicFeed", "description")}
+            </p>
+          </div>
           <div className="overflow-x-auto flex max-h-[70px]">
             {/* Mobile: Toggle button */}
             <Button
@@ -699,12 +705,12 @@ export default function FreeAdsFeed() {
               )}
             </div>
           </div>
-        }
-      />
+        </div>
+      </div>
 
       {/* Mobile Filters Panel */}
       {showFilters && (
-        <div className={`md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-[70]
+        <div className={`md:hidden fixed top-0 left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 z-[70]
         ${language === "ar" ? "ml-3" : "mr-3"}
         `}>
           {/* City Filter */}
@@ -849,7 +855,7 @@ export default function FreeAdsFeed() {
       {/* Overlay for mobile filters */}
       {showFilters && (
         <div
-          className="md:hidden fixed inset-0 bg-black/30 z-[65] top-[97px]"
+          className="md:hidden fixed inset-0 bg-black/30 z-[65]"
           onClick={() => setShowFilters(false)}
         />
       )}
