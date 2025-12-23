@@ -505,7 +505,7 @@ export default function FreeAdsFeed() {
   return (
     <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <Header
-        title={language === "en" ? "Free Ads Feed" : "تغذية الإعلانات المجانية"}
+        title={language === "en" ? "Free Ads Feed" : "الإعلانات المجانية"}
         description={t("publicFeed", "description")}
         actions={
           <div className="overflow-x-auto flex max-h-[70px]">
