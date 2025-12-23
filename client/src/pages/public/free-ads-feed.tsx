@@ -108,6 +108,13 @@ export default function FreeAdsFeed() {
   const { theme } = useTheme();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+
+  // Check authentication
+  const token = TokenManager.getAccessToken();
+  if (!token) {
+    window.location.href = "/login";
+    return null;
+  }
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(24);
   const [targetCities, setTargetCities] = useState<string[]>([]);
@@ -185,7 +192,6 @@ export default function FreeAdsFeed() {
       if (audienceFilter)
         url.searchParams.set("targetAudience", audienceFilter);
 
-      const token = TokenManager.getAccessToken();
       const response = await fetch(url.toString(), {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -499,7 +505,7 @@ export default function FreeAdsFeed() {
   return (
     <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <Header
-        title={t("publicFeed", "title")}
+        title={language === "en" ? "Free Ads Feed" : "تغذية الإعلانات المجانية"}
         description={t("publicFeed", "description")}
         actions={
           <div className="overflow-x-auto flex max-h-[70px]">
