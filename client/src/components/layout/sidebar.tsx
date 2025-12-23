@@ -140,6 +140,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           icon: "fas fa-rss",
         },
         {
+          name: t("sidebar", "freeAdsFeed"),
+          href: "/free/feed",
+          icon: "fas fa-rss",
+        },
+        {
           name: t("sidebar", "marketingLinks") || "Marketing Links",
           href: "/marketing-links",
           icon: "fas fa-link",
@@ -186,6 +191,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
+          icon: "fas fa-rss",
+        },
+        {
+          name: t("sidebar", "freeAdsFeed"),
+          href: "/free/feed",
           icon: "fas fa-rss",
         },
       ],

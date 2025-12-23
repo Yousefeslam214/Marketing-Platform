@@ -148,6 +148,10 @@ export function publicFeedPath() {
   return "/feed";
 }
 
+export function publicFreeFeedPath() {
+  return "/free/feed";
+}
+
 export function handleCreateAd() {
   return "/campaigns/new";
 }

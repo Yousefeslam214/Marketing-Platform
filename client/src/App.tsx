@@ -51,6 +51,7 @@ import {
   editAdPath,
   editCampaignsPath,
   newCampaignsPath,
+  publicFreeFeedPath,
 } from "./lib/paths";
 import ApprovedAds from "./pages/admin/ad/approved-ads";
 import RejectedAds from "./pages/admin/ad/rejected-ads";
@@ -72,6 +73,7 @@ import SeoSettings from "./pages/admin/SeoSettings";
 import GoogleAnalytics from "./analytics/GoogleAnalytics";
 import TikTokPixel from "./analytics/TikTokPixel";
 import MarketingLinksPage from "./pages/public/marketing-links";
+import FreeAdsFeed from "./pages/public/free-ads-feed";
 
 function Router() {
   const [, setLocation] = useLocation();
@@ -166,6 +168,8 @@ function Router() {
       <Route path="/google/callback" component={GoogleCallback} />
       <Route path="/google/failure" component={() => <GoogleFailure />} />
       <Route path="/api/auth/google/login" component={GoogleDirectAuth} />
+
+      <Route path={publicFreeFeedPath()} component={FreeAdsFeed}/>
 
       {/* Payment result pages */}
       <Route
