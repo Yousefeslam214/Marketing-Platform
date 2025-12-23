@@ -21,8 +21,12 @@ interface DeleteAdDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function DeleteAdDialog({ adId, open, onOpenChange }: DeleteAdDialogProps) {
-  const { t } = useLanguage();
+export function DeleteAdDialog({
+  adId,
+  open,
+  onOpenChange,
+}: DeleteAdDialogProps) {
+  const { t, isRTL } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -35,17 +39,28 @@ export function DeleteAdDialog({ adId, open, onOpenChange }: DeleteAdDialogProps
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate all queries that depend on ads data
       queryClient.invalidateQueries({ queryKey: ["/api/ads/user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/admin"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/payment/history"] });
+      // Invalidate analytics for the deleted ad if it exists
+      if (adId) {
+        queryClient.invalidateQueries({
+          queryKey: [`/api/users/ad/${adId}/analytics-full-details`],
+        });
+      }
+
       toast({
-        title: t("ads", "deleteSuccess") || "تم حذف الإعلان بنجاح",
-        description: t("ads", "deleteSuccessMessage") || "تم حذف الإعلان من قائمتك",
+        title: t("ads", "deleteSuccess"),
+        description: t("ads", "deleteSuccessMessage"),
       });
       onOpenChange(false);
     },
     onError: (error) => {
       toast({
-        title: t("ads", "deleteError") || "خطأ في الحذف",
-        description: t("ads", "deleteErrorMessage") || "حدث خطأ أثناء حذف الإعلان",
+        title: t("ads", "deleteError"),
+        description: t("ads", "deleteErrorMessage"),
         variant: "destructive",
       });
     },
@@ -58,28 +73,23 @@ export function DeleteAdDialog({ adId, open, onOpenChange }: DeleteAdDialogProps
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            {t("ads", "deleteConfirmTitle") || "تأكيد الحذف"}
-          </AlertDialogTitle>
+    <AlertDialog open={open} onOpenChange={onOpenChange} isRTL={isRTL}>
+      <AlertDialogContent isRTL={isRTL}>
+        <AlertDialogHeader isRTL={isRTL}>
+          <AlertDialogTitle>{t("ads", "deleteConfirmTitle")}</AlertDialogTitle>
           <AlertDialogDescription>
-            {t("ads", "deleteConfirmMessage") ||
-              "هل أنت متأكد من أنك تريد حذف هذا الإعلان؟ لا يمكن التراجع عن هذا الإجراء."}
+            {t("ads", "deleteConfirmMessage")}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>
-            {t("ads", "cancel") || "إلغاء"}
-          </AlertDialogCancel>
+        <AlertDialogFooter isRTL={isRTL}>
+          <AlertDialogCancel>{t("ads", "cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirmDelete}
             disabled={deleteAdMutation.isPending}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
             {deleteAdMutation.isPending
-              ? t("ads", "deleting") || "جاري الحذف..."
-              : t("ads", "delete") || "حذف"}
+              ? t("ads", "deleting")
+              : t("ads", "delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

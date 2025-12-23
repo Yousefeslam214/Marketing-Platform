@@ -17,14 +17,19 @@ import { YouTubeLite } from "@/components/landing/YouTubeLite";
 
 // Lazy load heavy components
 const WhyChooseSection = lazy(() => import("@/components/landing/WhyChooseSection"));
+// Type for pricing data
+interface PricingData {
+  currency: string;
+  impressionsPerUnit: number;
+}
 
 export default function LandingPage() {
   const { isRTL, t } = useLanguage();
-  const [pricingData, setPricingData] = useState(null);
-  const [pricingLoading, setPricingLoading] = useState(true);
+  const [pricingData, setPricingData] = useState<PricingData | null>(null);
+  const [pricingLoading, setPricingLoading] = useState(false);
   const [pricingError, setPricingError] = useState(false);
 
-  // Fetch impression ratios from API
+  // Fetch impression ratios from API in the background
   const fetchPricingData = useCallback(async () => {
     try {
       setPricingLoading(true);
@@ -45,19 +50,16 @@ export default function LandingPage() {
         setPricingError(true);
       }
     } catch (error) {
-      toast({
-        title: t("landing", "fetchErrorTitle"),
-        description:
-          (error instanceof Error ? error.message : "") ||
-          t("landing", "fetchErrorDesc"),
-      });
+      // Silently handle error on initial load, only show on retry
+      console.error("Failed to fetch pricing data:", error);
       setPricingError(true);
     } finally {
       setPricingLoading(false);
     }
-  }, [t]);
+  }, []);
 
   useEffect(() => {
+    // Fetch pricing data in background after page loads
     fetchPricingData();
   }, [fetchPricingData]);
 
@@ -456,10 +458,10 @@ export default function LandingPage() {
 
       {/* Why Choose Section */}
       <Suspense fallback={
-        <div className="py-12 sm:py-16 md:py-20 flex justify-center items-center">
-          <RefreshCw className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      }>
+          <div className="py-12 sm:py-16 md:py-20 flex justify-center items-center">
+            <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        }>
         <WhyChooseSection />
       </Suspense>
 
@@ -546,14 +548,7 @@ export default function LandingPage() {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            {pricingLoading ? (
-              <Card className="p-8 text-center">
-                <div className="flex items-center justify-center space-x-2">
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>{t("landing", "pricing.loading")}</span>
-                </div>
-              </Card>
-            ) : pricingError ? (
+            {pricingError ? (
               <Card className="p-8 text-center">
                 <div className="space-y-4">
                   <div className="flex items-center justify-center space-x-2 text-red-600">
@@ -566,15 +561,9 @@ export default function LandingPage() {
                   </Button>
                 </div>
               </Card>
-            ) : !pricingData ? (
-              <Card className="p-8 text-center">
-                <span className="text-muted-foreground">
-                  {t("landing", "pricing.noData")}
-                </span>
-              </Card>
             ) : (
               <div className="max-w-md mx-auto">
-                {/* Single Pricing Plan */}
+                {/* Single Pricing Plan with Loading State */}
                 <Card className="border-2 border-primary shadow-xl relative">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <Badge className="px-3 py-1">
@@ -585,20 +574,28 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl mb-4">
                       {t("landing", "Pricing")}
                     </CardTitle>
-                    <div className="space-y-2">
-                      <div className="text-4xl font-bold text-primary">
-                        {(1 / pricingData.impressionsPerUnit).toFixed(3)}{" "}
-                        {t("landing", "pricing.currency")}
+                    {pricingLoading || !pricingData ? (
+                      <div className="space-y-2 animate-pulse">
+                        <div className="h-12 bg-muted rounded-md mx-auto w-40"></div>
+                        <div className="h-4 bg-muted rounded-md mx-auto w-32"></div>
+                        <div className="h-6 bg-muted rounded-md mx-auto w-48 mt-4"></div>
                       </div>
-                      <div className="text-sm text-muted-foreground">
-                        {t("landing", "pricing.perImpression")}
+                    ) : (
+                      <div className="space-y-2">
+                        <div className="text-4xl font-bold text-primary">
+                          {(1 / pricingData.impressionsPerUnit).toFixed(3)}{" "}
+                          {t("landing", "pricing.currency")}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {t("landing", "pricing.perImpression")}
+                        </div>
+                        <div className="text-xl font-semibold text-primary mt-4">
+                          {pricingData.impressionsPerUnit}{" "}
+                          {t("landing", "pricing.impressions")} = 1{" "}
+                          {t("landing", "pricing.currency")}
+                        </div>
                       </div>
-                      <div className="text-xl font-semibold text-primary mt-4">
-                        {pricingData.impressionsPerUnit}{" "}
-                        {t("landing", "pricing.impressions")} = 1{" "}
-                        {t("landing", "pricing.currency")}
-                      </div>
-                    </div>
+                    )}
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="space-y-4">

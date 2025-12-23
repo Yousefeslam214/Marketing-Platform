@@ -290,7 +290,7 @@ export const signupSchema = insertUserSchema
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: "كلمة المرور وتأكيدها غير متطابقين",
     path: ["confirmPassword"],
   });
 
@@ -298,12 +298,12 @@ export const createAdSchema = insertAdSchema.extend({
   titleEn: z
     .string()
     // .min(1, "")
-    .max(200, "Title is too long"),
+    .max(200, "العنوان طويل جداً"),
   titleAr: z.string().min(1, "العنوان مطلوب").max(200, "العنوان طويل جداً"),
   descriptionEn: z
     .string()
-    // .min(1, "English description must be at least 10 characters")
-    .max(1000, "Description is too long"),
+    // .min(1, "الوصف باللغة الإنجليزية يجب أن يكون 10 أحرف على الأقل")
+    .max(1000, "الوصف طويل جداً"),
   descriptionAr: z.string().min(1, "الوصف مطلوب").max(1000, "الوصف طويل جداً"),
   targetAudience: z.string().min(1, "الجمهور المستهدف مطلوب"),
   targetCities: z.array(z.string()).min(1, "اختر مدينة واحدة على الأقل"),
@@ -317,7 +317,7 @@ export const createAdSchema = insertAdSchema.extend({
         val === "" ||
         /^https?:\/\/(www\.)?(facebook|fb)\.com\/.+/.test(val),
       {
-        message: "Invalid Facebook URL",
+        message: "رابط فيسبوك غير صالح",
       }
     )
     .optional()
@@ -330,7 +330,7 @@ export const createAdSchema = insertAdSchema.extend({
         val === "" ||
         /^https?:\/\/(www\.)?instagram\.com\/.+/.test(val),
       {
-        message: "Invalid Instagram URL",
+        message: "رابط إنستغرام غير صالح",
       }
     )
     .optional()
@@ -341,7 +341,7 @@ export const createAdSchema = insertAdSchema.extend({
       (val) =>
         !val || val === "" || /^https?:\/\/(www\.)?tiktok\.com\/.+/.test(val),
       {
-        message: "Invalid TikTok URL",
+        message: "رابط تيك توك غير صالح",
       }
     )
     .optional()
@@ -354,7 +354,7 @@ export const createAdSchema = insertAdSchema.extend({
         val === "" ||
         /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+/.test(val),
       {
-        message: "Invalid YouTube URL",
+        message: "رابط يوتيوب غير صالح",
       }
     )
     .optional()
@@ -367,7 +367,7 @@ export const createAdSchema = insertAdSchema.extend({
         val === "" ||
         /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+/.test(val),
       {
-        message: "Invalid YouTube Video URL",
+        message: "رابط فيديو يوتيوب غير صالح",
       }
     )
     .optional()
@@ -378,28 +378,28 @@ export const createAdSchema = insertAdSchema.extend({
       (val) =>
         !val || val === "" || /^https?:\/\/(www\.)?snapchat\.com\/.+/.test(val),
       {
-        message: "Invalid Snapchat URL",
+        message: "رابط سناب شات غير صالح",
       }
     )
     .optional()
     .or(z.literal("")),
   googleAdsLink: z
     .string()
-    .url("Invalid Google Ads URL")
+    .url("رابط Google Ads غير صالح")
     .optional()
     .or(z.literal("")),
   phoneNumber: z
     .string()
     .refine((val) => !val || val === "" || /^\+966[\d\s\-\(\)]+$/.test(val), {
-      message: "Invalid phone format . phone number should start with +966",
+      message: "تنسيق رقم الهاتف غير صحيح. يجب أن يبدأ الرقم بـ +966",
     })
     .optional()
     .or(z.literal("")),
 });
 
 export const purchaseCreditsSchema = z.object({
-  amount: z.number().min(10, "Minimum purchase is $10"),
-  impressions: z.number().min(1000, "Minimum 1000 impressions"),
+  amount: z.number().min(10, "الحد الأدنى للشراء هو 10 دولارات"),
+  impressions: z.number().min(1000, "الحد الأدنى هو 1000 ظهور"),
 });
 
 export const adminActionSchema = z.object({

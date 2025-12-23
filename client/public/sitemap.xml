@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- ==================== PUBLIC PAGES (High Priority) ==================== -->
+  
+  <!-- Homepage / Landing Page -->
+  <url>
+    <loc>https://octopusad.com/</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Public Ads Feed (Very Important) -->
+  <url>
+    <loc>https://octopusad.com/ads-feed</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://octopusad.com/contact</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- FAQ Page -->
+  <url>
+    <loc>https://octopusad.com/faq</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Privacy & Terms -->
+  <url>
+    <loc>https://octopusad.com/privacy-terms</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Marketing Links -->
+  <url>
+    <loc>https://octopusad.com/marketing-links</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- ==================== AUTH PAGES ==================== -->
+  
+  <!-- Sign In / Login -->
+  <url>
+    <loc>https://octopusad.com/login</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Sign Up -->
+  <url>
+    <loc>https://octopusad.com/signup</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Forgot Password -->
+  <url>
+    <loc>https://octopusad.com/forgot-password</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- ==================== USER PAGES (Require Auth) ==================== -->
+  
+  <!-- Dashboard -->
+  <url>
+    <loc>https://octopusad.com/dashboard</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- My Ads -->
+  <url>
+    <loc>https://octopusad.com/ads</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Create New Ad -->
+  <url>
+    <loc>https://octopusad.com/ads/new</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Analytics -->
+  <url>
+    <loc>https://octopusad.com/analytics</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Profile -->
+  <url>
+    <loc>https://octopusad.com/profile</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Billing / Wallet -->
+  <url>
+    <loc>https://octopusad.com/billing</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- ==================== ADMIN PAGES ==================== -->
+  
+  <!-- Admin Dashboard -->
+  <url>
+    <loc>https://octopusad.com/admin/dashboard</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- User Management -->
+  <url>
+    <loc>https://octopusad.com/admin/users</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Pending Ads -->
+  <url>
+    <loc>https://octopusad.com/admin/ads/pending</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- All Ads -->
+  <url>
+    <loc>https://octopusad.com/admin/ads/all</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Approved Ads -->
+  <url>
+    <loc>https://octopusad.com/admin/ads/approved</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Rejected Ads -->
+  <url>
+    <loc>https://octopusad.com/admin/ads/rejected</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Pixels Management -->
+  <url>
+    <loc>https://octopusad.com/admin/pixels</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Impression Ratios / Pricing Management -->
+  <url>
+    <loc>https://octopusad.com/admin/impression-ratios</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Free Credits Management -->
+  <url>
+    <loc>https://octopusad.com/admin/free-credits</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Admin Billing -->
+  <url>
+    <loc>https://octopusad.com/admin/billing</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- SEO Settings -->
+  <url>
+    <loc>https://octopusad.com/admin/seo</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Ad Reports -->
+  <url>
+    <loc>https://octopusad.com/admin/reports</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- ==================== PAYMENT PAGES ==================== -->
+  
+  <!-- Payment Success -->
+  <url>
+    <loc>https://octopusad.com/payment-success</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Payment Failed -->
+  <url>
+    <loc>https://octopusad.com/payment-failed</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Payment Cancel -->
+  <url>
+    <loc>https://octopusad.com/payment-cancel</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>

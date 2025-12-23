@@ -206,7 +206,7 @@ export default function Billing() {
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
-                  <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center gap-2">
+                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
                     <i className="fas fa-lightbulb text-purple-600"></i>
                     كيف نضمن لك المشاهدات ومصادر نشرنا؟
                   </h4>
@@ -214,7 +214,7 @@ export default function Billing() {
                     في أخطبوط نحن لا ننشر إعلانك بشكل عشوائي. نحن نقوم بإطلاق حملات ممولة ضخمة ومدفوعة على منصات التواصل الاجتماعي العالمية (TikTok, Snapchat, Google, X) لجلب آلاف الزوار النشطين يومياً إلى منصة أخطبوط حيث يظهر إعلانك أمامهم مباشرة.
                   </p>
                   <div className="mt-3 p-3 bg-purple-100 dark:bg-purple-900/30 rounded-md border border-purple-300 dark:border-purple-600">
-                    <p className="text-sm font-medium text-purple-900 dark:text-purple-100 flex items-center gap-2">
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100 flex items-center gap-2">
                       <i className="fas fa-shopping-cart text-purple-600"></i>
                       نحن نشتري الزوار.. لكي يرى الجميع إعلانك
                     </p>

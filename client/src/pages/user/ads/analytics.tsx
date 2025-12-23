@@ -95,7 +95,10 @@ const getSourceIcon = (type: string): { icon: string; color: string } => {
       return { icon: "fa-google", color: "text-blue-500" };
     case "twitter":
     case "x":
-      return { icon: "fa-brands fa-x-twitter", color: "text-black dark:text-white" };
+      return {
+        icon: "fa-sharp fa-solid fa-x",
+        color: "text-black",
+      };
     case "linkedin":
       return { icon: "fa-linkedin", color: "text-blue-700" };
     default:
@@ -125,6 +128,7 @@ export default function AdAnalytics() {
     (analyticsResponse as any)?.data?.analytics ||
     (analyticsResponse as any)?.analytics;
 
+  console.log(analytics);
   // Filter daily breakdown to show only last 14 days with data
   const filteredDailyData =
     analytics?.performance?.dailyBreakdown
