@@ -160,7 +160,7 @@ export default function FreeAdsFeed() {
     error,
   } = useQuery<AdsFeedResponse>({
     queryKey: [
-      "/api/advertising/listApprovedAdsForUser",
+      "/api/advertising/listFreeAdsForUser",
       page,
       limit,
       targetCities,
@@ -171,7 +171,7 @@ export default function FreeAdsFeed() {
     ],
     queryFn: async () => {
       const url = new URL(
-        `${VITE_API_BASE_URL}/api/advertising/listApprovedAdsForUser`
+        `${VITE_API_BASE_URL}/api/advertising/listFreeAdsForUser`
       );
       url.searchParams.set("page", String(page));
       url.searchParams.set("limit", String(limit));

@@ -169,7 +169,14 @@ function Router() {
       <Route path="/google/failure" component={() => <GoogleFailure />} />
       <Route path="/api/auth/google/login" component={GoogleDirectAuth} />
 
-      <Route path={publicFreeFeedPath()} component={FreeAdsFeed}/>
+      <Route
+        path={publicFreeFeedPath()}
+        component={() => (
+          <PublicLayout>
+            <FreeAdsFeed />
+          </PublicLayout>
+        )}
+      />
 
       {/* Payment result pages */}
       <Route
