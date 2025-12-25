@@ -20,6 +20,10 @@ import EditAd from "@/pages/user/ads/edit";
 import AdAnalytics from "@/pages/user/ads/analytics";
 // import UploadPhoto from "@/pages/user/ads/upload-photo";
 import AssignCredit from "@/pages/user/ads/assign-credit";
+import BlogsIndex from "@/pages/blogs/index";
+import BlogDetail from "@/pages/blogs/[id]";
+import CreateBlog from "@/pages/blogs/create";
+import EditBlog from "@/pages/blogs/[id]/edit";
 import Billing from "@/pages/user/billing";
 import PaymentSuccess from "@/pages/user/payment-success";
 import PaymentCancel from "@/pages/user/payment-cancel";
@@ -46,17 +50,27 @@ import {
   adminBillingPath,
   adminPendingAdsPath,
   adminRejectedAdsPath,
+  adminAllBlogsPath,
+  adminPublishedBlogsPath,
+  adminDraftBlogsPath,
   campaignsPath,
   detailedCampaignsPath,
   editAdPath,
   editCampaignsPath,
   newCampaignsPath,
   publicFreeFeedPath,
+  blogsPath,
+  blogPath,
+  createBlogPath,
+  editBlogPath,
 } from "./lib/paths";
 import ApprovedAds from "./pages/admin/ad/approved-ads";
 import RejectedAds from "./pages/admin/ad/rejected-ads";
 import PendingAds from "./pages/admin/ad/pending-ads";
 import AllAds from "./pages/admin/ad/all-ads";
+import AllBlogs from "./pages/admin/blog/all-blogs";
+import PublishedBlogs from "./pages/admin/blog/published-blogs";
+import DraftBlogs from "./pages/admin/blog/draft-blogs";
 import AdminUsers from "./pages/admin/users-mangement-page";
 import UserDetails from "./pages/admin/user-details-mangement-page";
 import AdDetail from "./pages/shared/ad/[id]";
@@ -244,6 +258,30 @@ function Router() {
           </AppLayout>
         )}
       />
+      <Route
+        path={adminAllBlogsPath()}
+        component={() => (
+          <AppLayout>
+            <AllBlogs />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={adminPublishedBlogsPath()}
+        component={() => (
+          <AppLayout>
+            <PublishedBlogs />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={adminDraftBlogsPath()}
+        component={() => (
+          <AppLayout>
+            <DraftBlogs />
+          </AppLayout>
+        )}
+      />
 
       <Route
         path={campaignsPath()}
@@ -306,6 +344,40 @@ function Router() {
         component={() => (
           <AppLayout>
             <AssignCredit />
+          </AppLayout>
+        )}
+      />
+
+      {/* Blog Routes */}
+      <Route
+        path={blogsPath()}
+        component={() => (
+          <AppLayout>
+            <BlogsIndex />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={createBlogPath()}
+        component={() => (
+          <AppLayout>
+            <CreateBlog />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={editBlogPath(":id")}
+        component={() => (
+          <AppLayout>
+            <EditBlog />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path={blogPath(":id")}
+        component={() => (
+          <AppLayout>
+            <BlogDetail />
           </AppLayout>
         )}
       />

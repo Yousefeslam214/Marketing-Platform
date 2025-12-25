@@ -16,11 +16,15 @@ import {
   adminPendingAdsPath,
   adminApprovedAdsPath,
   adminRejectedAdsPath,
+  adminAllBlogsPath,
+  adminPublishedBlogsPath,
+  adminDraftBlogsPath,
   userDashboardPath,
   userBillingPath,
   adminBillingPath,
   campaignsPath,
   newCampaignsPath,
+  blogsPath,
 } from "@/lib/paths";
 import { TokenManager } from "@/lib/auth";
 interface NavigationItem {
@@ -105,6 +109,28 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           ],
         },
         {
+          name: "إدارة المدونات",
+          href: "#",
+          icon: "fas fa-blog",
+          subItems: [
+            {
+              name: "جميع المدونات",
+              href: adminAllBlogsPath(),
+              icon: "fas fa-list-alt",
+            },
+            {
+              name: "المدونات المنشورة",
+              href: adminPublishedBlogsPath(),
+              icon: "fas fa-globe",
+            },
+            {
+              name: "مسودات المدونات",
+              href: adminDraftBlogsPath(),
+              icon: "fas fa-edit",
+            },
+          ],
+        },
+        {
           name: t("sidebar", "userManagement"),
           href: adminUsersPath(),
           icon: "fas fa-user-cog",
@@ -172,6 +198,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           name: t("sidebar", "myAds"),
           href: campaignsPath(),
           icon: "fas fa-ad",
+        },
+        {
+          name: "المدونة",
+          href: blogsPath(),
+          icon: "fas fa-blog",
         },
         {
           name: t("sidebar", "billing"),
@@ -406,7 +437,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         )}
 
         {/* Navigation */}
-        <nav className="flex-1 p-4">
+        <nav className="flex-1 p-4 overflow-y-auto">
           <div className="space-y-2">
             {navigation.map((section) => (
               <div key={section.section} className="mb-4">

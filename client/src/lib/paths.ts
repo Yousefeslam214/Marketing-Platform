@@ -46,6 +46,18 @@ export function adminRejectedAdsPath() {
   return "/ads/rejected";
 }
 
+export function adminAllBlogsPath() {
+  return "/admin/blogs/all";
+}
+
+export function adminPublishedBlogsPath() {
+  return "/admin/blogs/published";
+}
+
+export function adminDraftBlogsPath() {
+  return "/admin/blogs/draft";
+}
+
 export function adminAnalyticsPath() {
   return "/admin/analytics";
 }
@@ -170,4 +182,21 @@ export function handleAnalytics(id: string) {
 
 export function handlePurchase() {
   return `/billing`;
+}
+
+// Blog routes
+export function blogsPath() {
+  return "/blogs";
+}
+
+export function blogPath(blogId: string) {
+  return `/blogs/${blogId}`;
+}
+
+export function createBlogPath() {
+  return "/blogs/create";
+}
+
+export function editBlogPath(blogId: string) {
+  return `/blogs/${blogId}/edit`;
 }

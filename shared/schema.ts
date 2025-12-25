@@ -167,6 +167,63 @@ export const aggregatedStats = pgTable("aggregated_stats", {
     .default(sql`now()`),
 });
 
+// Blog schemas
+export const blogStatusEnum = pgEnum("blog_status", [
+  "draft",
+  "published",
+  "archived",
+]);
+
+// For MongoDB backend with localized content
+export interface BlogFromAPI {
+  _id: string;
+  title: {
+    en: string;
+    ar: string;
+  };
+  content: {
+    en: string;
+    ar: string;
+  };
+  excerpt?: {
+    en: string;
+    ar: string;
+  };
+  slug: {
+    en: string;
+    ar: string;
+  };
+  author: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  tags: {
+    en: string[];
+    ar: string[];
+  };
+  category: {
+    en: string;
+    ar: string;
+  };
+  featuredImage?: string;
+  status: 'draft' | 'published' | 'archived';
+  views: number;
+  likes: number;
+  comments: Array<{
+    id: string;
+    author: {
+      id: string;
+      name: string;
+    };
+    content: string;
+    createdAt: string;
+  }>;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
 export const auditLogs = pgTable("audit_logs", {
   id: varchar("id")
     .primaryKey()
@@ -237,6 +294,8 @@ export const clicksEventsRelations = relations(clicksEvents, ({ one }) => ({
     references: [impressionsEvents.id],
   }),
 }));
+
+// Blog relations (simplified for MongoDB)
 
 // Zod schemas
 export const insertUserSchema = createInsertSchema(users).omit({
@@ -407,6 +466,32 @@ export const adminActionSchema = z.object({
   reason: z.string().optional(),
 });
 
+// Blog schemas (simplified for MongoDB)
+
+export const createBlogSchema = z.object({
+  title: z.string().min(1, "العنوان مطلوب").max(200, "العنوان طويل جداً"),
+  content: z.string().min(1, "المحتوى مطلوب"),
+  excerpt: z.string().max(500, "الملخص طويل جداً").optional().or(z.literal("")),
+  slug: z.string()
+    .min(1, "الرابط المختصر مطلوب")
+    .max(100, "الرابط المختصر طويل جداً")
+    .regex(/^[a-z0-9-]+$/, "الرابط المختصر يجب أن يحتوي على أحرف صغيرة وأرقام وشرطات فقط"),
+  authorName: z.string().min(1, "اسم المؤلف مطلوب").default("المدير"),
+  authorEmail: z.string().email("البريد الإلكتروني غير صالح").optional().or(z.literal("")),
+  tags: z.array(z.string().trim().min(1, "الوسم لا يمكن أن يكون فارغاً")).default([]),
+  category: z.string().min(1, "الفئة مطلوبة"),
+  featuredImage: z.string().url("رابط الصورة غير صالح").optional().or(z.literal("")),
+  status: z.enum(["draft", "published", "archived"]).default("draft"),
+});
+
+export const updateBlogSchema = createBlogSchema.partial();
+
+export const blogCommentSchema = z.object({
+  authorId: z.string().min(1, "معرف المؤلف مطلوب"),
+  authorName: z.string().min(1, "اسم المؤلف مطلوب"),
+  content: z.string().min(1, "محتوى التعليق مطلوب").max(1000, "التعليق طويل جداً"),
+});
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -418,6 +503,12 @@ export type ImpressionEvent = typeof impressionsEvents.$inferSelect;
 export type ClickEvent = typeof clicksEvents.$inferSelect;
 export type AggregatedStats = typeof aggregatedStats.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
+
+// Blog types
+export type Blog = BlogFromAPI;
+export type CreateBlogData = z.infer<typeof createBlogSchema>;
+export type UpdateBlogData = z.infer<typeof createBlogSchema>; // Same as create for now
+export type BlogCommentData = z.infer<typeof blogCommentSchema>;
 
 export type LoginData = z.infer<typeof loginSchema>;
 export type SignupData = z.infer<typeof signupSchema>;

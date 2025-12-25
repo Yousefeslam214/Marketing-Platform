@@ -11,10 +11,15 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const { isLoading } = useAuth();
+  const { isLoading, user } = useAuth();
   const { isRTL, t } = useLanguage();
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Debug authentication in AppLayout
+  console.log("AppLayout - Token:", TokenManager.getAccessToken());
+  console.log("AppLayout - User:", user);
+  console.log("AppLayout - Is loading:", isLoading);
 
   // Show loading state while checking authentication
   if (isLoading) {
