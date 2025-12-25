@@ -109,22 +109,22 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           ],
         },
         {
-          name: "إدارة المدونات",
+          name: t("sidebar", "blogManagement"),
           href: "#",
           icon: "fas fa-blog",
           subItems: [
             {
-              name: "جميع المدونات",
+              name: t("sidebar", "allBlogs"),
               href: adminAllBlogsPath(),
               icon: "fas fa-list-alt",
             },
             {
-              name: "المدونات المنشورة",
+              name: t("sidebar", "publishedBlogs"),
               href: adminPublishedBlogsPath(),
               icon: "fas fa-globe",
             },
             {
-              name: "مسودات المدونات",
+              name: t("sidebar", "draftBlogs"),
               href: adminDraftBlogsPath(),
               icon: "fas fa-edit",
             },
@@ -200,7 +200,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           icon: "fas fa-ad",
         },
         {
-          name: "المدونة",
+          name: t("sidebar", "blogs"),
           href: blogsPath(),
           icon: "fas fa-blog",
         },

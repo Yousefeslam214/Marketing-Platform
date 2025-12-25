@@ -64,7 +64,12 @@
     "pixels": "Pixels",
     "FreeCredits": "Free Credits",
     "seoSettings": "SEO Settings",
-    "createNewAd": "Create New Ad"
+    "createNewAd": "Create New Ad",
+    "blogManagement": "Blog Management",
+    "allBlogs": "All Blogs",
+    "publishedBlogs": "Published Blogs",
+    "draftBlogs": "Draft Blogs",
+    "blogs": "Blogs"
   },
   "layout": {
     "notifications": "Notifications",

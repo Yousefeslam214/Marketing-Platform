@@ -41,6 +41,12 @@ export const translations = {
       // Section names
       adminSection: "Admin",
       mainSection: "Main",
+      // Blog Management
+      blogManagement: "Blog Management",
+      allBlogs: "All Blogs",
+      publishedBlogs: "Published Blogs",
+      draftBlogs: "Draft Blogs",
+      blogs: "Blogs",
       // App branding
       appName: "OctopusAd",
       appTagline: "Marketing Platform",
@@ -341,6 +347,12 @@ export const translations = {
       // Section names
       adminSection: "الإدارة",
       mainSection: "الرئيسي",
+      // Blog Management
+      blogManagement: "إدارة المدونات",
+      allBlogs: "جميع المدونات",
+      publishedBlogs: "المدونات المنشورة",
+      draftBlogs: "مسودات المدونات",
+      blogs: "المدونات",
       // App branding
       appName: "اخطبوط إعلان",
       appTagline: "منصة التسويق",

@@ -64,7 +64,12 @@
     "pixels": "بكسلات",
     "FreeCredits": "الأرصدة المجانية",
     "seoSettings": "إعدادات السيو",
-    "createNewAd": "إنشاء إعلان جديد"
+    "createNewAd": "إنشاء إعلان جديد",
+    "blogManagement": "إدارة المدونات",
+    "allBlogs": "جميع المدونات",
+    "publishedBlogs": "المدونات المنشورة",
+    "draftBlogs": "مسودات المدونات",
+    "blogs": "المدونات"
   },
   "layout": {
     "notifications": "الإشعارات",
