@@ -111,8 +111,13 @@ export function BlogEditor() {
         description: `تم حفظ المدونة كمسودة${createdBlogId ? ` (ID: ${createdBlogId})` : ''}`,
       });
 
-      // Force page reload to ensure NO cached data anywhere
-      window.location.href = adminAllBlogsPath();
+      // Redirect to photo upload page instead of admin blogs list
+      if (createdBlogId) {
+        setLocation(`/blogs/${createdBlogId}/upload-photo`);
+      } else {
+        // Fallback to admin blogs list if no ID
+        window.location.href = adminAllBlogsPath();
+      }
     },
     onError: (error: any) => {
       toast({

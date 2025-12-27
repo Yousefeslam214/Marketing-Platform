@@ -81,6 +81,7 @@ import AdminImpressionRatios from "./pages/admin/AdminImpressionRatios";
 import AdminFreeCredits from "./pages/admin/AdminFreeCredits";
 import UploadPhoto from "./components/ads/create/upload-photo";
 import EditPhoto from "./components/ads/update/edit-photo";
+import UploadBlogPhoto from "./components/blogs/create/upload-photo";
 import AdminPixels from "./pages/admin/pixels/pixels";
 import AdReports from "./pages/admin/AdReports";
 import SeoSettings from "./pages/admin/SeoSettings";
@@ -378,6 +379,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <BlogDetail />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/blogs/:blogId/upload-photo"
+        component={() => (
+          <AppLayout>
+            <UploadBlogPhoto />
           </AppLayout>
         )}
       />
