@@ -145,10 +145,16 @@ export default function BlogsPage() {
     }
   }, [location, fetchBlogsData]);
 
-  // Get unique categories from blogs
+  // Get unique categories from blogs in the active language
   const categories = blogsList
-    .map((blog) => blog.category?.en || blog.category?.ar)
+    .map((blog) =>
+      isRTL
+        ? blog.category?.ar || blog.category?.en
+        : blog.category?.en || blog.category?.ar
+    )
     .filter((value, index, self) => value && self.indexOf(value) === index);
+
+  const hasFilters = search.trim() || category !== "all";
 
   const handleViewBlog = (blogId: string) => {
     setLocation(`/blogs/${blogId}`);
@@ -164,14 +170,14 @@ export default function BlogsPage() {
     <div className={`flex bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 ">
         <Header
-           title="المدونة"
-        description="استكشف أحدث المقالات والمحتوى المفيد"
-        actions={
+          title={t("blogsPage", "title")}
+          description={t("blogsPage", "description")}
+          actions={
             <>
               <div className="flex flex-col sm:flex-row gap-4 flex-1">
                 <div className="flex-1">
                   <Input
-                    placeholder="البحث في المدونات..."
+                    placeholder={t("blogsPage", "searchPlaceholder")}
                     value={search}
                     onChange={(e) => {
                       setSearch(e.target.value);
@@ -187,10 +193,12 @@ export default function BlogsPage() {
                     setPage("1");
                   }}>
                   <SelectTrigger className="w-full sm:w-48">
-                    <SelectValue placeholder="جميع الفئات" />
+                    <SelectValue placeholder={t("blogsPage", "allCategories")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">جميع الفئات</SelectItem>
+                    <SelectItem value="all">
+                      {t("blogsPage", "allCategories")}
+                    </SelectItem>
                     {categories.map((cat) => (
                       <SelectItem key={cat} value={cat}>
                         {cat}
@@ -207,16 +215,21 @@ export default function BlogsPage() {
                   setPage("1");
                 }}>
                 <i className="fas fa-times mx-2"></i>
-                مسح
+                {t("blogsPage", "clearFilters")}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={refreshBlogs}
+                disabled={isLoading}>
+                <i className="fas fa-sync-alt mx-2"></i>
+                {t("blogsPage", "refresh")}
               </Button>
             </>
           }
         />
        
         {/* Hero Section */}
-        <section className="relative pt-20 pb-10 w-full flex flex-col items-center bg-gradient-to-b from-primary/5 via-background to-background px-4 sm:px-6
-        
-        ">
+        <section className="relative pt-20 pb-10 w-full flex flex-col items-center bg-gradient-to-b from-primary/5 via-background to-background px-4 sm:px-6">
           {/* <main className="p-6 mt-24"> */}
           {/* Search and Filter Section */}
 
@@ -227,22 +240,15 @@ export default function BlogsPage() {
           ) : error ? (
             <div className="min-h-[60vh] flex items-center justify-center">
               <ErrorState
-                title="فشل في تحميل المدونات"
-                message={error?.message || "يرجى المحاولة مرة أخرى لاحقاً."}
+                title={t("blogsPage", "loadFailedTitle")}
+                message={
+                  error?.message || t("blogsPage", "loadFailedMessage")
+                }
                 onRetry={() => window.location.reload()}
               />
             </div>
           ) : blogsList.length > 0 ? (
-            <div className="w-full max-w-7xl mx-auto min-h-[60vh] mt-12 px-2 sm:px-4
-            
-  height-full min-h-[80vh] flex flex-col justify-between"           
-//    height: 100%;
-//     min-height
-// : 80vh;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-between;
-            >
+            <div className="w-full max-w-7xl mx-auto min-h-[60vh] mt-12 px-2 sm:px-4 flex flex-col justify-between">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {blogsList.map((blog: Blog) => (
                   <BlogCard
@@ -280,23 +286,23 @@ export default function BlogsPage() {
               <div className="text-center">
                 <i className="fas fa-blog text-6xl text-muted-foreground mb-4"></i>
                 <h3 className="text-xl font-semibold mb-2">
-                  {search || category !== "all"
-                    ? "لا توجد نتائج"
-                    : "لا توجد مدونات"}
+                  {hasFilters
+                    ? t("blogsPage", "noResultsTitle")
+                    : t("blogsPage", "emptyTitle")}
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  {search || category !== "all"
-                    ? "لم يتم العثور على مدونات تطابق معايير البحث."
-                    : "لم يتم العثور على أي مدونات منشورة في النظام."}
+                  {hasFilters
+                    ? t("blogsPage", "noResultsMessage")
+                    : t("blogsPage", "emptyMessage")}
                 </p>
-                {(search || category !== "all") && (
+                {hasFilters && (
                   <Button
                     onClick={() => {
                       setSearch("");
                       setCategory("all");
                     }}>
                     <i className="fas fa-times mx-2"></i>
-                    مسح البحث
+                    {t("blogsPage", "clearSearch")}
                   </Button>
                 )}
               </div>

@@ -72,6 +72,21 @@
     "draftBlogs": "مسودات المدونات",
     "blogs": "المدونات"
   },
+  "blogsPage": {
+    "title": "المدونة",
+    "description": "استكشف أحدث المقالات والأدلة والتحديثات.",
+    "searchPlaceholder": "البحث في المدونات...",
+    "allCategories": "جميع الفئات",
+    "clearFilters": "مسح",
+    "refresh": "تحديث",
+    "loadFailedTitle": "فشل في تحميل المدونات",
+    "loadFailedMessage": "يرجى المحاولة مرة أخرى لاحقاً.",
+    "noResultsTitle": "لا توجد نتائج",
+    "noResultsMessage": "لم يتم العثور على مدونات تطابق معايير البحث.",
+    "emptyTitle": "لا توجد مدونات",
+    "emptyMessage": "لم يتم العثور على أي مدونات منشورة في النظام.",
+    "clearSearch": "مسح البحث"
+  },
   "layout": {
     "notifications": "الإشعارات",
     "profile": "الملف الشخصي",

@@ -72,6 +72,21 @@
     "draftBlogs": "Draft Blogs",
     "blogs": "Blogs"
   },
+  "blogsPage": {
+    "title": "Blogs",
+    "description": "Explore our latest articles, guides, and updates.",
+    "searchPlaceholder": "Search blogs...",
+    "allCategories": "All categories",
+    "clearFilters": "Clear",
+    "refresh": "Refresh",
+    "loadFailedTitle": "Failed to load blogs",
+    "loadFailedMessage": "Please try again later.",
+    "noResultsTitle": "No results",
+    "noResultsMessage": "No blogs match your search criteria.",
+    "emptyTitle": "No blogs available",
+    "emptyMessage": "No published blogs were found.",
+    "clearSearch": "Clear search"
+  },
   "layout": {
     "notifications": "Notifications",
     "profile": "Profile",
