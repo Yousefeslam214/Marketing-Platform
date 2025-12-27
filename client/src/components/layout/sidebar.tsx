@@ -32,6 +32,7 @@ interface NavigationItem {
   href: string;
   icon: string;
   badge?: string;
+  isBilling?: boolean;
   subItems?: NavigationItem[];
 }
 
@@ -139,6 +140,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           name: t("sidebar", "billing"),
           href: adminBillingPath(),
           icon: "fas fa-file-invoice-dollar",
+          isBilling: true,
         },
         {
           name: t("sidebar", "impressionRatios"),
@@ -199,15 +201,12 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: campaignsPath(),
           icon: "fas fa-ad",
         },
-        {
-          name: t("sidebar", "blogs"),
-          href: blogsPath(),
-          icon: "fas fa-blog",
-        },
+        
         {
           name: t("sidebar", "billing"),
           href: userBillingPath(),
           icon: "fas fa-credit-card",
+          isBilling: true,
         },
         {
           name: t("sidebar", "faq"),
@@ -228,6 +227,10 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           name: t("sidebar", "freeAdsFeed"),
           href: "/free/feed",
           icon: "fas fa-gift",
+        },{
+          name: t("sidebar", "blogs"),
+          href: blogsPath(),
+          icon: "fas fa-blog",
         },
       ],
     });
@@ -241,6 +244,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     const isActive =
       location === item.href ||
       (hasSubItems && item.subItems?.some((sub) => location === sub.href));
+    const isBilling = item.isBilling;
 
     if (hasSubItems) {
       return (
@@ -249,7 +253,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             onClick={() => toggleExpanded(item.name)}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 ${
               isActive
-                ? "active bg-primary text-primary-foreground border-primary"
+                ? isBilling
+                  ? "bg-amber-100 text-amber-700 border-amber-400"
+                  : "active bg-primary text-primary-foreground border-primary"
+                : isBilling
+                ? "text-amber-700 border-amber-300 hover:bg-amber-50 hover:text-amber-700"
                 : "hover:bg-accent hover:text-accent-foreground border-transparent"
             } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
               isSubItem ? "ml-4" : ""
@@ -286,7 +294,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                   <div
                     className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
                       location === subItem.href
-                        ? "active bg-primary text-primary-foreground border-primary"
+                        ? subItem.isBilling
+                          ? "bg-amber-100 text-amber-700 border-amber-400"
+                          : "active bg-primary text-primary-foreground border-primary"
+                        : subItem.isBilling
+                        ? "text-amber-700 border-amber-300 hover:bg-amber-50 hover:text-amber-700"
                         : "hover:bg-accent hover:text-accent-foreground border-transparent"
                     } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
                       isRTL ? "mx-4" : "ml-4"
@@ -327,7 +339,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         <div
           className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
             location === item.href
-              ? "active bg-primary text-primary-foreground border-primary"
+              ? isBilling
+                ? "bg-amber-100 text-amber-700 border-amber-400"
+                : "active bg-primary text-primary-foreground border-primary"
+              : isBilling
+              ? "text-amber-700 border-amber-300 hover:bg-amber-50 hover:text-amber-700"
               : "hover:bg-accent hover:text-accent-foreground border-transparent"
           } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
             isSubItem ? "ml-4" : ""
