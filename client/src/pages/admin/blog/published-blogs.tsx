@@ -53,7 +53,7 @@ export default function PublishedBlogs() {
 
   // Get all blogs and filter for published
   const allBlogs = Array.isArray(blogs?.data) ? (blogs?.data as Blog[]) : [];
-  const publishedBlogs = allBlogs.filter(blog => blog.status === 'published');
+  const publishedBlogs = allBlogs.filter((blog) => blog.status === "published");
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
@@ -79,56 +79,60 @@ export default function PublishedBlogs() {
             <div className="min-h-[74vh] mt-24">
               <ErrorState
                 title="فشل في تحميل المدونات المنشورة"
-                message={(error as Error)?.message || "يرجى المحاولة مرة أخرى لاحقاً."}
+                message={
+                  (error as Error)?.message || "يرجى المحاولة مرة أخرى لاحقاً."
+                }
                 onRetry={() => refetch()}
                 showHomeButton
                 onHome={() => (window.location.href = "/")}
               />
             </div>
           ) : publishedBlogs.length > 0 ? (
-            <div className="min-h-[74vh]">
-              <div className="flex flex-col w-full max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {publishedBlogs.map((blog: Blog) => (
-                    <div key={blog._id} className="relative">
-                      <BlogCard
-                        blog={blog}
-                        language={isRTL ? "ar" : "en"}
-                        onView={(id) => setLocation(`/blogs/${id}`)}
-                        onEdit={(id) => setLocation(`/blogs/${id}/edit`)}
-                        onDelete={handleDeleteBlog}
-                        onArchive={handleArchiveBlog}
-                        showActions={true}
-                      />
-                    </div>
-                  ))}
-                </div>
+            <div className="flex flex-col w-full max-w-7xl mx-auto justify-between min-h-[80vh]">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {publishedBlogs.map((blog: Blog) => (
+                  <div key={blog._id} className="relative">
+                    <BlogCard
+                      blog={blog}
+                      language={isRTL ? "ar" : "en"}
+                      onView={(id) => setLocation(`/blogs/${id}`)}
+                      onEdit={(id) => setLocation(`/blogs/${id}/edit`)}
+                      onDelete={handleDeleteBlog}
+                      onArchive={handleArchiveBlog}
+                      showActions={true}
+                    />
+                  </div>
+                ))}
+              </div>
 
-            {/* Pagination */}
-            <div className="mt-8">
-              <DataPagination
-                pagination={blogs?.pagination as any || {
-                  currentPage: parseInt(page),
-                  totalPages: 1,
-                  totalItems: publishedBlogs.length,
-                  hasPrevious: parseInt(page) > 1,
-                  hasNext: false,
-                  itemsPerPage: parseInt(limit),
-                  limit: parseInt(limit)
-                }}
-                onPageChange={(newPage) => setPage(newPage)}
-                pageSize={limit}
-                onPageSizeChange={(newLimit) => setLimit(newLimit)}
-                showPageSizeSelector={true}
-              />
-            </div>
+              {/* Pagination */}
+              <div className="mt-8">
+                <DataPagination
+                  pagination={
+                    (blogs?.pagination as any) || {
+                      currentPage: parseInt(page),
+                      totalPages: 1,
+                      totalItems: publishedBlogs.length,
+                      hasPrevious: parseInt(page) > 1,
+                      hasNext: false,
+                      itemsPerPage: parseInt(limit),
+                      limit: parseInt(limit),
+                    }
+                  }
+                  onPageChange={(newPage) => setPage(newPage)}
+                  pageSize={limit}
+                  onPageSizeChange={(newLimit) => setLimit(newLimit)}
+                  showPageSizeSelector={true}
+                />
               </div>
             </div>
           ) : (
             <div className="min-h-[74vh] flex items-center justify-center">
               <div className="text-center">
                 <i className="fas fa-blog text-6xl text-muted-foreground mb-4"></i>
-                <h3 className="text-xl font-semibold mb-2">لا توجد مدونات منشورة</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  لا توجد مدونات منشورة
+                </h3>
                 <p className="text-muted-foreground mb-4">
                   لم يتم العثور على أي مدونات منشورة في النظام.
                 </p>

@@ -3,6 +3,8 @@ import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { useSeo } from "@/contexts/seo-context";
 import { Button } from "@/components/ui/button";
+import Loading from "@/components/Loading";
+import { ErrorState } from "@/components/Error";
 import {
   Card,
   CardContent,
@@ -11,129 +13,19 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Blog } from "@shared/schema";
+import { VITE_API_BASE_URL } from "@/lib/utils";
+import { apiRequest } from "@/lib/queryClient";
 import { Input } from "@/components/ui/input";
-
-type Post = {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: "Product" | "How-to" | "Updates";
-  tag: string;
-  date: string;
-  author: string;
-  image: string;
-};
-
-type CategoryOption = "All" | Post["category"];
-
-const featuredPost: Post = {
-  id: "ai-customer-experiences",
-  title: "How AI Workflows Elevate Customer Experiences",
-  excerpt:
-    "See how teams pair automation with human review to deliver faster, more accurate answers at scale.",
-  category: "Product",
-  tag: "Product",
-  date: "February 18, 2024",
-  author: "Octoups Ad Team",
-  image:
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
-};
-
-const recentPosts: Post[] = [
-  {
-    id: "playbook-2024",
-    title: "The 2024 AI Support Playbook",
-    excerpt:
-      "Practical guidance on standing up an AI-first help center while keeping humans in the loop.",
-    category: "How-to",
-    tag: "How-to",
-    date: "March 12, 2024",
-    author: "Sarah Malik",
-    image:
-      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "product-updates",
-    title: "Product Updates: Faster Answers, Richer Insights",
-    excerpt:
-      "A closer look at new analytics, smarter routing, and better multilingual responses.",
-    category: "Updates",
-    tag: "Updates",
-    date: "March 3, 2024",
-    author: "Product Team",
-    image:
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "human-ai-handbook",
-    title: "Human + AI: A Practical Handbook for Support Leads",
-    excerpt:
-      "Frameworks for defining guardrails, reviewing AI outputs, and keeping quality high.",
-    category: "How-to",
-    tag: "How-to",
-    date: "February 22, 2024",
-    author: "Lina Chen",
-    image:
-      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "data-trust",
-    title: "Earning Trust With Secure AI Data Practices",
-    excerpt:
-      "The controls we use to protect customer data while enabling powerful AI retrieval.",
-    category: "Updates",
-    tag: "Updates",
-    date: "February 10, 2024",
-    author: "Security Team",
-    image:
-      "https://images.unsplash.com/photo-1526378722484-cc5c7100a3d8?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "multilingual-support",
-    title: "Designing Multilingual Support Journeys",
-    excerpt:
-      "Best practices for launching consistent experiences across Arabic and English audiences.",
-    category: "Product",
-    tag: "Product",
-    date: "January 30, 2024",
-    author: "Experience Lab",
-    image:
-      "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "metrics-that-matter",
-    title: "The Metrics That Matter for AI-Powered Support",
-    excerpt:
-      "Which KPIs reveal real progress when you bring automation into your service org.",
-    category: "Updates",
-    tag: "Updates",
-    date: "January 18, 2024",
-    author: "Insights Team",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-  },
-];
 
 export default function BlogLanding() {
   const { isRTL, t } = useLanguage();
   const { setOverride } = useSeo();
-
-  const categoryOptions = useMemo<CategoryOption[]>(
-    () => ["All", "Product", "How-to", "Updates"],
-    []
-  );
-
-  const categoryLabels = useMemo(
-    () => ({
-      All: t("blogLanding", "categories.all"),
-      Product: t("blogLanding", "categories.product"),
-      "How-to": t("blogLanding", "categories.howTo"),
-      Updates: t("blogLanding", "categories.updates"),
-    }),
-    [t]
-  );
-
-  const [activeCategory, setActiveCategory] = useState<CategoryOption>("All");
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
+  const lang = isRTL ? "ar" : "en";
 
   const seoTitle = t("blogLanding", "seoTitle");
   const seoDescription = t("blogLanding", "seoDescription");
@@ -147,31 +39,124 @@ export default function BlogLanding() {
     return () => setOverride(null);
   }, [setOverride, seoTitle, seoDescription]);
 
+  // Fetch published blogs
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const params = new URLSearchParams({
+          page: "1",
+          limit: "12",
+          t: Date.now().toString(),
+        });
+
+        const url = `${VITE_API_BASE_URL}/api/blogs/published?${params.toString()}`;
+        const response = await apiRequest("GET", url);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch blogs");
+        }
+
+        const data = await response.json();
+        setBlogs(Array.isArray(data.data) ? data.data : []);
+      } catch (err) {
+        setError(err as Error);
+        setBlogs([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  const resolvedBlogs = useMemo(() => {
+    const locale = lang === "ar" ? "ar-SA" : "en-US";
+    return blogs.map((blog) => {
+      const localizedCategory =
+        (blog.category as any)?.[lang] ||
+        (blog.category as any)?.ar ||
+        (blog.category as any)?.en ||
+        "";
+
+      return {
+        ...blog,
+        localizedTitle:
+          blog.title?.[lang] || blog.title?.ar || blog.title?.en || "",
+        localizedExcerpt:
+          blog.excerpt?.[lang] || blog.excerpt?.ar || blog.excerpt?.en || "",
+        localizedCategory,
+        localizedAuthor:
+          blog.author?.name || (lang === "ar" ? "غير معروف" : "Unknown"),
+        localizedDate: blog.createdAt
+          ? new Date(blog.createdAt).toLocaleDateString(locale)
+          : "",
+      };
+    });
+  }, [blogs, lang]);
+
+  const categories = useMemo(() => {
+    const unique = resolvedBlogs
+      .map((b) => b.localizedCategory)
+      .filter((val, idx, self) => val && self.indexOf(val) === idx);
+    return unique;
+  }, [resolvedBlogs]);
+
+  const categoryLabels = useMemo(() => {
+    const baseLabels: Record<string, string> = {
+      all: t("blogLanding", "categories.all"),
+    };
+    categories.forEach((cat) => {
+      baseLabels[cat] = cat;
+    });
+    return baseLabels;
+  }, [categories, t]);
+
+  const sortedBlogs = useMemo(() => {
+    return [...resolvedBlogs].sort(
+      (a, b) =>
+        new Date(b.createdAt || "").getTime() -
+        new Date(a.createdAt || "").getTime()
+    );
+  }, [resolvedBlogs]);
+
   const filteredPosts = useMemo(() => {
-    if (activeCategory === "All") return recentPosts;
-    return recentPosts.filter((post) => post.category === activeCategory);
-  }, [activeCategory]);
+    if (activeCategory === "all") return sortedBlogs;
+    return sortedBlogs.filter(
+      (blog) => blog.localizedCategory === activeCategory
+    );
+  }, [activeCategory, sortedBlogs]);
+
+  const featuredPost = filteredPosts[0] || sortedBlogs[0];
+  const fallbackImage = "https://placehold.co/1200x800?text=Blog";
 
   return (
     <div
-      className={`min-h-screen bg-background text-foreground ${
-        isRTL ? "rtl" : "ltr"
-      }`}
+      className={`min-h-screen bg-background text-foreground 
+        mx-auto
+        ${isRTL ? "rtl" : "ltr"}`}
       dir={isRTL ? "rtl" : "ltr"}>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10" />
-        <div className="container relative px-4 py-16 sm:py-20 lg:py-24">
+        <div className="container  relative px-4 py-16 sm:py-20 lg:py-24">
           <div
-            className={`max-w-3xl ${
-              isRTL ? "ml-auto text-right" : "mr-auto text-left"
-            }`}>
+            className={`max-w-3xl
+              mx-auto
+              flex flex-col items-center text-center align-center
+              ${isRTL ? " text-right" : " text-left"}`}>
             <Badge className="mb-4">{t("blogLanding", "badge")}</Badge>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+            <h1
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4
+            center
+            ">
               {t("blogLanding", "title")}
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               {t("blogLanding", "subtitle")}
             </p>
+
             <div
               className={`flex flex-col sm:flex-row gap-3 ${
                 isRTL ? "sm:flex-row-reverse" : ""
@@ -188,8 +173,7 @@ export default function BlogLanding() {
           </div>
         </div>
       </section>
-
-      <section className="container px-4 pb-12 lg:pb-16">
+      <section className="container px-4 ">
         <div className="grid gap-8 lg:grid-cols-5 items-stretch">
           <div className="lg:col-span-3 flex flex-col gap-4">
             <div className="flex items-center justify-between">
@@ -200,46 +184,93 @@ export default function BlogLanding() {
                 {t("blogLanding", "featuredBadge")}
               </Badge>
             </div>
-            <Card className="overflow-hidden border-muted/70 shadow-sm">
-              <div className="relative h-64 sm:h-80">
-                <img
-                  src={featuredPost.image}
-                  alt={featuredPost.title}
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+            {isLoading ? (
+              <div className="h-64 sm:h-80 flex items-center justify-center">
+                <Loading />
               </div>
-              <CardHeader className="space-y-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <Badge variant="secondary">
-                    {categoryLabels[featuredPost.category] || featuredPost.tag}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    {featuredPost.date}
-                  </span>
+            ) : error || !featuredPost ? (
+              <Card className="overflow-hidden border-muted/70 shadow-sm">
+                <CardHeader className="space-y-3">
+                  {error ? (
+                    <ErrorState
+                      title={t("blogsPage", "loadFailedTitle")}
+                      message={
+                        error?.message || t("blogsPage", "loadFailedMessage")
+                      }
+                    />
+                  ) : (
+                    <CardDescription>
+                      {t("blogsPage", "emptyMessage")}
+                    </CardDescription>
+                  )}
+                </CardHeader>
+              </Card>
+            ) : (
+    
+    <Card className="overflow-hidden border-muted/70 shadow-sm">
+        <Link href={`/blogs/${featuredPost._id}`}>
+                <div className="relative h-64 sm:h-80">
+                  <img
+                    src={featuredPost.featuredImage || fallbackImage}
+                    alt={
+                      featuredPost.title?.[lang] ||
+                      featuredPost.title?.ar ||
+                      featuredPost.title?.en ||
+                      ""
+                    }
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
                 </div>
-                <CardTitle className="text-2xl">{featuredPost.title}</CardTitle>
-                <CardDescription className="text-base">
-                  {featuredPost.excerpt}
-                </CardDescription>
-                <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                  <span>{featuredPost.author}</span>
-                  <span className="hidden sm:inline">•</span>
-                  <span>{t("blogLanding", "readTime")}</span>
-                </div>
-                <div
-                  className={`flex ${isRTL ? "justify-start" : "justify-end"}`}>
-                  <Link href={`/blogs/${featuredPost.id}`}>
-                    <Button className="mt-2">
-                      {t("blogLanding", "readMore")}
-                    </Button>
-                  </Link>
-                </div>
-              </CardHeader>
-            </Card>
+                <CardHeader className="space-y-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Badge variant="secondary">
+                      {(featuredPost.category as any)?.[lang] ||
+                        (featuredPost.category as any)?.ar ||
+                        (featuredPost.category as any)?.en ||
+                        ""}
+                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      {new Date(featuredPost.createdAt).toLocaleDateString(
+                        isRTL ? "ar-SA" : "en-US"
+                      )}
+                    </span>
+                  </div>
+                  <CardTitle className="text-2xl">
+                    {featuredPost.title?.[lang] ||
+                      featuredPost.title?.ar ||
+                      featuredPost.title?.en ||
+                      ""}
+                  </CardTitle>
+                  <CardDescription className="text-base">
+                    {featuredPost.excerpt?.[lang] ||
+                      featuredPost.excerpt?.ar ||
+                      featuredPost.excerpt?.en ||
+                      ""}
+                  </CardDescription>
+                  <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                    <span>{t("blogLanding", "readTime")}</span>
+                  </div>
+                  <div
+                    className={`flex ${
+                      isRTL ? "justify-start" : "justify-end"
+                    }`}>
+                    <Link href={`/blogs/${featuredPost._id}`}>
+                      <Button className="mt-2">
+                        {t("blogLanding", "readMore")}
+                      </Button>
+                    </Link>
+                  </div>
+                </CardHeader>
+                </Link>
+              </Card>
+            )}
           </div>
 
-          <Card className="lg:col-span-2 border-muted/70 shadow-sm">
+          <Card
+            className="lg:col-span-2 border-muted/70 shadow-sm
+          h-fit
+          ">
             <CardHeader>
               <h2 className="text-xl font-semibold leading-none tracking-tight">
                 {t("blogLanding", "newsletterTitle")}
@@ -273,7 +304,11 @@ export default function BlogLanding() {
         </div>
       </section>
 
-      <section id="recent-posts" className="container px-4 pb-16 lg:pb-24">
+      <section
+        className="container px-4 pb-16 lg:pb-24
+      pt-12 lg:pt-16
+      "
+        id="recent-posts">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div className={`${isRTL ? "md:text-right" : "md:text-left"}`}>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
@@ -287,7 +322,7 @@ export default function BlogLanding() {
             className={`flex flex-wrap gap-2 ${
               isRTL ? "md:justify-start" : "md:justify-end"
             }`}>
-            {categoryOptions.map((category) => (
+            {["all", ...categories].map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
@@ -296,54 +331,102 @@ export default function BlogLanding() {
                     ? "bg-primary text-primary-foreground shadow"
                     : "border border-input bg-background hover:bg-muted"
                 }`}>
-                {categoryLabels[category]}
+                {categoryLabels[category] || category}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {filteredPosts.map((post) => (
-            <Card
-              key={post.id}
-              className="h-full flex flex-col overflow-hidden border-muted/70 shadow-sm">
-              <div className="relative h-48">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="h-full w-full object-cover"
-                />
-                <Badge
-                  className={`absolute top-3 ${isRTL ? "right-3" : "left-3"}`}>
-                  {categoryLabels[post.category] || post.tag}
-                </Badge>
-              </div>
-              <CardContent className="flex flex-col gap-3 p-5 flex-1">
-                <div className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
-                  <span>{post.date}</span>
-                  <span>•</span>
-                  <span>{post.author}</span>
-                </div>
-                <CardTitle className="text-xl leading-tight">
-                  {post.title}
-                </CardTitle>
-                <CardDescription className="text-base leading-relaxed line-clamp-3">
-                  {post.excerpt}
-                </CardDescription>
-                <div className="mt-auto flex items-center justify-between pt-2">
-                  <span className="text-sm font-medium text-primary">
-                    {categoryLabels[post.category]}
-                  </span>
-                  <Link href={`/blogs/${post.id}`}>
-                    <Button variant="ghost" size="sm" className="px-3">
-                      {t("blogLanding", "readMore")}
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="min-h-[40vh] flex items-center justify-center">
+            <Loading />
+          </div>
+        ) : error ? (
+          <div className="min-h-[40vh] flex items-center justify-center">
+            <ErrorState
+              title={t("blogsPage", "loadFailedTitle")}
+              message={error?.message || t("blogsPage", "loadFailedMessage")}
+              onRetry={() => window.location.reload()}
+            />
+          </div>
+        ) : filteredPosts.length === 0 ? (
+          <div className="min-h-[40vh] flex items-center justify-center">
+            <div className="text-center">
+              <i className="fas fa-blog text-6xl text-muted-foreground mb-4"></i>
+              <h3 className="text-xl font-semibold mb-2">
+                {t("blogsPage", "emptyTitle")}
+              </h3>
+              <p className="text-muted-foreground">
+                {t("blogsPage", "emptyMessage")}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {filteredPosts.map((post) => {
+              const title =
+                post.title?.[lang] || post.title?.ar || post.title?.en || "";
+              const excerpt =
+                post.excerpt?.[lang] ||
+                post.excerpt?.ar ||
+                post.excerpt?.en ||
+                "";
+              const category =
+                (post.category as any)?.[lang] ||
+                (post.category as any)?.ar ||
+                (post.category as any)?.en ||
+                "";
+
+              return (
+                <Link
+                  key={post._id}
+                  href={`/blogs/${post._id}`}
+                  className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
+                >
+                  <Card className="h-full flex flex-col overflow-hidden border-muted/70 shadow-sm transition-transform hover:-translate-y-1">
+                    <div className="relative h-48">
+                      <img
+                        src={post.featuredImage || fallbackImage}
+                        alt={title}
+                        className="h-full w-full object-cover"
+                      />
+                      <Badge
+                        className={`absolute top-3 ${
+                          isRTL ? "right-3" : "left-3"
+                        }`}>
+                        {category}
+                      </Badge>
+                    </div>
+                    <CardContent className="flex flex-col gap-3 p-5 flex-1">
+                      <div className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
+                        <span>{post.localizedDate}</span>
+                        <span>•</span>
+                        <span>
+                          {post.author?.name ||
+                            (isRTL ? "غير معروف" : "Unknown")}
+                        </span>
+                      </div>
+                      <CardTitle className="text-xl leading-tight">
+                        {title}
+                      </CardTitle>
+                      <CardDescription className="text-base leading-relaxed line-clamp-3">
+                        {excerpt}
+                      </CardDescription>
+                      <div className="mt-auto flex items-center justify-between pt-2">
+                        <span className="text-sm font-medium text-primary">
+                          {category}
+                        </span>
+                        <Button variant="ghost" size="sm" className="px-3">
+                          {t("blogLanding", "readMore")}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </section>
     </div>
   );

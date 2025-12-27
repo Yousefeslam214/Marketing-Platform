@@ -31,6 +31,7 @@ export default function BlogsPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [pagination, setPagination] = useState<any>(null);
+  const lang = isRTL ? "ar" : "en";
 
   // Function to fetch blogs data - completely fresh
   const fetchBlogsData = useCallback(
@@ -147,10 +148,11 @@ export default function BlogsPage() {
 
   // Get unique categories from blogs in the active language
   const categories = blogsList
-    .map((blog) =>
-      isRTL
-        ? blog.category?.ar || blog.category?.en
-        : blog.category?.en || blog.category?.ar
+    .map(
+      (blog) =>
+        (blog.category as any)?.[lang] ||
+        (blog.category as any)?.ar ||
+        (blog.category as any)?.en
     )
     .filter((value, index, self) => value && self.indexOf(value) === index);
 
@@ -193,7 +195,9 @@ export default function BlogsPage() {
                     setPage("1");
                   }}>
                   <SelectTrigger className="w-full sm:w-48">
-                    <SelectValue placeholder={t("blogsPage", "allCategories")} />
+                    <SelectValue
+                      placeholder={t("blogsPage", "allCategories")}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">
@@ -227,7 +231,7 @@ export default function BlogsPage() {
             </>
           }
         />
-       
+
         {/* Hero Section */}
         <section className="relative pt-20 pb-10 w-full flex flex-col items-center bg-gradient-to-b from-primary/5 via-background to-background px-4 sm:px-6">
           {/* <main className="p-6 mt-24"> */}
@@ -241,27 +245,61 @@ export default function BlogsPage() {
             <div className="min-h-[60vh] flex items-center justify-center">
               <ErrorState
                 title={t("blogsPage", "loadFailedTitle")}
-                message={
-                  error?.message || t("blogsPage", "loadFailedMessage")
-                }
+                message={error?.message || t("blogsPage", "loadFailedMessage")}
                 onRetry={() => window.location.reload()}
               />
             </div>
           ) : blogsList.length > 0 ? (
-            <div className="w-full max-w-7xl mx-auto min-h-[78vh] mt-12 px-2 sm:px-4 flex flex-col justify-between
+            <div
+              className="w-full max-w-7xl mx-auto min-h-[78vh] mt-12 px-2 sm:px-4 flex flex-col justify-between
             ">
+              
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {blogsList.map((blog: Blog) => (
-                  <BlogCard
+                  <div
                     key={blog._id}
-                    blog={blog}
-                    language={isRTL ? "ar" : "en"}
-                    onView={handleViewBlog}
-                    showActions={false}
-                  />
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleViewBlog(blog._id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleViewBlog(blog._id);
+                      }
+                    }}
+                    className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
+                  >
+                    <BlogCard
+                      blog={{
+                        ...blog,
+                        title: {
+                          en: blog.title?.en || blog.title?.ar || "",
+                          ar: blog.title?.ar || blog.title?.en || "",
+                        },
+                        excerpt: {
+                          en: blog.excerpt?.en || blog.excerpt?.ar || "",
+                          ar: blog.excerpt?.ar || blog.excerpt?.en || "",
+                        },
+                        category: {
+                          en: blog.category?.en || blog.category?.ar || "",
+                          ar: blog.category?.ar || blog.category?.en || "",
+                        },
+                        content: {
+                          en: blog.content?.en || blog.content?.ar || "",
+                          ar: blog.content?.ar || blog.content?.en || "",
+                        },
+                        tags: {
+                          en: blog.tags?.en || blog.tags?.ar || [],
+                          ar: blog.tags?.ar || blog.tags?.en || [],
+                        },
+                      }}
+                      language={lang}
+                      onView={handleViewBlog}
+                      showActions={false}
+                    />
+                  </div>
                 ))}
               </div>
-
               {/* Pagination */}
               <div className="mt-8">
                 <DataPagination

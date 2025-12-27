@@ -159,3 +159,8 @@
 .dark *::-webkit-scrollbar-thumb:hover {
   background: hsl(217 35% 50%);
 }
+.container {
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+}

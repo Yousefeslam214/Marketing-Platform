@@ -24,35 +24,47 @@ import { useLanguage } from "@/hooks/use-language";
 import { apiRequest } from "@/lib/queryClient";
 import { adminAllBlogsPath } from "@/lib/paths";
 
+const localizedString = z
+  .string()
+  .trim()
+  .optional()
+  .transform((val) => (val && val.trim() !== "" ? val.trim() : undefined));
+
 // Bilingual schema
 const bilingualBlogSchema = z.object({
   title: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedString
   }).refine(data => data.en || data.ar, {
     message: "At least one language is required for title"
   }),
   content: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedString
   }).refine(data => data.en || data.ar, {
     message: "At least one language is required for content"
   }),
   excerpt: z.object({
-    en: z.string().max(500).optional(),
-    ar: z.string().max(500).optional()
+    en: localizedString,
+    ar: localizedString
   }).optional(),
   slug: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedString
   }).optional(),
   category: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedString
   }).refine(data => data.en || data.ar, {
     message: "At least one language is required for category"
   }),
-  featuredImage: z.string().url().optional().or(z.literal("")),
+  featuredImage: z
+    .string()
+    .trim()
+    .url()
+    .optional()
+    .or(z.literal(""))
+    .transform((val) => (val && val.trim() !== "" ? val.trim() : undefined)),
   status: z.enum(['draft', 'published', 'archived']).optional()
 });
 

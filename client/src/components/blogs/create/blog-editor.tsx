@@ -21,40 +21,57 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useLocation } from "wouter";
 import { useState } from "react";
-import { TokenManager } from "@/lib/auth";
 import { useAuth } from "@/contexts/auth-context";
 import { z } from "zod";
 import { adminAllBlogsPath } from "@/lib/paths";
 
-// Bilingual schema
+const localizedString = z
+  .string()
+  .trim()
+  .optional()
+  .transform((val) => (val && val.trim() !== "" ? val.trim() : undefined));
+
+const localizedStringRestricted = z
+  .string().min(1, "هذا الحقل مطلوب")
+  .trim()
+  .transform((val) => (val && val.trim() !== "" ? val.trim() : undefined));
+ 
+  // Bilingual schema
+
 const bilingualBlogSchema = z.object({
   title: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedStringRestricted
   }).refine(data => data.en || data.ar, {
     message: "At least one language is required for title"
   }),
   content: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedStringRestricted
   }).refine(data => data.en || data.ar, {
     message: "At least one language is required for content"
   }),
   excerpt: z.object({
-    en: z.string().max(500).optional(),
-    ar: z.string().max(500).optional()
+    en: localizedString,
+    ar: localizedStringRestricted
   }).optional(),
   slug: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedStringRestricted
   }).optional(),
   category: z.object({
-    en: z.string().optional(),
-    ar: z.string().optional()
+    en: localizedString,
+    ar: localizedStringRestricted
   }).refine(data => data.en || data.ar, {
     message: "At least one language is required for category"
   }),
-  featuredImage: z.string().url().optional().or(z.literal("")),
+  featuredImage: z
+    .string()
+    .trim()
+    .url()
+    .optional()
+    .or(z.literal(""))
+    .transform((val) => (val && val.trim() !== "" ? val.trim() : undefined)),
 });
 
 type BilingualBlogData = z.infer<typeof bilingualBlogSchema>;
@@ -84,12 +101,28 @@ export function BlogEditor() {
 
   const createBlogMutation = useMutation({
     mutationFn: async (data: BilingualBlogData) => {
+      const cleanData = (obj: any): any => {
+        if (typeof obj !== "object" || obj === null) return obj;
+
+        const cleaned: any = {};
+        for (const [key, value] of Object.entries(obj)) {
+          if (value === "" || value === null || value === undefined) continue;
+          if (typeof value === "object" && !Array.isArray(value)) {
+            const nested = cleanData(value);
+            if (Object.keys(nested).length > 0) cleaned[key] = nested;
+          } else {
+            cleaned[key] = value;
+          }
+        }
+        return cleaned;
+      };
+
       const blogData = {
-        ...data,
+        ...cleanData(data),
         tags: {
           en: tagsEn,
-          ar: tagsAr
-        }
+          ar: tagsAr,
+        },
       };
 
       console.log("Sending bilingual blog creation request:", blogData);
@@ -99,6 +132,12 @@ export function BlogEditor() {
         `${VITE_API_BASE_URL}/api/blogs`,
         blogData
       );
+      console.log("Blog creation response:", response);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData?.message || "Failed to create blog");
+      }
 
       queryClient.clear();
       return response.json();
@@ -452,24 +491,6 @@ export function BlogEditor() {
             </Tabs>
 
             {/* Featured Image - Common for both languages */}
-            <FormField
-              control={form.control}
-              name="featuredImage"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("blogs", "featuredImageOptional")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="url"
-                      placeholder="https://example.com/image.jpg"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             {/* Actions */}
             <div className="flex items-center justify-end gap-4 pt-6 border-t border-border">
               <Button

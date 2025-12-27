@@ -162,7 +162,6 @@ export default function BlogViewPage() {
               </p>
             )}
           </header>
-
           {/* Featured Image */}
           {blogData.featuredImage && (
             <div className="mb-8 rounded-xl overflow-hidden bg-muted flex items-center justify-center">
@@ -173,7 +172,6 @@ export default function BlogViewPage() {
               />
             </div>
           )}
-
           {/* Tags */}
           {blogData.tags &&
             Array.isArray(blogData.tags) &&
@@ -190,7 +188,6 @@ export default function BlogViewPage() {
                 </div>
               </div>
             )}
-
           {/* Reading time estimate */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground py-4 border-b">
             <span className="flex items-center gap-2">
@@ -198,8 +195,8 @@ export default function BlogViewPage() {
               <span>
                 وقت القراءة: ~
                 {Math.ceil(
-                  (isRTL ? blogData.content.ar : blogData.content.en).length /
-                    1000
+                  ((isRTL ? blogData.content.ar : blogData.content.en) || "")
+                    .length / 1000
                 )}{" "}
                 دقيقة
               </span>
@@ -211,13 +208,30 @@ export default function BlogViewPage() {
             </span>
           </div>
 
-          <div
-            className="prose prose-lg prose-slate dark:prose-invert max-w-none mb-12 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-base prose-p:leading-relaxed prose-ul:space-y-2 prose-ol:space-y-2 prose-li:text-base prose-img:rounded-xl prose-img:w-full prose-img:h-auto prose-img:max-h-[520px] prose-img:object-contain prose-img:bg-muted"
-            dir={isRTL ? "rtl" : "ltr"}
-            dangerouslySetInnerHTML={{
-              __html: isRTL ? blogData.content.ar : blogData.content.en,
-            }}></div>
+          {(() => {
+            const localizedContent =
+              (isRTL ? blogData.content.ar : blogData.content.en) || "";
+            const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(localizedContent);
 
+            if (looksLikeHtml) {
+              return (
+                <div
+                  className="!max-w-4xl m-auto overflow-hidden prose prose-lg prose-slate dark:prose-invert mb-12 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-base prose-p:leading-relaxed prose-ul:space-y-2 prose-ol:space-y-2 prose-li:text-base prose-img:rounded-xl prose-img:w-full prose-img:h-auto prose-img:max-h-[520px] prose-img:object-contain prose-img:bg-muted break-words"
+                  dir={isRTL ? "rtl" : "ltr"}
+                  dangerouslySetInnerHTML={{ __html: localizedContent }}
+                />
+              );
+            }
+
+            return (
+              <div
+                className="!max-w-4xl m-auto overflow-hidden prose prose-lg prose-slate dark:prose-invert mb-12 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-base prose-p:leading-relaxed prose-ul:space-y-2 prose-ol:space-y-2 prose-li:text-base whitespace-pre-line break-words"
+                dir={isRTL ? "rtl" : "ltr"}
+              >
+                {localizedContent}
+              </div>
+            );
+          })()}
           <Separator className="mb-8" />
         </article>
       </div>
