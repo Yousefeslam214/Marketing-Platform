@@ -53,7 +53,7 @@ export default function DraftBlogs() {
 
   // Get all blogs and filter for drafts
   const allBlogs = Array.isArray(blogs?.data) ? (blogs?.data as Blog[]) : [];
-  const draftBlogs = allBlogs.filter(blog => blog.status === 'draft');
+  const draftBlogs = allBlogs.filter((blog) => blog.status === "draft");
 
   return (
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
@@ -70,7 +70,7 @@ export default function DraftBlogs() {
             </div>
           }
         />
-        <main className="p-6 mt-24">
+        <div className="p-6 mt-24">
           {isLoading ? (
             <div className="min-h-[74vh] ">
               <Loading />
@@ -79,15 +79,17 @@ export default function DraftBlogs() {
             <div className="min-h-[74vh] mt-24">
               <ErrorState
                 title="فشل في تحميل مسودات المدونات"
-                message={(error as Error)?.message || "يرجى المحاولة مرة أخرى لاحقاً."}
+                message={
+                  (error as Error)?.message || "يرجى المحاولة مرة أخرى لاحقاً."
+                }
                 onRetry={() => refetch()}
                 showHomeButton
                 onHome={() => (window.location.href = "/")}
               />
             </div>
           ) : draftBlogs.length > 0 ? (
-            <div className="min-h-[74vh]">
-              <div className="flex flex-col w-full max-w-7xl mx-auto">
+            <div className="">
+              <div className="flex flex-col w-full max-w-7xl mx-auto min-h-[80vh] justify-between">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {draftBlogs.map((blog: Blog) => (
                     <div key={blog._id} className="relative">
@@ -107,15 +109,17 @@ export default function DraftBlogs() {
                 {/* Pagination */}
                 <div className="mt-8">
                   <DataPagination
-                    pagination={blogs?.pagination as any || {
-                      currentPage: parseInt(page),
-                      totalPages: 1,
-                      totalItems: draftBlogs.length,
-                      hasPrevious: parseInt(page) > 1,
-                      hasNext: false,
-                      itemsPerPage: parseInt(limit),
-                      limit: parseInt(limit)
-                    }}
+                    pagination={
+                      (blogs?.pagination as any) || {
+                        currentPage: parseInt(page),
+                        totalPages: 1,
+                        totalItems: draftBlogs.length,
+                        hasPrevious: parseInt(page) > 1,
+                        hasNext: false,
+                        itemsPerPage: parseInt(limit),
+                        limit: parseInt(limit),
+                      }
+                    }
                     onPageChange={(newPage) => setPage(newPage)}
                     pageSize={limit}
                     onPageSizeChange={(newLimit) => setLimit(newLimit)}
@@ -139,7 +143,7 @@ export default function DraftBlogs() {
               </div>
             </div>
           )}
-        </main>
+        </div>
       </div>
 
       <DeleteBlogDialog

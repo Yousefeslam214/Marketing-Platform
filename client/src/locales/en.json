@@ -99,6 +99,23 @@
     "draftBlogs": "Draft Blogs",
     "blogs": "Blogs"
   },
+  "adminBlogs": {
+    "allBlogsTitle": "All Blogs",
+    "allBlogsDescription": "Manage every blog in the system",
+    "loadFailedTitle": "Failed to load blogs",
+    "loadFailedMessage": "Please try again later.",
+    "publishSuccessTitle": "Blog published successfully",
+    "publishSuccessDescription": "The blog is now available to view.",
+    "publishErrorTitle": "Publish error",
+    "publishErrorDescription": "An error occurred while publishing the blog.",
+    "archiveSuccessTitle": "Blog archived successfully",
+    "archiveSuccessDescription": "The blog is now hidden from view.",
+    "archiveErrorTitle": "Archive error",
+    "archiveErrorDescription": "An error occurred while archiving the blog.",
+    "emptyTitle": "No blogs",
+    "emptyMessage": "No blogs were found in the system.",
+    "createFirstBlog": "Create the first blog"
+  },
   "blogsPage": {
     "title": "Blogs",
     "description": "Explore our latest articles, guides, and updates.",

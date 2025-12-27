@@ -99,6 +99,23 @@
     "draftBlogs": "مسودات المدونات",
     "blogs": "المدونات"
   },
+  "adminBlogs": {
+    "allBlogsTitle": "جميع المدونات",
+    "allBlogsDescription": "إدارة جميع المدونات في النظام",
+    "loadFailedTitle": "فشل في تحميل المدونات",
+    "loadFailedMessage": "يرجى المحاولة مرة أخرى لاحقاً.",
+    "publishSuccessTitle": "تم نشر المدونة بنجاح",
+    "publishSuccessDescription": "تم نشر المدونة وهي الآن متاحة للعرض",
+    "publishErrorTitle": "خطأ في النشر",
+    "publishErrorDescription": "حدث خطأ أثناء نشر المدونة",
+    "archiveSuccessTitle": "تم أرشفة المدونة بنجاح",
+    "archiveSuccessDescription": "تم أرشفة المدونة وهي الآن غير متاحة للعرض",
+    "archiveErrorTitle": "خطأ في الأرشفة",
+    "archiveErrorDescription": "حدث خطأ أثناء أرشفة المدونة",
+    "emptyTitle": "لا توجد مدونات",
+    "emptyMessage": "لم يتم العثور على أي مدونات في النظام.",
+    "createFirstBlog": "إنشاء أول مدونة"
+  },
   "blogsPage": {
     "title": "المدونة",
     "description": "استكشف أحدث المقالات والأدلة والتحديثات.",

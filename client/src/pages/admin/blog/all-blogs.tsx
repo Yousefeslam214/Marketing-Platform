@@ -25,6 +25,25 @@ export default function AllBlogs() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState<string | null>(null);
 
+  const pageStrings = {
+    title: t("adminBlogs", "allBlogsTitle"),
+    description: t("adminBlogs", "allBlogsDescription"),
+    loadFailedTitle: t("adminBlogs", "loadFailedTitle"),
+    loadFailedMessage: t("adminBlogs", "loadFailedMessage"),
+    publishSuccessTitle: t("adminBlogs", "publishSuccessTitle"),
+    publishSuccessDescription: t("adminBlogs", "publishSuccessDescription"),
+    publishErrorTitle: t("adminBlogs", "publishErrorTitle"),
+    publishErrorDescription: t("adminBlogs", "publishErrorDescription"),
+    archiveSuccessTitle: t("adminBlogs", "archiveSuccessTitle"),
+    archiveSuccessDescription: t("adminBlogs", "archiveSuccessDescription"),
+    archiveErrorTitle: t("adminBlogs", "archiveErrorTitle"),
+    archiveErrorDescription: t("adminBlogs", "archiveErrorDescription"),
+    emptyTitle: t("adminBlogs", "emptyTitle"),
+    emptyMessage: t("adminBlogs", "emptyMessage"),
+    createFirstBlog: t("adminBlogs", "createFirstBlog"),
+    createNewBlog: t("blogs", "createNewBlog"),
+  };
+
   const handleDeleteBlog = (blogId: string) => {
     setBlogToDelete(blogId);
     setDeleteDialogOpen(true);
@@ -38,19 +57,19 @@ export default function AllBlogs() {
         "PATCH",
         `${VITE_API_BASE_URL}/api/blogs/${blogId}`,
         {
-          status: "published"
+          status: "published",
         }
       );
 
       if (!response.ok) {
-        throw new Error('Failed to publish blog');
+        throw new Error("Failed to publish blog");
       }
 
       console.log("✅ Blog published successfully");
       queryClient.clear();
       toast({
-        title: "تم نشر المدونة بنجاح",
-        description: "تم نشر المدونة وهي الآن متاحة للعرض",
+        title: pageStrings.publishSuccessTitle,
+        description: pageStrings.publishSuccessDescription,
       });
 
       // Force page reload to show updated data
@@ -58,8 +77,8 @@ export default function AllBlogs() {
     } catch (error) {
       console.error("❌ Publish error:", error);
       toast({
-        title: "خطأ في النشر",
-        description: "حدث خطأ أثناء نشر المدونة",
+        title: pageStrings.publishErrorTitle,
+        description: pageStrings.publishErrorDescription,
         variant: "destructive",
       });
     }
@@ -73,19 +92,19 @@ export default function AllBlogs() {
         "PATCH",
         `${VITE_API_BASE_URL}/api/blogs/${blogId}`,
         {
-          status: "archived"
+          status: "archived",
         }
       );
 
       if (!response.ok) {
-        throw new Error('Failed to archive blog');
+        throw new Error("Failed to archive blog");
       }
 
       console.log("✅ Blog archived successfully");
       queryClient.clear(); // Clear entire cache
       toast({
-        title: "تم أرشفة المدونة بنجاح",
-        description: "تم أرشفة المدونة وهي الآن غير متاحة للعرض",
+        title: pageStrings.archiveSuccessTitle,
+        description: pageStrings.archiveSuccessDescription,
       });
 
       // Force full page reload to show updated data
@@ -93,8 +112,8 @@ export default function AllBlogs() {
     } catch (error) {
       console.error("❌ Archive error:", error);
       toast({
-        title: "خطأ في الأرشفة",
-        description: "حدث خطأ أثناء أرشفة المدونة",
+        title: pageStrings.archiveErrorTitle,
+        description: pageStrings.archiveErrorDescription,
         variant: "destructive",
       });
     }
@@ -109,7 +128,6 @@ export default function AllBlogs() {
     key: ["/blogs/all", page, limit],
     url: `${VITE_API_BASE_URL}/api/blogs?page=${page}&limit=${limit}`,
   });
-
 
   if (!TokenManager.getAccessToken()) {
     setLocation("/login");
@@ -128,35 +146,37 @@ export default function AllBlogs() {
     <div className={`flex h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
       <div className="flex-1 overflow-auto max-h-[100vh]">
         <Header
-          title="جميع المدونات"
-          description="إدارة جميع المدونات في النظام"
+          title={pageStrings.title}
+          description={pageStrings.description}
           actions={
             <div className="flex items-center gap-2">
               <Button onClick={() => setLocation("/blogs/create")}>
                 <i className="fas fa-plus mx-2"></i>
-                إنشاء مدونة جديدة
+                {pageStrings.createNewBlog}
               </Button>
             </div>
           }
         />
-        <main className="p-6 mt-24">
+        <div className="p-6 mt-24">
           {isLoading ? (
-            <div className="min-h-[74vh] ">
+            <div className="min-h-[74vh]">
               <Loading />
             </div>
           ) : error ? (
             <div className="min-h-[74vh] mt-24">
               <ErrorState
-                title="فشل في تحميل المدونات"
-                message={(error as Error)?.message || "يرجى المحاولة مرة أخرى لاحقاً."}
+                title={pageStrings.loadFailedTitle}
+                message={
+                  (error as Error)?.message || pageStrings.loadFailedMessage
+                }
                 onRetry={() => refetch()}
                 showHomeButton
                 onHome={() => (window.location.href = "/")}
               />
             </div>
           ) : allBlogs.length > 0 ? (
-            <div className="min-h-[74vh]">
-              <div className="flex flex-col w-full max-w-7xl mx-auto">
+            <div className="">
+              <div className=" w-full max-w-7xl mx-auto flex flex-col justify-between min-h-[80vh] ">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {allBlogs.map((blog: Blog) => (
                     <div key={blog._id} className="relative">
@@ -177,15 +197,17 @@ export default function AllBlogs() {
                 {/* Pagination */}
                 <div className="mt-8">
                   <DataPagination
-                    pagination={blogs?.pagination as any || {
-                      currentPage: parseInt(page),
-                      totalPages: 1,
-                      totalItems: allBlogs.length,
-                      hasPrevious: parseInt(page) > 1,
-                      hasNext: false,
-                      itemsPerPage: parseInt(limit),
-                      limit: parseInt(limit)
-                    }}
+                    pagination={
+                      (blogs?.pagination as any) || {
+                        currentPage: parseInt(page),
+                        totalPages: 1,
+                        totalItems: allBlogs.length,
+                        hasPrevious: parseInt(page) > 1,
+                        hasNext: false,
+                        itemsPerPage: parseInt(limit),
+                        limit: parseInt(limit),
+                      }
+                    }
                     onPageChange={(newPage) => setPage(newPage)}
                     pageSize={limit}
                     onPageSizeChange={(newLimit) => setLimit(newLimit)}
@@ -198,18 +220,20 @@ export default function AllBlogs() {
             <div className="min-h-[74vh] flex items-center justify-center">
               <div className="text-center">
                 <i className="fas fa-blog text-6xl text-muted-foreground mb-4"></i>
-                <h3 className="text-xl font-semibold mb-2">لا توجد مدونات</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  {pageStrings.emptyTitle}
+                </h3>
                 <p className="text-muted-foreground mb-4">
-                  لم يتم العثور على أي مدونات في النظام.
+                  {pageStrings.emptyMessage}
                 </p>
                 <Button onClick={() => setLocation("/blogs/create")}>
                   <i className="fas fa-plus mx-2"></i>
-                  إنشاء أول مدونة
+                  {pageStrings.createFirstBlog}
                 </Button>
               </div>
             </div>
           )}
-        </main>
+        </div>
       </div>
 
       <DeleteBlogDialog
