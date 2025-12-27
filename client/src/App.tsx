@@ -89,6 +89,7 @@ import GoogleAnalytics from "./analytics/GoogleAnalytics";
 import TikTokPixel from "./analytics/TikTokPixel";
 import MarketingLinksPage from "./pages/public/marketing-links";
 import FreeAdsFeed from "./pages/public/free-ads-feed";
+import BlogLanding from "./pages/public/blog";
 
 function Router() {
   const [, setLocation] = useLocation();
@@ -142,6 +143,14 @@ function Router() {
         component={() => (
           <PublicLayout>
             <LandingPage />
+          </PublicLayout>
+        )}
+      />
+      <Route
+        path="/blog"
+        component={() => (
+          <PublicLayout>
+            <BlogLanding />
           </PublicLayout>
         )}
       />

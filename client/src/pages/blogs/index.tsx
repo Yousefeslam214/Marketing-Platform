@@ -248,7 +248,8 @@ export default function BlogsPage() {
               />
             </div>
           ) : blogsList.length > 0 ? (
-            <div className="w-full max-w-7xl mx-auto min-h-[60vh] mt-12 px-2 sm:px-4 flex flex-col justify-between">
+            <div className="w-full max-w-7xl mx-auto min-h-[78vh] mt-12 px-2 sm:px-4 flex flex-col justify-between
+            ">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {blogsList.map((blog: Blog) => (
                   <BlogCard

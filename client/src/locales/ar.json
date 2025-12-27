@@ -38,6 +38,33 @@
     "unknownActivity": "نشاط",
     "justNow": "الآن"
   },
+  "blogLanding": {
+    "badge": "رؤى",
+    "title": "مدونة اخطبوط",
+    "subtitle": "أدلة عملية، تحديثات المنتج، وقصص من الفرق التي تبني تجارب دعم تعتمد على الذكاء الاصطناعي.",
+    "browseCta": "تصفح أحدث المقالات",
+    "startCta": "ابدأ الآن",
+    "featuredTitle": "المقال المميز",
+    "featuredBadge": "جديد هذا الشهر",
+    "readMore": "اقرأ المزيد",
+    "readTime": "٧ دقائق قراءة",
+    "newsletterTitle": "ابقَ على اطلاع",
+    "newsletterDesc": "احصل على ملخص شهري لأحدث الأدلة وإصدارات المنتج وقصص العملاء.",
+    "newsletterEmailLabel": "البريد الإلكتروني المهني",
+    "newsletterEmailPlaceholder": "you@company.com",
+    "newsletterCta": "اشترك",
+    "newsletterDisclaimer": "نرسل رسالة أو رسالتين في الشهر. يمكنك إلغاء الاشتراك في أي وقت.",
+    "latestTitle": "أحدث المقالات",
+    "latestSubtitle": "استكشف شروحات المنتج، الأدلة العملية، وملاحظات الإصدارات.",
+    "categories": {
+      "all": "الكل",
+      "product": "المنتج",
+      "howTo": "دليل الاستخدام",
+      "updates": "التحديثات"
+    },
+    "seoTitle": "مدونة اخطبوط | تحديثات المنتج وأدلة الاستخدام وأفكار",
+    "seoDescription": "ابق على اطلاع مع أخبار منتج اخطبوط وأدلة التنفيذ ورؤى قيادة الدعم."
+  },
   "sidebar": {
     "dashboard": "لوحة التحكم",
     "myAds": "إعلاناتي",
@@ -1379,7 +1406,8 @@
       "features": "المزايا",
       "howItWorks": "كيف يعمل",
       "pricing": "الأسعار",
-      "contact": "اتصل بنا"
+      "contact": "اتصل بنا",
+      "blog": "المدونة"
     },
     "hero": {
       "badge": "🚀 منصة تسويق متقدمة",

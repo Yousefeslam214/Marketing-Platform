@@ -62,6 +62,11 @@ const PublicHeader = () => {
               className="text-sm font-medium hover:text-primary transition-colors">
               {t("landing", "navigation.pricing")}
             </a>
+            <Link href="/blog">
+              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+                {t("landing", "navigation.blog")}
+              </span>
+            </Link>
             <Link href="/faq">
               <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
                 {t("sidebar", "faq")}
@@ -174,6 +179,13 @@ const PublicHeader = () => {
                 onClick={() => setIsMobileMenuOpen(false)}>
                 {t("landing", "navigation.pricing")}
               </a>
+              <Link href="/blog">
+                <span
+                  className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors cursor-pointer"
+                  onClick={() => setIsMobileMenuOpen(false)}>
+                  {t("landing", "navigation.blog")}
+                </span>
+              </Link>
               <Link href="/faq">
                 <span
                   className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors cursor-pointer"

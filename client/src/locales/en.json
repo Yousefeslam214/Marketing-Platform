@@ -38,6 +38,33 @@
     "campaignOverview": "Campaign Overview",
     "quickActions": "Quick Actions"
   },
+  "blogLanding": {
+    "badge": "Insights",
+    "title": "Octoups Ad Blog",
+    "subtitle": "Practical playbooks, product updates, and stories from teams building AI-first support experiences.",
+    "browseCta": "Browse latest posts",
+    "startCta": "Get started",
+    "featuredTitle": "Featured story",
+    "featuredBadge": "Fresh this month",
+    "readMore": "Read more",
+    "readTime": "7 min read",
+    "newsletterTitle": "Stay in the loop",
+    "newsletterDesc": "Get a monthly roundup of new guides, product releases, and customer stories.",
+    "newsletterEmailLabel": "Work email",
+    "newsletterEmailPlaceholder": "you@company.com",
+    "newsletterCta": "Subscribe",
+    "newsletterDisclaimer": "We send 1–2 emails per month. Unsubscribe anytime.",
+    "latestTitle": "Latest articles",
+    "latestSubtitle": "Explore product walkthroughs, how-to guides, and release notes.",
+    "categories": {
+      "all": "All",
+      "product": "Product",
+      "howTo": "How-to",
+      "updates": "Updates"
+    },
+    "seoTitle": "Octoups Ad Blog | Product updates, how-tos, and insights",
+    "seoDescription": "Stay ahead with Octoups Ad product news, implementation guides, and support leadership insights."
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "myAds": "My Ads",
@@ -1399,7 +1426,8 @@
       "features": "Features",
       "howItWorks": "How It Works",
       "pricing": "Pricing",
-      "contact": "Contact"
+      "contact": "Contact",
+      "blog": "Blog"
     },
     "hero": {
       "badge": "🚀 Advanced Marketing Platform",
