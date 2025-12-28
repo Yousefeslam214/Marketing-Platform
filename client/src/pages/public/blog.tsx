@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { useSeo } from "@/contexts/seo-context";
@@ -25,6 +25,10 @@ export default function BlogLanding() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<
+    "idle" | "loading" | "success" | "error" | "invalid"
+  >("idle");
   const lang = isRTL ? "ar" : "en";
 
   const seoTitle = t("blogLanding", "seoTitle");
@@ -132,6 +136,32 @@ export default function BlogLanding() {
   const featuredPost = filteredPosts[0] || sortedBlogs[0];
   const fallbackImage = "https://placehold.co/1200x800?text=Blog";
 
+  const handleNewsletterSubmit = useCallback(async () => {
+    const emailTrimmed = newsletterEmail.trim();
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed);
+
+    if (!isValidEmail) {
+      setNewsletterStatus("invalid");
+      return;
+    }
+
+    try {
+      setNewsletterStatus("loading");
+      const url = `${VITE_API_BASE_URL}/api/users/email`;
+      const response = await apiRequest("POST", url, { email: emailTrimmed });
+
+      if (!response.ok) {
+        throw new Error("Failed to subscribe");
+      }
+
+      setNewsletterStatus("success");
+      setNewsletterEmail("");
+    } catch (err) {
+      console.error(err);
+      setNewsletterStatus("error");
+    }
+  }, [newsletterEmail]);
+
   return (
     <div
       className={`min-h-screen bg-background text-foreground 
@@ -206,62 +236,61 @@ export default function BlogLanding() {
                 </CardHeader>
               </Card>
             ) : (
-    
-    <Card className="overflow-hidden border-muted/70 shadow-sm">
-        <Link href={`/blogs/${featuredPost._id}`}>
-                <div className="relative h-64 sm:h-80">
-                  <img
-                    src={featuredPost.featuredImage || fallbackImage}
-                    alt={
-                      featuredPost.title?.[lang] ||
-                      featuredPost.title?.ar ||
-                      featuredPost.title?.en ||
-                      ""
-                    }
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
-                </div>
-                <CardHeader className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Badge variant="secondary">
-                      {(featuredPost.category as any)?.[lang] ||
-                        (featuredPost.category as any)?.ar ||
-                        (featuredPost.category as any)?.en ||
+              <Card className="overflow-hidden border-muted/70 shadow-sm">
+                <Link href={`/blogs/${featuredPost._id}`}>
+                  <div className="relative h-64 sm:h-80">
+                    <img
+                      src={featuredPost.featuredImage || fallbackImage}
+                      alt={
+                        featuredPost.title?.[lang] ||
+                        featuredPost.title?.ar ||
+                        featuredPost.title?.en ||
+                        ""
+                      }
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+                  </div>
+                  <CardHeader className="space-y-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Badge variant="secondary">
+                        {(featuredPost.category as any)?.[lang] ||
+                          (featuredPost.category as any)?.ar ||
+                          (featuredPost.category as any)?.en ||
+                          ""}
+                      </Badge>
+                      <span className="text-sm text-muted-foreground">
+                        {new Date(featuredPost.createdAt).toLocaleDateString(
+                          isRTL ? "ar-SA" : "en-US"
+                        )}
+                      </span>
+                    </div>
+                    <CardTitle className="text-2xl">
+                      {featuredPost.title?.[lang] ||
+                        featuredPost.title?.ar ||
+                        featuredPost.title?.en ||
                         ""}
-                    </Badge>
-                    <span className="text-sm text-muted-foreground">
-                      {new Date(featuredPost.createdAt).toLocaleDateString(
-                        isRTL ? "ar-SA" : "en-US"
-                      )}
-                    </span>
-                  </div>
-                  <CardTitle className="text-2xl">
-                    {featuredPost.title?.[lang] ||
-                      featuredPost.title?.ar ||
-                      featuredPost.title?.en ||
-                      ""}
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    {featuredPost.excerpt?.[lang] ||
-                      featuredPost.excerpt?.ar ||
-                      featuredPost.excerpt?.en ||
-                      ""}
-                  </CardDescription>
-                  <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                    <span>{t("blogLanding", "readTime")}</span>
-                  </div>
-                  <div
-                    className={`flex ${
-                      isRTL ? "justify-start" : "justify-end"
-                    }`}>
-                    <Link href={`/blogs/${featuredPost._id}`}>
-                      <Button className="mt-2">
-                        {t("blogLanding", "readMore")}
-                      </Button>
-                    </Link>
-                  </div>
-                </CardHeader>
+                    </CardTitle>
+                    <CardDescription className="text-base">
+                      {featuredPost.excerpt?.[lang] ||
+                        featuredPost.excerpt?.ar ||
+                        featuredPost.excerpt?.en ||
+                        ""}
+                    </CardDescription>
+                    <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                      <span>{t("blogLanding", "readTime")}</span>
+                    </div>
+                    <div
+                      className={`flex ${
+                        isRTL ? "justify-start" : "justify-end"
+                      }`}>
+                      <Link href={`/blogs/${featuredPost._id}`}>
+                        <Button className="mt-2">
+                          {t("blogLanding", "readMore")}
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardHeader>
                 </Link>
               </Card>
             )}
@@ -291,11 +320,38 @@ export default function BlogLanding() {
                   type="email"
                   placeholder={t("blogLanding", "newsletterEmailPlaceholder")}
                   className="w-full"
+                  value={newsletterEmail}
+                  onChange={(e) => {
+                    setNewsletterEmail(e.target.value);
+                    setNewsletterStatus("idle");
+                  }}
                 />
               </div>
-              <Button className="w-full">
+              <Button
+                className="w-full"
+                onClick={handleNewsletterSubmit}
+                disabled={newsletterStatus === "loading"}>
                 {t("blogLanding", "newsletterCta")}
               </Button>
+              {newsletterStatus !== "idle" && (
+                <p
+                  className={`text-sm ${
+                    newsletterStatus === "success"
+                      ? "text-green-600"
+                      : newsletterStatus === "loading"
+                      ? "text-muted-foreground"
+                      : "text-destructive"
+                  }`}>
+                  {newsletterStatus === "success" &&
+                    t("blogLanding", "newsletterSuccess")}
+                  {newsletterStatus === "error" &&
+                    t("blogLanding", "newsletterError")}
+                  {newsletterStatus === "invalid" &&
+                    t("blogLanding", "newsletterInvalidEmail")}
+                  {newsletterStatus === "loading" &&
+                    t("blogLanding", "newsletterSubmitting")}
+                </p>
+              )}
               <p className="text-xs text-muted-foreground">
                 {t("blogLanding", "newsletterDisclaimer")}
               </p>
@@ -381,8 +437,7 @@ export default function BlogLanding() {
                 <Link
                   key={post._id}
                   href={`/blogs/${post._id}`}
-                  className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
-                >
+                  className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg">
                   <Card className="h-full flex flex-col overflow-hidden border-muted/70 shadow-sm transition-transform hover:-translate-y-1">
                     <div className="relative h-48">
                       <img

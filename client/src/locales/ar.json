@@ -53,6 +53,10 @@
     "newsletterEmailLabel": "البريد الإلكتروني المهني",
     "newsletterEmailPlaceholder": "you@company.com",
     "newsletterCta": "اشترك",
+    "newsletterSubmitting": "جاري الإرسال...",
+    "newsletterSuccess": "شكراً لاشتراكك!",
+    "newsletterError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "newsletterInvalidEmail": "يرجى إدخال بريد إلكتروني صالح.",
     "newsletterDisclaimer": "نرسل رسالة أو رسالتين في الشهر. يمكنك إلغاء الاشتراك في أي وقت.",
     "latestTitle": "أحدث المقالات",
     "latestSubtitle": "استكشف شروحات المنتج، الأدلة العملية، وملاحظات الإصدارات.",
@@ -1502,18 +1506,43 @@
       "support": "الدعم"
     },
     "pricing": {
-      "title": "أسعار بسيطة وشفافة",
-      "subtitle": "اختر الخطة التي تناسب عملك. جميع الخطط تشمل ميزاتنا الأساسية.",
+      "title": "باقة الإعلانات المميزة",
+      "subtitle": "اختر الباقة المناسبة لك: فعّل الباقة المميزة للإعلانات أو ابدأ بالخيار المجاني.",
       "currency": "ريال سعودي",
       "perImpression": "لكل مشاهدة",
       "impressions": "مشاهدات",
       "getStarted": "ابدأ الآن",
+      "plans": {
+        "premium": {
+          "name": "الباقة المميزة",
+          "label": "باقة الإعلانات المميزة",
+          "features": {
+            "featuredAds": "نشر عبر الإعلانات المميزة",
+            "topPlacement": "يمكن تمييز إعلانك في أول صفحة في المنصة",
+            "marketingTeam": "شامل فريق التسويق الالكتروني",
+            "sponsoredCampaigns": "شامل الحملات الممولة",
+            "instantAnalytics": "تحليلات فورية"
+          }
+        },
+        "free": {
+          "name": "المجانية",
+          "priceLabel": "مجانية",
+          "features": {
+            "platformPosting": "نشر إعلانك داخل المنصة",
+            "viewReports": "مشاهدة تقارير",
+            "noFeaturedAds": "لا يمكن نشر عبر الإعلانات المميزة",
+            "noTopPlacement": "لا يمكن تمييز إعلانك في أول صفحة في المنصة",
+            "noMarketingTeam": "غير شامل فريق التسويق الالكتروني",
+            "noSponsoredCampaigns": "غير شامل الحملات الممولة"
+          }
+        }
+      },
       "features": {
-        "analytics": "تحليلات متقدمة",
-        "multiPlatform": "دعم متعدد المنصات",
-        "support": "دعم عملاء 24/7",
-        "reporting": "تقارير فورية",
-        "optimization": "تحسين الحملات",
+        "analytics": "نشر عبر الإعلانات المميزة",
+        "multiPlatform": "يمكن تمييز إعلانك في أول صفحة في المنصة",
+        "support": "شامل فريق التسويق الالكتروني",
+        "reporting": "شامل الحملات الممولة",
+        "optimization": "تحليلات فورية",
         "api": "وصول API"
       },
       "loading": "جاري تحميل الأسعار...",
@@ -1522,8 +1551,8 @@
       "noData": "لا توجد بيانات أسعار متاحة"
     },
     "bestValue": "أفضل قيمة",
-    "Pricing": "التسعير",
-    "simplePricing": "التسعير البسيط",
+    "Pricing": "باقة الإعلانات المميزة",
+    "simplePricing": "باقة الإعلانات المميزة",
     "cta": {
       "title": "مستعد لتحويل تسويقك؟",
       "subtitle": "انضم لآلاف الشركات التي تنمو بالفعل مع منصتنا.",

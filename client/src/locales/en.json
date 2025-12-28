@@ -53,6 +53,10 @@
     "newsletterEmailLabel": "Work email",
     "newsletterEmailPlaceholder": "you@company.com",
     "newsletterCta": "Subscribe",
+    "newsletterSubmitting": "Submitting...",
+    "newsletterSuccess": "Thanks for subscribing!",
+    "newsletterError": "Something went wrong. Please try again.",
+    "newsletterInvalidEmail": "Please enter a valid email.",
     "newsletterDisclaimer": "We send 1–2 emails per month. Unsubscribe anytime.",
     "latestTitle": "Latest articles",
     "latestSubtitle": "Explore product walkthroughs, how-to guides, and release notes.",
@@ -1526,18 +1530,43 @@
       "support": "Support"
     },
     "pricing": {
-      "title": "Simple, Transparent Pricing",
-      "subtitle": "Choose the plan that works best for your business. All plans include our core features.",
+      "title": "Featured Ads Package",
+      "subtitle": "Choose the package that fits you: unlock the Premium featured ads package or start with the Free option.",
       "currency": "SAR",
       "perImpression": "per impression",
       "impressions": "impressions",
       "getStarted": "Get Started",
+      "plans": {
+        "premium": {
+          "name": "Premium Package",
+          "label": "Featured Ads Package",
+          "features": {
+            "featuredAds": "Publish via featured ads",
+            "topPlacement": "Highlight your ad on the platform's first page",
+            "marketingTeam": "Includes the digital marketing team",
+            "sponsoredCampaigns": "Includes sponsored campaigns",
+            "instantAnalytics": "Instant analytics"
+          }
+        },
+        "free": {
+          "name": "Free",
+          "priceLabel": "Free",
+          "features": {
+            "platformPosting": "Publish your ad inside the platform",
+            "viewReports": "View reports",
+            "noFeaturedAds": "Cannot publish via featured ads",
+            "noTopPlacement": "Cannot highlight your ad on the first page",
+            "noMarketingTeam": "Digital marketing team not included",
+            "noSponsoredCampaigns": "Sponsored campaigns not included"
+          }
+        }
+      },
       "features": {
-        "analytics": "Advanced Analytics",
-        "multiPlatform": "Multi-Platform Support",
-        "support": "24/7 Customer Support",
-        "reporting": "Real-time Reporting",
-        "optimization": "Campaign Optimization",
+        "analytics": "Publish via featured ads",
+        "multiPlatform": "Highlight your ad on the platform's first page",
+        "support": "Includes the digital marketing team",
+        "reporting": "Includes sponsored campaigns",
+        "optimization": "Instant analytics",
         "api": "API Access"
       },
       "loading": "Loading pricing...",
@@ -1546,8 +1575,8 @@
       "noData": "No pricing data available"
     },
     "bestValue": "Best Value",
-    "Pricing": "Pricing",
-    "simplePricing": "Simple Pricing",
+    "Pricing": "Featured Ads Package",
+    "simplePricing": "Featured Ads Package",
     "cta": {
       "title": "Ready to Transform Your Marketing?",
       "subtitle": "Join thousands of businesses already growing with our platform.",

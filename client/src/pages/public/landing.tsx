@@ -9,8 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect, lazy, Suspense, useCallback, useMemo } from "react";
-import { Check, AlertCircle, RefreshCw } from "lucide-react";
+import { useState, useEffect, lazy, Suspense, useCallback } from "react";
+import { Check, AlertCircle, RefreshCw, X } from "lucide-react";
 import { VITE_API_BASE_URL } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { YouTubeLite } from "@/components/landing/YouTubeLite";
@@ -66,6 +66,23 @@ export default function LandingPage() {
   const retryFetchPricing = useCallback(() => {
     fetchPricingData();
   }, [fetchPricingData]);
+
+  const premiumFeatures = [
+    "pricing.plans.premium.features.featuredAds",
+    "pricing.plans.premium.features.topPlacement",
+    "pricing.plans.premium.features.marketingTeam",
+    "pricing.plans.premium.features.sponsoredCampaigns",
+    "pricing.plans.premium.features.instantAnalytics",
+  ];
+
+  const freeFeatures = [
+    { key: "pricing.plans.free.features.platformPosting", included: true },
+    { key: "pricing.plans.free.features.viewReports", included: true },
+    { key: "pricing.plans.free.features.noFeaturedAds", included: false },
+    { key: "pricing.plans.free.features.noTopPlacement", included: false },
+    { key: "pricing.plans.free.features.noMarketingTeam", included: false },
+    { key: "pricing.plans.free.features.noSponsoredCampaigns", included: false },
+  ];
 
   //   localStorage.clear();
 
@@ -547,33 +564,35 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            {pricingError ? (
-              <Card className="p-8 text-center">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-center space-x-2 text-red-600">
-                    <AlertCircle className="w-5 h-5" />
-                    <span>{t("landing", "pricing.error")}</span>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-6">
+              {pricingError ? (
+                <Card className="p-8 text-center h-full flex flex-col justify-center">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center space-x-2 text-red-600">
+                      <AlertCircle className="w-5 h-5" />
+                      <span>{t("landing", "pricing.error")}</span>
+                    </div>
+                    <Button onClick={retryFetchPricing} variant="outline">
+                      <RefreshCw className="w-4 h-4 mx-2" />
+                      {t("landing", "pricing.retry")}
+                    </Button>
                   </div>
-                  <Button onClick={retryFetchPricing} variant="outline">
-                    <RefreshCw className="w-4 h-4 mx-2" />
-                    {t("landing", "pricing.retry")}
-                  </Button>
-                </div>
-              </Card>
-            ) : (
-              <div className="max-w-md mx-auto">
-                {/* Single Pricing Plan with Loading State */}
-                <Card className="border-2 border-primary shadow-xl relative">
+                </Card>
+              ) : (
+                <Card className="border-2 border-primary shadow-xl relative h-full flex flex-col">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <Badge className="px-3 py-1">
                       {t("landing", "bestValue")}
                     </Badge>
                   </div>
                   <CardHeader className="text-center pb-6 pt-8">
-                    <CardTitle className="text-2xl mb-4">
-                      {t("landing", "Pricing")}
+                    <CardTitle className="text-2xl mb-2">
+                      {t("landing", "pricing.plans.premium.label")}
                     </CardTitle>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {t("landing", "pricing.plans.premium.name")}
+                    </p>
                     {pricingLoading || !pricingData ? (
                       <div className="space-y-2 animate-pulse">
                         <div className="h-12 bg-muted rounded-md mx-auto w-40"></div>
@@ -597,55 +616,64 @@ export default function LandingPage() {
                       </div>
                     )}
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-6 flex-1 flex flex-col">
                     <div className="space-y-4">
-                      <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mx-3" />
-                        <span className="text-sm">
-                          {t("landing", "pricing.features.analytics")}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mx-3" />
-                        <span className="text-sm">
-                          {t(
-                            "landing",
-                            "pricing.features.multiPlatform" as any
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mx-3" />
-                        <span className="text-sm">
-                          {t("landing", "pricing.features.support")}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mx-3" />
-                        <span className="text-sm">
-                          {t("landing", "pricing.features.reporting")}
-                        </span>
-                      </div>
-                      <div className="flex items-center mb-2">
-                        <Check className="w-5 h-5 text-green-500 mx-3" />
-                        <span className="text-sm">
-                          {t("landing", "pricing.features.optimization")}
-                        </span>
-                      </div>
-                      {/* <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-500 mx-3" />
-                        <span className="text-sm">{t("landing", "pricing.features.api")}</span>
-                      </div> */}
+                      {premiumFeatures.map((feature) => (
+                        <div className="flex items-center" key={feature}>
+                          <Check className="w-5 h-5 text-green-500 mx-3" />
+                          <span className="text-sm">
+                            {t("landing", feature as any)}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                    <Link href="/signup" className="block">
+                    <Link href="/signup" className="block mt-auto">
                       <Button className="w-full" size="lg">
                         {t("landing", "pricing.getStarted")}
                       </Button>
                     </Link>
                   </CardContent>
                 </Card>
-              </div>
-            )}
+              )}
+
+              <Card className="border-2 h-full flex flex-col">
+                <CardHeader className="text-center pb-6 pt-8">
+                  <CardTitle className="text-2xl mb-2">
+                    {t("landing", "pricing.plans.free.name")}
+                  </CardTitle>
+                  <div className="text-4xl font-bold text-primary">
+                    {t("landing", "pricing.plans.free.priceLabel")}
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-2">
+                    {t("landing", "pricing.subtitle")}
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6 flex-1 flex flex-col">
+                  <div className="space-y-4">
+                    {freeFeatures.map((feature) => (
+                      <div className="flex items-center" key={feature.key}>
+                        {feature.included ? (
+                          <Check className="w-5 h-5 text-green-500 mx-3" />
+                        ) : (
+                          <X className="w-5 h-5 text-destructive mx-3" />
+                        )}
+                        <span
+                          className={`text-sm ${
+                            feature.included ? "" : "text-muted-foreground"
+                          }`}>
+                          {t("landing", feature.key as any)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <Link href="/signup" className="block mt-auto">
+                    <Button className="w-full" size="lg" variant="outline">
+                      {t("landing", "pricing.getStarted")}
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
