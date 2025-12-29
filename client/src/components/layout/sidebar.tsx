@@ -166,6 +166,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
           icon: "fas fa-rss",
+             isBilling: true,
         },
         {
           name: t("sidebar", "freeAdsFeed"),
@@ -201,7 +202,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: campaignsPath(),
           icon: "fas fa-ad",
         },
-        
+
         {
           name: t("sidebar", "billing"),
           href: userBillingPath(),
@@ -222,12 +223,14 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
           icon: "fas fa-rss",
+          isBilling: true,
         },
         {
           name: t("sidebar", "freeAdsFeed"),
           href: "/free/feed",
           icon: "fas fa-gift",
-        },{
+        },
+        {
           name: t("sidebar", "blogs"),
           href: blogsPath(),
           icon: "fas fa-blog",
