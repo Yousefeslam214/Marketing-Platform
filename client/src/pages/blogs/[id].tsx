@@ -95,7 +95,7 @@ export default function BlogViewPage() {
     <div className="space-y-6">
       {/* Custom header for blog detail */}
       <div
-        className={`sticky top-0 z-20 bg-background/95 backdrop-blur border-b px-6 py-4 ${
+        className={`sticky top-0 z-20 bg-background/95 backdrop-blur bg-white  border-b px-6 py-4 ${
           isRTL ? "rtl text-right" : "ltr"
         }`}>
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
@@ -226,8 +226,7 @@ export default function BlogViewPage() {
             return (
               <div
                 className="!max-w-4xl m-auto overflow-hidden prose prose-lg prose-slate dark:prose-invert mb-12 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-base prose-p:leading-relaxed prose-ul:space-y-2 prose-ol:space-y-2 prose-li:text-base whitespace-pre-line break-words"
-                dir={isRTL ? "rtl" : "ltr"}
-              >
+                dir={isRTL ? "rtl" : "ltr"}>
                 {localizedContent}
               </div>
             );

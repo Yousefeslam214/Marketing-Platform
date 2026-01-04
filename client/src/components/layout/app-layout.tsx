@@ -5,6 +5,7 @@ import { Sidebar } from "./sidebar";
 import { TokenManager } from "@/lib/auth";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
+import { useNotificationStream } from "@/hooks/use-notification-stream";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,9 @@ export function AppLayout({ children }: AppLayoutProps) {
   const { isRTL, t } = useLanguage();
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isAuthenticated = !!TokenManager.getAccessToken();
+
+  useNotificationStream(isAuthenticated);
 
   // Debug authentication in AppLayout
   console.log("AppLayout - Token:", TokenManager.getAccessToken());
@@ -47,7 +51,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           {/* Mobile menu toggle */}
           {isMobile && (
             <div
-              className={`sticky top-0 z-30 bg-background/95 backdrop-blur border-b px-4 py-3 
+              className={`sticky top-0 z-30 bg-background/95 backdrop-blur bg-white  border-b px-4 py-3 
                 bg-card
                 ${isRTL ? "text-right" : "text-left"}`}>
               <Button

@@ -15,17 +15,7 @@ export function Header({ title, description, actions }: HeaderProps) {
     <>
       <MetaPixel />
       <header
-        className="bg-card border-b border-border 
-        px-6 mx-3
-         py-4
-      h-[97px]
-      fixed
-      w-fill-available
-      w-[-webkit-fill-available]
-      z-50
-
-      
-      "
+        className="bg-card border-b border-border px-6 mx-3 py-2 h-[85px] md:py-4 md:h-[97px] fixed w-fill-available w-[-webkit-fill-available] z-50"
         data-testid="page-header">
         <div
           className={` items-center justify-between 

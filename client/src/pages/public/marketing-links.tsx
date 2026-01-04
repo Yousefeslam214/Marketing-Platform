@@ -58,7 +58,7 @@ export default function MarketingLinksPage() {
   return (
     <div className={`w-full ${isRTL ? "rtl" : "ltr"}`}>
       <header
-        className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4
+        className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur bg-white  supports-[backdrop-filter]:bg-background/60 p-4
         mb-8
       ">
         <div className="space-y-1">

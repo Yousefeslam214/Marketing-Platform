@@ -26,7 +26,11 @@ const PublicHeader = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav
+      className="sticky
+     top-0 z-50 w-full border-b bg-background/95 
+     bg-white
+     backdrop-blur bg-white  supports-[backdrop-filter]:bg-background/60">
       <MetaPixel />
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
@@ -45,8 +49,9 @@ const PublicHeader = () => {
 
           {/* Desktop Navigation */}
           <div
-            className={`hidden lg:flex items-center space-x-6 ${isRTL ? "space-x-reverse" : ""
-              }`}>
+            className={`hidden lg:flex items-center space-x-6 ${
+              isRTL ? "space-x-reverse" : ""
+            }`}>
             <a
               href="/#features"
               className="text-sm font-medium hover:text-primary transition-colors">
@@ -132,20 +137,23 @@ const PublicHeader = () => {
               aria-label="Toggle menu">
               <div className="w-6 h-6 flex flex-col justify-center items-center">
                 <span
-                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
-                    ? "rotate-45 translate-y-1"
-                    : "-translate-y-0.5"
-                    }`}
+                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
+                    isMobileMenuOpen
+                      ? "rotate-45 translate-y-1"
+                      : "-translate-y-0.5"
+                  }`}
                 />
                 <span
-                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isMobileMenuOpen ? "opacity-0" : "opacity-100"
-                    }`}
+                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
+                    isMobileMenuOpen ? "opacity-0" : "opacity-100"
+                  }`}
                 />
                 <span
-                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
-                    ? "-rotate-45 -translate-y-1"
-                    : "translate-y-0.5"
-                    }`}
+                  className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
+                    isMobileMenuOpen
+                      ? "-rotate-45 -translate-y-1"
+                      : "translate-y-0.5"
+                  }`}
                 />
               </div>
             </Button>
@@ -154,10 +162,11 @@ const PublicHeader = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen
-            ? "max-h-99 opacity-100 border-t"
-            : "max-h-0 opacity-0 overflow-hidden"
-            }`}>
+          className={`md:hidden transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen
+              ? "max-h-99 opacity-100 border-t"
+              : "max-h-0 opacity-0 overflow-hidden"
+          }`}>
           <div className="py-4 space-y-4">
             {/* Mobile Navigation Links */}
             <div className="space-y-3">
