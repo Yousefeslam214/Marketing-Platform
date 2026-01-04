@@ -226,7 +226,7 @@ export default function AdsIndex() {
               </div>
             </div>
           ) : (
-            <div className="text-center py-12">
+            <div className="text-center py-12 mt-12">
               <i className="fas fa-ad text-6xl text-muted-foreground mb-6"></i>
               <h3 className="text-xl font-semibold text-foreground mb-2">
                 {t("ads", "noAdsYet")}
