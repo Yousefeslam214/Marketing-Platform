@@ -915,16 +915,7 @@ export default function AdDetail({ params }: AdDetailProps) {
                             dataTestId={`ad-image-${ad.id}`}
                           />
                         </>
-                      ) : (
-                        <div className="w-full h-40 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border">
-                          <div className="text-center text-muted-foreground">
-                            <i className="fas fa-image text-2xl mb-2 block"></i>
-                            <div className="text-sm">
-                              {t("ads", "noImage") || "No image"}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                      ) : null}
                     </div>
                   </CardContent>
                 </Card>

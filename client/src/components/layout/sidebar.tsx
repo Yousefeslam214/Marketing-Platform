@@ -57,6 +57,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const role = TokenManager.getRole();
 
   const alwaysOpenSubItems = [t("sidebar", "adsManagement")];
+  const borderSideClass = isRTL ? "border-r-4" : "border-l-4";
+  const nestedOffsetClass = isRTL ? "mr-4" : "ml-4";
+  const nestedPaddingClass = isRTL ? "pr-4" : "pl-4";
 
   const toggleExpanded = (itemName: string) => {
     // Prevent toggling for always-open submenus
@@ -166,7 +169,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           name: t("sidebar", "adsFeed"),
           href: "/feed",
           icon: "fas fa-rss",
-             isBilling: true,
+          isBilling: true,
         },
         {
           name: t("sidebar", "freeAdsFeed"),
@@ -254,7 +257,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         <div key={item.name}>
           <button
             onClick={() => toggleExpanded(item.name)}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 ${
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${borderSideClass} ${
               isActive
                 ? isBilling
                   ? "bg-amber-100 text-amber-700 border-amber-400"
@@ -263,7 +266,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                 ? "text-amber-700 border-amber-300 hover:bg-amber-50 hover:text-amber-700"
                 : "hover:bg-accent hover:text-accent-foreground border-transparent"
             } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
-              isSubItem ? "ml-4" : ""
+              isSubItem ? nestedOffsetClass : ""
             }`}
             style={{
               fontWeight: isActive ? "bold" : "normal",
@@ -291,11 +294,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           </button>
 
           {isExpanded && (
-            <div className={`mt-1 space-y-1 ${isRTL ? "mx-4" : "ml-4"}`}>
+            <div className={`mt-1 space-y-1 ${nestedPaddingClass}`}>
               {item.subItems?.map((subItem) => (
                 <Link key={subItem.href} href={subItem.href}>
                   <div
-                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
+                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${borderSideClass} cursor-pointer ${
                       location === subItem.href
                         ? subItem.isBilling
                           ? "bg-amber-100 text-amber-700 border-amber-400"
@@ -303,9 +306,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         : subItem.isBilling
                         ? "text-amber-700 border-amber-300 hover:bg-amber-50 hover:text-amber-700"
                         : "hover:bg-accent hover:text-accent-foreground border-transparent"
-                    } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
-                      isRTL ? "mx-4" : "ml-4"
-                    }`}
+                    } ${
+                      isRTL ? "flex-row-reverse text-right" : "text-left"
+                    } ${nestedOffsetClass}`}
                     style={{
                       fontWeight: location === subItem.href ? "bold" : "normal",
                       boxShadow:
@@ -340,7 +343,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     return (
       <Link key={item.href} href={item.href}>
         <div
-          className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors border-l-4 cursor-pointer ${
+          className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${borderSideClass} cursor-pointer ${
             location === item.href
               ? isBilling
                 ? "bg-amber-100 text-amber-700 border-amber-400"
@@ -349,7 +352,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               ? "text-amber-700 border-amber-300 hover:bg-amber-50 hover:text-amber-700"
               : "hover:bg-accent hover:text-accent-foreground border-transparent"
           } ${isRTL ? "flex-row-reverse text-right" : "text-left"} ${
-            isSubItem ? "ml-4" : ""
+            isSubItem ? nestedOffsetClass : ""
           }`}
           style={{
             fontWeight: location === item.href ? "bold" : "normal",
@@ -405,7 +408,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         className={`${
           isMobile
             ? `fixed top-0 ${
-                isRTL ? "right-0" : "left-0"
+                isRTL ? "right-[-54px]" : "left-0"
               } h-full w-64 bg-card flex flex-col shadow-lg z-[60] transform transition-transform duration-300 ease-in-out ${
                 isOpen
                   ? "translate-x-0"
@@ -460,7 +463,10 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           <div className="space-y-2">
             {navigation.map((section) => (
               <div key={section.section} className="mb-4">
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
+                <p
+                  className={`text-xs font-semibold text-primary uppercase tracking-wider mb-2 ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}>
                   {section.section}
                 </p>
                 {section.items.map((item) => renderNavigationItem(item))}

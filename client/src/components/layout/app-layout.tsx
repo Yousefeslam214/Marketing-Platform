@@ -66,7 +66,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </span> */}
             </div>
           )}
-          <div className={`px-6 ${isRTL}`}>{children}</div>
+          <div className={`sm:px-0 md:px-3 lg:px-6 ${isRTL}`}>{children}</div>
         </main>
       </div>
     );

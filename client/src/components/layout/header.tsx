@@ -3,6 +3,7 @@ import { ReactNode, useMemo, useState } from "react";
 import MetaPixel from "@/components/analytics/MetaPixel";
 import { useNotificationStream } from "@/hooks/use-notification-stream";
 import { TokenManager } from "@/lib/auth";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeaderProps {
   title: string;
@@ -13,6 +14,8 @@ interface HeaderProps {
 export function Header({ title, description, actions }: HeaderProps) {
   const { isRTL, t } = useLanguage();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const isMobile = useIsMobile();
+
   const { notifications, unreadCount, markAllAsRead } = useNotificationStream(
     !!TokenManager.getAccessToken()
   );
@@ -38,7 +41,9 @@ export function Header({ title, description, actions }: HeaderProps) {
     <>
       <MetaPixel />
       <header
-        className="bg-card border-b border-border px-6 mx-3 py-2 h-[85px] md:py-4 md:h-[97px] fixed w-fill-available w-[-webkit-fill-available] z-50"
+        className={`bg-card border-b border-border px-0  py-2 h-[85px] md:py-4 md:h-[97px] fixed w-fill-available w-[-webkit-fill-available] z-50
+          ${isMobile ? "" : "mx-3"}
+          `}
         data-testid="page-header">
         <div
           className={` items-center justify-between 
@@ -87,12 +92,14 @@ export function Header({ title, description, actions }: HeaderProps) {
                       {t("layout", "notifications")}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {unreadCount > 0 ? `${unreadCount} new` : "Up to date"}
+                      {unreadCount > 0
+                        ? `${unreadCount} new`
+                        : t("layout", "Up to date")}
                     </span>
                   </div>
                   {formattedNotifications.length === 0 ? (
                     <div className="px-4 py-6 text-sm text-muted-foreground text-center">
-                      No notifications yet
+                      {t("layout", "noNotificationsYet")}
                     </div>
                   ) : (
                     formattedNotifications.map((notification) => (

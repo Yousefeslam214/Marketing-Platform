@@ -956,13 +956,7 @@ export default function AdsFeed() {
                                 className="h-full w-full object-cover"
                                 loading="lazy"
                               />
-                            ) : (
-                              <div className="h-full w-full bg-muted flex items-center justify-center">
-                                <span className="text-xs text-muted-foreground">
-                                  {t("ads", "noImage") || "No image"}
-                                </span>
-                              </div>
-                            )}
+                            ) : null}
                             {/* </AspectRatio> */}
                           </div>
                         </div>
@@ -1203,13 +1197,7 @@ export default function AdsFeed() {
                     }
                     className="w-full max-h-[560px] object-contain"
                   />
-                ) : (
-                  <div className="h-48 w-full bg-muted flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">
-                      {t("ads", "noImage") || "No image"}
-                    </span>
-                  </div>
-                )}
+                ) :null}
                 {activeAd.hasPromoted && (
                   <div
                     className={` absolute top-0 ${

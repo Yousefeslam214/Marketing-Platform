@@ -710,7 +710,8 @@ export default function FreeAdsFeed() {
 
       {/* Mobile Filters Panel */}
       {showFilters && (
-        <div className={`md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-[70]
+        <div
+          className={`md:hidden fixed top-[97px] left-0 right-0  bg-card border-b shadow-lg p-4 space-y-3 animate-in slide-in-from-top duration-200 mt-14 z-[70]
         ${language === "ar" ? "ml-3" : "mr-3"}
         `}>
           {/* City Filter */}
@@ -967,13 +968,7 @@ export default function FreeAdsFeed() {
                                 className="h-full w-full object-cover"
                                 loading="lazy"
                               />
-                            ) : (
-                              <div className="h-full w-full bg-muted flex items-center justify-center">
-                                <span className="text-xs text-muted-foreground">
-                                  {t("ads", "noImage") || "No image"}
-                                </span>
-                              </div>
-                            )}
+                            ) : null}
                             {/* </AspectRatio> */}
                           </div>
                         </div>
@@ -1214,13 +1209,7 @@ export default function FreeAdsFeed() {
                     }
                     className="w-full max-h-[560px] object-contain"
                   />
-                ) : (
-                  <div className="h-48 w-full bg-muted flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">
-                      {t("ads", "noImage") || "No image"}
-                    </span>
-                  </div>
-                )}
+                ) : null}
                 {activeAd.hasPromoted && (
                   <div
                     className={` absolute top-0 ${
@@ -1265,4 +1254,3 @@ export default function FreeAdsFeed() {
     </div>
   );
 }
- 
