@@ -28,9 +28,9 @@ const PublicHeader = () => {
   return (
     <nav
       className="sticky
-     top-0 z-50 w-full border-b bg-background/95 
-     bg-white
-     backdrop-blur bg-white  supports-[backdrop-filter]:bg-background/60">
+     top-0 z-50 w-full border-b bg-background
+    
+     backdrop-blur   supports-[backdrop-filter]:bg-background/60">
       <MetaPixel />
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { TokenManager } from "@/lib/auth";
 import { VITE_API_BASE_URL } from "@/lib/utils";
@@ -9,7 +9,7 @@ type LocalizedText = Record<string, string | undefined> & {
   ar?: string;
 };
 
-interface NotificationPayload {
+export interface NotificationPayload {
   timestamp: string;
   metadata?: Record<string, unknown>;
   userId: string;
@@ -19,11 +19,15 @@ interface NotificationPayload {
   message: LocalizedText;
   read?: boolean;
   fromDatabase?: boolean;
+  id?: string;
 }
+
+const MAX_NOTIFICATIONS = 50;
 
 export function useNotificationStream(enabled: boolean) {
   const { language } = useLanguage();
   const languageRef = useRef(language);
+  const [notifications, setNotifications] = useState<NotificationPayload[]>([]);
 
   // Keep the latest language without re-subscribing to the stream
   useEffect(() => {
@@ -34,9 +38,7 @@ export function useNotificationStream(enabled: boolean) {
     if (!enabled || !VITE_API_BASE_URL) return;
 
     const token = TokenManager.getAccessToken();
-    const streamUrl = new URL(
-      `${VITE_API_BASE_URL}/api/notifications/stream`
-    );
+    const streamUrl = new URL(`${VITE_API_BASE_URL}/api/notifications/stream`);
 
     if (token) {
       streamUrl.searchParams.set("token", token);
@@ -50,9 +52,27 @@ export function useNotificationStream(enabled: boolean) {
       try {
         const payload = JSON.parse(event.data) as NotificationPayload;
         const lang = languageRef.current;
-        const title = payload.title?.[lang] || payload.title?.en || "Notification";
+        const title =
+          payload.title?.[lang] || payload.title?.en || "Notification";
         const description =
           payload.message?.[lang] || payload.message?.en || "";
+
+        const notificationId =
+          payload.metadata?.adId?.toString() ||
+          (typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : `${payload.type}-${payload.timestamp}`);
+
+        const notification: NotificationPayload = {
+          ...payload,
+          id: notificationId,
+          read: payload.read ?? false,
+        };
+
+        setNotifications((prev) => {
+          const next = [notification, ...prev].slice(0, MAX_NOTIFICATIONS);
+          return next;
+        });
 
         toast({
           title,
@@ -71,4 +91,12 @@ export function useNotificationStream(enabled: boolean) {
       eventSource.close();
     };
   }, [enabled]);
+
+  const markAllAsRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  };
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  return { notifications, unreadCount, markAllAsRead };
 }

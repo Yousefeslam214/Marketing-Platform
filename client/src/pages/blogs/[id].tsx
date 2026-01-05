@@ -95,7 +95,7 @@ export default function BlogViewPage() {
     <div className="space-y-6">
       {/* Custom header for blog detail */}
       <div
-        className={`sticky top-0 z-20 bg-background/95 backdrop-blur bg-white  border-b px-6 py-4 ${
+        className={`sticky top-0 z-20 bg-background/95 bg-background  border-b px-6 py-4 ${
           isRTL ? "rtl text-right" : "ltr"
         }`}>
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">

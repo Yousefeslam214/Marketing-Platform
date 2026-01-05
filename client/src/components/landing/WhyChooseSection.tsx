@@ -41,7 +41,7 @@ function WhyChooseSection() {
                   key={index}
                   className="
                   h-full
-                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur bg-white -sm">
+                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-background/80 backdrop-blur">
                   <CardContent className="p-6 sm:p-8">
                     <div
                       className={`flex items-center gap-4 ${
