@@ -154,6 +154,9 @@ export function editCampaignsPath(adId: string) {
 export function adminBillingPath() {
   return `/admin/adminBilling`;
 }
+export function adminAdsPackagesPath() {
+  return "/admin/ads-packages";
+}
 
 // Public routes
 export function publicFeedPath() {

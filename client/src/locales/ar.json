@@ -94,6 +94,7 @@
     "impressionRatios": "نسب مشاهدات",
     "adReports": "بلاغات الإعلانات",
     "pixels": "بكسلات",
+    "adsPackages": "باقات الإعلانات",
     "FreeCredits": "الأرصدة المجانية",
     "seoSettings": "إعدادات السيو",
     "createNewAd": "إنشاء إعلان جديد",
@@ -136,6 +137,8 @@
     "clearSearch": "مسح البحث"
   },
   "layout": {
+    "noNotificationsYet": "لا توجد إشعارات بعد",
+    "Up to date": "محدث",
     "notifications": "الإشعارات",
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
@@ -143,6 +146,27 @@
     "search": "بحث...",
     "menu": "القائمة",
     "filters": "الفلاتر"
+  },
+  "adsPackages": {
+    "title": "باقات الإعلانات",
+    "description": "إنشاء وتعديل وحذف الباقات التي يشتريها المستخدمون.",
+    "createHeading": "إنشاء باقة جديدة",
+    "editHeading": "تعديل الباقة",
+    "name": "اسم الباقة",
+    "namePlaceholder": "مثال: الباقة البلاتينية",
+    "amount": "المبلغ (ر.س)",
+    "amountPlaceholder": "أدخل السعر بالريال السعودي",
+    "createButton": "إنشاء الباقة",
+    "updateButton": "تحديث الباقة",
+    "cancelEdit": "إلغاء التعديل",
+    "listHeading": "قائمة الباقات",
+    "empty": "لا توجد باقات حتى الآن.",
+    "actions": "الإجراءات",
+    "createdAt": "تاريخ الإنشاء",
+    "updatedAt": "تاريخ التحديث",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "deleting": "جاري الحذف..."
   },
   "profile": {
     "title": "ملفي الشخصي",
@@ -2126,5 +2150,7 @@
     "editBlogDescription": "قم بتحرير محتوى المدونة",
     "viewBlog": "عرض المدونة",
     "backToBlogs": "العودة للمدونات"
-  }
+  },
+  "noNotificationsYet": "لا توجد إشعارات بعد",
+  "Up to date": "محدث"
 }

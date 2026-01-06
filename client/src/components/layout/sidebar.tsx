@@ -22,6 +22,7 @@ import {
   userDashboardPath,
   userBillingPath,
   adminBillingPath,
+  adminAdsPackagesPath,
   campaignsPath,
   newCampaignsPath,
   blogsPath,
@@ -144,6 +145,11 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           href: adminBillingPath(),
           icon: "fas fa-file-invoice-dollar",
           isBilling: true,
+        },
+        {
+          name: t("sidebar", "adsPackages"),
+          href: adminAdsPackagesPath(),
+          icon: "fas fa-box-open",
         },
         {
           name: t("sidebar", "impressionRatios"),

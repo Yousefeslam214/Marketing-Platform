@@ -115,16 +115,7 @@ export default function AdsIndex() {
                               alt={ad.titleEn || ad.titleAr}
                               dataTestId={`ad-image-${ad.id}`}
                             />
-                          ) : (
-                            <div className="w-full bg-slate-50 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-border py-8">
-                              <div className="text-center text-muted-foreground">
-                                <i className="fas fa-image text-2xl mb-2 block"></i>
-                                <div className="text-sm">
-                                  {t("ads", "noImage") || "No image"}
-                                </div>
-                              </div>
-                            </div>
-                          )}
+                          ) : null}
                         </div>
 
                         {/* Stats Section */}

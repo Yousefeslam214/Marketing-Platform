@@ -94,6 +94,7 @@
     "impressionRatios": "Impression Ratios",
     "adReports": "Ad Reports",
     "pixels": "Pixels",
+    "adsPackages": "Ad Packages",
     "FreeCredits": "Free Credits",
     "seoSettings": "SEO Settings",
     "createNewAd": "Create New Ad",
@@ -136,6 +137,8 @@
     "clearSearch": "Clear search"
   },
   "layout": {
+    "noNotificationsYet": "No notifications yet",
+    "Up to date": "Up to date",
     "notifications": "Notifications",
     "profile": "Profile",
     "settings": "Settings",
@@ -143,6 +146,27 @@
     "search": "Search...",
     "menu": "Menu",
     "filters": "Filters"
+  },
+  "adsPackages": {
+    "title": "Ad Packages",
+    "description": "Create, edit, and remove ad packages for users.",
+    "createHeading": "Create new package",
+    "editHeading": "Edit package",
+    "name": "Package name",
+    "namePlaceholder": "e.g. Platinum package",
+    "amount": "Amount (SAR)",
+    "amountPlaceholder": "Enter price in SAR",
+    "createButton": "Create package",
+    "updateButton": "Update package",
+    "cancelEdit": "Cancel editing",
+    "listHeading": "Packages list",
+    "empty": "No packages found yet.",
+    "actions": "Actions",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleting": "Deleting..."
   },
   "profile": {
     "title": "My Profile",
@@ -1627,9 +1651,7 @@
           "title": "Relax! We Handle Everything Else",
           "description": "Our marketing team promotes your ad across social media and our network. You just watch the results come in!"
         }
-      },
-      "cta": "Start Advertising Today",
-      "ctaSubtext": "Join thousands of businesses growing with Octopus Ads"
+      }
     },
     "whyChoose": {
       "title": "Why Choose Octopus Ads?",

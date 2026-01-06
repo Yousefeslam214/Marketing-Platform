@@ -41,6 +41,7 @@ import PaymentSuccessPage from "@/pages/shared/payment-success";
 import PaymentFailedPage from "@/pages/shared/payment-failed";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdsPackages from "@/pages/admin/AdsPackages";
 import NotFound from "@/pages/shared/not-found";
 import { LanguageProvider } from "./contexts/language-context";
 // import FAQ from "./pages/user/faq";
@@ -48,6 +49,7 @@ import {
   adminAllAdsPath,
   adminApprovedAdsPath,
   adminBillingPath,
+  adminAdsPackagesPath,
   adminPendingAdsPath,
   adminRejectedAdsPath,
   adminAllBlogsPath,
@@ -488,6 +490,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <AdminBilling />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/ads-packages"
+        component={() => (
+          <AppLayout>
+            <AdsPackages />
           </AppLayout>
         )}
       />

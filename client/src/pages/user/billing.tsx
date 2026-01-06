@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/hooks/use-language";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,18 @@ import { PaymentService, type PaymentData } from "@/lib/payment-service";
 import { getStatusColor, VITE_API_BASE_URL } from "@/lib/utils";
 import { useApiQuery } from "@/hooks/useApiQuery";
 
+interface AdsPackage {
+  id: string;
+  name: string;
+  amount: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export default function Billing() {
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
-  const [selectedPackage, setSelectedPackage] = useState("basic");
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [customAmount, setCustomAmount] = useState("");
 
   // Fetch payment history from API
@@ -39,6 +47,13 @@ export default function Billing() {
       url: `${VITE_API_BASE_URL}/api/users/impression-ratios`,
     });
 
+  const { data: adsPackagesResponse, isLoading: isLoadingPackages } =
+    useApiQuery<AdsPackage[]>({
+      key: ["ads-packages"],
+      url: `${VITE_API_BASE_URL}/api/ads-packages`,
+    });
+  const isLoadingPackagesList = isLoadingRatios || isLoadingPackages;
+
   // Extract payment history from API response
   const paymentHistory = paymentHistoryResponse?.data?.items || [];
 
@@ -50,33 +65,58 @@ export default function Billing() {
   const impressionsPerSAR = sarRatio?.impressionsPerUnit || 1000; // Default to 1000 if not found
 
   // Helper function to calculate impressions from amount using API ratio
-  const calculateImpressions = (amount: string) => {
-    return parseFloat(amount) * impressionsPerSAR;
+  const calculateImpressions = (amount: string | number) => {
+    return Number(amount || 0) * impressionsPerSAR;
   };
 
-  const impressionPackages = [
-    {
-      id: "basic",
-      nameKey: "basicPackage",
-      impressions: 50 * impressionsPerSAR, // 50 SAR worth of impressions
-      amount: 50,
-      popular: false,
-    },
-    {
-      id: "professional",
-      nameKey: "professionalPackage",
-      impressions: 100 * impressionsPerSAR, // 100 SAR worth of impressions
-      amount: 100,
-      popular: true,
-    },
-    {
-      id: "enterprise",
-      nameKey: "enterprisePackage",
-      impressions: 200 * impressionsPerSAR, // 200 SAR worth of impressions
-      amount: 200,
-      popular: false,
-    },
-  ];
+  const adsPackages = adsPackagesResponse?.data || [];
+
+  const fallbackPackages = useMemo(
+    () => [
+      {
+        id: "basic",
+        name: t("billing", "basicPackage"),
+        impressions: 50 * impressionsPerSAR,
+        amount: 50,
+        popular: false,
+      },
+      {
+        id: "professional",
+        name: t("billing", "professionalPackage"),
+        impressions: 100 * impressionsPerSAR,
+        amount: 100,
+        popular: true,
+      },
+      {
+        id: "enterprise",
+        name: t("billing", "enterprisePackage"),
+        impressions: 200 * impressionsPerSAR,
+        amount: 200,
+        popular: false,
+      },
+    ],
+    [impressionsPerSAR, t]
+  );
+
+  const apiPackages = useMemo(
+    () =>
+      adsPackages.map((pkg) => ({
+        id: pkg.id,
+        name: pkg.name,
+        amount: Number(pkg.amount) || 0,
+        impressions: calculateImpressions(pkg.amount),
+        popular: false,
+      })),
+    [adsPackages, impressionsPerSAR]
+  );
+
+  const packagesToShow = apiPackages.length ? apiPackages : fallbackPackages;
+
+  useEffect(() => {
+    if (!selectedPackage && packagesToShow.length) {
+      setSelectedPackage(packagesToShow[0].id);
+    }
+  }, [packagesToShow, selectedPackage]);
 
   const purchaseMutation = useMutation({
     mutationFn: async (paymentData: PaymentData) => {
@@ -94,7 +134,7 @@ export default function Billing() {
   });
 
   const handlePurchase = (packageId: string) => {
-    const pkg = impressionPackages.find((p) => p.id === packageId);
+    const pkg = packagesToShow.find((p) => p.id === packageId);
     if (pkg) {
       purchaseMutation.mutate({
         amount: pkg.amount ?? 0,
@@ -288,7 +328,7 @@ export default function Billing() {
               <CardTitle>{t("billing", "impressionPackages")}</CardTitle>
             </CardHeader>
             <CardContent>
-              {isLoadingRatios ? (
+              {isLoadingPackagesList ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
                   {[1, 2, 3].map((i) => (
                     <div
@@ -304,7 +344,7 @@ export default function Billing() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-                  {impressionPackages.map((pkg) => {
+                  {packagesToShow.map((pkg) => {
                     return (
                       <div
                         key={pkg.id}
@@ -329,7 +369,7 @@ export default function Billing() {
                               isRTL ? "text-right" : "text-left"
                             }`}
                             data-testid={`package-name-${pkg.id}`}>
-                            {t("billing", pkg.nameKey as any)}
+                            {pkg.name}
                           </h3>
                           <div
                             className={`mb-4 ${
@@ -406,11 +446,7 @@ export default function Billing() {
                   <div className={isRTL ? "text-right" : "text-left"}>
                     <p className="text-sm font-medium text-foreground">
                       {t("billing", "packageSelected")}:{" "}
-                      {t(
-                        "billing",
-                        impressionPackages.find((p) => p.id === selectedPackage)
-                          ?.nameKey as any
-                      )}
+                      {packagesToShow.find((p) => p.id === selectedPackage)?.name}
                     </p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1">
                       <svg
@@ -429,10 +465,10 @@ export default function Billing() {
                         <path d="m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2" />
                         <path d="M20 10 4 13.5" />
                       </svg>
-                      {impressionPackages.find((p) => p.id === selectedPackage)
+                      {packagesToShow.find((p) => p.id === selectedPackage)
                         ?.amount || 0}{" "}
                       -{" "}
-                      {impressionPackages
+                      {packagesToShow
                         .find((p) => p.id === selectedPackage)
                         ?.impressions.toLocaleString()}{" "}
                       {t("billing", "impressions")}
