@@ -102,7 +102,8 @@
     "allBlogs": "جميع المدونات",
     "publishedBlogs": "المدونات المنشورة",
     "draftBlogs": "مسودات المدونات",
-    "blogs": "المدونات"
+    "blogs": "المدونات",
+    "notifications": "الإشعارات"
   },
   "adminBlogs": {
     "allBlogsTitle": "جميع المدونات",
@@ -145,7 +146,31 @@
     "logout": "تسجيل الخروج",
     "search": "بحث...",
     "menu": "القائمة",
-    "filters": "الفلاتر"
+    "filters": "الفلاتر",
+    "adminNotifications": "إشعارات المسؤول"
+  },
+  "adminNotifications": {
+    "title": "إدارة الإشعارات",
+    "broadcastHistory": "سجل البث",
+    "createNotification": "إنشاء إشعار",
+    "editNotification": "تعديل الإشعار",
+    "sendBroadcast": "إرسال بث",
+    "updateNotification": "تحديث الإشعار",
+    "successSent": "تم إرسال الإشعار بنجاح",
+    "successUpdated": "تم تحديث الإشعار بنجاح",
+    "successDeleted": "تم حذف الإشعار بنجاح",
+    "errorSent": "فشل في إرسال الإشعار",
+    "errorUpdated": "فشل في تحديث الإشعار",
+    "errorDeleted": "فشل في حذف الإشعار",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا الإشعار؟",
+    "titleEn": "العنوان (إنجليزي)",
+    "titleAr": "العنوان (عربي)",
+    "messageEn": "الرسالة (إنجليزي)",
+    "messageAr": "الرسالة (عربي)",
+    "noNotifications": "لا توجد إشعارات",
+    "actions": "الإجراءات",
+    "date": "التاريخ",
+    "loading": "جاري التحميل..."
   },
   "adsPackages": {
     "title": "باقات الإعلانات",

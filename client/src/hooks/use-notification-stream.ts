@@ -199,10 +199,31 @@ export function useNotificationStream(enabled: boolean) {
     };
   }, [enabled, VITE_API_BASE_URL]);
 
-  const markAllAsRead = () => {
+  const markAllAsRead = async () => {
+    // Optimistically update local state
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     setUnreadCount(0);
-    // TODO: Ideally send API request to mark all as read
+
+    try {
+      const token = TokenManager.getAccessToken();
+      if (!token) return;
+
+      const res = await fetch(`${VITE_API_BASE_URL}/api/notifications/read-all-combined`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to mark all as read on server");
+      }
+    } catch (error) {
+      console.error("Failed to mark all as read:", error);
+      // If vital, we could revert state here or refetch count, 
+      // but for now we keep the optimistic UI.
+    }
   };
 
   const markAsRead = (notificationId: string) => {

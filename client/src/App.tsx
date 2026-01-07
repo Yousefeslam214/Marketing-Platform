@@ -92,6 +92,7 @@ import TikTokPixel from "./analytics/TikTokPixel";
 import MarketingLinksPage from "./pages/public/marketing-links";
 import FreeAdsFeed from "./pages/public/free-ads-feed";
 import BlogLanding from "./pages/public/blog";
+import AdminNotifications from "./pages/admin/notification/get-all";
 
 function Router() {
   const [, setLocation] = useLocation();
@@ -540,6 +541,14 @@ function Router() {
         component={() => (
           <AppLayout>
             <SeoSettings />
+          </AppLayout>
+        )}
+      />
+      <Route
+        path="/admin/notifications"
+        component={() => (
+          <AppLayout>
+            <AdminNotifications />
           </AppLayout>
         )}
       />

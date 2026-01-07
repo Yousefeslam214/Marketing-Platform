@@ -102,7 +102,8 @@
     "allBlogs": "All Blogs",
     "publishedBlogs": "Published Blogs",
     "draftBlogs": "Draft Blogs",
-    "blogs": "Blogs"
+    "blogs": "Blogs",
+    "notifications": "Notifications"
   },
   "adminBlogs": {
     "allBlogsTitle": "All Blogs",
@@ -145,7 +146,31 @@
     "logout": "Logout",
     "search": "Search...",
     "menu": "Menu",
-    "filters": "Filters"
+    "filters": "Filters",
+    "adminNotifications": "Admin Notifications"
+  },
+  "adminNotifications": {
+    "title": "Notifications Management",
+    "broadcastHistory": "Broadcast History",
+    "createNotification": "Create Notification",
+    "editNotification": "Edit Notification",
+    "sendBroadcast": "Send Broadcast",
+    "updateNotification": "Update Notification",
+    "successSent": "Notification sent successfully",
+    "successUpdated": "Notification updated successfully",
+    "successDeleted": "Notification deleted successfully",
+    "errorSent": "Failed to send notification",
+    "errorUpdated": "Failed to update notification",
+    "errorDeleted": "Failed to delete notification",
+    "deleteConfirm": "Are you sure you want to delete this notification?",
+    "titleEn": "Title (English)",
+    "titleAr": "Title (Arabic)",
+    "messageEn": "Message (English)",
+    "messageAr": "Message (Arabic)",
+    "noNotifications": "No notifications found",
+    "actions": "Actions",
+    "date": "Date",
+    "loading": "Loading..."
   },
   "adsPackages": {
     "title": "Ad Packages",
