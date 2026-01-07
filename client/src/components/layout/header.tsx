@@ -16,7 +16,7 @@ export function Header({ title, description, actions }: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  const { notifications, unreadCount, markAllAsRead } = useNotificationStream(
+  const { notifications, unreadCount, markAllAsRead, deleteNotification } = useNotificationStream(
     !!TokenManager.getAccessToken()
   );
 
@@ -64,9 +64,8 @@ export function Header({ title, description, actions }: HeaderProps) {
             )}
           </div>
           <div
-            className={`flex items-center gap-4 ${
-              isRTL ? "flex-row-reverse" : "flex-row"
-            }`}
+            className={`flex items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"
+              }`}
             data-testid="page-actions">
             <div className="relative">
               <button
@@ -84,9 +83,8 @@ export function Header({ title, description, actions }: HeaderProps) {
 
               {isDropdownOpen && (
                 <div
-                  className={`absolute mt-3 w-80 max-h-96 overflow-y-auto rounded-lg border border-border bg-card shadow-lg ${
-                    isRTL ? "left-0" : "right-0"
-                  }`}>
+                  className={`absolute mt-3 w-80 max-h-96 overflow-y-auto rounded-lg border border-border bg-card shadow-lg ${isRTL ? "left-0" : "right-0"
+                    }`}>
                   <div className="flex items-center justify-between px-4 py-3 border-b border-border/80">
                     <span className="text-sm font-semibold text-foreground">
                       {t("layout", "notifications")}
@@ -105,23 +103,46 @@ export function Header({ title, description, actions }: HeaderProps) {
                     formattedNotifications.map((notification) => (
                       <div
                         key={notification.id ?? notification.timestamp}
-                        className={`px-4 py-3 border-b border-border/60 last:border-b-0 ${
-                          notification.read ? "bg-card" : "bg-muted/30"
-                        } ${isRTL ? "text-right" : "text-left"}`}>
+                        className={`px-4 py-3 border-b border-border/60 last:border-b-0 hover:bg-muted/20 transition-colors group relative
+                        ${notification.read ? "bg-card" : "bg-primary/5 dark:bg-primary/10"} 
+                        ${notification.isAdminNotification ? "border-l-4 border-l-primary" : ""}
+                        ${isRTL ? "text-right" : "text-left"}`}>
+
+                        {/* Unread Indicator Dot */}
+                        {!notification.read && (
+                          <span className={`absolute top-3.5 ${isRTL ? "right-2" : "left-2"} w-2 h-2 rounded-full bg-primary`}></span>
+                        )}
+
+                        {/* Delete Button (visible on group hover) */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (notification.id) deleteNotification(notification.id);
+                          }}
+                          className={`absolute top-2 ${isRTL ? "left-2" : "right-2"} 
+                            opacity-0 group-hover:opacity-100 transition-opacity p-1.5 
+                            hover:bg-destructive/10 hover:text-destructive rounded-full text-muted-foreground`}
+                          title={t("common", "delete")}>
+                          <i className="fas fa-trash-alt text-xs"></i>
+                        </button>
+
                         <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <div className="text-sm font-semibold text-foreground">
+                          <div className={isRTL ? "pl-6" : "pr-6"}>
+                            <div className={`text-sm text-foreground flex items-center gap-2 ${!notification.read ? "font-bold" : "font-semibold"}`}>
+                              {notification.isAdminNotification && (
+                                <i className="fas fa-shield-alt text-primary text-xs" title="Admin Notification"></i>
+                              )}
                               {notification.title?.[isRTL ? "ar" : "en"] ||
                                 notification.title?.en ||
                                 t("layout", "notifications")}
                             </div>
-                            <div className="text-xs text-muted-foreground mt-1">
+                            <div className={`text-xs text-muted-foreground mt-1 ${!notification.read ? "font-medium text-foreground/80" : ""}`}>
                               {notification.message?.[isRTL ? "ar" : "en"] ||
                                 notification.message?.en ||
                                 ""}
                             </div>
                           </div>
-                          <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                          <span className="text-[10px] text-muted-foreground whitespace-nowrap pt-1">
                             {notification.formattedTime}
                           </span>
                         </div>
