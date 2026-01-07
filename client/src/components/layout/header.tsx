@@ -64,8 +64,7 @@ export function Header({ title, description, actions }: HeaderProps) {
             )}
           </div>
           <div
-            className={`flex items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"
-              }`}
+            className="flex items-center gap-4"
             data-testid="page-actions">
             <div className="relative">
               <button
