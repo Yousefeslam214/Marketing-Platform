@@ -28,9 +28,9 @@ import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
 const formSchema = z.object({
-    titleEn: z.string().min(1).max(200),
+    titleEn: z.string().optional(),
     titleAr: z.string().min(1).max(200),
-    messageEn: z.string().min(1).max(500),
+    messageEn: z.string().optional(),
     messageAr: z.string().min(1).max(500),
 });
 
@@ -53,7 +53,16 @@ export function CreateNotification() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(true);
-            await apiRequest("POST", `${VITE_API_BASE_URL}/api/notifications/admin/broadcast`, values);
+            const normalizedValues = {
+                ...values,
+                titleEn: values.titleEn?.trim() ? values.titleEn : values.titleAr,
+                messageEn: values.messageEn?.trim() ? values.messageEn : values.messageAr,
+            };
+            await apiRequest(
+                "POST",
+                `${VITE_API_BASE_URL}/api/notifications/admin/broadcast`,
+                normalizedValues
+            );
 
             toast({
                 title: t("adminNotifications", "successSent"),
@@ -150,4 +159,3 @@ export function CreateNotification() {
         </Dialog>
     );
 }
-

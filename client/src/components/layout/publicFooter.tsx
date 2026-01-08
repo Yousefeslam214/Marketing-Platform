@@ -5,7 +5,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
 const PublicFooter = () => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const { theme } = useTheme();
   return (
     <footer
@@ -158,6 +158,30 @@ const PublicFooter = () => {
                 </Link>
               </li>
             </ul>
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-[1.4fr_.6fr]">
+          <div className="rounded-lg border border-border bg-card/60 p-5">
+            <h4 className="font-semibold text-foreground">
+              {t("landing", "footer.complianceTitle")}
+            </h4>
+            <ul className={`mt-4 space-y-2 text-sm text-muted-foreground ${isRTL ? "text-right" : "text-left"}`}>
+              <li>{t("landing", "footer.businessCenterDoc")}</li>
+              <li>{t("landing", "footer.commercialRegistry")}</li>
+              <li>{t("landing", "footer.freelanceDoc")}</li>
+              <li>{t("landing", "footer.adLicense")}</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-border bg-card/60 p-5 flex flex-col items-center justify-center text-center">
+            <img
+              src="/qr.jpeg"
+              alt={t("landing", "footer.unifiedCertification")}
+              className="h-32 w-32 rounded-md border border-border bg-background object-contain"
+            />
+            <p className="mt-3 text-xs text-muted-foreground">
+              {t("landing", "footer.unifiedCertification")}
+            </p>
           </div>
         </div>
 

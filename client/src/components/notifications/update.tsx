@@ -27,9 +27,9 @@ import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const formSchema = z.object({
-    titleEn: z.string().min(1).max(200),
+    titleEn: z.string().max(200).optional(),
     titleAr: z.string().min(1).max(200),
-    messageEn: z.string().min(1).max(500),
+    messageEn: z.string().max(500).optional(),
     messageAr: z.string().min(1).max(500),
 });
 
@@ -70,8 +70,17 @@ export function UpdateNotification({ notification, open, onOpenChange }: UpdateN
 
         try {
             setIsLoading(true);
+            const normalizedValues = {
+                ...values,
+                titleEn: values.titleEn?.trim() ? values.titleEn : values.titleAr,
+                messageEn: values.messageEn?.trim() ? values.messageEn : values.messageAr,
+            };
             // Endpoint updated per user request: PATCH /api/notifications/admin/:id
-            await apiRequest("PATCH", `${VITE_API_BASE_URL}/api/notifications/admin/${notification.id}`, values);
+            await apiRequest(
+                "PATCH",
+                `${VITE_API_BASE_URL}/api/notifications/admin/${notification.id}`,
+                normalizedValues
+            );
 
             toast({
                 title: t("adminNotifications", "successUpdated"),

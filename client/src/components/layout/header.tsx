@@ -1,5 +1,5 @@
 import { useLanguage } from "@/hooks/use-language";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import MetaPixel from "@/components/analytics/MetaPixel";
 import { useNotificationStream } from "@/hooks/use-notification-stream";
 import { TokenManager } from "@/lib/auth";
@@ -15,6 +15,7 @@ export function Header({ title, description, actions }: HeaderProps) {
   const { isRTL, t } = useLanguage();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const isMobile = useIsMobile();
+  const notificationsRef = useRef<HTMLDivElement | null>(null);
 
   const { notifications, unreadCount, markAllAsRead, deleteNotification } = useNotificationStream(
     !!TokenManager.getAccessToken()
@@ -36,6 +37,26 @@ export function Header({ title, description, actions }: HeaderProps) {
       return next;
     });
   };
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+
+    const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null;
+      if (!target || !notificationsRef.current) return;
+      if (!notificationsRef.current.contains(target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, [isDropdownOpen]);
 
   return (
     <>
@@ -66,7 +87,7 @@ export function Header({ title, description, actions }: HeaderProps) {
           <div
             className="flex items-center gap-4"
             data-testid="page-actions">
-            <div className="relative">
+            <div className="relative" ref={notificationsRef}>
               <button
                 type="button"
                 onClick={handleToggleDropdown}
@@ -118,7 +139,7 @@ export function Header({ title, description, actions }: HeaderProps) {
                             e.stopPropagation();
                             if (notification.id) deleteNotification(notification.id);
                           }}
-                          className={`absolute top-2 ${isRTL ? "left-2" : "right-2"} 
+                          className={`absolute top-2 ${isRTL ? "left-2" : "right-2"} mt-4
                             opacity-0 group-hover:opacity-100 transition-opacity p-1.5 
                             hover:bg-destructive/10 hover:text-destructive rounded-full text-muted-foreground`}
                           title={t("common", "delete")}>
@@ -133,16 +154,18 @@ export function Header({ title, description, actions }: HeaderProps) {
                               )}
                               {notification.title?.[isRTL ? "ar" : "en"] ||
                                 notification.title?.en ||
+                                notification.title?.ar ||
                                 t("layout", "notifications")}
                             </div>
                             <div className={`text-xs text-muted-foreground mt-1 ${!notification.read ? "font-medium text-foreground/80" : ""}`}>
                               {notification.message?.[isRTL ? "ar" : "en"] ||
                                 notification.message?.en ||
+                                notification.message?.ar ||
                                 ""}
                             </div>
                           </div>
                           <span className="text-[10px] text-muted-foreground whitespace-nowrap pt-1">
-                            {notification.formattedTime}
+                            {new Date(notification.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} {new Date(notification.timestamp).toLocaleDateString([], { month: 'numeric', day: 'numeric' })}
                           </span>
                         </div>
                       </div>
