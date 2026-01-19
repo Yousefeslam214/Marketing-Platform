@@ -12,11 +12,14 @@ import { useApiQuery } from "@/hooks/useApiQuery";
 import { handleApprove, handleReject } from "@/lib/helper-ad";
 import { RejectDialog } from "@/components/ads/reject-dialog";
 import { DeleteAdDialog } from "@/components/ads/delete-ad-dialog";
+import { Input } from "@/components/ui/input";
 
 export default function PendingAds() {
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
+  const [titleFilter, setTitleFilter] = useState<string>("");
+  const [emailFilter, setEmailFilter] = useState<string>("");
   const [loadingActions, setLoadingActions] = useState<Set<string>>(new Set());
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [selectedAdId, setSelectedAdId] = useState<string | null>(null);
@@ -30,14 +33,38 @@ export default function PendingAds() {
     setDeleteDialogOpen(true);
   };
 
+  const handleTitleChange = (value: string) => {
+    setTitleFilter(value);
+    setPage("1");
+  };
+
+  const handleEmailChange = (value: string) => {
+    setEmailFilter(value);
+    setPage("1");
+  };
+
+  const queryParams = new URLSearchParams({
+    page,
+    limit,
+    status: "pending",
+  });
+
+  if (titleFilter.trim()) {
+    queryParams.set("title", titleFilter.trim());
+  }
+
+  if (emailFilter.trim()) {
+    queryParams.set("email", emailFilter.trim());
+  }
+
   const {
     data: ads,
     isLoading,
     error,
     refetch,
   } = useApiQuery({
-    key: ["/ads/pending", page, limit],
-    url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}&status=pending`,
+    key: ["/ads/pending", page, limit, titleFilter, emailFilter],
+    url: `${VITE_API_BASE_URL}/api/advertising/list?${queryParams.toString()}`,
   });
 
   const pendingAds = Array.isArray(ads?.data) ? (ads?.data as AdData[]) : [];
@@ -111,6 +138,28 @@ export default function PendingAds() {
         />
 
         <main className="p-6 mt-24">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
+            <div className="w-full md:max-w-sm">
+              <Input
+                type="search"
+                placeholder={
+                  isRTL ? "ابحث بالعنوان التجاري" : "Search by title"
+                }
+                value={titleFilter}
+                onChange={(event) => handleTitleChange(event.target.value)}
+              />
+            </div>
+            <div className="w-full md:max-w-sm">
+              <Input
+                type="search"
+                placeholder={
+                  isRTL ? "ابحث بالبريد الإلكتروني" : "Search by email"
+                }
+                value={emailFilter}
+                onChange={(event) => handleEmailChange(event.target.value)}
+              />
+            </div>
+          </div>
           {isLoading ? (
             <div className="min-h-[74vh]">
               <Loading />

@@ -10,11 +10,14 @@ import { useApiQuery } from "@/hooks/useApiQuery";
 import Loading from "@/components/Loading";
 import { ErrorState } from "@/components/Error";
 import { DeleteAdDialog } from "@/components/ads/delete-ad-dialog";
+import { Input } from "@/components/ui/input";
 
 export default function ApprovedAds() {
   const { t, isRTL } = useLanguage();
   const [page, setPage] = useState<string>("1");
   const [limit, setLimit] = useState<string>("5");
+  const [titleFilter, setTitleFilter] = useState<string>("");
+  const [emailFilter, setEmailFilter] = useState<string>("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [adToDelete, setAdToDelete] = useState<string | null>(null);
 
@@ -31,14 +34,38 @@ export default function ApprovedAds() {
     setDeleteDialogOpen(true);
   };
 
+  const handleTitleChange = (value: string) => {
+    setTitleFilter(value);
+    setPage("1");
+  };
+
+  const handleEmailChange = (value: string) => {
+    setEmailFilter(value);
+    setPage("1");
+  };
+
+  const queryParams = new URLSearchParams({
+    page,
+    limit,
+    status: "approved",
+  });
+
+  if (titleFilter.trim()) {
+    queryParams.set("title", titleFilter.trim());
+  }
+
+  if (emailFilter.trim()) {
+    queryParams.set("email", emailFilter.trim());
+  }
+
   const {
     data: ads,
     isLoading,
     error,
     refetch,
   } = useApiQuery({
-    key: ["/ads/approved", page, limit],
-    url: `${VITE_API_BASE_URL}/api/advertising/list?page=${page}&limit=${limit}&status=approved`,
+    key: ["/ads/approved", page, limit, titleFilter, emailFilter],
+    url: `${VITE_API_BASE_URL}/api/advertising/list?${queryParams.toString()}`,
   });
 
   // Filter approved ads and type safely
@@ -72,6 +99,28 @@ export default function ApprovedAds() {
         />
 
         <main className="p-6 mt-24">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
+            <div className="w-full md:max-w-sm">
+              <Input
+                type="search"
+                placeholder={
+                  isRTL ? "ابحث بالعنوان التجاري" : "Search by title"
+                }
+                value={titleFilter}
+                onChange={(event) => handleTitleChange(event.target.value)}
+              />
+            </div>
+            <div className="w-full md:max-w-sm">
+              <Input
+                type="search"
+                placeholder={
+                  isRTL ? "ابحث بالبريد الإلكتروني" : "Search by email"
+                }
+                value={emailFilter}
+                onChange={(event) => handleEmailChange(event.target.value)}
+              />
+            </div>
+          </div>
           {isLoading ? (
             <div className="min-h-[74vh] ">
               <Loading />
