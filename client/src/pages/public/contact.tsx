@@ -114,7 +114,7 @@ export default function Contact() {
                           <h3 className="font-semibold">
                             {t("contact", "phone")}
                           </h3>
-                          <p className="text-muted-foreground">0502274696</p>
+                          <p className="text-muted-foreground">+966 583 898 606</p>
                         </div>
                       </div>
                     </CardContent>
@@ -225,7 +225,7 @@ export default function Contact() {
                     size="lg"
                     className="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-8 py-3"
                     onClick={() => {
-                      window.open(`https://wa.me/966502274696`, "_blank");
+                      window.open(`https://wa.me/966583898606`, "_blank");
                     }}>
                     <SiWhatsapp
                       className={`h-5 w-5 ${isRTL ? "ml-2" : "mx-2"}`}
