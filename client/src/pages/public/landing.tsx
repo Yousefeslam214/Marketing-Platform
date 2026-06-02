@@ -744,7 +744,7 @@ export default function LandingPage() {
                   {t("landing", "cta.getStarted")}
                 </Button>
               </Link>
-              <Link href="tel:0502274696" className="w-full sm:w-auto">
+              <Link href="tel:+966 583 898 606" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   variant="outline"

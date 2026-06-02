@@ -147,7 +147,7 @@ const PublicFooter = () => {
               </li>
               <li className="flex items-center">
                 <i className="fas fa-phone mx-2"></i>
-                0502274696
+                +966 583 898 606
               </li>
 
               <li className="mt-4">
