@@ -147,7 +147,7 @@ const PublicFooter = () => {
               </li>
               <li className="flex items-center">
                 <i className="fas fa-phone mx-2"></i>
-                583898606
+                0583898606
               </li>
 
               <li className="mt-4">

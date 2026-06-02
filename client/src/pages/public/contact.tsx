@@ -114,7 +114,7 @@ export default function Contact() {
                           <h3 className="font-semibold">
                             {t("contact", "phone")}
                           </h3>
-                          <p className="text-muted-foreground">+966 583 898 606</p>
+                          <p className="text-muted-foreground">0583898606</p>
                         </div>
                       </div>
                     </CardContent>
