@@ -1493,6 +1493,7 @@
   },
   "landing": {
     "navigation": {
+      "homePage": "Home Page",
       "features": "Features",
       "howItWorks": "How It Works",
       "pricing": "Pricing",

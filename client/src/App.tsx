@@ -141,8 +141,27 @@ function Router() {
           )}
         />
       )}
+      {!auth ? (
+        <Route
+          path="/"
+          component={() => (
+            <PublicLayout>
+              <AdsFeed />
+            </PublicLayout>
+          )}
+        />
+      ) : (
+        <Route
+          path="/"
+          component={() => (
+            <AppLayout>
+              <AdsFeed />
+            </AppLayout>
+          )}
+        />
+      )}
       <Route
-        path="/"
+        path="/home"
         component={() => (
           <PublicLayout>
             <LandingPage />
@@ -552,15 +571,7 @@ function Router() {
           </AppLayout>
         )}
       />
-      <Route
-        path="/feed"
-        component={() => (
-          <AppLayout>
-            {/* <PublicHeader /> */}
-            <AdsFeed />
-          </AppLayout>
-        )}
-      />
+
 
       {/* <Route
         path="/public/:id"

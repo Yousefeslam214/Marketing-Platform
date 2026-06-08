@@ -1469,6 +1469,7 @@
   },
   "landing": {
     "navigation": {
+      "homePage": "الصفحة الرئيسية",
       "features": "المزايا",
       "howItWorks": "كيف يعمل",
       "pricing": "الأسعار",
