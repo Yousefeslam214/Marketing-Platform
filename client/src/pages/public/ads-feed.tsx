@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import useLoadPixels, { Pixel } from "@/hooks/useLoadPixels";
+import { useLocation } from "wouter";
 import { TokenManager } from "@/lib/auth";
 import { Header } from "@/components/layout/header";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -105,6 +106,8 @@ interface AdsFeedResponse {
 
 export default function AdsFeed() {
   const { t, language, isRTL } = useLanguage();
+  const [location] = useLocation();
+  const isRootPath = location === "/";
   const { theme } = useTheme();
   const { toast } = useToast();
   const isMobile = useIsMobile();
@@ -522,33 +525,44 @@ export default function AdsFeed() {
 
   return (
     <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <Header
-        title={t("publicFeed", "title")}
-        description={t("publicFeed", "description")}
-      />
+      {!isRootPath && (
+        <Header
+          title={t("publicFeed", "title")}
+          description={t("publicFeed", "description")}
+        />
+      )}
 
-      {/* ── Filter Bar ── */}
-      <div className="sticky top-[97px] z-40 bg-background/95 backdrop-blur border-b">
-        <div className="px-4 md:px-6 lg:px-8 py-2.5 flex items-center gap-2">
+      {/* ── Modern Unified Search Toolbar ── */}
+      <div className={`sticky ${isRootPath ? "top-[64px]" : "top-[97px]"} z-40 bg-background/60 backdrop-blur-md px-4 py-6 md:py-8`}>
+        <div className="max-w-5xl mx-auto">
+          {/* Main Toolbar Container */}
+          <div className={`
+            relative bg-background border shadow-xl transition-all duration-300
+            flex flex-col md:flex-row items-stretch p-2 gap-2
+            ${isMobile ? "rounded-3xl" : "rounded-full"}
+            focus-within:ring-4 focus-within:ring-primary/10
+          `}>
 
-          {/* Mobile: toggle button */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="md:hidden flex items-center gap-1.5 shrink-0"
-            onClick={() => setShowFilters(!showFilters)}>
-            <i className="fas fa-sliders-h text-xs" />
-            {t("publicFeed", "filters") || "Filters"}
-            {hasActiveFilters && <span className="w-1.5 h-1.5 bg-primary rounded-full" />}
-          </Button>
+            {/* Search Input Section */}
+            <div className="flex-1 flex items-center px-4 min-w-0">
+              <i className={`fas fa-search ${isRTL ? "ml-3" : "mr-3"} text-muted-foreground/60`} />
+              <Input
+                type="text"
+                value={titleFilter}
+                onChange={(e) => { setTitleFilter(e.target.value); setPage(1); }}
+                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-base placeholder:text-muted-foreground/50 w-full"
+                placeholder={t("publicFeed", "Search title") || "Search ads..."}
+              />
+            </div>
 
-          {/* Desktop: inline filters */}
-          <div className="hidden md:flex items-center gap-2 flex-1 flex-wrap">
-            {/* City */}
-            <div className="relative">
-              <i className={`fas fa-map-marker-alt absolute ${isRTL ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 text-muted-foreground text-xs pointer-events-none`} />
+            {/* Vertical Dividers (Desktop Only) */}
+            <div className="hidden md:block w-px bg-border h-8 self-center" />
+
+            {/* City Filter */}
+            <div className={`flex items-center ${isRTL ? "md:pr-4" : "md:pl-4"} px-2`}>
+              <i className={`fas fa-map-marker-alt ${isRTL ? "ml-2.5" : "mr-2.5"} text-muted-foreground/50 text-sm`} />
               <Select value={targetCities[0] || undefined} onValueChange={handleCityChange}>
-                <SelectTrigger className={`h-9 w-36 text-sm ${isRTL ? "pr-8" : "pl-8"}`}>
+                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-11 w-full md:w-40 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
                   <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -560,37 +574,16 @@ export default function AdsFeed() {
               </Select>
             </div>
 
-            {/* Title search */}
-            <div className="relative">
-              <i className={`fas fa-search absolute ${isRTL ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 text-muted-foreground text-xs pointer-events-none`} />
-              <Input
-                type="text"
-                value={titleFilter}
-                onChange={(e) => { setTitleFilter(e.target.value); setPage(1); }}
-                className={`h-9 w-44 text-sm ${isRTL ? "pr-8" : "pl-8"}`}
-                placeholder={t("publicFeed", "Search title") || "Search title…"}
-              />
-            </div>
+            {/* Vertical Dividers (Desktop Only) */}
+            <div className="hidden md:block w-px bg-border h-8 self-center" />
 
-            {/* Description search */}
-            <div className="relative">
-              <i className={`fas fa-search absolute ${isRTL ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 text-muted-foreground text-xs pointer-events-none`} />
-              <Input
-                type="text"
-                value={descriptionFilter}
-                onChange={(e) => { setDescriptionFilter(e.target.value); setPage(1); }}
-                className={`h-9 w-44 text-sm ${isRTL ? "pr-8" : "pl-8"}`}
-                placeholder={t("publicFeed", "Search description") || "Search description…"}
-              />
-            </div>
-
-            {/* Audience */}
-            <div className="relative">
-              <i className={`fas fa-users absolute ${isRTL ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 text-muted-foreground text-xs pointer-events-none`} />
+            {/* Category/Audience Filter */}
+            <div className={`flex items-center ${isRTL ? "md:pr-4" : "md:pl-4"} px-2`}>
+              <i className={`fas fa-th-large ${isRTL ? "ml-2.5" : "mr-2.5"} text-muted-foreground/50 text-sm`} />
               <Select
                 value={audienceFilter || undefined}
                 onValueChange={(v) => { setAudienceFilter(v === "any" ? "" : v); setPage(1); }}>
-                <SelectTrigger className={`h-9 w-40 text-sm ${isRTL ? "pr-8" : "pl-8"}`}>
+                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-11 w-full md:w-44 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
                   <SelectValue placeholder={t("ads", "targetAudiencePlaceholder")} />
                 </SelectTrigger>
                 <SelectContent className="max-h-64">
@@ -599,322 +592,253 @@ export default function AdsFeed() {
               </Select>
             </div>
 
-            {/* Clear */}
-            {hasActiveFilters && (
+            {/* Search Button */}
+            <Button
+              size="lg"
+              className={`
+                bg-primary hover:bg-primary/90 text-white font-bold
+                md:px-8 h-12 md:h-auto whitespace-nowrap
+                transition-all duration-300 active:scale-95
+                ${isMobile ? "rounded-2xl w-full mt-2" : "rounded-full"}
+              `}
+              onClick={() => { /* Filters already trigger via state, but button provides UX anchor */ }}>
+              <i className={`fas fa-search ${isRTL ? "ml-2" : "mr-2"}`} />
+              {t("publicFeed", "search") || "Search"}
+            </Button>
+          </div>
+
+          {/* Active Filters Tag Bar (Optional cleanup) */}
+          {hasActiveFilters && (
+            <div className="mt-4 flex flex-wrap justify-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => { setTitleFilter(""); setDescriptionFilter(""); setAudienceFilter(""); setTargetCities([]); setPage(1); }}
-                className="h-9 text-muted-foreground hover:text-foreground">
-                <i className={`fas fa-times text-xs ${isRTL ? "ml-1" : "mr-1"}`} />
-                {t("publicFeed", "clearFilters") || "Clear"}
+                className="h-8 rounded-full text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all">
+                <i className={`fas fa-times-circle ${isRTL ? "ml-1.5" : "mr-1.5"}`} />
+                {t("publicFeed", "clearAllFilters") || "Clear all filters"}
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
-
-        {/* Mobile expanded filter panel */}
-        {showFilters && (
-          <div className="md:hidden border-t bg-background px-4 pb-4 pt-3 space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  {t("ads", "allCities") || "City"}
-                </label>
-                <Select value={targetCities[0] || undefined} onValueChange={handleCityChange}>
-                  <SelectTrigger className="w-full h-9 text-sm">
-                    <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t("ads", "allCities") || "All Cities"}</SelectItem>
-                    {locationOptions.map((opt: { value: string; label: string }) => (
-                      <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  {t("ads", "targetAudienceLabel") || "Audience"}
-                </label>
-                <Select
-                  value={audienceFilter || undefined}
-                  onValueChange={(v) => { setAudienceFilter(v === "any" ? "" : v); setPage(1); }}>
-                  <SelectTrigger className="w-full h-9 text-sm">
-                    <SelectValue placeholder={t("ads", "targetAudiencePlaceholder")} />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-64">
-                    <AudienceOptions />
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  {t("publicFeed", "Search title") || "Title"}
-                </label>
-                <Input
-                  type="text"
-                  value={titleFilter}
-                  onChange={(e) => { setTitleFilter(e.target.value); setPage(1); }}
-                  className="w-full h-9 text-sm"
-                  placeholder={t("publicFeed", "Search title") || "Search…"}
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  {t("publicFeed", "Search description") || "Description"}
-                </label>
-                <Input
-                  type="text"
-                  value={descriptionFilter}
-                  onChange={(e) => { setDescriptionFilter(e.target.value); setPage(1); }}
-                  className="w-full h-9 text-sm"
-                  placeholder={t("publicFeed", "Search description") || "Search…"}
-                />
-              </div>
-            </div>
-            {hasActiveFilters && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full"
-                onClick={() => { setTitleFilter(""); setDescriptionFilter(""); setAudienceFilter(""); setTargetCities([]); setPage(1); }}>
-                <i className="fas fa-times text-xs mr-1.5" />
-                {t("publicFeed", "clearFilters") || "Clear all filters"}
-              </Button>
-            )}
-          </div>
-        )}
       </div>
 
-
-
-
-
-
-      {/* Main Content */}
-      <main
-        // min-h-[78vh]
-        className="p-6   
-      flex flex-col items-center w-full
-      ">
-        {isLoading ? (
-          <SkeletonList numberOfItems={6} />
-        ) : (
-          <div className="w-full flex flex-col items-center space-y-8">
-            {/* Ads List */}
-            <div
-              className=" w-full
-            flex flex-col items-center
-            mt-24
-            ">
-              <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
-                {adsResponse?.data.map((ad) => (
-                  <div key={ad.id} className="w-full overflow-hidden">
-                    <Card
-                      className={
-                        ` transition-shadow duration-300 flex flex-col cursor-pointer relative group rounded-t-lg ` +
-                        (ad.hasPromoted
-                          ? "border-2 border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.3)]"
-                          : "hover:shadow-md")
-                      }
-                      onClick={() => {
-                        setActiveAd(ad);
-                        setViewAdOpen(true);
-                      }}>
-                      {/* Promoted corner ribbon - RTL on left, LTR on right */}
-                      {ad.hasPromoted && (
-                        <div
-                          className={`absolute  ${isRTL ? "left-1.5 -top-2" : "right-0 top-0"
-                            } w-24 h-24 pointer-events-none`}>
+      <main className="p-6 flex flex-col items-center w-full">
+        {
+          isLoading ? (
+            <SkeletonList numberOfItems={6} />
+          ) : (
+            <div className="w-full flex flex-col items-center space-y-8">
+              {/* Ads List */}
+              <div
+                className={`w-full flex flex-col items-center ${isRootPath ? "mt-8" : "mt-24"}`}>
+                <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
+                  {adsResponse?.data.map((ad) => (
+                    <div key={ad.id} className="w-full overflow-hidden">
+                      <Card
+                        className={
+                          ` transition-shadow duration-300 flex flex-col cursor-pointer relative group rounded-t-lg ` +
+                          (ad.hasPromoted
+                            ? "border-2 border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.3)]"
+                            : "hover:shadow-md")
+                        }
+                        onClick={() => {
+                          setActiveAd(ad);
+                          setViewAdOpen(true);
+                        }}>
+                        {/* Promoted corner ribbon - RTL on left, LTR on right */}
+                        {ad.hasPromoted && (
                           <div
-                            className={
-                              `absolute bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg  ` +
-                              (isRTL
-                                ? "top-[10px] -left-[30px] rotate-[-45deg]"
-                                : "top-3.5 -right-8 rotate-[45deg]")
-                            }>
-                            {t("publicFeed", "promoted") || "Promoted"}
+                            className={`absolute  ${isRTL ? "left-1.5 -top-2" : "right-0 top-0"
+                              } w-24 h-24 pointer-events-none`}>
+                            <div
+                              className={
+                                `absolute bg-[#3B82F6] text-white text-xs font-semibold tracking-wide px-8 py-2 shadow-lg  ` +
+                                (isRTL
+                                  ? "top-[10px] -left-[30px] rotate-[-45deg]"
+                                  : "top-3.5 -right-8 rotate-[45deg]")
+                              }>
+                              {t("publicFeed", "promoted") || "Promoted"}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                      <CardContent className="p-0 flex flex-col h-full">
-                        {/* Header */}
-                        <div className="p-4 border-b bg-blue-600 text-white rounded-t-lg">
-                          <h2
-                            className="text-lg font-semibold text-white"
-                            style={{
-                              display: "-webkit-box",
-                              WebkitLineClamp: 1,
-                              WebkitBoxOrient: "vertical" as any,
-                              overflow: "hidden",
-                            }}>
-                            {language === "en"
-                              ? ad.titleEn || ad.titleAr
-                              : ad.titleAr || ad.titleEn}
-                          </h2>
-                          {/* <p className="mt-1 text-sm text-muted-foreground">
+                        )}
+                        <CardContent className="p-0 flex flex-col h-full">
+                          {/* Header */}
+                          <div className="p-4 border-b bg-blue-600 text-white rounded-t-lg">
+                            <h2
+                              className="text-lg font-semibold text-white"
+                              style={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 1,
+                                WebkitBoxOrient: "vertical" as any,
+                                overflow: "hidden",
+                              }}>
+                              {language === "en"
+                                ? ad.titleEn || ad.titleAr
+                                : ad.titleAr || ad.titleEn}
+                            </h2>
+                            {/* <p className="mt-1 text-sm text-muted-foreground">
                             {t("publicFeed", "sponsored")}
                           </p> */}
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-4 flex flex-col gap-4 flex-1 justify-end">
-                          <p
-                            className="text-foreground leading-relaxed whitespace-pre-wrap"
-                            style={{
-                              display: "-webkit-box",
-                              WebkitLineClamp: 3,
-                              WebkitBoxOrient: "vertical" as any,
-                              overflow: "hidden",
-                            }}>
-                            {language === "en"
-                              ? ad.descriptionEn || ad.descriptionAr
-                              : ad.descriptionAr || ad.descriptionEn}
-                          </p>
-
-                          <div className="w-full rounded-lg overflow-hidden">
-                            {/* <AspectRatio ratio={4 / 3}> */}
-                            {(Array.isArray(ad.imageUrl) &&
-                              ad.imageUrl.length > 0) ||
-                              ad.youtubeVideo ? (
-                              <ImageCarousel
-                                images={
-                                  Array.isArray(ad.imageUrl)
-                                    ? ad.imageUrl
-                                    : ad.imageUrl
-                                      ? [ad.imageUrl]
-                                      : []
-                                }
-                                videoUrl={ad.youtubeVideo}
-                                isHovered={false}
-                              />
-                            ) : ad.imageUrl && !Array.isArray(ad.imageUrl) ? (
-                              <img
-                                src={ad.imageUrl as string}
-                                alt={
-                                  language === "en" ? ad.titleEn : ad.titleAr
-                                }
-                                className="h-full w-full object-cover"
-                                loading="lazy"
-                              />
-                            ) : null}
-                            {/* </AspectRatio> */}
                           </div>
-                        </div>
 
-                        {/* Actions */}
-                        <div
-                          className={
-                            `px-4 pb-4 border-t pt-3 flex items-center mt-auto flex
+                          {/* Content */}
+                          <div className="p-4 flex flex-col gap-4 flex-1 justify-end">
+                            <p
+                              className="text-foreground leading-relaxed whitespace-pre-wrap"
+                              style={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 3,
+                                WebkitBoxOrient: "vertical" as any,
+                                overflow: "hidden",
+                              }}>
+                              {language === "en"
+                                ? ad.descriptionEn || ad.descriptionAr
+                                : ad.descriptionAr || ad.descriptionEn}
+                            </p>
+
+                            <div className="w-full rounded-lg overflow-hidden">
+                              {/* <AspectRatio ratio={4 / 3}> */}
+                              {(Array.isArray(ad.imageUrl) &&
+                                ad.imageUrl.length > 0) ||
+                                ad.youtubeVideo ? (
+                                <ImageCarousel
+                                  images={
+                                    Array.isArray(ad.imageUrl)
+                                      ? ad.imageUrl
+                                      : ad.imageUrl
+                                        ? [ad.imageUrl]
+                                        : []
+                                  }
+                                  videoUrl={ad.youtubeVideo}
+                                  isHovered={false}
+                                />
+                              ) : ad.imageUrl && !Array.isArray(ad.imageUrl) ? (
+                                <img
+                                  src={ad.imageUrl as string}
+                                  alt={
+                                    language === "en" ? ad.titleEn : ad.titleAr
+                                  }
+                                  className="h-full w-full object-cover"
+                                  loading="lazy"
+                                />
+                              ) : null}
+                              {/* </AspectRatio> */}
+                            </div>
+                          </div>
+
+                          {/* Actions */}
+                          <div
+                            className={
+                              `px-4 pb-4 border-t pt-3 flex items-center mt-auto flex
                             flex-col
                          ` + (ad.hasPromoted ? "" : "")
-                          }
-                          onClick={(e) =>
-                            e.stopPropagation()
-                          } /* prevent card click */
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-1">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleLike(ad.id)}
-                                disabled={likedAds.has(ad.id)}
-                                className={`gap-2 ${likedAds.has(ad.id) ? "text-red-500" : ""
-                                  }`}>
-                                <Heart
-                                  className={`h-4 w-4 ${likedAds.has(ad.id) ? "fill-current" : ""
-                                    }`}
-                                />
-                                {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
-                              </Button>
+                            }
+                            onClick={(e) =>
+                              e.stopPropagation()
+                            } /* prevent card click */
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleLike(ad.id)}
+                                  disabled={likedAds.has(ad.id)}
+                                  className={`gap-2 ${likedAds.has(ad.id) ? "text-red-500" : ""
+                                    }`}>
+                                  <Heart
+                                    className={`h-4 w-4 ${likedAds.has(ad.id) ? "fill-current" : ""
+                                      }`}
+                                  />
+                                  {ad.likesCount + (likedAds.has(ad.id) ? 1 : 0)}
+                                </Button>
 
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleShare(ad)}
-                                className="gap-2">
-                                <Share2 className="h-4 w-4" />
-                                {t("publicFeed", "share")}
-                              </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleShare(ad)}
+                                  className="gap-2">
+                                  <Share2 className="h-4 w-4" />
+                                  {t("publicFeed", "share")}
+                                </Button>
 
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => openReportDialog(ad.id)}
-                                className="gap-2">
-                                <MessageCircle className="h-4 w-4" />
-                                {t("publicFeed", "report") || "Report"}
-                              </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => openReportDialog(ad.id)}
+                                  className="gap-2">
+                                  <MessageCircle className="h-4 w-4" />
+                                  {t("publicFeed", "report") || "Report"}
+                                </Button>
+                              </div>
+
+                              {/* show social links only when present */}
+                              <SocialLinks ad={ad} />
                             </div>
-
-                            {/* show social links only when present */}
-                            <SocialLinks ad={ad} />
+                            {ad.websiteUrl && (
+                              <Button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleWebsiteClick(ad);
+                                }}
+                                className="gap-2 bg-blue-600 hover:bg-blue-700 text-white border-blue-600">
+                                <ExternalLink className="h-4 w-4" />
+                                {t("publicFeed", "website")}
+                              </Button>
+                            )}
                           </div>
-                          {ad.websiteUrl && (
-                            <Button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleWebsiteClick(ad);
-                              }}
-                              className="gap-2 bg-blue-600 hover:bg-blue-700 text-white border-blue-600">
-                              <ExternalLink className="h-4 w-4" />
-                              {t("publicFeed", "website")}
-                            </Button>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Empty State */}
-            {adsResponse?.data.length === 0 ? (
-              <div className="flex flex-col items-center text-center py-12">
-                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                  <i className="fas fa-ad text-2xl text-muted-foreground" />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  {t("publicFeed", "noAdsAvailable")}
-                </h3>
-                <p className="text-muted-foreground">
-                  {t("publicFeed", "checkBackLater")}
-                </p>
               </div>
-            ) : (
-              <>
-                {/* Pagination */}
-                {adsResponse?.pagination && (
-                  <DataPagination
-                    pagination={{
-                      ...adsResponse.pagination,
-                      itemsPerPage: limit,
-                      totalItems: adsResponse.pagination.totalCount,
-                    }}
-                    currentPage={page.toString()}
-                    onPageChange={handlePageChange}
-                    pageSize={limit.toString()}
-                    onPageSizeChange={handlePageSizeChange}
-                    showPageSizeSelector
-                    pageSizeOptions={[6, 12, 18, 24]}
-                    showInfo
-                    className="mt-4"
-                  />
-                )}
-              </>
-            )}
-          </div>
-        )}
-      </main>
+              {/* Empty State */}
+              {adsResponse?.data.length === 0 ? (
+                <div className="flex flex-col items-center text-center py-12">
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                    <i className="fas fa-ad text-2xl text-muted-foreground" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    {t("publicFeed", "noAdsAvailable")}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {t("publicFeed", "checkBackLater")}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Pagination */}
+                  {adsResponse?.pagination && (
+                    <DataPagination
+                      pagination={{
+                        ...adsResponse.pagination,
+                        itemsPerPage: limit,
+                        totalItems: adsResponse.pagination.totalCount,
+                      }}
+                      currentPage={page.toString()}
+                      onPageChange={handlePageChange}
+                      pageSize={limit.toString()}
+                      onPageSizeChange={handlePageSizeChange}
+                      showPageSizeSelector
+                      pageSizeOptions={[6, 12, 18, 24]}
+                      showInfo
+                      className="mt-4"
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          )
+        }
+      </main >
 
       {/* Report Dialog */}
-      <Dialog
+      < Dialog
         open={reportOpen}
-        onOpenChange={(o) => (o ? setReportOpen(true) : closeReportDialog())}>
+        onOpenChange={(o) => (o ? setReportOpen(true) : closeReportDialog())
+        }>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>
@@ -1001,9 +925,9 @@ export default function AdsFeed() {
             </DialogFooter>
           </form>
         </DialogContent>
-      </Dialog>
+      </Dialog >
       {/* View Ad Dialog */}
-      <Dialog
+      < Dialog
         open={viewAdOpen}
         onOpenChange={(o) =>
           o ? setViewAdOpen(true) : (setViewAdOpen(false), setActiveAd(null))
@@ -1079,7 +1003,7 @@ export default function AdsFeed() {
             </div>
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog >
     </div>
   );
 }

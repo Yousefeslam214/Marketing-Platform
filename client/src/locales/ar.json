@@ -1412,6 +1412,10 @@
     "Search title": "بحث العنوان",
     "Search description": "بحث الوصف",
     "clearFilters": "مسح",
+    "search": "بحث",
+    "searchPlaceholder": "بحث في الإعلانات...",
+    "searchTitle": "بحث في العنوان",
+    "clearAllFilters": "مسح كل الفلاتر",
     "filters": "الفلاتر",
     "apply": "تطبيق"
   },
