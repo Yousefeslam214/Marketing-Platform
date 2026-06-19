@@ -35,6 +35,7 @@ import {
   Share2,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import useLoadPixels, { Pixel } from "@/hooks/useLoadPixels";
@@ -50,7 +51,7 @@ function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
   );
   return (
     <div
-      className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mt-0 md:mt-24">
+      className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mt-4 md:mt-8">
       {items.map((_, i) => (
         <Card key={i} className="animate-pulse">
           <CardContent className="p-6">
@@ -529,96 +530,145 @@ export default function FreeAdsFeed() {
     </>
   );
 
+  const isAuth = !!TokenManager.getAccessToken();
+
   return (
     <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`}>
-      <Header
-        title={language === "en" ? "Free Ads Feed" : "الإعلانات المجانية"}
-        description={t("publicFeed", "description")}
-      />
+      {isAuth && (
+        <div className="hidden md:block h-[97px]">
+          <Header
+            title={language === "en" ? "Free Ads Feed" : "الإعلانات المجانية"}
+            description={t("publicFeed", "description")}
+          />
+        </div>
+      )}
 
       {/* ── Modern Unified Search Toolbar ── */}
-      <div className="sticky top-[97px] z-40 bg-background/60 backdrop-blur-md px-4 py-2 md:py-6">
+      <div className={`
+        sticky z-40 bg-background/60 backdrop-blur-md px-4 py-2 md:py-3 transition-all duration-300
+        ${isAuth ? "top-[64px] md:top-[97px]" : "top-[64px] md:top-0"}
+      `}>
         <div className="max-w-5xl mx-auto">
           {/* Main Toolbar Container */}
           <div className={`
             relative bg-background border shadow-xl transition-all duration-300
-            flex flex-col md:flex-row items-stretch p-1 md:p-2 gap-1 md:gap-2
-            ${isMobile ? "rounded-3xl" : "rounded-full"}
+            flex flex-col md:flex-row items-stretch p-1 md:p-2 gap-0 md:gap-2
+            ${isMobile ? "rounded-2xl" : "rounded-full"}
             focus-within:ring-4 focus-within:ring-primary/10
           `}>
 
-            {/* Search Input Section */}
-            <div className="flex-1 flex items-center px-4 min-w-0">
-              <i className={`fas fa-search ${isRTL ? "ml-3" : "mr-3"} text-muted-foreground/60`} />
-              <Input
-                type="text"
-                value={titleFilter}
-                onChange={(e) => { setTitleFilter(e.target.value); setPage(1); }}
-                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-8 md:h-11 text-sm md:text-base placeholder:text-muted-foreground/50 w-full"
-                placeholder={t("publicFeed", "Search title") || "Search ads..."}
-              />
+            {/* ── Row 1: Search input (always visible) + toggle btn (mobile only) ── */}
+            <div className="flex-1 w-full flex items-center min-w-0">
+              {/* Search Input */}
+              <div className="flex-1 flex items-center px-3 min-w-0">
+                <i className={`fas fa-search ${isRTL ? "ml-2" : "mr-2"} text-muted-foreground/60 text-sm`} />
+                <Input
+                  type="text"
+                  value={titleFilter}
+                  onChange={(e) => { setTitleFilter(e.target.value); setPage(1); }}
+                  className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-9 md:h-11 text-sm md:text-base placeholder:text-muted-foreground/50 w-full"
+                  placeholder={t("publicFeed", "Search title") || "Search ads..."}
+                />
+              </div>
+
+              {/* Filter toggle — mobile only */}
+              <button
+                className="md:hidden flex items-center gap-1 px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
+                onClick={() => setShowFilters((v) => !v)}
+                aria-label="Toggle filters">
+                <i className="fas fa-sliders-h text-xs" />
+                <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showFilters ? "rotate-180" : ""}`} />
+                {hasActiveFilters && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
+              </button>
+
+              {/* Desktop: dividers + city + category + search button */}
+              <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+                <div className="w-px bg-border h-8 self-center" />
+                {/* City */}
+                <div className={`flex items-center ${isRTL ? "pr-2" : "pl-2"}`}>
+                  <i className={`fas fa-map-marker-alt ${isRTL ? "ml-2.5" : "mr-2.5"} text-muted-foreground/50 text-sm`} />
+                  <Select value={targetCities[0] || undefined} onValueChange={handleCityChange}>
+                    <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-11 w-40 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
+                      <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">{t("ads", "allCities") || "All Cities"}</SelectItem>
+                      {locationOptions.map((opt: { value: string; label: string }) => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="w-px bg-border h-8 self-center" />
+                {/* Category */}
+                <div className={`flex items-center ${isRTL ? "pr-2" : "pl-2"}`}>
+                  <i className={`fas fa-th-large ${isRTL ? "ml-2.5" : "mr-2.5"} text-muted-foreground/50 text-sm`} />
+                  <Select
+                    value={audienceFilter || undefined}
+                    onValueChange={(v) => { setAudienceFilter(v === "any" ? "" : v); setPage(1); }}>
+                    <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-11 w-44 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
+                      <SelectValue placeholder={t("ads", "targetAudiencePlaceholder")} />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-64">
+                      <AudienceOptions />
+                    </SelectContent>
+                  </Select>
+                </div>
+                {/* Search Button */}
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white font-bold px-8 rounded-full whitespace-nowrap transition-all duration-300 active:scale-95"
+                  onClick={() => { }}>
+                  <i className={`fas fa-search ${isRTL ? "ml-2" : "mr-2"}`} />
+                  {t("publicFeed", "search") || "Search"}
+                </Button>
+              </div>
             </div>
 
-            {/* Vertical Dividers (Desktop Only) */}
-            <div className="hidden md:block w-px bg-border h-8 self-center" />
-
-            {/* City Filter */}
-            <div className={`flex items-center ${isRTL ? "md:pr-4" : "md:pl-4"} px-2`}>
-              <i className={`fas fa-map-marker-alt ${isRTL ? "ml-2.5" : "mr-2.5"} text-muted-foreground/50 text-sm`} />
-              <Select value={targetCities[0] || undefined} onValueChange={handleCityChange}>
-                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-8 md:h-11 w-full md:w-40 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
-                  <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t("ads", "allCities") || "All Cities"}</SelectItem>
-                  {locationOptions.map((opt: { value: string; label: string }) => (
-                    <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Vertical Dividers (Desktop Only) */}
-            <div className="hidden md:block w-px bg-border h-8 self-center" />
-
-            {/* Category/Audience Filter */}
-            <div className={`flex items-center ${isRTL ? "md:pr-4" : "md:pl-4"} px-2`}>
-              <i className={`fas fa-th-large ${isRTL ? "ml-2.5" : "mr-2.5"} text-muted-foreground/50 text-sm`} />
-              <Select
-                value={audienceFilter || undefined}
-                onValueChange={(v) => { setAudienceFilter(v === "any" ? "" : v); setPage(1); }}>
-                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-8 md:h-11 w-full md:w-44 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
-                  <SelectValue placeholder={t("ads", "targetAudiencePlaceholder")} />
-                </SelectTrigger>
-                <SelectContent className="max-h-64">
-                  <AudienceOptions />
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Search Button */}
-            <Button
-              size="lg"
-              className={`
-                bg-primary hover:bg-primary/90 text-white font-bold
-                md:px-8 h-9 md:h-auto whitespace-nowrap
-                transition-all duration-300 active:scale-95
-                ${isMobile ? "rounded-2xl w-full" : "rounded-full"}
-              `}
-              onClick={() => { /* Filters already trigger via state, but button provides UX anchor */ }}>
-              <i className={`fas fa-search ${isRTL ? "ml-2" : "mr-2"}`} />
-              {t("publicFeed", "search") || "Search"}
-            </Button>
+            {/* ── Mobile collapsible filter panel ── */}
+            {showFilters && (
+              <div className="md:hidden border-t border-border/30 pt-1 pb-0.5 flex flex-col gap-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                {/* City */}
+                <div className="flex items-center px-2">
+                  <i className={`fas fa-map-marker-alt ${isRTL ? "ml-2" : "mr-2"} text-muted-foreground/50 text-xs`} />
+                  <Select value={targetCities[0] || undefined} onValueChange={handleCityChange}>
+                    <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-8 w-full text-sm hover:bg-muted/30 rounded-lg px-2">
+                      <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">{t("ads", "allCities") || "All Cities"}</SelectItem>
+                      {locationOptions.map((opt: { value: string; label: string }) => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {/* Category */}
+                <div className="flex items-center px-2">
+                  <i className={`fas fa-th-large ${isRTL ? "ml-2" : "mr-2"} text-muted-foreground/50 text-xs`} />
+                  <Select
+                    value={audienceFilter || undefined}
+                    onValueChange={(v) => { setAudienceFilter(v === "any" ? "" : v); setPage(1); }}>
+                    <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-8 w-full text-sm hover:bg-muted/30 rounded-lg px-2">
+                      <SelectValue placeholder={t("ads", "targetAudiencePlaceholder")} />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-64">
+                      <AudienceOptions />
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Active Filters Tag Bar (Optional cleanup) */}
+          {/* Active Filters clear bar */}
           {hasActiveFilters && (
-            <div className="mt-4 flex flex-wrap justify-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
+            <div className="mt-1 md:mt-4 flex flex-wrap justify-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => { setTitleFilter(""); setDescriptionFilter(""); setAudienceFilter(""); setTargetCities([]); setPage(1); }}
-                className="h-8 rounded-full text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all">
+                className="h-7 rounded-full text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all">
                 <i className={`fas fa-times-circle ${isRTL ? "ml-1.5" : "mr-1.5"}`} />
                 {t("publicFeed", "clearAllFilters") || "Clear all filters"}
               </Button>
@@ -631,9 +681,9 @@ export default function FreeAdsFeed() {
         {isLoading ? (
           <SkeletonList numberOfItems={6} />
         ) : (
-          <div className="w-full flex flex-col items-center space-y-2 md:space-y-8">
+          <div className="w-full flex flex-col items-center space-y-2 md:space-y-2">
             {/* Ads List */}
-            <div className="w-full flex flex-col items-center mt-0 md:mt-24">
+            <div className="w-full flex flex-col items-center mt-2 md:mt-4">
               <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
                 {adsResponse?.data.map((ad) => (
                   <div key={ad.id} className="w-full overflow-hidden">
