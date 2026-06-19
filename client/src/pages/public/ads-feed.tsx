@@ -51,9 +51,7 @@ function SkeletonList({ numberOfItems }: { numberOfItems: number }) {
   );
   return (
     <div
-      className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2
-    mt-24
-    ">
+      className="w-full max-w-5xl grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mt-0 md:mt-24">
       {items.map((_, i) => (
         <Card key={i} className="animate-pulse">
           <CardContent className="p-6">
@@ -533,12 +531,12 @@ export default function AdsFeed() {
       )}
 
       {/* ── Modern Unified Search Toolbar ── */}
-      <div className={`sticky ${isRootPath ? "top-[64px]" : "top-[97px]"} z-40 bg-background/60 backdrop-blur-md px-4 py-6 md:py-8`}>
+      <div className={`sticky ${isRootPath ? "top-[64px]" : "top-[97px]"} z-40 bg-background/60 backdrop-blur-md px-4 py-2 md:py-6`}>
         <div className="max-w-5xl mx-auto">
           {/* Main Toolbar Container */}
           <div className={`
             relative bg-background border shadow-xl transition-all duration-300
-            flex flex-col md:flex-row items-stretch p-2 gap-2
+            flex flex-col md:flex-row items-stretch p-1 md:p-2 gap-1 md:gap-2
             ${isMobile ? "rounded-3xl" : "rounded-full"}
             focus-within:ring-4 focus-within:ring-primary/10
           `}>
@@ -550,7 +548,7 @@ export default function AdsFeed() {
                 type="text"
                 value={titleFilter}
                 onChange={(e) => { setTitleFilter(e.target.value); setPage(1); }}
-                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-base placeholder:text-muted-foreground/50 w-full"
+                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-8 md:h-11 text-sm md:text-base placeholder:text-muted-foreground/50 w-full"
                 placeholder={t("publicFeed", "Search title") || "Search ads..."}
               />
             </div>
@@ -562,7 +560,7 @@ export default function AdsFeed() {
             <div className={`flex items-center ${isRTL ? "md:pr-4" : "md:pl-4"} px-2`}>
               <i className={`fas fa-map-marker-alt ${isRTL ? "ml-2.5" : "mr-2.5"} text-muted-foreground/50 text-sm`} />
               <Select value={targetCities[0] || undefined} onValueChange={handleCityChange}>
-                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-11 w-full md:w-40 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
+                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-8 md:h-11 w-full md:w-40 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
                   <SelectValue placeholder={t("ads", "allCities") || "All Cities"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -583,7 +581,7 @@ export default function AdsFeed() {
               <Select
                 value={audienceFilter || undefined}
                 onValueChange={(v) => { setAudienceFilter(v === "any" ? "" : v); setPage(1); }}>
-                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-11 w-full md:w-44 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
+                <SelectTrigger className="border-0 bg-transparent focus:ring-0 focus:ring-offset-0 h-8 md:h-11 w-full md:w-44 text-sm hover:bg-muted/30 rounded-lg transition-colors px-2">
                   <SelectValue placeholder={t("ads", "targetAudiencePlaceholder")} />
                 </SelectTrigger>
                 <SelectContent className="max-h-64">
@@ -597,9 +595,9 @@ export default function AdsFeed() {
               size="lg"
               className={`
                 bg-primary hover:bg-primary/90 text-white font-bold
-                md:px-8 h-12 md:h-auto whitespace-nowrap
+                md:px-8 h-9 md:h-auto whitespace-nowrap
                 transition-all duration-300 active:scale-95
-                ${isMobile ? "rounded-2xl w-full mt-2" : "rounded-full"}
+                ${isMobile ? "rounded-2xl w-full" : "rounded-full"}
               `}
               onClick={() => { /* Filters already trigger via state, but button provides UX anchor */ }}>
               <i className={`fas fa-search ${isRTL ? "ml-2" : "mr-2"}`} />
@@ -623,15 +621,15 @@ export default function AdsFeed() {
         </div>
       </div>
 
-      <main className="p-6 flex flex-col items-center w-full">
+      <main className="p-2 md:p-6 flex flex-col items-center w-full">
         {
           isLoading ? (
             <SkeletonList numberOfItems={6} />
           ) : (
-            <div className="w-full flex flex-col items-center space-y-8">
+            <div className="w-full flex flex-col items-center space-y-2 md:space-y-8">
               {/* Ads List */}
               <div
-                className={`w-full flex flex-col items-center ${isRootPath ? "mt-8" : "mt-24"}`}>
+                className={`w-full flex flex-col items-center ${isRootPath ? "mt-0 md:mt-8" : "mt-0 md:mt-24"}`}>
                 <div className="w-full max-w-5xl columns-1 md:columns-2 gap-4 space-y-4">
                   {adsResponse?.data.map((ad) => (
                     <div key={ad.id} className="w-full overflow-hidden">
