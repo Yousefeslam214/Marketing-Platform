@@ -54,17 +54,17 @@ const PublicHeader = () => {
               {t("landing", "navigation.homePage")}
             </a>
             <a
-              href="/#features"
+              href="/home#features"
               className="text-sm font-medium hover:text-primary transition-colors">
               {t("landing", "navigation.features")}
             </a>
             <a
-              href="/#how-it-works"
+              href="/home#how-it-works"
               className="text-sm font-medium hover:text-primary transition-colors">
               {t("landing", "navigation.howItWorks")}
             </a>
             <a
-              href="/#pricing"
+              href="/home#pricing"
               className="text-sm font-medium hover:text-primary transition-colors">
               {t("landing", "navigation.pricing")}
             </a>
@@ -139,8 +139,8 @@ const PublicHeader = () => {
               <div className="w-6 h-6 flex flex-col justify-center items-center">
                 <span
                   className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
-                      ? "rotate-45 translate-y-1"
-                      : "-translate-y-0.5"
+                    ? "rotate-45 translate-y-1"
+                    : "-translate-y-0.5"
                     }`}
                 />
                 <span
@@ -149,8 +149,8 @@ const PublicHeader = () => {
                 />
                 <span
                   className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
-                      ? "-rotate-45 -translate-y-1"
-                      : "translate-y-0.5"
+                    ? "-rotate-45 -translate-y-1"
+                    : "translate-y-0.5"
                     }`}
                 />
               </div>
@@ -161,26 +161,26 @@ const PublicHeader = () => {
         {/* Mobile Menu */}
         <div
           className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen
-              ? "max-h-99 opacity-100 border-t"
-              : "max-h-0 opacity-0 overflow-hidden"
+            ? "max-h-99 opacity-100 border-t"
+            : "max-h-0 opacity-0 overflow-hidden"
             }`}>
           <div className="py-4 space-y-4">
             {/* Mobile Navigation Links */}
             <div className="space-y-3">
               <a
-                href="/#features"
+                href="/home#features"
                 className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}>
                 {t("landing", "navigation.features")}
               </a>
               <a
-                href="/#how-it-works"
+                href="/home#how-it-works"
                 className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}>
                 {t("landing", "navigation.howItWorks")}
               </a>
               <a
-                href="/#pricing"
+                href="/home#pricing"
                 className="block px-4 py-2 text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}>
                 {t("landing", "navigation.pricing")}
