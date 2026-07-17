@@ -210,7 +210,7 @@ export default function EditPhoto() {
             <div className="absolute top-2 right-2 flex flex-col gap-2 transition">
               <Button
                 size="sm"
-                variant="secondary"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
                 onClick={() => handleReplaceClick(url)}
                 disabled={updatePhotoMutation.isPending}>
                 {updatePhotoMutation.isPending && selectedUrl === url

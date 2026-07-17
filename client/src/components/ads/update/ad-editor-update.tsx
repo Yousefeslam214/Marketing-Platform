@@ -413,6 +413,9 @@ export function AdEditor({
                           <SelectItem value="coach">
                             {t("ads", "audienceCoach")}
                           </SelectItem>
+                          <SelectItem value="careSupplies">
+                          {t("ads", "audienceCareSupplies")}
+                        </SelectItem>
                           <SelectItem value="code">
                             {t("ads", "audienceCode")}
                           </SelectItem>

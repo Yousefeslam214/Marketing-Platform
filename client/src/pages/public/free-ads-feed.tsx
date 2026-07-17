@@ -524,6 +524,7 @@ export default function FreeAdsFeed() {
       <SelectItem value="tourism">{t("ads", "audienceTourism")}</SelectItem>
       <SelectItem value="lost">{t("ads", "audienceLost")}</SelectItem>
       <SelectItem value="coach">{t("ads", "audienceCoach")}</SelectItem>
+      <SelectItem value="careSupplies">{t("ads", "audienceCareSupplies")}</SelectItem>
       <SelectItem value="code">{t("ads", "audienceCode")}</SelectItem>
       <SelectItem value="fund">{t("ads", "audienceFund")}</SelectItem>
       <SelectItem value="more">{t("ads", "audienceMore")}</SelectItem>
